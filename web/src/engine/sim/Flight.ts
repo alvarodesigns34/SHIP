@@ -111,6 +111,29 @@ export class Flight {
     this.copyState(this.prev, this.state);
   }
 
+  /**
+   * Telemetría orbital kepleriana educativa (derivada de la órbita de referencia y del
+   * Δv acumulado relativo de la nave; no es un propagador de vuelo real).
+   */
+  computeOrbit(body: 'Tierra' | 'Luna', altKm: number) {
+    const mu = body === 'Luna' ? 4902.8 : 398600.4418; // km³/s²
+    const R = body === 'Luna' ? 1737.4 : 6371.0;
+    const r = R + Math.max(10, altKm);
+    const vCirc = Math.sqrt(mu / r); // km/s
+    // Componente progrado aproximado (+X local)
+    const fwd = new THREE.Vector3(1, 0, 0).applyQuaternion(this.state.q);
+    const dvProKmS = this.state.vel.dot(fwd) / 1000;
+    const v = Math.max(0.2, vCirc + dvProKmS);
+    const invA = 2 / r - (v * v) / mu;
+    const a = invA > 1e-6 ? 1 / invA : r * 2;
+    const periodMin = (2 * Math.PI * Math.sqrt(Math.pow(Math.max(r, a), 3) / mu)) / 60;
+    const e = clamp(Math.abs(1 - r / Math.max(r * 0.5, a)), 0, 0.35);
+    const apogeeKm = Math.max(0, a * (1 + e) - R);
+    const perigeeKm = Math.max(0, a * (1 - e) - R);
+    const inclinationDeg = body === 'Luna' ? 89.2 : 51.6;
+    return { vOrbKmS: v, periodMin, apogeeKm, perigeeKm, inclinationDeg };
+  }
+
   serialize() {
     const s = this.state;
     return { pos: s.pos.toArray(), vel: s.vel.toArray(), q: s.q.toArray(), w: s.w.toArray(), assist: this.assist, thrustScale: this.thrustScale };

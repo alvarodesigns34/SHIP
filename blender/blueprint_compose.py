@@ -139,9 +139,9 @@ def title_block(img, d, title, sheet, subtitle, scale_ppm=None, out_w=None):
     d.text((x0 + 20, y0 + 152), "Proyección ortográfica del modelo maestro · unidades: metros", font=font(20), fill=DIM)
     d.text((x0 + 900, y0 + 14), "LÁMINA", font=font(18, mono=True), fill=DIM)
     d.text((x0 + 900, y0 + 36), sheet, font=font(30, mono=True, bold=True), fill=ACC)
-    d.text((x0 + 900, y0 + 86), "REV  B", font=font(20, mono=True), fill=INK)
+    d.text((x0 + 900, y0 + 86), "REV  C · SINGULARITY", font=font(18, mono=True), fill=INK)
     d.text((x0 + 900, y0 + 118), "2026-11-25", font=font(20, mono=True), fill=INK)
-    d.text((x0 + 900, y0 + 150), "NO APTO PARA FABRICACIÓN", font=font(15, mono=True), fill=ACC)
+    d.text((x0 + 900, y0 + 150), "CONCEPTUAL · NO FABRICACIÓN", font=font(14, mono=True), fill=ACC)
     if scale_ppm:
         # escala gráfica (5 m)
         L = 5 * scale_ppm
@@ -175,8 +175,8 @@ def sheet_side():
     xr = min(img.size[0] - 90, max(P["bow"][0], P["stern"][0]) + 140)
     tmp, pos = dim_v(d, P["radTop"][1], P["radBot"][1], xr, P["radTop"][0], P["radBot"][0], f"{fmt(HZ)} m  radiadores desplegados", f)
     img.paste(tmp, pos, tmp)
-    xr2 = P["frame3"][0]
-    tmp, pos = dim_v(d, P["habTop"][1], P["habBot"][1], xr2, P["habTop"][0], P["habBot"][0], f"Ø {fmt(2*S.R_S)} m (entre caras)", font(22, mono=True))
+    xr2 = P["frame4"][0] + 18
+    tmp, pos = dim_v(d, P["habTop"][1], P["habBot"][1], xr2, P["habTop"][0], P["habBot"][0], f"Ø {fmt(2*S.R_S)} m (entre caras)", font(21, mono=True))
     img.paste(tmp, pos, tmp)
     callouts(img, d, m["labels"], fs, 170, img.size[1] - 300)
     title_block(img, d, "VISTA LATERAL (BABOR)", "BP-02", "Alzado desde +Y · estaciones en X (m)", m["ppm"])
@@ -207,16 +207,23 @@ def sheet_section_long():
     img = blueprintify(os.path.join(RAW, "section_long.png"), gain=3.0)
     d = ImageDraw.Draw(img)
     P = m["points"]
-    # rótulos de bahía
-    for i, (k0, k1, t) in enumerate((("frame3", "frame4", "BAHÍA A · CABINA"), ("frame2", "frame3", "BAHÍA B · LABORATORIO"),
-                                      ("frame1", "frame2", "BAHÍA C · REFUGIO"), ("frame0", "frame1", "BAHÍA D · SERVICIOS"))):
+    # Callouts primero para que los rótulos de bahía (con fondo limpio) nunca queden tachados
+    callouts(img, d, m["labels"], font(22), 145, img.size[1] - 300)
+    # Rótulos de bahía elevados por encima del brazo robótico (cero solapes con RBT!)
+    y_bay = P["habTop"][1] - 255
+    fb = font(20, mono=True, bold=True)
+    for k in ("frame0", "frame1", "frame2", "frame3", "frame4"):
+        xf = P[k][0]
+        d.line([(xf, y_bay + 6), (xf, P["habTop"][1] - 18)], fill=(110, 150, 190), width=1)
+    for k0, k1, t in (("frame3", "frame4", "BAHÍA A · CABINA"), ("frame2", "frame3", "BAHÍA B · LABORATORIO"),
+                      ("frame1", "frame2", "BAHÍA C · REFUGIO"), ("frame0", "frame1", "BAHÍA D · SERVICIOS")):
         x0, x1 = P[k0][0], P[k1][0]
-        y = P["habTop"][1] - 60
-        d.line([(x0 + 6, y), (x1 - 6, y)], fill=ACC, width=3)
-        tw = d.textlength(t, font=font(20, mono=True, bold=True))
-        d.text(((x0 + x1) / 2 - tw / 2, y - 32), t, font=font(20, mono=True, bold=True), fill=ACC)
-    callouts(img, d, m["labels"], font(22), 150, img.size[1] - 300)
-    d.text((70, 70), "SECCIÓN LONGITUDINAL  Y = 0 (plano de crujía), vista desde babor; alas solares, radiadores y antena omitidos", font=font(24), fill=DIM)
+        d.line([(x0 + 6, y_bay), (x1 - 6, y_bay)], fill=ACC, width=3)
+        tw = d.textlength(t, font=fb)
+        xm = (x0 + x1) / 2
+        d.rectangle([xm - tw / 2 - 8, y_bay - 36, xm + tw / 2 + 8, y_bay - 6], fill=tuple(BG.astype(int)))
+        d.text((xm - tw / 2, y_bay - 32), t, font=fb, fill=ACC)
+    d.text((70, 62), "SECCIÓN LONGITUDINAL  Y = 0 (plano de crujía), vista desde babor; alas solares, radiadores y antena omitidos", font=font(24), fill=DIM)
     title_block(img, d, "SECCIÓN LONGITUDINAL", "BP-06", "Corte por el plano de crujía", m["ppm"])
     return img
 
@@ -253,12 +260,16 @@ def sheet_layout():
     for i in range(5):
         x, y = P[f"frame{i}"]
         d.line([(x, 260), (x, img.size[1] - 360)], fill=(110, 150, 190), width=1)
-    for k0, k1, t in (("frame3", "frame4", "A · CABINA"), ("frame2", "frame3", "B · LABORATORIO"), ("frame1", "frame2", "C · REFUGIO"), ("frame0", "frame1", "D · SERVICIOS")):
-        x0, x1 = P[k0][0], P[k1][0]
-        tw = d.textlength(t, font=font(22, mono=True, bold=True))
-        d.text(((x0 + x1) / 2 - tw / 2, 262), t, font=font(22, mono=True, bold=True), fill=ACC)
     dim_h(d, P["frame0"][0], P["frame4"][0], img.size[1] - 420, P["frame0"][1], P["frame4"][1], f"{fmt(S.X_HAB_F - S.X_HAB_A)} m  barril presurizado (4 × {fmt(S.BARREL_L)} m)", font(24, mono=True))
     callouts(img, d, m["labels"], font(21), 150, img.size[1] - 300)
+    # Rótulos de bahía con pastilla opaca sobre líneas de llamada para legibilidad impecable
+    fb = font(21, mono=True, bold=True)
+    for k0, k1, t in (("frame3", "frame4", "A · CABINA"), ("frame2", "frame3", "B · LABORATORIO"), ("frame1", "frame2", "C · REFUGIO"), ("frame0", "frame1", "D · SERVICIOS")):
+        x0, x1 = P[k0][0], P[k1][0]
+        tw = d.textlength(t, font=fb)
+        xm = (x0 + x1) / 2
+        d.rectangle([xm - tw / 2 - 10, 268, xm + tw / 2 + 10, 302], fill=tuple(BG.astype(int)), outline=(110, 150, 190), width=1)
+        d.text((xm - tw / 2, 273), t, font=fb, fill=ACC)
     d.text((70, 70), "DISTRIBUCIÓN INTERIOR · planta cortada a Z = 0 (vista cenital; proa a la derecha)", font=font(24), fill=DIM)
     title_block(img, d, "DISTRIBUCIÓN INTERIOR", "BP-08", "Planta por el eje del pasillo", m["ppm"])
     return img

@@ -26,12 +26,13 @@ LAB_WINDOWS_X = (5.25, 6.20)
 
 
 def _delete_within(me, centers_xy, r, zmax=0.0):
-    """Borra las caras cuyo centro cae a menos de r (en planta X–Y) de algún centro y con z < zmax."""
+    """Borra las caras que invadan el radio r (en planta X–Y) de algún centro y con z < zmax."""
     import bmesh
     bm = bmesh.new()
     bm.from_mesh(me)
-    kill = [f for f in bm.faces
-            if f.calc_center_median().z < zmax and any(math.hypot(f.calc_center_median().x - cx, f.calc_center_median().y - cy) < r for cx, cy in centers_xy)]
+    def hits(p):
+        return p.z < zmax and any(math.hypot(p.x - cx, p.y - cy) < r for cx, cy in centers_xy)
+    kill = [f for f in bm.faces if hits(f.calc_center_median()) or any(hits(v.co) for v in f.verts)]
     bmesh.ops.delete(bm, geom=kill, context='FACES')
     bm.to_mesh(me)
     bm.free()
@@ -320,19 +321,31 @@ def _cupola(fwd):
               func="Visibilidad directa de 360° del hemisferio cenital")
     xc, z0 = S.X_CUPOLA, 1.36
     rb, rt, h = 0.70, 0.46, 0.52
-    # cuerpo (marco hexagonal tronco-piramidal)
+    # cuerpo (marco hexagonal tronco-piramidal — anillos HUECOS para visión cenital y paso libre!)
     mb = MB("cupola_body")
-    mb.cyl("M_AlBare", 0.74, 0.74, 0.12, 48, center=(xc, 0, z0 + 0.06), axis='Z')
+    # Anillo forjado de base HUECO (antes cilindro macizo que sellaba la entrada desde el nodo)
+    mb.lathe("M_AlBare", [
+        (0.64, z0), (0.75, z0), (0.75, z0 + 0.12), (0.64, z0 + 0.12), (0.64, z0)
+    ], 48, axis='Z', center=(xc, 0, 0))
+    mb.torus("M_Handrail", 0.61, 0.012, 48, 8, center=(xc, 0, z0 + 0.05), axis='Z')
     bot = [Vector((xc + rb * math.cos(TAU * i / 6), rb * math.sin(TAU * i / 6), z0 + 0.12)) for i in range(6)]
     top = [Vector((xc + rt * math.cos(TAU * i / 6), rt * math.sin(TAU * i / 6), z0 + 0.12 + h)) for i in range(6)]
     for i in range(6):
         j = (i + 1) % 6
-        mb.beam("M_AlBare", bot[i], top[i], 0.07, 0.07, up=(bot[i] - Vector((xc, 0, bot[i].z))))
-        mb.beam("M_AlBare", top[i], top[j], 0.06, 0.06, up=(0, 0, 1))
-        mb.beam("M_AlBare", bot[i], bot[j], 0.07, 0.07, up=(0, 0, 1))
-    mb.cyl("M_AlBare", 0.36, 0.36, 0.06, 32, center=(xc, 0, z0 + 0.12 + h + 0.03), axis='Z')
+        mb.beam("M_AlBare", bot[i], top[i], 0.072, 0.075, up=(bot[i] - Vector((xc, 0, bot[i].z))))
+        mb.beam("M_AlAnodBlack", bot[i], top[i], 0.032, 0.082, up=(bot[i] - Vector((xc, 0, bot[i].z))))
+        mb.beam("M_AlBare", top[i], top[j], 0.062, 0.062, up=(0, 0, 1))
+        mb.beam("M_AlBare", bot[i], bot[j], 0.070, 0.070, up=(0, 0, 1))
+    # Anillo superior HUECO de la ventana cenital (antes cilindro macizo que bloqueaba W7!)
+    z_top_base = z0 + 0.12 + h
+    mb.lathe("M_AlBare", [
+        (0.305, z_top_base - 0.01), (0.41, z_top_base - 0.01),
+        (0.41, z_top_base + 0.065), (0.305, z_top_base + 0.065), (0.305, z_top_base - 0.01)
+    ], 48, axis='Z', center=(xc, 0, 0))
+    mb.torus("M_AlAnodBlack", 0.312, 0.012, 48, 8, center=(xc, 0, z_top_base + 0.065), axis='Z')
+    mb.bolts("M_Bolt", bolt_circle((xc, 0, z_top_base + 0.066), (0, 0, 1), 0.365, 24), 0.007, 0.005)
     part("FWD.CUP.FRM", "Estructura de la cúpula (forja de aluminio)", mb.mesh(), g, explode=(0, 0, 0.0),
-         desc="Forja de aluminio 2219 con seis montantes y anillo superior.")
+         desc="Forja de aluminio 2219 con seis montantes y anillo superior hueco de ventana cenital.")
     gl = group("FWD.CUP.WIN", "Ventanas de la cúpula", g, explode=(0, 0, 0.35),
                desc="Cada ventana: panel de escombros exterior, dos paneles de presión redundantes de sílice fundida y panel interior de protección.")
     for i in range(6):
@@ -341,7 +354,6 @@ def _cupola(fwd):
         n = ((bot[i] + bot[j]) / 2 - Vector((xc, 0, z0 + 0.12)))
         n.z = 0
         n.normalize()
-        sh = 0.04
         b0 = bot[i].lerp(c, 0.12)
         b1 = bot[j].lerp(c, 0.12)
         t1 = top[j].lerp(c, 0.12)
@@ -353,13 +365,14 @@ def _cupola(fwd):
         part(f"FWD.CUP.WIN.W{i+1}", f"Ventana trapezoidal {i+1}", mb.mesh(), gl, explode=("auto", 0.35),
              desc="Conjunto de 4 paneles; paneles de presión de 25 mm.")
     mb = MB("cup_top_win")
-    mb.cyl("M_Glass", 0.31, 0.31, 0.025, 48, center=(xc, 0, z0 + 0.12 + h + 0.065), axis='Z')
-    mb.cyl("M_GlassInner", 0.30, 0.30, 0.01, 48, center=(xc, 0, z0 + 0.12 + h + 0.02), axis='Z')
+    mb.cyl("M_Glass", 0.304, 0.304, 0.018, 48, center=(xc, 0, z0 + 0.12 + h + 0.056), axis='Z')
+    mb.cyl("M_GlassInner", 0.300, 0.300, 0.008, 48, center=(xc, 0, z0 + 0.12 + h + 0.016), axis='Z')
     part("FWD.CUP.WIN.W7", "Ventana cenital circular", mb.mesh(), gl, explode=(0, 0, 0.4),
          desc="Ventana circular de 0,62 m, la mayor del vehículo.")
-    # contraventanas abiertas (protección MMOD)
+    # contraventanas abiertas (protección MMOD con marco rigidizado, nervios en X y bielas)
     sg = group("FWD.CUP.SHT", "Contraventanas MMOD", g, explode=(0, 0, 0.6),
                desc="Contraventanas giratorias de aluminio con manta MMOD, accionadas manualmente desde el interior.")
+    from .singularity_geo import build_detailed_cupola_shutter_mesh
     for i in range(6):
         j = (i + 1) % 6
         mtop = (top[i] + top[j]) / 2
@@ -379,17 +392,9 @@ def _cupola(fwd):
         a1 = h0 + tdir * w_top / 2
         b1 = h0 + dirv * Lsh + tdir * w_bot / 2
         b0 = h0 + dirv * Lsh - tdir * w_bot / 2
-        mb = MB(f"shutter_{i}")
-        quad = [a0, a1, b1, b0]
-        mb.poly("M_ShieldWhite", quad, [q + nrm * 0.016 for q in quad])
-        mb.poly("M_BetaCloth", [q - nrm * 0.012 for q in quad], [q - nrm * 0.002 for q in quad])
-        Rh = tdir.to_track_quat('Z', 'Y').to_matrix().to_4x4()
-        mb.cyl("M_Steel", 0.014, 0.014, w_top * 0.9, 10, center=h0, rot=Rh)
-        for s_ in (-1, 1):
-            mb.box("M_AlBare", 0.05, 0.05, 0.05, center=h0 + tdir * s_ * w_top * 0.38 - n * 0.03, rot=Rh)
-        mb.box("M_AlAnodBlack", 0.05, 0.03, 0.03, center=h0.lerp(b0.lerp(b1, 0.5), 0.6) - nrm * 0.02)
-        sp = part(f"FWD.CUP.SHT.S{i+1}", f"Contraventana {i+1}", mb.mesh(), sg, explode=("auto", 0.4),
-                  desc="Contraventana de aluminio con manta MMOD sobre bisagra superior con retén; se cierra desde la cúpula.")
+        me_sh = build_detailed_cupola_shutter_mesh(i, a0, a1, b1, b0, h0, n, nrm, tdir, w_top)
+        sp = part(f"FWD.CUP.SHT.S{i+1}", f"Contraventana {i+1}", me_sh, sg, explode=("auto", 0.4),
+                  desc="Contraventana de aluminio con marco rigidizado y manta MMOD sobre bisagra superior con retén; se cierra desde la cúpula.")
         from .expansion import mech, ctl
         tgt = ((bot[i] + bot[j]) / 2 - mtop).normalized()
         phi = math.atan2(tdir.dot(dirv.cross(tgt)), dirv.dot(tgt))
@@ -397,15 +402,25 @@ def _cupola(fwd):
         ctl(sp, "shutters")
     mb = MB("cup_top_shutter")
     ztop = z0 + 0.12 + h + 0.06
-    hinge = Vector((xc - 0.36, 0, ztop))
+    hinge = Vector((xc - 0.38, 0, ztop))
     dirv = Vector((-math.sin(0.25), 0, math.cos(0.25)))
-    quad = [hinge + Vector((0, -0.30, 0)), hinge + Vector((0, 0.30, 0)), hinge + Vector((0, 0.30, 0)) + dirv * 0.62, hinge + Vector((0, -0.30, 0)) + dirv * 0.62]
+    q0 = hinge + Vector((0, -0.32, 0))
+    q1 = hinge + Vector((0, 0.32, 0))
+    q2 = hinge + Vector((0, 0.32, 0)) + dirv * 0.68
+    q3 = hinge + Vector((0, -0.32, 0)) + dirv * 0.68
+    quad = [q0, q1, q2, q3]
     nn = Vector((math.cos(0.25), 0, math.sin(0.25)))
-    mb.poly("M_ShieldWhite", quad, [q + nn * 0.016 for q in quad])
-    mb.poly("M_BetaCloth", [q - nn * 0.012 for q in quad], [q - nn * 0.002 for q in quad])
-    mb.cyl("M_Steel", 0.016, 0.016, 0.56, 10, center=hinge, axis='Y')
-    sp = part("FWD.CUP.SHT.S7", "Contraventana cenital", mb.mesh(), sg, explode=(-0.3, 0, 0.3),
-              desc="Contraventana de la ventana cenital, abierta hacia popa.")
+    mb.poly("M_ShieldWhite", quad, [q + nn * 0.018 for q in quad])
+    for p, q in ((q0, q1), (q1, q2), (q2, q3), (q3, q0)):
+        mb.beam("M_AlBare", p + nn * 0.022, q + nn * 0.022, 0.024, 0.014, up=nn)
+    mb.beam("M_AlBare", q0 + nn * 0.020, q2 + nn * 0.020, 0.015, 0.010, up=nn)
+    mb.beam("M_AlBare", q1 + nn * 0.020, q3 + nn * 0.020, 0.015, 0.010, up=nn)
+    mb.poly("M_BetaCloth", [q - nn * 0.014 for q in quad], [q - nn * 0.002 for q in quad])
+    mb.cyl("M_Steel", 0.018, 0.018, 0.60, 14, center=hinge, axis='Y')
+    for sy in (-0.22, 0.22):
+        mb.box("M_AlBare", 0.055, 0.05, 0.055, center=hinge + Vector((0.02, sy, -0.01)))
+    sp = part("FWD.CUP.SHT.S7", "Contraventana cenital", mb.mesh(smooth=40), sg, explode=(-0.3, 0, 0.3),
+              desc="Contraventana de la ventana cenital con marco rigidizado, abierta hacia popa.")
     from .expansion import mech, ctl
     mech(sp, "hinge", hinge, (0, 1, 0), 0.0, 1.80, 0.0, ident="shutter:7", speed=1.2)
     ctl(sp, "shutters")
@@ -504,7 +519,7 @@ def _hab_structure(hab):
             me = boolean_cut(me, cuts())
             # la retícula isogrid no es una malla cerrada: la booleana exacta dejaba tapas
             # espurias sobre la ventana; se eliminan las caras dentro del radio del hueco
-            iso = _delete_within(iso, [(x, 0.0) for x in LAB_WINDOWS_X], 0.215, zmax=0.0)
+            iso = _delete_within(iso, [(x, 0.0) for x in LAB_WINDOWS_X], 0.255, zmax=0.0)
         part(f"HAB.STR.B{i+1}.SKN", f"Piel del barril {i+1}", me, bg, explode=("auto", 0.0),
              desc="Piel de 6 mm (zona de membrana) con tres soldaduras longitudinales FSW.")
         part(f"HAB.STR.B{i+1}.ISO", f"Isogrid interno del barril {i+1}", iso,

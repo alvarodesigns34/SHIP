@@ -55,6 +55,8 @@ export class Crew {
   timeScale = 60;
   samples = 0;
   stored = 0;
+  /** Modo exploración libre: congela el desgaste de necesidades fisiológicas. */
+  freeExplore = false;
   /** registro de actividades realizadas hoy (para la rutina) */
   log = new Set<ActivityId | 'earth'>();
   private warned = new Set<string>();
@@ -63,6 +65,10 @@ export class Crew {
   step(dt: number, ctx: { inCupolaLookingAtEarth: boolean }, warn: (msg: string) => void) {
     const min = dt * this.timeScale / 60;
     this.clock += min;
+    if (this.freeExplore) {
+      if (ctx.inCupolaLookingAtEarth) this.log.add('earth');
+      return;
+    }
     for (const k of Object.keys(RATE) as NeedId[]) this.needs[k] = clamp(this.needs[k] + RATE[k] * min, 0, 100);
     // el ánimo tiende a la media de las demás necesidades
     const mean = (this.needs.hydration + this.needs.nutrition + this.needs.energy + this.needs.hygiene) / 4;
@@ -80,6 +86,10 @@ export class Crew {
 
   /** ¿Se puede realizar? Devuelve el motivo si no. */
   can(id: ActivityId): string | null {
+    if (this.freeExplore) {
+      if (id === 'sample' && this.samples === 0) return 'No hay muestras pendientes: realiza antes un experimento en la guantera.';
+      return null;
+    }
     if (id === 'sleep' && this.needs.energy > 70) return 'Todavía no tienes sueño (descanso > 70 %).';
     if (id === 'drink' && this.needs.hydration > 95) return 'No tienes sed.';
     if (id === 'eat' && this.needs.nutrition > 90) return 'No tienes hambre.';
@@ -107,11 +117,12 @@ export class Crew {
     return `Día ${d} · ${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
   }
 
-  serialize() { return { needs: this.needs, clock: this.clock, samples: this.samples, stored: this.stored, log: [...this.log] }; }
+  serialize() { return { needs: this.needs, clock: this.clock, samples: this.samples, stored: this.stored, log: [...this.log], freeExplore: this.freeExplore }; }
   deserialize(o: any) {
     if (!o) return;
     Object.assign(this.needs, o.needs ?? {});
     this.clock = o.clock ?? this.clock; this.samples = o.samples ?? 0; this.stored = o.stored ?? 0;
     this.log = new Set(o.log ?? []);
+    this.freeExplore = !!o.freeExplore;
   }
 }

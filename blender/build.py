@@ -30,7 +30,8 @@ import alcion.systems as sysm
 import alcion.interior as inter
 import alcion.expansion as expn
 import alcion.density as dens
-for m in (lib, mats, S, ext, sysm, inter, expn):
+import alcion.singularity_geo as sgeo
+for m in (lib, mats, S, sgeo, ext, sysm, inter, expn, dens):
     importlib.reload(m)
 
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []

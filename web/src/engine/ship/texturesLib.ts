@@ -1,10 +1,9 @@
 /**
- * Texturas procedurales generadas en el navegador (canvas) para recuperar el
- * microdetalle que el exportador glTF no transmite desde los materiales
- * procedurales de Blender. Las UV del modelo están en metros (proyección
- * cúbica), así que `repeat` = 1 / tamaño de tesela en metros.
+ * ALCIÓN HX-4 — PROJECT SINGULARITY
+ * Biblioteca de texturas PBR, soporte KTX2/Basis Universal y carga del lightmap horneado en Cycles.
  */
 import * as THREE from 'three';
+import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
 function rng(seed: number) {
   let s = seed >>> 0;
@@ -17,7 +16,6 @@ function rng(seed: number) {
 function valueNoise(size: number, cells: number, seed: number): Float32Array {
   const r = rng(seed);
   const g = new Float32Array((cells + 1) * (cells + 1)).map(() => r());
-  // repetible: la última fila/columna copia la primera
   for (let i = 0; i <= cells; i++) {
     g[i * (cells + 1) + cells] = g[i * (cells + 1)];
     g[cells * (cells + 1) + i] = g[i];
@@ -85,136 +83,65 @@ function cached(key: string, fn: () => THREE.Texture) {
   return cache.get(key)!;
 }
 
-/** Arrugado del aislamiento multicapa: pliegues lineales + ruido fino. */
-export const mliNormal = () => cached('mliN', () => {
-  const S = 512;
-  const h = fbm(S, [3, 6, 12], 3);
-  for (let k = 0; k < h.length; k++) h[k] *= 0.6;
-  const r = rng(11);
-  for (let k = 0; k < 70; k++) {
-    const x0 = r() * S, y0 = r() * S, ang = r() * Math.PI, len = 60 + r() * 200, w = 3 + r() * 6, amp = (r() - 0.45) * 0.5;
-    const dx = Math.cos(ang), dy = Math.sin(ang);
-    for (let t = -len; t < len; t += 0.5) {
-      for (let o = -w * 2; o <= w * 2; o++) {
-        const x = Math.round(x0 + dx * t - dy * o), y = Math.round(y0 + dy * t + dx * o);
-        const xi = ((x % S) + S) % S, yi = ((y % S) + S) % S;
-        h[yi * S + xi] += amp * Math.exp(-(o * o) / (w * w)) * (1 - Math.abs(t) / len);
-      }
-    }
-  }
-  return heightToNormal(h, S, 3.2);
-});
-
 export const roughNoise = (seed = 1) => cached('rough' + seed, () => {
   const S = 256;
   const h = fbm(S, [4, 8, 16, 32, 64], seed);
   return toTexture(S, (x, y) => { const v = 160 + (h[y * S + x] - 0.5) * 60; return [v, v, v]; });
 });
 
-/** Microrrelieve de pintura/aluminio. */
 export const paintNormal = () => cached('paintN', () => {
   const S = 256;
-  return heightToNormal(fbm(S, [16, 32, 64, 128], 7), S, 1.2);
+  return heightToNormal(fbm(S, [16, 32, 64, 128], 7), S, 1.15);
 });
 
-/** Tejido (beta cloth, Nomex, Kevlar). */
-export const weaveNormal = () => cached('weaveN', () => {
-  const S = 256, P = 8;
-  const h = new Float32Array(S * S);
-  for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
-    const cx = Math.floor(x / P), cy = Math.floor(y / P);
-    const over = (cx + cy) % 2 === 0;
-    const u = (x % P) / P, v = (y % P) / P;
-    h[y * S + x] = over ? Math.sin(Math.PI * v) : Math.sin(Math.PI * u);
-  }
-  return heightToNormal(h, S, 2.5);
-});
-
-/** Retícula de células solares: color + rugosidad. */
 export const solarColor = () => cached('solarC', () => {
-  const S = 512; // 1 tesela = 8 × 16 células
+  const S = 512;
   const r = rng(5);
   const tint = Array.from({ length: 128 }, () => 0.85 + r() * 0.3);
   return toTexture(S, (x, y) => {
     const cw = S / 8, ch = S / 16;
     const cx = Math.floor(x / cw), cy = Math.floor(y / ch);
     const lx = x % cw, ly = y % ch;
-    if (lx < 2 || ly < 2) return [70, 72, 78];
+    if (lx < 2 || ly < 2) return [70, 74, 82];
     const busbar = (ly % Math.floor(ch / 3)) === 0;
-    if (busbar) return [120, 120, 130];
+    if (busbar) return [124, 126, 136];
     const k = tint[(cy * 8 + cx) % 128];
     const corner = (lx < 6 && ly < 6) || (lx > cw - 6 && ly < 6);
-    if (corner) return [40, 40, 46];
-    return [8 * k, 16 * k, 44 * k];
+    if (corner) return [38, 40, 48];
+    return [9 * k, 18 * k, 48 * k];
   }, true);
 });
 
-/** Cinta OSR del radiador: tiras de 5 cm. */
 export const radiatorRough = () => cached('radR', () => {
   const S = 256;
   return toTexture(S, (x, y) => { const v = (x % 32) < 1 ? 160 : 30 + ((x * 7 + y) % 9); return [v, v, v]; });
 });
 
-/** Trenzado de carbono. */
-export const cfrpNormal = () => cached('cfrpN', () => {
-  const S = 256, P = 16;
-  const h = new Float32Array(S * S);
-  for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
-    const cx = Math.floor(x / P), cy = Math.floor(y / P);
-    const tw = (cx + Math.floor(cy / 2)) % 2 === 0;
-    const u = (x % P) / P, v = (y % P) / P;
-    h[y * S + x] = tw ? 0.5 + 0.5 * Math.sin(Math.PI * v) : 0.5 + 0.5 * Math.sin(Math.PI * u);
-  }
-  return heightToNormal(h, S, 1.5);
-});
-
-export function makeStarfield(count = 6000, radius = 900) {
-  const r = rng(42);
-  const pos = new Float32Array(count * 3);
-  const col = new Float32Array(count * 3);
-  for (let i = 0; i < count; i++) {
-    const u = r() * 2 - 1, t = r() * Math.PI * 2, s = Math.sqrt(1 - u * u);
-    pos.set([radius * s * Math.cos(t), radius * u, radius * s * Math.sin(t)], i * 3);
-    const m = Math.pow(r(), 6) * 0.9 + 0.1;
-    const warm = r();
-    col.set([m * (0.85 + 0.15 * warm), m * 0.9, m * (1.0 - 0.15 * warm)], i * 3);
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  g.setAttribute('color', new THREE.BufferAttribute(col, 3));
-  const m = new THREE.PointsMaterial({ size: 1.6, sizeAttenuation: false, vertexColors: true, depthWrite: false });
-  const p = new THREE.Points(g, m);
-  p.frustumCulled = false;
-  p.renderOrder = -10;
-  return p;
-}
-
-/** Mecanizado/cepillado direccional (aluminio, titanio). */
-export const brushedNormal = () => cached('brushN', () => {
-  const S = 512;
-  const r = rng(21);
-  const h = new Float32Array(S * S);
-  for (let y = 0; y < S; y++) {
-    let acc = 0;
-    const rowBias = r() * 0.3;
-    for (let x = 0; x < S; x++) { acc = acc * 0.97 + (r() - 0.5) * 0.6; h[y * S + x] = acc + rowBias; }
-  }
-  return heightToNormal(h, S, 0.9);
-});
-
-/** Suciedad/desgaste de baja frecuencia para la rugosidad (evita superficies perfectas). */
 export const grimeMap = () => cached('grime', () => {
   const S = 512;
   const h = fbm(S, [3, 6, 12, 24, 96], 33);
-  return toTexture(S, (x, y) => { const v = 165 + (h[y * S + x] - 0.5) * 38 + ((x * 13 + y * 7) % 29 === 0 ? 10 : 0); return [v, v, v]; });
+  return toTexture(S, (x, y) => { const v = 168 + (h[y * S + x] - 0.5) * 34 + ((x * 13 + y * 7) % 29 === 0 ? 8 : 0); return [v, v, v]; });
 });
 
 // ---------------------------------------------------------------------------
-// Texturas fotográficas CC0 (ambientCG, ver blender/textures/nasa/SOURCES.md)
+// Soporte KTX2 / Basis Universal + Lightmap horneado en Cycles
 // ---------------------------------------------------------------------------
+let ktx2Loader: KTX2Loader | null = null;
 const photoCache = new Map<string, THREE.Texture>();
 const photoLoader = new THREE.TextureLoader();
-/** Textura PBR fotográfica de `textures/pbr/<name>_<kind>.jpg` (n = normal GL, r = rugosidad, c = color). */
+
+/** Inicializa el transcodificador GPU KTX2/Basis Universal con soporte hardware detectado. */
+export function initKTX2(renderer: THREE.WebGLRenderer) {
+  if (ktx2Loader) return ktx2Loader;
+  ktx2Loader = new KTX2Loader();
+  ktx2Loader.setTranscoderPath('basis/');
+  ktx2Loader.detectSupport(renderer);
+  return ktx2Loader;
+}
+
+export function getKTX2Loader() { return ktx2Loader; }
+
+/** Textura PBR fotográfica CC0 (ambientCG). */
 export function photo(name: 'mli' | 'brushed' | 'fabric' | 'leather' | 'polymer' | 'carbon' | 'rubber', kind: 'n' | 'r' | 'c') {
   const key = name + '_' + kind;
   let t = photoCache.get(key);
@@ -226,4 +153,52 @@ export function photo(name: 'mli' | 'brushed' | 'fabric' | 'leather' | 'polymer'
     photoCache.set(key, t);
   }
   return t;
+}
+
+let lmTexture: THREE.Texture | null = null;
+let lmKtx2State: 'idle' | 'loading' | 'ready' = 'idle';
+const lmUpgrades: ((tex: THREE.Texture) => void)[] = [];
+
+/**
+ * Devuelve la textura de lightmap interior horneada en Cycles (canal UV1 / TEXCOORD_1).
+ * Carga inmediatamente la versión PNG como fallback sin bloqueo y, si KTX2 está activo y
+ * disponible (`textures/lm_interior.ktx2`), actualiza TODOS los materiales registrados con la
+ * textura comprimida GPU UASTC.
+ */
+export function getInteriorLightmap(onUpgrade?: (tex: THREE.Texture) => void): THREE.Texture {
+  if (!lmTexture) {
+    lmTexture = photoLoader.load('textures/lm_interior.png');
+    lmTexture.flipY = false; // glTF TEXCOORD_1 UV convention!
+    lmTexture.channel = 1;
+    lmTexture.colorSpace = THREE.SRGBColorSpace;
+    lmTexture.wrapS = lmTexture.wrapT = THREE.ClampToEdgeWrapping;
+    lmTexture.anisotropy = 8;
+    lmTexture.generateMipmaps = true;
+    lmTexture.minFilter = THREE.LinearMipmapLinearFilter;
+    lmTexture.magFilter = THREE.LinearFilter;
+  }
+  if (onUpgrade) {
+    if (lmKtx2State === 'ready') onUpgrade(lmTexture);
+    else lmUpgrades.push(onUpgrade);
+  }
+  if (ktx2Loader && lmKtx2State === 'idle') {
+    lmKtx2State = 'loading';
+    ktx2Loader.load(
+      'textures/lm_interior.ktx2',
+      (kt) => {
+        kt.flipY = false;
+        kt.channel = 1;
+        kt.colorSpace = THREE.SRGBColorSpace;
+        kt.wrapS = kt.wrapT = THREE.ClampToEdgeWrapping;
+        kt.anisotropy = 8;
+        lmTexture = kt;
+        lmKtx2State = 'ready';
+        for (const fn of lmUpgrades) fn(kt);
+        lmUpgrades.length = 0;
+      },
+      undefined,
+      () => { lmKtx2State = 'ready'; lmUpgrades.length = 0; /* fallback PNG ya activo */ }
+    );
+  }
+  return lmTexture;
 }

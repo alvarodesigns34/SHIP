@@ -39,12 +39,12 @@ SPEC = {
     "M_NozzleHot":    ((0.30, 0.20, 0.16), 1.0, 0.55, {"noise": 0.3, "desc": "Tobera, zona de garganta (decoloración térmica)"}),
     "M_HallBody":     ((0.30, 0.30, 0.31), 1.0, 0.40, {"desc": "Cuerpo de propulsor Hall (circuito magnético de hierro)"}),
     "M_BoronNitride": ((0.88, 0.86, 0.82), 0.0, 0.70, {"noise": 0.1, "desc": "Cerámica de nitruro de boro (canal de descarga)"}),
-    "M_InteriorPanel":((0.78, 0.78, 0.76), 0.0, 0.62, {"noise": 0.05, "desc": "Panel interior (compuesto Nomex/fibra de vidrio)"}),
-    "M_InteriorGrey": ((0.36, 0.38, 0.40), 0.0, 0.55, {"noise": 0.05, "desc": "Panel interior gris grafito"}),
-    "M_InteriorDark": ((0.07, 0.075, 0.08), 0.1, 0.5, {"desc": "Bastidor interior oscuro"}),
-    "M_Fabric":       ((0.78, 0.73, 0.62), 0.0, 0.92, {"fabric": True, "desc": "Tejido Nomex de bolsa de estiba"}),
-    "M_FabricBlue":   ((0.10, 0.17, 0.30), 0.0, 0.9, {"fabric": True, "desc": "Tejido técnico azul (literas, sujeciones)"}),
-    "M_SeatCushion":  ((0.06, 0.065, 0.07), 0.0, 0.8, {"fabric": True, "desc": "Acolchado de asiento (espuma viscoelástica + tejido)"}),
+    "M_InteriorPanel":((0.76, 0.75, 0.72), 0.0, 0.58, {"noise": 0.06, "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"}),
+    "M_InteriorGrey": ((0.30, 0.32, 0.35), 0.0, 0.50, {"noise": 0.05, "desc": "Panel interior gris grafito"}),
+    "M_InteriorDark": ((0.055, 0.060, 0.068), 0.15, 0.44, {"desc": "Bastidor interior anodizado oscuro"}),
+    "M_Fabric":       ((0.76, 0.71, 0.61), 0.0, 0.90, {"fabric": True, "desc": "Tejido Nomex acolchado de estiba"}),
+    "M_FabricBlue":   ((0.08, 0.15, 0.28), 0.0, 0.88, {"fabric": True, "desc": "Tejido técnico azul marino (literas, sujeciones)"}),
+    "M_SeatCushion":  ((0.045, 0.048, 0.055), 0.0, 0.72, {"fabric": True, "desc": "Tapizado ergonómico de asiento (Alcantara / cuero técnico)"}),
     "M_Handrail":     ((0.85, 0.62, 0.10), 0.3, 0.42, {"desc": "Pasamanos (aluminio anodizado amarillo)"}),
     "M_EVAYellow":    ((0.90, 0.68, 0.05), 0.2, 0.45, {"desc": "Pasamanos EVA (amarillo de alta visibilidad)"}),
     "M_Screen":       ((0.01, 0.01, 0.012), 0.0, 0.08, {"emit": (0.25, 0.55, 0.95), "strength": 3.0, "screen": True, "desc": "Pantalla LCD de cabina"}),
@@ -142,8 +142,8 @@ def build_all():
                 coord = nt.nodes.new("ShaderNodeTexCoord")
             b.inputs["Anisotropic"].default_value = 0.6
         if ex.get("crinkle"):
-            coord = _add_noise_rough(nt, b, rough, 0.15, 6.0)
-            _add_bump(nt, b, coord, 16.0, 0.22, "noise", 4.0)
+            coord = _add_noise_rough(nt, b, rough, 0.10, 4.5)
+            _add_bump(nt, b, coord, 4.5, 0.13, "noise", 1.1)
         if ex.get("fabric"):
             if coord is None:
                 coord = nt.nodes.new("ShaderNodeTexCoord")

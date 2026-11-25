@@ -143,18 +143,19 @@ def setup_final(interior=False):
     c = scn.cycles
     c.device = 'CPU'
     c.samples = SAMPLES
-    c.use_denoising = True
-    c.denoiser = 'OPENIMAGEDENOISE'
-    c.max_bounces = 8
-    c.diffuse_bounces = 4
-    c.glossy_bounces = 4
-    c.transmission_bounces = 6
+    c.use_denoising = False
+    c.max_bounces = 4
+    c.diffuse_bounces = 3
+    c.glossy_bounces = 2
+    c.transmission_bounces = 4
+    c.sample_clamp_direct = 10.0
+    c.sample_clamp_indirect = 2.5
     c.use_adaptive_sampling = True
-    c.adaptive_threshold = 0.02
+    c.adaptive_threshold = 0.035
     scn.render.threads_mode = 'AUTO'
     scn.view_settings.view_transform = 'AgX'
     scn.view_settings.look = 'AgX - Medium High Contrast'
-    scn.view_settings.exposure = 0.0 if not interior else 0.6
+    scn.view_settings.exposure = 0.0 if not interior else 0.45
     # mundo: estrellas procedurales tenues + albedo terrestre azulado inferior
     w = bpy.data.worlds.get("SPACE") or bpy.data.worlds.new("SPACE")
     w.use_nodes = True
@@ -185,8 +186,8 @@ def setup_final(interior=False):
     grad.inputs["From Max"].default_value = -1.0
     nt.links.new(sep.outputs["Z"], grad.inputs["Value"])
     albedo = nt.nodes.new("ShaderNodeEmission")
-    albedo.inputs["Color"].default_value = (0.52, 0.52, 0.55, 1)
-    albedo.inputs["Strength"].default_value = 0.30
+    albedo.inputs["Color"].default_value = (0.42, 0.62, 0.96, 1)
+    albedo.inputs["Strength"].default_value = 0.40
     mix = nt.nodes.new("ShaderNodeMixShader")
     mix.inputs["Fac"].default_value = 0.0
     nt.links.new(stars.outputs["Emission"], mix.inputs[1])
@@ -210,7 +211,7 @@ def setup_final(interior=False):
         sd = bpy.data.lights.new("SUN", 'SUN')
         sun = bpy.data.objects.new("SUN", sd)
         scn.collection.objects.link(sun)
-    sun.data.energy = 6.5 if not interior else 3.0
+    sun.data.energy = 6.5 if not interior else 3.2
     sun.data.color = (1.0, 0.97, 0.92)
     sun.data.angle = math.radians(0.53)
     sun.rotation_euler = (math.radians(38), math.radians(-28), math.radians(-35))
@@ -220,42 +221,62 @@ def setup_final(interior=False):
         fd = bpy.data.lights.new("FILL", 'SUN')
         fill = bpy.data.objects.new("FILL", fd)
         scn.collection.objects.link(fill)
-    fill.data.energy = 0.25
-    fill.data.color = (0.6, 0.75, 1.0)
-    fill.data.angle = math.radians(20)
+    fill.data.energy = 0.28
+    fill.data.color = (0.58, 0.76, 1.0)
+    fill.data.angle = math.radians(22)
     fill.rotation_euler = (math.radians(-130), math.radians(10), math.radians(140))
     if interior or opts_cur.get("lights"):
         add_interior_lights()
-    fill.data.energy = 0.25 * opts_cur.get("fill", 1.0) * (4 if opts_cur.get("fill") else 1)
+    fill.data.energy = 0.28 * opts_cur.get("fill", 1.0) * (4 if opts_cur.get("fill") else 1)
 
 
 def add_interior_lights():
     if bpy.data.objects.get("INT_L1"):
         return
 
-    xs = [0.6 + 2.05 * i for i in range(5)]
+    # Temperaturas de color por bahía: D Servicios (3900K), C Refugio (3100K cálido), B Lab (5400K), A Cabina (4600K)
+    bay_specs = [
+        (1.62, 115.0, (1.00, 0.91, 0.80)),  # Bahía D Servicios
+        (3.67,  75.0, (1.00, 0.81, 0.62)),  # Bahía C Habitáculos
+        (5.72, 135.0, (0.93, 0.97, 1.00)),  # Bahía B Laboratorio
+        (7.77, 105.0, (0.94, 0.96, 1.00)),  # Bahía A Cabina
+    ]
     k = 0
-    for i in range(4):
-        xc = (xs[i] + xs[i + 1]) / 2
+    for xc, energy, col in bay_specs:
         for sy in (1, -1):
             k += 1
             ld = bpy.data.lights.new(f"INT_L{k}", 'AREA')
             ld.shape = 'RECTANGLE'
-            ld.size = 1.5
-            ld.size_y = 0.08
-            ld.energy = 140
-            ld.color = (1.0, 0.95, 0.88)
+            ld.size = 1.55
+            ld.size_y = 0.10
+            ld.energy = energy
+            ld.color = col
             lo = bpy.data.objects.new(f"INT_L{k}", ld)
             lo.location = (xc, sy * 1.03, 1.03)
-            lo.rotation_euler = (sy * math.radians(-45) + 0 * math.pi, 0, 0)
             lo.rotation_euler = (math.radians(180 + sy * 45), 0, 0)
             scn.collection.objects.link(lo)
-    for x in (10.6, 11.6):
-        ld = bpy.data.lights.new(f"INT_N{x}", 'POINT')
-        ld.energy = 60
-        ld.shadow_soft_size = 0.3
-        lo = bpy.data.objects.new(f"INT_N{x}", ld)
-        lo.location = (x, 0, 0.6)
+
+    # Acentos físicos: MFD cyan, guantera, vegetación magenta, lámparas cálidas de cabina y Earthshine nadir
+    accents = [
+        ("INT_MFD", (8.18, 0.0, 0.05), 35.0, (0.45, 0.82, 1.00), 0.35),
+        ("INT_GLV", (5.95, -1.25, 0.05), 42.0, (0.96, 0.99, 1.00), 0.22),
+        ("INT_HYD", (5.72, 0.10, 1.15), 26.0, (1.00, 0.42, 0.85), 0.25),
+        ("INT_NAD", (5.72, 0.0, -1.25), 38.0, (0.45, 0.72, 1.00), 0.40),
+        ("INT_CQ1", (3.20, 1.25, 0.20), 22.0, (1.00, 0.78, 0.50), 0.20),
+        ("INT_CQ2", (4.15, 1.25, 0.20), 22.0, (1.00, 0.78, 0.50), 0.20),
+        ("INT_CQ3", (3.20, -1.25, 0.20), 22.0, (1.00, 0.78, 0.50), 0.20),
+        ("INT_CQ4", (4.15, -1.25, 0.20), 22.0, (1.00, 0.78, 0.50), 0.20),
+        ("INT_N1", (10.6, 0.0, 0.65), 65.0, (0.95, 0.97, 1.00), 0.32),
+        ("INT_N2", (11.5, 0.0, 0.65), 60.0, (0.72, 0.86, 1.00), 0.35),
+        ("INT_ALK", (11.05, 0.0, -2.10), 70.0, (0.94, 0.96, 1.00), 0.30),
+    ]
+    for name, loc, en, col, rad in accents:
+        ld = bpy.data.lights.new(name, 'POINT')
+        ld.energy = en
+        ld.color = col
+        ld.shadow_soft_size = rad
+        lo = bpy.data.objects.new(name, ld)
+        lo.location = loc
         scn.collection.objects.link(lo)
 
 

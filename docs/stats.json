@@ -1,16 +1,16 @@
 {
- "bolts_modelled": 1791,
- "materials": 63,
- "parts": 778,
+ "bolts_modelled": 1855,
+ "materials": 64,
+ "parts": 779,
  "groups": 144,
- "triangles": 621380,
- "vertices": 346683,
- "length_m": 19.585,
+ "triangles": 840926,
+ "vertices": 460295,
+ "length_m": 19.58,
  "span_m": 39.42,
  "height_m": 15.5,
  "bbox": [
   [
-   -6.355,
+   -6.35,
    -19.71,
    -7.75
   ],

@@ -385,6 +385,12 @@ export class Player {
   /** Coloca los pies sobre el suelo más cercano bajo un punto (al teletransportarse). */
   settle() {
     if (this.eva || this.locomotion !== 'walk') return;
+    if (Player.ladderZone(this.pos)) {
+      this.onGround = false;
+      this.climbing = true;
+      this.vel.set(0, 0, 0);
+      return;
+    }
     const probe = this.pos.clone();
     const g = this.groundAt(probe, 0.2);
     if (Number.isFinite(g)) { this.eyeH = EYE_STAND; const c = this.ceilingAt(new THREE.Vector3(probe.x, g, probe.z)); this.eyeH = Math.min(EYE_STAND, Math.max(0.5, c - g - 0.12)); this.pos.y = g + this.eyeH; this.onGround = true; }

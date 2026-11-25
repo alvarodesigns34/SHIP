@@ -2,14 +2,14 @@
 
 Generado automáticamente desde el modelo maestro (`blender/build.py` → `docs/inventario.json`). Cada línea es un nodo real del modelo 3D y de la aplicación web; el código es su identificador único.
 
-- Piezas (mallas individuales): **778**
+- Piezas (mallas individuales): **779**
 - Grupos de ensamblaje: **144**
-- Elementos de tornillería modelados (por instancia): **1791**
-- Triángulos (con instancias): **621.320**
+- Elementos de tornillería modelados (por instancia): **1855**
+- Triángulos (con instancias): **840.926**
 
 Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre paréntesis indican las piezas contenidas.
 
-## ALCIÓN HX-4 (921)
+## ALCIÓN HX-4 (922)
 
 
 ### `COM` Comunicaciones de Alta Ganancia (6) — 1,42×1,93×1,93 m
@@ -23,21 +23,21 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
   - `COM.GMB` **Cardán de elevación** — 0,30×0,23×0,23 m
   - `COM.MST` **Mástil de CFRP** — 0,14×0,73×0,73 m
 
-### `FWD` Módulo Nodo de Proa (106) — 3,37×3,04×6,24 m
+### `FWD` Módulo Nodo de Proa (106) — 3,37×3,04×6,29 m
 
 > Nodo presurizado de proa con puerto de atraque IDSS activo y cúpula de observación de 7 ventanas. Aloja la estación de trabajo robótica y la estiba de acceso rápido.
 
-  - `FWD.ALK` **Esclusa EVA (nadir del nodo)** (17) — 2,23×2,11×2,56 m
+  - `FWD.ALK` **Esclusa EVA (nadir del nodo)** (17) — 2,23×2,11×2,54 m
     - `FWD.ALK.EXT` **Equipos exteriores de la esclusa** (5) — 2,23×2,11×1,96 m
       - `FWD.ALK.EXT.APFR` **Plataforma de sujeción de pies**
       - `FWD.ALK.EXT.HR` **Pasamanos EVA de la esclusa**
       - `FWD.ALK.EXT.L1` **Foco EVA 1**
       - `FWD.ALK.EXT.L2` **Foco EVA 2**
       - `FWD.ALK.EXT.UMB` **Panel de umbilicales y punto de anclaje**
-    - `FWD.ALK.HO` **Escotilla exterior EVA** (2) — 1,20×1,20×0,15 m
+    - `FWD.ALK.HO` **Escotilla exterior EVA** (2) — 1,20×1,20×0,14 m
       - `FWD.ALK.HO.DOOR` **Escotilla exterior (puerta)**
       - `FWD.ALK.HO.RNG` **Marco de la escotilla exterior**
-    - `FWD.ALK.INT` **Interior de la esclusa** (5) — 1,60×1,70×2,08 m
+    - `FWD.ALK.INT` **Interior de la esclusa** (5) — 1,60×1,71×2,08 m
       - `FWD.ALK.INT.HI` **Escotilla interior nodo–esclusa**
       - `FWD.ALK.INT.HR` **Pasamanos y luminarias interiores**
       - `FWD.ALK.INT.PNL` **Panel de control de despresurización**
@@ -45,10 +45,10 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
       - `FWD.ALK.INT.SUITB` **Traje EVA B**
     - `FWD.ALK.MMOD` **Manta MMOD y MLI de la esclusa** — 1,91×1,91×2,47 m
     - `FWD.ALK.STR` **Casco presurizado (unión en silla al nodo)** — 1,72×1,72×2,47 m
-  - `FWD.CUP` **Cúpula de observación** (18) — 1,94×1,86×1,30 m
-    - `FWD.CUP.FRM` **Estructura de la cúpula (forja de aluminio)** — 1,48×1,48×0,70 m
+  - `FWD.CUP` **Cúpula de observación** (18) — 1,93×1,86×1,38 m
+    - `FWD.CUP.FRM` **Estructura de la cúpula (forja de aluminio)** — 1,50×1,50×0,72 m
     - `FWD.CUP.HRL` **Pasamanos EVA perimetral de la cúpula** — 1,67×1,67×0,09 m
-    - `FWD.CUP.SHT` **Contraventanas MMOD** (7) — 1,94×1,86×0,67 m
+    - `FWD.CUP.SHT` **Contraventanas MMOD** (7) — 1,93×1,86×0,74 m
       - `FWD.CUP.SHT.S1` **Contraventana 1**
       - `FWD.CUP.SHT.S2` **Contraventana 2**
       - `FWD.CUP.SHT.S3` **Contraventana 3**
@@ -56,7 +56,7 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
       - `FWD.CUP.SHT.S5` **Contraventana 5**
       - `FWD.CUP.SHT.S6` **Contraventana 6**
       - `FWD.CUP.SHT.S7` **Contraventana cenital**
-    - `FWD.CUP.WIN` **Ventanas de la cúpula** (7) — 1,38×1,24×0,57 m
+    - `FWD.CUP.WIN` **Ventanas de la cúpula** (7) — 1,38×1,24×0,55 m
       - `FWD.CUP.WIN.W1` **Ventana trapezoidal 1**
       - `FWD.CUP.WIN.W2` **Ventana trapezoidal 2**
       - `FWD.CUP.WIN.W3` **Ventana trapezoidal 3**
@@ -92,9 +92,9 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
     - `FWD.EXT.LGA2` **Antena de baja ganancia banda S 2** — 0,21×0,22×0,13 m
     - `FWD.EXT.NAV1` **Baliza de navegación babor (roja)** — 0,08×0,09×0,08 m
     - `FWD.EXT.NAV2` **Baliza de navegación estribor (verde)** — 0,08×0,09×0,08 m
-  - `FWD.INT` **Interior del nodo** (23) — 2,22×2,68×2,28 m
-    - `FWD.INT.HA` **Escotilla nodo–hábitat** — 0,15×1,18×1,12 m
-    - `FWD.INT.HF` **Escotilla de atraque IDSS** — 0,15×0,98×0,92 m
+  - `FWD.INT` **Interior del nodo** (23) — 2,23×2,68×2,28 m
+    - `FWD.INT.HA` **Escotilla nodo–hábitat** — 0,14×1,17×1,12 m
+    - `FWD.INT.HF` **Escotilla de atraque IDSS** — 0,14×0,97×0,92 m
     - `FWD.INT.LGT` **Luminarias del nodo** — 1,20×2,10×0,05 m
     - `FWD.INT.RWS` **Estación de trabajo robótica** (3) — 0,36×1,10×0,78 m
       - `FWD.INT.RWS.D1` **Pantalla de la estación robótica 1**
@@ -134,11 +134,11 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
     - `FWD.STR.FRM2` **Marco anular del nodo 2** — 0,05×2,64×2,64 m
     - `FWD.STR.FRM3` **Marco anular del nodo 3** — 0,05×2,64×2,64 m
 
-### `HAB` Módulo Habitable Presurizado (567) — 9,93×4,54×4,88 m
+### `HAB` Módulo Habitable Presurizado (568) — 9,93×4,54×5,01 m
 
 > Módulo presurizado principal de Ø4,20 m y 8,2 m de barril cilíndrico; volumen presurizado total del vehículo ≈ 150 m³.
 
-  - `HAB.EXT` **Equipos exteriores del casco** (24) — 7,97×3,17×4,81 m
+  - `HAB.EXT` **Equipos exteriores del casco** (24) — 7,97×3,17×4,94 m
     - `HAB.EXT.GF1` **Accesorio de agarre robótico (PDGF-like)** — 0,36×0,36×0,34 m
     - `HAB.EXT.HR` **Pasamanos EVA del casco** (16) — 7,89×1,83×4,34 m
       - `HAB.EXT.HR.H01` **Pasamanos EVA 01**
@@ -160,11 +160,12 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
     - `HAB.EXT.LGT1` **Foco exterior 1** — 0,17×0,14×0,17 m
     - `HAB.EXT.LGT2` **Foco exterior 2** — 0,17×0,14×0,17 m
     - `HAB.EXT.LGT3` **Foco exterior 3** — 0,17×0,17×0,14 m
-    - `HAB.EXT.WIN` **Ventanas científicas de nadir** (2) — 1,53×0,54×0,48 m
+    - `HAB.EXT.WIN` **Ventanas científicas de nadir** (2) — 1,52×0,54×0,64 m
       - `HAB.EXT.WIN.W1` **Ventana científica de nadir 1**
       - `HAB.EXT.WIN.W2` **Ventana científica de nadir 2**
-  - `HAB.INT` **Equipamiento interior presurizado** (317) — 8,60×3,94×4,02 m
-    - `HAB.INT.A` **Bahía A — Cabina de vuelo** (150) — 2,06×3,94×3,94 m
+  - `HAB.INT` **Equipamiento interior presurizado** (318) — 9,70×3,97×4,04 m
+    - `HAB.INT.A` **Bahía A — Cabina de vuelo** (151) — 3,22×3,97×3,97 m
+      - `HAB.INT.A.BHD` **Estructura interior y revestimiento del mamparo de proa**
       - `HAB.INT.A.CL1` **Panel de mando cenital** (28)
         - `HAB.INT.A.CL1.BDY` **Estructura del bastidor**
         - `HAB.INT.A.CL1.HR` **Pasamanos interior**
@@ -214,12 +215,12 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
           - `HAB.INT.A.CNS.C1.D1` **Pantalla de vuelo 1**
           - `HAB.INT.A.CNS.C1.D2` **Pantalla de vuelo 2**
           - `HAB.INT.A.CNS.C1.D3` **Pantalla de vuelo 3**
-          - `HAB.INT.A.CNS.C1.STR` **Pedestal y bisel**
+          - `HAB.INT.A.CNS.C1.STR` **Pedestal, visera y panel de teclas**
         - `HAB.INT.A.CNS.C2` **Consola del piloto** (4)
           - `HAB.INT.A.CNS.C2.D1` **Pantalla de vuelo 1**
           - `HAB.INT.A.CNS.C2.D2` **Pantalla de vuelo 2**
           - `HAB.INT.A.CNS.C2.D3` **Pantalla de vuelo 3**
-          - `HAB.INT.A.CNS.C2.STR` **Pedestal y bisel**
+          - `HAB.INT.A.CNS.C2.STR` **Pedestal, visera y panel de teclas**
       - `HAB.INT.A.DK1` **Bastidor de estiba de suelo A1** (14)
         - `HAB.INT.A.DK1.BDY` **Estructura del bastidor**
         - `HAB.INT.A.DK1.HR` **Pasamanos interior**
@@ -316,7 +317,7 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
         - `HAB.INT.A.SW.HR` **Pasamanos interior**
         - `HAB.INT.A.SW.SCR` **Pantalla multifunción auxiliar**
     - `HAB.INT.AFT` **Estiba y depósitos del mamparo de popa** (6) — 0,81×2,02×1,98 m
-      - `HAB.INT.AFT.CTB` **Bolsas de transferencia de carga (9)**
+      - `HAB.INT.AFT.CTB` **Bolsas blandas CTB en red de carga del mamparo**
       - `HAB.INT.AFT.EXT` **Extintor de niebla de agua**
       - `HAB.INT.AFT.T1` **Depósito de O₂ de alta presión 1**
       - `HAB.INT.AFT.T2` **Depósito de N₂ de alta presión 1**
@@ -385,24 +386,24 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
         - `HAB.INT.C.CE2.HR` **Pasamanos interior**
         - `HAB.INT.C.CE2.TNK` **Depósitos de agua flexibles**
       - `HAB.INT.C.CQ1` **Habitáculo de tripulante 1** (4)
-        - `HAB.INT.C.CQ1.BAG` **Saco de dormir con sujeciones**
-        - `HAB.INT.C.CQ1.ENC` **Envolvente y puerta plegable**
-        - `HAB.INT.C.CQ1.EQP` **Portátil, luz, ventilación y red de estiba**
+        - `HAB.INT.C.CQ1.BAG` **Saco de dormir acolchado con almohada y sujeciones**
+        - `HAB.INT.C.CQ1.ENC` **Envolvente acústica y cortina plisada**
+        - `HAB.INT.C.CQ1.EQP` **Portátil, lámpara flexible, fotos y red personal**
         - `HAB.INT.C.CQ1.WTR` **Bolsas del muro de agua**
       - `HAB.INT.C.CQ2` **Habitáculo de tripulante 2** (4)
-        - `HAB.INT.C.CQ2.BAG` **Saco de dormir con sujeciones**
-        - `HAB.INT.C.CQ2.ENC` **Envolvente y puerta plegable**
-        - `HAB.INT.C.CQ2.EQP` **Portátil, luz, ventilación y red de estiba**
+        - `HAB.INT.C.CQ2.BAG` **Saco de dormir acolchado con almohada y sujeciones**
+        - `HAB.INT.C.CQ2.ENC` **Envolvente acústica y cortina plisada**
+        - `HAB.INT.C.CQ2.EQP` **Portátil, lámpara flexible, fotos y red personal**
         - `HAB.INT.C.CQ2.WTR` **Bolsas del muro de agua**
       - `HAB.INT.C.CQ3` **Habitáculo de tripulante 3** (4)
-        - `HAB.INT.C.CQ3.BAG` **Saco de dormir con sujeciones**
-        - `HAB.INT.C.CQ3.ENC` **Envolvente y puerta plegable**
-        - `HAB.INT.C.CQ3.EQP` **Portátil, luz, ventilación y red de estiba**
+        - `HAB.INT.C.CQ3.BAG` **Saco de dormir acolchado con almohada y sujeciones**
+        - `HAB.INT.C.CQ3.ENC` **Envolvente acústica y cortina plisada**
+        - `HAB.INT.C.CQ3.EQP` **Portátil, lámpara flexible, fotos y red personal**
         - `HAB.INT.C.CQ3.WTR` **Bolsas del muro de agua**
       - `HAB.INT.C.CQ4` **Habitáculo de tripulante 4** (4)
-        - `HAB.INT.C.CQ4.BAG` **Saco de dormir con sujeciones**
-        - `HAB.INT.C.CQ4.ENC` **Envolvente y puerta plegable**
-        - `HAB.INT.C.CQ4.EQP` **Portátil, luz, ventilación y red de estiba**
+        - `HAB.INT.C.CQ4.BAG` **Saco de dormir acolchado con almohada y sujeciones**
+        - `HAB.INT.C.CQ4.ENC` **Envolvente acústica y cortina plisada**
+        - `HAB.INT.C.CQ4.EQP` **Portátil, lámpara flexible, fotos y red personal**
         - `HAB.INT.C.CQ4.WTR` **Bolsas del muro de agua**
       - `HAB.INT.C.DE1` **Depósito del muro de agua (suelo 1)** (3)
         - `HAB.INT.C.DE1.BDY` **Estructura del bastidor**
@@ -472,7 +473,7 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
         - `HAB.INT.D.SO.BDY` **Estructura del bastidor**
         - `HAB.INT.D.SO.EQP` **Celdas de electrólisis y separadores**
         - `HAB.INT.D.SO.HR` **Pasamanos interior**
-    - `HAB.INT.LGT` **Iluminación general de cabina** (8) — 7,75×2,22×0,11 m
+    - `HAB.INT.LGT` **Iluminación general de cabina** (8) — 7,81×2,23×0,13 m
       - `HAB.INT.LGT.L1` **Luminaria LED 1**
       - `HAB.INT.LGT.L2` **Luminaria LED 2**
       - `HAB.INT.LGT.L3` **Luminaria LED 3**
@@ -487,7 +488,7 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
       - `HAB.INT.DEN.CBL.R2` **Mazo de cables y tubos de la esquina**
       - `HAB.INT.DEN.CBL.R3` **Mazo de cables y tubos de la esquina**
       - `HAB.INT.DEN.CBL.R4` **Mazo de cables y tubos de la esquina**
-    - `HAB.INT.DEN.CTB` **Bolsas de transferencia de carga** (24) — 7,07×1,89×2,24 m
+    - `HAB.INT.DEN.CTB` **Bolsas de transferencia de carga** (24) — 7,07×1,90×2,28 m
       - `HAB.INT.DEN.CTB.B01` **Bolsa de transferencia de carga**
       - `HAB.INT.DEN.CTB.B01.LBL` **Etiqueta de inventario de la bolsa**
       - `HAB.INT.DEN.CTB.B01.STR` **Cinta elástica de sujeción**
@@ -531,23 +532,23 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
       - `HAB.INT.DEN.SGN.S16` **Señal: no pisar**
       - `HAB.INT.DEN.SGN.S17` **Señal: vent**
       - `HAB.INT.DEN.SGN.S18` **Señal: co2**
-  - `HAB.INT.LIV` **Vida a bordo: objetos cotidianos** (22) — 6,67×2,24×2,33 m
+  - `HAB.INT.LIV` **Vida a bordo: objetos cotidianos** (22) — 6,66×2,25×2,34 m
     - `HAB.INT.LIV.A` **Objetos de la bahía A** (4) — 0,30×2,23×2,33 m
       - `HAB.INT.LIV.A.O01` **Lista de comprobación de vuelo**
       - `HAB.INT.LIV.A.O02` **Tableta de procedimientos**
       - `HAB.INT.LIV.A.O03` **Parches de velcro**
       - `HAB.INT.LIV.A.O04` **Auriculares de comunicaciones**
-    - `HAB.INT.LIV.B` **Objetos de la bahía B** (4) — 1,34×2,23×2,24 m
+    - `HAB.INT.LIV.B` **Objetos de la bahía B** (4) — 1,36×2,23×2,25 m
       - `HAB.INT.LIV.B.O05` **Portátil del laboratorio**
       - `HAB.INT.LIV.B.O06` **Unidad de cultivo vegetal**
       - `HAB.INT.LIV.B.O07` **Cámara fotográfica**
       - `HAB.INT.LIV.B.O08` **Bolsa de herramientas**
-    - `HAB.INT.LIV.C` **Objetos de la bahía C** (4) — 1,12×2,23×1,61 m
+    - `HAB.INT.LIV.C` **Objetos de la bahía C** (4) — 1,14×2,23×1,67 m
       - `HAB.INT.LIV.C.O09` **Fotografías personales**
       - `HAB.INT.LIV.C.O10` **Fotografías personales**
       - `HAB.INT.LIV.C.O11` **Fotografías personales**
       - `HAB.INT.LIV.C.O12` **Parche de misión**
-    - `HAB.INT.LIV.D` **Objetos de la bahía D** (6) — 1,60×2,24×2,23 m
+    - `HAB.INT.LIV.D` **Objetos de la bahía D** (6) — 1,59×2,25×2,24 m
       - `HAB.INT.LIV.D.O13` **Bolsa de bebida**
       - `HAB.INT.LIV.D.O14` **Bolsa de bebida**
       - `HAB.INT.LIV.D.O15` **Cintas elásticas de estiba**
@@ -666,14 +667,14 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
     - `HAB.RCS.Q2` **Cuadrete RCS de proa 2** — 0,58×0,60×0,60 m
     - `HAB.RCS.Q3` **Cuadrete RCS de proa 3** — 0,58×0,60×0,60 m
     - `HAB.RCS.Q4` **Cuadrete RCS de proa 4** — 0,58×0,60×0,60 m
-  - `HAB.STR` **Estructura primaria presurizada** (20) — 9,92×4,32×4,56 m
+  - `HAB.STR` **Estructura primaria presurizada** (20) — 9,92×4,32×4,32 m
     - `HAB.STR.B1` **Barril presurizado 1** (2) — 2,03×4,20×4,20 m
       - `HAB.STR.B1.ISO` **Isogrid interno del barril 1**
       - `HAB.STR.B1.SKN` **Piel del barril 1**
     - `HAB.STR.B2` **Barril presurizado 2** (2) — 2,03×4,20×4,20 m
       - `HAB.STR.B2.ISO` **Isogrid interno del barril 2**
       - `HAB.STR.B2.SKN` **Piel del barril 2**
-    - `HAB.STR.B3` **Barril presurizado 3** (2) — 2,03×4,20×4,50 m
+    - `HAB.STR.B3` **Barril presurizado 3** (2) — 2,03×4,20×4,20 m
       - `HAB.STR.B3.ISO` **Isogrid interno del barril 3**
       - `HAB.STR.B3.SKN` **Piel del barril 3**
     - `HAB.STR.B4` **Barril presurizado 4** (2) — 2,03×4,20×4,20 m
@@ -706,30 +707,30 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
       - `HAB.UTL.C4.TRY` **Bandeja y mazos de cables**
     - `HAB.UTL.STK` **Carriles de fijación (seat track)** — 8,06×2,27×2,27 m
 
-### `PRP` Bahía de Propulsión (40) — 2,19×5,73×4,32 m
+### `PRP` Bahía de Propulsión (40) — 2,18×5,73×4,32 m
 
 > Placa de empuje, faldón de popa, 4 motores bipropelentes y 2 conjuntos orientables de propulsores Hall.
 
-  - `PRP.ENG` **Motores bipropelentes principales** (24) — 2,19×2,86×2,86 m
-    - `PRP.ENG.E1` **Motor bipropelente principal 1** (5) — 2,19×1,03×1,03 m
+  - `PRP.ENG` **Motores bipropelentes principales** (24) — 2,18×2,86×2,86 m
+    - `PRP.ENG.E1` **Motor bipropelente principal 1** (5) — 2,18×1,04×1,04 m
       - `PRP.ENG.E1.CHB` **Cámara de combustión**
       - `PRP.ENG.E1.INJ` **Cabeza de inyección**
       - `PRP.ENG.E1.MNT` **Montante trípode y barrera térmica**
       - `PRP.ENG.E1.NOZ` **Tobera de expansión (C-103)**
       - `PRP.ENG.E1.VLV` **Bloque de válvulas bipropelentes**
-    - `PRP.ENG.E2` **Motor bipropelente principal 2** (5) — 2,19×1,03×1,03 m
+    - `PRP.ENG.E2` **Motor bipropelente principal 2** (5) — 2,18×1,04×1,04 m
       - `PRP.ENG.E2.CHB` **Cámara de combustión**
       - `PRP.ENG.E2.INJ` **Cabeza de inyección**
       - `PRP.ENG.E2.MNT` **Montante trípode y barrera térmica**
       - `PRP.ENG.E2.NOZ` **Tobera de expansión (C-103)**
       - `PRP.ENG.E2.VLV` **Bloque de válvulas bipropelentes**
-    - `PRP.ENG.E3` **Motor bipropelente principal 3** (5) — 2,19×1,03×1,03 m
+    - `PRP.ENG.E3` **Motor bipropelente principal 3** (5) — 2,18×1,04×1,04 m
       - `PRP.ENG.E3.CHB` **Cámara de combustión**
       - `PRP.ENG.E3.INJ` **Cabeza de inyección**
       - `PRP.ENG.E3.MNT` **Montante trípode y barrera térmica**
       - `PRP.ENG.E3.NOZ` **Tobera de expansión (C-103)**
       - `PRP.ENG.E3.VLV` **Bloque de válvulas bipropelentes**
-    - `PRP.ENG.E4` **Motor bipropelente principal 4** (5) — 2,19×1,03×1,03 m
+    - `PRP.ENG.E4` **Motor bipropelente principal 4** (5) — 2,18×1,04×1,04 m
       - `PRP.ENG.E4.CHB` **Cámara de combustión**
       - `PRP.ENG.E4.INJ` **Cabeza de inyección**
       - `PRP.ENG.E4.MNT` **Montante trípode y barrera térmica**
@@ -746,9 +747,9 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
       - `PRP.SEP.A2.GMB` **Actuador de orientación de 2 ejes**
       - `PRP.SEP.A2.T1` **Propulsor Hall 3**
       - `PRP.SEP.A2.T2` **Propulsor Hall 4**
-  - `PRP.STR` **Estructura de empuje** (3) — 0,83×4,32×4,32 m
+  - `PRP.STR` **Estructura de empuje** (3) — 0,86×4,32×4,32 m
     - `PRP.STR.PLT` **Placa de empuje** — 0,05×4,28×4,28 m
-    - `PRP.STR.PSH` **Escudo térmico de popa** — 0,03×3,70×3,70 m
+    - `PRP.STR.PSH` **Escudo térmico de popa** — 0,21×3,64×3,64 m
     - `PRP.STR.SKT` **Faldón de popa con MLI de alta temperatura** — 0,75×4,32×4,32 m
 
 ### `PWR` Sistema de Potencia Solar (44) — 4,70×39,42×0,52 m

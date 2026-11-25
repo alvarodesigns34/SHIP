@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Engine, Mode, Snapshot, WAYPOINTS, Quality } from './engine/Engine';
-import type { PartNode } from './engine/ship/ShipModel';
+import type { PartNode, ExplodePreset } from './engine/ship/ShipModel';
 import { MISSIONS } from './engine/Missions';
 import { NEED_LABEL, type NeedId } from './engine/sim/Crew';
 import { ACTION_LABELS, Action, DEFAULT_BINDINGS } from './engine/Input';
@@ -204,6 +204,8 @@ function FlightHUD({ s, eng, onArm }: { s: Snapshot; eng: Engine; onArm: () => v
       <div className="hud-right">
         <div className="hud-block">
           <p className="eyebrow">{s.body} · {fmt(s.altKm, 0)} km</p>
+          <p className="mono small">V<sub>orb</sub> {fmt(s.orbit.vOrbKmS, 2)} km/s · T {fmt(s.orbit.periodMin, 1)} min</p>
+          <p className="mono small muted">APO {fmt(s.orbit.apogeeKm, 0)} · PER {fmt(s.orbit.perigeeKm, 0)} km · INC {fmt(s.orbit.inclinationDeg, 1)}°</p>
           {s.targets.map((t) => <p key={t.label} className="mono small">{t.label}: {t.range < 1000 ? `${fmt(t.range, 0)} m` : `${fmt(t.range / 1000, 2)} km`} <span className="muted">{t.rate >= 0 ? '↘' : '↗'} {fmt(Math.abs(t.rate), 2)}</span></p>)}
         </div>
         {s.dock && s.dock.range < 60 && (
@@ -269,8 +271,17 @@ function InteriorHUD({ s, eng }: { s: Snapshot; eng: Engine }) {
       {s.fade > 0.01 && <div className="sleep-fade" style={{ opacity: s.fade }}><span className="mono">{s.crew.clock}</span></div>}
       {s.prompt && <div className="prompt">{!s.activity && <kbd>G</kbd>} {s.prompt}{s.holdProgress > 0 && s.holdProgress < 1 && <span className="hold"><i style={{ width: `${s.holdProgress * 100}%` }} /></span>}</div>}
       <div className="hud-left">
-        <div className="hud-block crew-block">
-          <p className="eyebrow">Tripulante · {s.crew.clock}</p>
+        <div className={`hud-block crew-block ${s.crew.freeExplore ? 'free-explore' : ''}`}>
+          <div className="crew-head">
+            <p className="eyebrow">Tripulante · {s.crew.clock}</p>
+            <button
+              className={`btn xs ${s.crew.freeExplore ? 'active' : 'ghost'}`}
+              title="Pausa el desgaste de necesidades fisiológicas para explorar con calma"
+              onClick={() => eng.setFreeExplore(!s.crew.freeExplore)}
+            >
+              {s.crew.freeExplore ? 'Libre ✓' : 'Libre'}
+            </button>
+          </div>
           {needs.map(([k, v]) => (
             <div key={k} className={'need' + (v < 25 ? ' low' : '')}>
               <span className="small">{NEED_LABEL[k]}</span>
@@ -499,16 +510,24 @@ function Engineering({ eng, s, sel }: { eng: Engine; s: Snapshot; sel: PartNode 
           <label className="chk"><input type="checkbox" checked={eng.labels} onChange={(e) => { eng.labels = e.target.checked; re(); }} /> Etiquetas</label>
         </div>
         {tool === 'explode' && (
-          <div className="tool explode-tool">
-            <div className="readout"><span className="big mono">{String(Math.round(s.explode * 100)).padStart(3, ' ')}<small>%</small></span><span className="stage">{stage[1]}</span></div>
-            <div className="slider-wrap">
-              <input type="range" min={0} max={1} step={0.001} value={s.explode} aria-label="Vista explosionada" onChange={(e) => eng.setExplode(parseFloat(e.target.value))} style={{ ['--p' as any]: s.explode }} />
-              <div className="ticks">{stages.map(([at, t]) => <button key={at} style={{ left: `${at * 100}%` }} className={s.explode >= at - 0.001 ? 'past' : ''} onClick={() => eng.setExplode(at, true)}><i /><span>{Math.round(at * 100)}<em> · {t}</em></span></button>)}</div>
+          <div className="explode-wrap">
+            <div className="tool explode-tool">
+              <div className="readout"><span className="big mono">{String(Math.round(s.explode * 100)).padStart(3, ' ')}<small>%</small></span><span className="stage">{stage[1]}</span></div>
+              <div className="slider-wrap">
+                <input type="range" min={0} max={1} step={0.001} value={s.explode} aria-label="Vista explosionada" onChange={(e) => eng.setExplode(parseFloat(e.target.value))} style={{ ['--p' as any]: s.explode }} />
+                <div className="ticks">{stages.map(([at, t]) => <button key={at} style={{ left: `${at * 100}%` }} className={s.explode >= at - 0.001 ? 'past' : ''} onClick={() => eng.setExplode(at, true)}><i /><span>{Math.round(at * 100)}<em> · {t}</em></span></button>)}</div>
+              </div>
+              <div className="btns">
+                <button className="btn" onClick={() => eng.setExplode(s.explode < 0.5 ? 1 : 0, true)}>{s.explode < 0.5 ? 'Explosionar' : 'Ensamblar'}</button>
+                <button className="btn" onClick={() => eng.assemble()}>Animar ensamblaje</button>
+                <button className="btn ghost" onClick={() => { eng.setExplodePreset('all'); eng.setExplode(0, true); m.showAll(); eng.select(null); m.setXray(false); eng.setSection(false); eng.viewPreset('iso'); re(); }}>Restablecer</button>
+              </div>
             </div>
-            <div className="btns">
-              <button className="btn" onClick={() => eng.setExplode(s.explode < 0.5 ? 1 : 0, true)}>{s.explode < 0.5 ? 'Explosionar' : 'Ensamblar'}</button>
-              <button className="btn" onClick={() => eng.assemble()}>Animar ensamblaje</button>
-              <button className="btn ghost" onClick={() => { eng.setExplode(0, true); m.showAll(); eng.select(null); m.setXray(false); eng.setSection(false); eng.viewPreset('iso'); re(); }}>Restablecer</button>
+            <div className="explode-presets">
+              <span className="eyebrow">Subsistema</span>
+              {([['all', 'Completa'], ['hull', 'Casco MMOD'], ['interior', 'Interior'], ['service', 'Servicio'], ['power', 'Potencia']] as [ExplodePreset, string][]).map(([id, l]) => (
+                <button key={id} className={`btn xs ${s.explodePreset === id ? 'active' : 'ghost'}`} onClick={() => { eng.setExplodePreset(id); re(); }}>{l}</button>
+              ))}
             </div>
           </div>
         )}

@@ -1,17 +1,28 @@
 /**
- * Audio procedural (WebAudio). No hay muestras grabadas: todo se sintetiza,
- * así que no existen bucles audibles. Modo «realista»: en el vacío solo se oye
- * lo que se transmite por la estructura o por el traje. Modo «cinematográfico»:
- * se añaden efectos exteriores estilizados.
+ * ALCIÓN HX-4 — PROJECT SINGULARITY
+ * Audio procedural espacializado por compartimento (WebAudio).
+ *
+ * Acústica diferenciada:
+ *  - Cabina: zumbido sutil de aviónica + ventilación neutra
+ *  - Laboratorio: flujo HEPA limpio + compresor criogénico Stirling suave (−80 °C)
+ *  - Habitáculos: amortiguación acústica cálida (ventilación atenuada a 0,45×)
+ *  - Servicios/Cocina: circulación ECLSS + ligera resonancia de bombas
+ *  - Nodo/Cúpula: cavidad metálica silenciosa
+ *  - Esclusa: cámara estanca + silbido progresivo durante despresurización/represurización
+ *  - EVA: ventilador del traje PLSS y respiración rítmica amortiguada
  */
 export type SoundMode = 'realista' | 'cinematico';
+export type AcousticZone = 'cockpit' | 'lab' | 'quarters' | 'services' | 'node' | 'airlock' | 'eva' | 'space';
 
 export class Audio {
   ctx: AudioContext | null = null;
   master!: GainNode;
   private ambient!: GainNode;
   private fanGain!: GainNode;
+  private fanFilter!: BiquadFilterNode;
   private humGain!: GainNode;
+  private cryoGain!: GainNode;
+  private airlockHissGain!: GainNode;
   private engineGain!: GainNode;
   private engineFilter!: BiquadFilterNode;
   private servoGain!: GainNode;
@@ -20,11 +31,10 @@ export class Audio {
   private noiseBuf!: AudioBuffer;
   mode: SoundMode = 'realista';
   volume = 0.7;
-  /** contexto acústico actual */
   inside = true;
   inSuit = false;
+  zone: AcousticZone = 'space';
 
-  /** Debe llamarse tras un gesto del usuario. */
   start() {
     if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume(); return; }
     const AC = (window.AudioContext || (window as any).webkitAudioContext) as typeof AudioContext | undefined;
@@ -35,41 +45,59 @@ export class Audio {
     const comp = ctx.createDynamicsCompressor();
     comp.threshold.value = -14; comp.ratio.value = 4;
     this.master.connect(comp).connect(ctx.destination);
-    // ruido marrón (10 s, con variación lenta para evitar periodicidad perceptible)
+
     const len = ctx.sampleRate * 10;
     this.noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
     const d = this.noiseBuf.getChannelData(0);
     let last = 0;
     for (let i = 0; i < len; i++) { const w = Math.random() * 2 - 1; last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
     this.ambient = ctx.createGain(); this.ambient.gain.value = 1; this.ambient.connect(this.master);
-    // ventilación: ruido filtrado con modulación lenta (dos capas desfasadas)
+
+    // Ventilación de cabina con filtro dinámico por compartimento
     this.fanGain = ctx.createGain(); this.fanGain.gain.value = 0;
-    for (const [rate, f] of [[1, 420], [0.83, 900]] as const) {
+    this.fanFilter = ctx.createBiquadFilter(); this.fanFilter.type = 'lowpass'; this.fanFilter.frequency.value = 1800;
+    for (const [rate, f] of [[1, 420], [0.83, 920]] as const) {
       const src = ctx.createBufferSource(); src.buffer = this.noiseBuf; src.loop = true; src.playbackRate.value = rate;
-      const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = f; bp.Q.value = 0.5;
-      const lfo = ctx.createOscillator(); lfo.frequency.value = 0.07 * rate; const lg = ctx.createGain(); lg.gain.value = f * 0.15;
+      const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = f; bp.Q.value = 0.55;
+      const lfo = ctx.createOscillator(); lfo.frequency.value = 0.07 * rate; const lg = ctx.createGain(); lg.gain.value = f * 0.14;
       lfo.connect(lg).connect(bp.frequency); lfo.start();
-      src.connect(bp).connect(this.fanGain); src.start(0, Math.random() * 9);
+      src.connect(bp).connect(this.fanFilter); src.start(0, Math.random() * 9);
     }
-    this.fanGain.connect(this.ambient);
-    // zumbido eléctrico muy tenue (60/120 Hz)
+    this.fanFilter.connect(this.fanGain).connect(this.ambient);
+
+    // Zumbido eléctrico de aviónica (60/120/180 Hz)
     this.humGain = ctx.createGain(); this.humGain.gain.value = 0;
     for (const f of [60, 120, 180]) {
-      const o = ctx.createOscillator(); o.frequency.value = f; const g = ctx.createGain(); g.gain.value = f === 120 ? 0.012 : 0.006;
+      const o = ctx.createOscillator(); o.frequency.value = f; const g = ctx.createGain(); g.gain.value = f === 120 ? 0.011 : 0.005;
       o.connect(g).connect(this.humGain); o.start();
     }
     this.humGain.connect(this.ambient);
-    // motor / propulsión (rumor estructural)
+
+    // Compresor criogénico Stirling suave del laboratorio (−80 °C)
+    this.cryoGain = ctx.createGain(); this.cryoGain.gain.value = 0;
+    const cryoOsc = ctx.createOscillator(); cryoOsc.type = 'triangle'; cryoOsc.frequency.value = 84;
+    const cryoLp = ctx.createBiquadFilter(); cryoLp.type = 'lowpass'; cryoLp.frequency.value = 210;
+    cryoOsc.connect(cryoLp).connect(this.cryoGain).connect(this.ambient); cryoOsc.start();
+
+    // Silbido de presurización / despresurización de esclusa
+    this.airlockHissGain = ctx.createGain(); this.airlockHissGain.gain.value = 0;
+    const hs = ctx.createBufferSource(); hs.buffer = this.noiseBuf; hs.loop = true; hs.playbackRate.value = 2.2;
+    const hbp = ctx.createBiquadFilter(); hbp.type = 'bandpass'; hbp.frequency.value = 2200; hbp.Q.value = 1.4;
+    hs.connect(hbp).connect(this.airlockHissGain).connect(this.master); hs.start();
+
+    // Propulsión (vibración estructural)
     this.engineGain = ctx.createGain(); this.engineGain.gain.value = 0;
     this.engineFilter = ctx.createBiquadFilter(); this.engineFilter.type = 'lowpass'; this.engineFilter.frequency.value = 160;
     const es = ctx.createBufferSource(); es.buffer = this.noiseBuf; es.loop = true; es.playbackRate.value = 0.6;
     es.connect(this.engineFilter).connect(this.engineGain).connect(this.master); es.start();
-    // servomotores (mecanismos)
+
+    // Servomotores
     this.servoGain = ctx.createGain(); this.servoGain.gain.value = 0;
     this.servoOsc = ctx.createOscillator(); this.servoOsc.type = 'sawtooth'; this.servoOsc.frequency.value = 180;
     const sf = ctx.createBiquadFilter(); sf.type = 'bandpass'; sf.frequency.value = 700; sf.Q.value = 2;
     this.servoOsc.connect(sf).connect(this.servoGain).connect(this.master); this.servoOsc.start();
-    // traje EVA: ventilador del traje y respiración suave
+
+    // Traje EVA: ventilador del PLSS y respiración rítmica
     this.suitGain = ctx.createGain(); this.suitGain.gain.value = 0;
     const ss = ctx.createBufferSource(); ss.buffer = this.noiseBuf; ss.loop = true; ss.playbackRate.value = 1.4;
     const sh = ctx.createBiquadFilter(); sh.type = 'highpass'; sh.frequency.value = 1500;
@@ -81,23 +109,41 @@ export class Audio {
 
   setVolume(v: number) { this.volume = v; if (this.ctx) this.master.gain.setTargetAtTime(v, this.ctx.currentTime, 0.1); }
 
-  /** Actualización continua: niveles de ambiente según contexto y estado de la nave. */
-  update(p: { fans: number; power: number; thrust: number; mech: number; inside: boolean; suit: boolean }) {
+  update(p: { fans: number; power: number; thrust: number; mech: number; inside: boolean; suit: boolean; zone?: AcousticZone; airlockCycling?: boolean }) {
     const c = this.ctx;
     if (!c) return;
     const t = c.currentTime;
     this.inside = p.inside; this.inSuit = p.suit;
+    const z: AcousticZone = p.zone ?? (p.suit ? 'eva' : p.inside ? 'cockpit' : 'space');
+    this.zone = z;
+
+    // Perfil acústico específico de cada compartimento!
+    const profile: Record<AcousticZone, { fan: number; lpf: number; hum: number; cryo: number }> = {
+      cockpit: { fan: 0.085, lpf: 1900, hum: 0.62, cryo: 0.002 },
+      lab: { fan: 0.11, lpf: 2400, hum: 0.48, cryo: 0.016 },
+      quarters: { fan: 0.042, lpf: 780, hum: 0.25, cryo: 0.004 }, // acolchado acústico tranquilo
+      services: { fan: 0.125, lpf: 1550, hum: 0.52, cryo: 0.008 },
+      node: { fan: 0.060, lpf: 1300, hum: 0.30, cryo: 0.0 },
+      airlock: { fan: 0.050, lpf: 1100, hum: 0.22, cryo: 0.0 },
+      eva: { fan: 0.0, lpf: 900, hum: 0.0, cryo: 0.0 },
+      space: { fan: 0.0, lpf: 900, hum: 0.0, cryo: 0.0 },
+    };
+    const pr = profile[z];
     const interior = p.inside ? 1 : 0;
-    this.fanGain.gain.setTargetAtTime(0.09 * p.fans * interior, t, 0.4);
-    this.humGain.gain.setTargetAtTime(0.5 * p.power * interior, t, 0.4);
-    // la propulsión solo se oye dentro (vibración estructural) o en modo cinematográfico
+
+    this.fanGain.gain.setTargetAtTime(pr.fan * p.fans * interior, t, 0.45);
+    this.fanFilter.frequency.setTargetAtTime(pr.lpf, t, 0.45);
+    this.humGain.gain.setTargetAtTime(pr.hum * p.power * interior, t, 0.45);
+    this.cryoGain.gain.setTargetAtTime(pr.cryo * p.power * interior, t, 0.5);
+    this.airlockHissGain.gain.setTargetAtTime(p.airlockCycling && (p.inside || p.suit) ? 0.11 : 0, t, 0.25);
+
     const eng = p.thrust * (p.inside ? 0.5 : this.mode === 'cinematico' ? 0.35 : 0);
     this.engineGain.gain.setTargetAtTime(eng, t, 0.15);
     this.engineFilter.frequency.setTargetAtTime(120 + 260 * p.thrust, t, 0.2);
     const servo = p.mech * (p.inside || p.suit || this.mode === 'cinematico' ? 0.035 : 0);
     this.servoGain.gain.setTargetAtTime(servo, t, 0.08);
     this.servoOsc.frequency.setTargetAtTime(150 + 90 * p.mech, t, 0.2);
-    this.suitGain.gain.setTargetAtTime(p.suit ? 0.05 : 0, t, 0.5);
+    this.suitGain.gain.setTargetAtTime(p.suit ? 0.055 : 0, t, 0.5);
   }
 
   private env(g: GainNode, a: number, peak: number, dcy: number) {
@@ -118,7 +164,6 @@ export class Audio {
     const g = c.createGain(); s.connect(f).connect(g).connect(this.master); this.env(g, 0.002, 0.5, 0.05); s.start(0, Math.random() * 5); s.stop(c.currentTime + 0.1);
   }
 
-  /** Pisada sobre panel de cubierta: golpe sordo + chasquido filtrado del panel. */
   footstep(strength = 0.5) {
     const c = this.ctx; if (!c) return;
     const t = c.currentTime;
@@ -129,7 +174,6 @@ export class Audio {
     const g2 = c.createGain(); s.connect(f).connect(g2).connect(this.master); this.env(g2, 0.002, 0.12 * strength, 0.07); s.start(t, Math.random() * 4); s.stop(t + 0.15);
   }
 
-  /** Bucle breve de actividad (agua, calentador, pedaleo…): ruido filtrado durante `dur` s. */
   activity(kind: 'water' | 'heat' | 'exercise' | 'zip' | 'wipe', dur = 1) {
     const c = this.ctx; if (!c) return;
     const t = c.currentTime;
@@ -162,7 +206,6 @@ export class Audio {
     });
   }
 
-  /** Tono de comunicaciones (bip de apertura/cierre del circuito de voz) y voz sintética opcional. */
   comms(text?: string) {
     const c = this.ctx; if (!c) return;
     const o = c.createOscillator(); o.frequency.value = 2525; const g = c.createGain();

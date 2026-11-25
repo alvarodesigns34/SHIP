@@ -1,0 +1,101 @@
+{
+  "model": {
+    "parts": 779,
+    "triangles": 826266,
+    "vertices": 452565,
+    "length_m": 19.58,
+    "span_m": 39.42,
+    "height_m": 15.5,
+    "bbox_min": [
+      -6.35,
+      -19.71,
+      -7.75
+    ],
+    "bbox_max": [
+      13.23,
+      19.71,
+      7.75
+    ]
+  },
+  "volumes_m3": {
+    "hab_cylinder": 106.68,
+    "aft_dome": 5.2,
+    "fwd_cone": 10.03,
+    "fwd_node": 12.4,
+    "cupola": 0.97,
+    "airlock": 5.45,
+    "pressurized_gross": 140.74,
+    "habitable_net_est": 53.66,
+    "nhv_per_crew_4": 13.42
+  },
+  "clearances": {
+    "interior_max_radius_m": 2.2144,
+    "interior_max_obj": "HAB.INT.C.CQ3.WTR",
+    "hull_outer_radius_m": 2.1,
+    "protrusions_count": 35,
+    "protrusions_sample": [
+      {
+        "obj": "HAB.INT.A.CL1.BDY",
+        "r_m": 2.1522
+      },
+      {
+        "obj": "HAB.INT.A.CL2.BDY",
+        "r_m": 2.1522
+      },
+      {
+        "obj": "HAB.INT.A.DK1.BDY",
+        "r_m": 2.1522
+      },
+      {
+        "obj": "HAB.INT.A.DK2.BDY",
+        "r_m": 2.1522
+      },
+      {
+        "obj": "HAB.INT.A.P2.BDY",
+        "r_m": 2.1522
+      },
+      {
+        "obj": "HAB.INT.A.PW.BDY",
+        "r_m": 2.1522
+      },
+      {
+        "obj": "HAB.INT.A.S2.BDY",
+        "r_m": 2.1522
+      },
+      {
+        "obj": "HAB.INT.A.SW.BDY",
+        "r_m": 2.1522
+      }
+    ],
+    "cupola_zenith_blocked": false,
+    "cupola_zenith_hit": null,
+    "nadir_w1_blocked": false,
+    "nadir_w1_hit": null,
+    "nadir_w2_blocked": false,
+    "nadir_w2_hit": null,
+    "aisle_centerline_hit": null
+  },
+  "power_thermal": {
+    "solar_active_area_m2": 131.9,
+    "power_bol_kw": 46.6,
+    "power_eol_5y_kw": 40.08,
+    "radiator_emissive_area_m2": 80.31,
+    "thermal_reject_deep_space_kw": 28.35,
+    "thermal_reject_leo_sun_kw": 13.91,
+    "thermal_reject_leo_eclipse_kw": 23.12
+  },
+  "propulsion": {
+    "biprop_tanks_vol_m3": 2.35,
+    "biprop_mass_est_kg": 2464.2,
+    "xenon_tank_vol_m3": 1.741,
+    "xenon_mass_est_kg": 2175.5,
+    "dry_mass_hypothesis_kg": 14800.0,
+    "wet_mass_est_kg": 19439.7,
+    "dv_chemical_ms": 418.7,
+    "dv_sep_ms": 2488.1
+  },
+  "radiation": {
+    "bay_c_shelter_areal_g_cm2": 22.2,
+    "nasa_spe_target_g_cm2": 20.0
+  }
+}

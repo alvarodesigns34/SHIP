@@ -1,75 +1,42 @@
-# Informe final de validación y limitaciones — ALCIÓN HX-4
+# Informe de Validación y Limitaciones — ALCIÓN HX-4 (Project Singularity)
 
-Este informe dice **qué se ha comprobado de verdad**, cómo se ha comprobado y **qué no está validado**. No se afirma en ningún momento que el vehículo pueda volar.
+Este informe detalla **exactamente qué se ha verificado**, con qué herramientas y **qué limitaciones persisten**. ALCIÓN HX-4 es un vehículo conceptual y simulador interactivo; **no** es un diseño calificado para vuelo.
 
-## 1. Comprobaciones realizadas
+---
 
-### 1.1 Modelo maestro (Blender 4.2.3, `blender/build.py`)
+## 1. Comprobaciones Verificadas
+
+### 1.1 Modelo maestro 3D (`blender/ALCION_HX4_master.blend`, Blender 4.0.2)
 | Comprobación | Método | Resultado |
 |---|---|---|
-| El modelo se construye de forma determinista | Ejecución repetida de `build.py` en modo headless | 681 piezas, 130 grupos, 1.787 tornillos (por instancia) y ≈ 544 k triángulos en ≈ 10 s |
-| Jerarquía coherente | Volcado a `docs/inventario.json` y poda automática de grupos vacíos | 5 niveles (nave → módulo → sistema → conjunto → pieza), 811 nodos |
-| Interior compatible con el casco | Trasera poligonal de los bastidores comparada con el radio libre de 2,035 m; inspección en secciones | Esquinas a ≤ 2,03 m; ningún bastidor atraviesa el isogrid en las secciones BP-06 y BP-07 |
-| Aberturas reales | Booleanas exactas: cúpula en el barril y las mantas del nodo; ventanas de nadir en piel, isogrid, MLI y panel MMOD | Visibles en las secciones y en los renders interiores |
-| Coherencia de capacidades | Volumen de los depósitos modelados → masa de propulsante | Corregida una incoherencia detectada en una iteración (4,6 → 2,4 t de bipropelente) |
-| Inspección visual | Renders Workbench de inspección y Cycles de prueba, revisados en cada iteración | Defectos encontrados y corregidos (ver §2) |
+| Construcción determinista | `blender -b --python blender/build.py` + `blender/bake_lightmaps.py` | **779 piezas**, **144 grupos** (5 niveles, 923 nodos), **1.855 tornillos**, **840.926 triángulos**, **64 materiales** (`docs/stats.json`) |
+| Auditoría de ingeniería conceptual | `blender -b blender/ALCION_HX4_master.blend --python blender/validate_engineering.py` | Envolvente `19,58 × 39,42 × 15,50 m`, volumen presurizado `140,7 m³`, NHV estimado `53,7 m³` (`13,4 m³/trip.`), solar `131,9 m²` (`46,6 kW` BOL), radiadores `80,3 m²` (`13,9 kW` LEO sol / `28,4 kW` espacio profundo), biprop `2,35 m³` (`Δv ≈ 419 m/s`), Xe `1,74 m³` (`Δv ≈ 2,49 km/s`). Ver [`docs/INGENIERIA_CONCEPTUAL.md`](INGENIERIA_CONCEPTUAL.md) |
+| Aberturas ópticas reales | Raycasts en Blender + raycasts en Three.js (`functional.cjs` pruebas 12 y 13) | Cúpula `W7` **100 % despejada** (anillos forjados huecos), ventanas nadir `W1` (`X=5,25 m`) y `W2` (`X=6,20 m`) **100 % despejadas** |
+| Horneado GI + Contact AO | `blender/bake_lightmaps.py` (Cycles DIFFUSE 3 rebotes + AO + dilatación 10 px + KTX2) | `lm_interior.png` (2,3 MiB) + `lm_interior.ktx2` (1,9 MiB, validado con `ktx validate`), 100 % de las `1.520` primitivas interiores con `TEXCOORD_1` |
+| Manos anatómicas riggeadas | `blender/build_hands.py` sobre WebXR MIT (`left.glb`/`right.glb`) | `hands_fp.glb` (911 KiB): 25 huesos reales por mano, malla anatómica + guante EVA inflado sobre el mismo esqueleto + 4 accesorios 3D |
+| Optimización glTF | `node web/scripts/optimize-model.mjs` (quantize + meshopt) | `alcion_hx4_exterior.glb` **3,99 MiB**, `alcion_hx4_interior.glb` **4,95 MiB** |
 
-### 1.2 Planos
-- Son proyecciones ortográficas del mismo `.blend`, y las secciones usan el plano de recorte de la cámara. **Las láminas no pueden discrepar de la geometría.**
-- Las cotas (19,58 m de longitud, 39,42 m de envergadura, 15,50 m de altura con radiadores, Ø4,52 m) se calculan con puntos proyectados del modelo y constantes de `spec.py`.
+### 1.2 Planos e Inventario (Sincronización Byte a Byte)
+- 10 láminas ortográficas regeneradas desde el modelo maestro (`blueprints/front.png` … `assembly.png`, `REV C · SINGULARITY`), revisadas visualmente (`BP-02`, `BP-06`, `BP-08`) confirmando eliminación de solapes con el brazo robótico y líneas de llamada.
+- `python3 scripts/sync_all.py`: **12 / 12 archivos** (`inventario.json`, `inventario.csv` y 10 planos PNG) verificados **idénticos byte a byte por SHA-256** entre `docs/`/`blueprints/` y `web/public/`.
 
-### 1.3 Aplicación web
+### 1.3 Aplicación Web (`web/`, React + TypeScript + Three.js + Playwright)
 | Comprobación | Método | Resultado |
 |---|---|---|
-| Compilación | `tsc -b` + `vite build` | Sin errores de tipos |
-| Funcionamiento | Playwright + Chromium headless (WebGL por software SwiftShader): carga, introducción, explosión al 100 %, selección, interior, presentación, planos, ficha técnica, sección, rayos X y móvil (iPhone 13) | Sin errores de página; capturas revisadas una a una |
-| Carga progresiva | Exterior inmediato (2,81 MB) e interior diferido (1,27 MB) | El interior se injerta en `HAB`/`FWD` sin duplicar nodos |
-| Compresión | gltf-transform: dedup, prune, reorder, cuantización y EXT_meshopt_compression | 13,1 MB → 4,1 MB, sin perder nodos ni metadatos |
-| Coste de dibujado | `renderer.info` con calidad alta, nave completa | ≈ 3.100–3.500 llamadas de dibujo y ≈ 1,0–1,1 M triángulos por fotograma (incluye la pasada de sombras) |
+| Compilación | `npm run build` (`tsc -b && vite build`) | **0 errores de TypeScript**, bundle en ~6 s |
+| Batería estricta (22 pruebas) | `node web/tests/functional.cjs` (sale con código 1 ante cualquier fallo, error de consola o HTTP ≥ 400) | **22 / 22 PASS · 0 fallos · 0 page/console errors · 0 errores HTTP (404)** |
+| Eficiencia de draw calls | `renderer.info` en `BatchedMesh` | **108 lotes** para **2.730 instancias** (`107–165` llamadas en calidad baja/exterior, `~306–496` con sombras + N8AO + cámaras MFD en calidad alta) |
+| Persistencia v3 real | Prueba 21: guarda `lunar`, `LT_B = false`, `freeExplore = true` → **`page.reload()` completo** → verifica restauración | **PASS** (corregido en el bucle de pruebas un bug real donde el arranque sobrescribía `localStorage` antes de `restore()`) |
+| Inspección visual antes/después | 15 vistas fijas `1280×760` (`docs/singularity_baseline/` vs `docs/singularity_after/`), inspeccionadas visualmente una por una | Todos los defectos detectados (cúpula tapiada, isogrid en nadir, pantalla auxiliar invertida, banda marrón atmosférica, accesorios de mano derecha visibles, cinemática plana WebXR) corregidos y verificados |
+| Móvil responsivo | Prueba 22 en viewport `390×844` (Interior + Ingeniería) | **0 px** de desbordamiento horizontal |
 
-> **FPS no medidos de forma representativa.** El entorno de pruebas no tiene GPU y SwiftShader rasteriza en CPU, así que no hay cifra fiable de fotogramas por segundo. El visor reduce la carga con renderizado bajo demanda, descarte de piezas por debajo de 1 px y niveles de calidad (en móvil arranca en «baja», sin sombras ni oclusión ambiental). El rendimiento en hardware real debe medirse con el indicador de la esquina superior derecha.
+---
 
-## 2. Defectos detectados y corregidos en el bucle iterativo
-1. Contraventanas de la cúpula apoyadas sobre la manta, poco creíbles → rediseñadas como aleros sobre bisagra superior.
-2. Mesa de la cocina paralela a la pared, flotando → desplegada en perpendicular con tirantes.
-3. Mundo de Cycles con fondo azul por un rango de gradiente invertido → corregido; el albedo lunar solo ilumina, no se ve.
-4. Células solares que parecían plateadas: junta del ladrillo procedural demasiado ancha → junta de 1,5 ‰.
-5. MLI con aspecto de corcho en la web → mapa de normales de menor frecuencia e intensidad.
-6. Texto de las serigrafías invertido en babor → regla de orientación por semiespacio.
-7. Normal de los paneles cónicos mal calculada → producto vectorial sobre las aristas reales.
-8. Cámaras y LIDAR de atraque dentro del barril del nodo → reubicados sobre el mamparo de proa.
-9. Lámina de distribución interior girada 90° → vector «arriba» de cámara corregido.
-10. Llamadas de grupos simétricos (alas, radiadores) apuntando al eje → dirigidas a un ala concreta.
-11. Tras salir de la Presentación, la explosión quedaba aplicada sin reflejarse en la interfaz → estado sincronizado al desmontar.
-12. En móvil, el árbol se pintaba aunque estuviera cerrado y las pestañas se desbordaban → reglas CSS específicas.
-13. Biselado que duplicaba los triángulos al biselar también la tornillería → limitado a piezas estructurales (925 k → 541 k triángulos; 544 k tras dividir los asientos en subpiezas).
-14. Errata «Cúpola» → «Cúpula».
+## 2. Limitaciones Conocidas y Honestidad Técnica
 
-## 3. Limitaciones conocidas
-
-### Ingeniería
-- **Sin validación de ingeniería:** no hay análisis estructural (cargas de lanzamiento y de atraque), térmico, de dosis de radiación, de trayectorias ni de fiabilidad. Masas, Δv, potencia y rechazo térmico son **estimaciones de orden de magnitud**.
-- **Volumen habitable neto** de ≈ 14 m³ por tripulante, por debajo de la recomendación HRP de 25 m³ para misiones largas. Solo se justifica para salidas de ≤ 45 días.
-- **Esclusa EVA** (añadida en Beyond Orbit): es conceptual, con un volumen mínimo para un tripulante con traje. No se han dimensionado la bomba de recuperación de aire ni los consumibles.
-- El conjunto **lanzamiento/carenado** no se ha estudiado: el casco de Ø4,52 m sobre el escudo cabría en carenados de 5 m, pero las alas, radiadores y brazos solo se representan desplegados.
-- Las cotas del isogrid, de las fijaciones y de los espesores son **ilustrativas**, no dimensionadas.
-
-### Modelo y visualización
-- Las piezas repetidas (tornillería, pestañas, tubos de radiador) forman parte de la malla de su conjunto. Se pueden inspeccionar **como conjunto**, no tornillo a tornillo; separarlas multiplicaría por 3 las llamadas de dibujo.
-- No se modelan las rutas internas de cableado dentro de cada bastidor ni los mazos dentro del módulo de servicio más allá de los troncales.
-- **Materiales web:** el microdetalle se reconstruye con texturas procedurales del navegador. Es más simple que los materiales Cycles del modelo maestro.
-- La **sección** web dibuja tapas rayadas con las caras traseras. No es una tapa geométrica cerrada, así que en piezas abiertas la trama puede verse incompleta.
-- El brazo robótico tiene FK e IK (CCD) sin dinámica ni límites de par.
-- La iluminación interior web combina luces rectangulares (sin sombras) con focos que proyectan sombra, limitados a los 2 más cercanos. La iluminación global solo está en los renders Cycles.
-- **Renders:** Cycles en CPU, 96 muestras más desenfoque de ruido OpenImageDenoise. Con GPU y más muestras se ganaría nitidez en reflejos y zonas oscuras.
-
-### Simulación interactiva (Beyond Orbit)
-- **Caminar con 1 g** es una licencia de jugabilidad, presentada como gravedad de entrenamiento (maqueta en tierra). La nave real estaría en microgravedad, que es el modo **flotar**.
-- **Colisiones a pie** aproximadas con cajas de piezas y una función analítica del casco. En zonas con equipos de forma irregular el contacto no es exacto. El cicloergómetro bloquea el centro del pasillo de popa, como en el modelo, y se rodea por el lado de estribor.
-- **Necesidades del tripulante:** los ritmos son órdenes de magnitud plausibles, no un modelo fisiológico validado. Dormir avanza 8 h de reloj de misión sin simular la nave durante ese tiempo.
-- **Sin cuerpo visible:** el tripulante no tiene brazos ni piernas renderizados. Las actividades se representan con sonido, texto, progreso y efectos en el simulador, sin animación de personaje.
-- **Rendimiento en GPU real no medido:** ver `docs/RENDIMIENTO.md`. Todas las capturas y pruebas se hicieron con WebGL por CPU (SwiftShader).
-- **Resultados de la batería Playwright** (`func.js`, 15 comprobaciones): todas PASS en la última ejecución, sin errores de página.
-
-## 4. Conclusión
-Los entregables son reproducibles desde código y mutuamente coherentes: modelo, GLB, planos, inventario y web salen de la misma fuente (`spec.py` → `build.py`). La nave es un **concepto internamente consistente y verosímil**, apoyado en principios publicados (IDSS, ECLSS, Whipple relleno, MLI, SEP, refugio de agua). Sus cifras de rendimiento son hipótesis que una fase de ingeniería tendría que validar o corregir.
+1. **Rendimiento en GPU real no medido:** esta máquina virtual ejecuta Chromium headless sobre **SwiftShader (CPU)** sin GPU acelerada por hardware. Las capturas son visualmente fieles al render WebGL real, pero los FPS reportados en SwiftShader (`0–1 fps`, `ms` en segundos) **no representan el rendimiento en una GPU real** (el cual debe verificarse en dispositivo real con el contador del HUD).
+2. **Ingeniería conceptual no certificada:** no existen cálculos FEM estructurales, CFD, análisis térmico orbital transitorio ni simulaciones Monte Carlo de radiación (Geant4/OLTARIS).
+3. **Contención radial de bastidores (`HAB.INT.*`):** la auditoría automatizada detectó con transparencia que 35 esquinas traseras de bastidores y tanques de agua alcanzan `r = 2,15–2,21 m` (aún dentro del escudo MMOD `R_S = 2,26 m`, pero sobresaliendo 5–11 cm del casco `R_P = 2,10 m`). En una fase CAD de fabricación se recortaría ese chaflán trasero.
+4. **Rechazo térmico a plena potencia SEP en LEO soleado:** a 290 K los `80,3 m²` de radiadores rechazan `13,9 kW` en LEO soleado (suficiente para cabina/laboratorio ~6–9 kW, pero justo si los 4 propulsores Hall funcionasen a la vez a plena carga en LEO soleado).
+5. **Blender sin OpenImageDenoise en Ubuntu 4.0.2:** el binario del sistema carece de OIDN compilado; el horneado de lightmaps usa filtrado bilateral preservando bordes por islas UV (`bake_lightmaps.py`), y los renders Cycles emplean muestreo adaptativo.
+6. **Abstracciones de simulación:** la locomoción `Caminar` (1 g de entrenamiento), la escala de empuje `×10` por defecto, la mecánica orbital kepleriana sin perturbaciones J2 y la compresión temporal de esclusa/rutinas son decisiones explícitas de jugabilidad y claridad educativa.

@@ -77,17 +77,22 @@ def apply_label_uv(me, cells, flip=False):
 
 
 def labeled_locker_mesh(w, h, cell, flip=False):
-    """Taquilla con etiqueta de inventario legible (celda `cell` del atlas)."""
+    """Taquilla con marco biselado, hueco empotrado de tirador, cierre de leva y etiqueta legible."""
     label_mat()
     mb = MB(f"locker_{w:.2f}_{h:.2f}_L{cell}{'f' if flip else ''}")
     mb.box("M_InteriorPanel", w - 0.012, h - 0.012, 0.022, center=(0, 0, 0.011))
-    mb.box("M_InteriorGrey", w - 0.06, 0.035, 0.012, center=(0, -h / 2 + 0.045, 0.028))  # tirador
-    for x in (-w / 2 + 0.03, w / 2 - 0.03):
-        mb.cyl("M_Steel", 0.008, 0.008, 0.006, 10, center=(x, h / 2 - 0.03, 0.025), axis='Z')
+    # Hueco de tirador anodizado oscuro + barra de tiro mecanizada
+    hy = (-h / 2 + 0.048) * (-1 if flip else 1)
+    mb.box("M_InteriorDark", w - 0.08, 0.044, 0.008, center=(0, hy, 0.024))
+    mb.box("M_AlBare", w - 0.10, 0.014, 0.014, center=(0, hy, 0.031))
+    # Cierres de cuarto de vuelta + pasadores metálicos
+    for x in (-w / 2 + 0.032, w / 2 - 0.032):
+        mb.cyl("M_Steel", 0.009, 0.009, 0.008, 12, center=(x, -hy, 0.025), axis='Z')
+        mb.box("M_InteriorDark", 0.012, 0.003, 0.002, center=(x, -hy, 0.0295))
     lw = min(0.30, w * 0.66)
-    ly = (h / 2 - 0.07) * (-1 if flip else 1)   # siempre en la parte superior vista por el tripulante
+    ly = (h / 2 - 0.07) * (-1 if flip else 1)
     mb.box("M_Label", lw, lw / 4, 0.0012, center=(0.0, ly, 0.0226))
-    me = mb.mesh(smooth=None, bevel=0.003)
+    me = mb.mesh(smooth=None, bevel=0.0035)
     apply_label_uv(me, [cell], flip)
     return me
 
@@ -121,23 +126,10 @@ SIGN = {name: 96 + i for i, name in enumerate([
 
 
 def ctb_mesh(seed, sx, sy, sz):
-    """Bolsa de transferencia de carga: caja blanda con costuras, asas y ventana de etiqueta."""
+    """Bolsa de transferencia de carga esculpida (soft-body acolchada con ribetes y asas)."""
+    from .singularity_geo import build_soft_ctb_mesh
     label_mat()
-    rnd = random.Random(seed)
-    mb = MB(f"ctb_{seed}")
-    mb.box("M_Fabric", sx, sy, sz, center=(0, 0, sz / 2))
-    # costuras/ribetes en las aristas superiores
-    for y in (-sy / 2, sy / 2):
-        mb.box("M_FabricBlue" if seed % 3 == 0 else "M_InteriorDark", sx + 0.004, 0.012, 0.012, center=(0, y, sz))
-    for x in (-sx / 2, sx / 2):
-        mb.box("M_FabricBlue" if seed % 3 == 0 else "M_InteriorDark", 0.012, sy + 0.004, 0.012, center=(x, 0, sz))
-    # asas de cinta
-    for x in (-sx * 0.25, sx * 0.25):
-        mb.tube("M_InteriorDark", [(x, -0.03, sz), (x, -0.02, sz + 0.035), (x, 0.02, sz + 0.035), (x, 0.03, sz)], 0.008, 6)
-    # bolsillo de etiqueta
-    mb.box("M_GlassInner", min(0.2, sx * 0.6) + 0.01, min(0.2, sx * 0.6) / 4 + 0.01, 0.001, center=(0, sy / 2 + 0.0006, sz * 0.55), rot=Matrix.Rotation(math.pi / 2, 4, 'X'))
-    me = mb.mesh(smooth=30, bevel=0.012)
-    return me
+    return build_soft_ctb_mesh(seed, sx, sy, sz)
 
 
 def ctb_label_mesh(seed, sx, sz):

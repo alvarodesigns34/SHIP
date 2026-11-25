@@ -415,20 +415,9 @@ def _engine(parent, code, idx, a):
     p = part(f"{code}.CHB", "Cámara de combustión", mb.mesh(), eg, explode=(-0.1, 0, 0),
              desc="Cámara de aleación de platino-iridio/C-103 con recubrimiento de siliciuro.")
     p.location = (0, y, z)
-    prof_o, prof_i = [], []
-    n = 16
-    for k in range(n + 1):
-        t = k / n
-        x = -4.80 - t * (S.ENGINE_EXIT_X - (-4.80)) * -1
-        r = 0.045 + (0.26 - 0.045) * (1 - (1 - t) ** 1.8)
-        prof_o.append((r + 0.004, x))
-        prof_i.append((r, x))
-    mb = MB(f"{code}_nozzle")
-    lathe_x(mb, "M_Nozzle", prof_o + list(reversed(prof_i)) + [prof_o[0]], 48)
-    lathe_x(mb, "M_NozzleHot", shell_profile(0.049, 0.06, -4.86, -4.80), 32)
-    mb.torus("M_Nozzle", 0.266, 0.006, 48, 6, center=(S.ENGINE_EXIT_X, 0, 0), axis='X')
-    p = part(f"{code}.NOZ", "Tobera de expansión (C-103)", mb.mesh(), eg, explode=(-0.6, 0, 0),
-             desc="Tobera de relación de áreas ~150 en aleación de niobio C-103 con recubrimiento R512E.")
+    from .singularity_geo import build_detailed_nozzle_mesh
+    p = part(f"{code}.NOZ", "Tobera de expansión (C-103)", build_detailed_nozzle_mesh(code, S.ENGINE_EXIT_X, y, z), eg, explode=(-0.6, 0, 0),
+             desc="Tobera de relación de áreas ~150 en aleación de niobio C-103 con refuerzos radiales, recubrimiento R512E y actuadores de cardán.")
     p.location = (0, y, z)
     mb = MB(f"{code}_mount")
     for k in range(3):
@@ -481,14 +470,10 @@ def build_propulsion(root):
         mb.poly("M_MLI_Black", quad, [q + n for q in quad])
     part("PRP.STR.SKT", "Faldón de popa con MLI de alta temperatura", mb.mesh(), st, explode=(-0.2, 0, 0),
          desc="Faldón troncopiramidal cubierto con MLI de Kapton negro y capas de níquel para la radiación de las toberas.")
-    mb = MB("plume_shield")
-    rr = (RC - 0.01) * 0.86
-    pts0 = [oct_corner(i, rr, S.PRP_X1) for i in range(8)]
-    pts1 = [oct_corner(i, rr, S.PRP_X1 - 0.03) for i in range(8)]
-    mb.poly("M_MLI_Black", pts1, pts0)
-    me = boolean_cut(mb.mesh(), [cutter(0.25, 0.3, ring_xyz(S.ENGINE_R, a, S.PRP_X1), axis='X') for a in (PI / 4, 3 * PI / 4, 5 * PI / 4, 7 * PI / 4)])
+    from .singularity_geo import build_aft_heatshield_mesh
+    me = build_aft_heatshield_mesh(RC, S.PRP_X1, S.ENGINE_R)
     part("PRP.STR.PSH", "Escudo térmico de popa", me, st, explode=(-0.5, 0, 0),
-         desc="Cierre de popa con aislamiento de alta temperatura frente a la radiación de las toberas.")
+         desc="Cierre cerámico-metálico segmentado con listones de titanio y collarines de tobera para radiación de alta temperatura.")
     eng = group("PRP.ENG", "Motores bipropelentes principales", prp, explode=(0, 0, 0))
     for i, a in enumerate([PI / 4, 3 * PI / 4, 5 * PI / 4, 7 * PI / 4]):
         _engine(eng, f"PRP.ENG.E{i+1}", i + 1, a)

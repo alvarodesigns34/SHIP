@@ -102,26 +102,9 @@ def build_switch_panel(parent, W, n_world):
 # ---------------------------------------------------------------------------
 
 def suit_mesh(name, seed):
-    """Traje EVA conceptual (estilizado, no réplica de ningún traje real)."""
-    mb = MB(name)
-    # torso rígido y mochila de soporte vital
-    mb.box("M_ShieldWhite", 0.42, 0.30, 0.55, center=(0, 0, 0.0))
-    mb.box("M_BetaCloth", 0.44, 0.20, 0.62, center=(0, -0.22, 0.02))
-    mb.box("M_AlBare", 0.30, 0.04, 0.16, center=(0, 0.16, 0.08))
-    mb.box("M_DecalRed" if seed == 0 else "M_FabricBlue", 0.30, 0.005, 0.03, center=(0, 0.175, -0.02))
-    # casco y visera
-    mb.sphere("M_ShieldWhite", 0.17, 24, 12, center=(0, 0.02, 0.43))
-    mb.sphere("M_MLI_Gold", 0.165, 24, 12, center=(0, 0.06, 0.44), scale=(0.92, 0.7, 0.8))
-    mb.torus("M_AlBare", 0.15, 0.02, 24, 6, center=(0, 0.0, 0.29), axis='Z')
-    # brazos y piernas (segmentos con juntas)
-    for s in (-1, 1):
-        mb.tube("M_BetaCloth", [(s * 0.25, 0, 0.18), (s * 0.34, 0.02, -0.05), (s * 0.36, 0.06, -0.30)], 0.07, 12, round_r=0.06)
-        mb.torus("M_AlBare", 0.075, 0.012, 16, 6, center=(s * 0.25, 0, 0.18), axis='X')
-        mb.sphere("M_Fabric", 0.06, 12, 8, center=(s * 0.36, 0.06, -0.38))
-        mb.tube("M_BetaCloth", [(s * 0.11, 0, -0.30), (s * 0.13, 0.03, -0.70), (s * 0.13, 0.0, -1.05)], 0.085, 12, round_r=0.08)
-        mb.box("M_InteriorDark", 0.11, 0.24, 0.08, center=(s * 0.13, 0.05, -1.10))
-    mb.box("M_AlAnodBlack", 0.18, 0.06, 0.10, center=(0, 0.18, -0.12))  # unidad de control frontal
-    return mb.mesh(smooth=40)
+    """Traje EVA esculpido de alta fidelidad (HUT, DCM, casco con visera dorada, fuelles y PLSS)."""
+    from .singularity_geo import build_eva_suit_mesh
+    return build_eva_suit_mesh(name, seed)
 
 
 def build_airlock(fwd):
@@ -217,14 +200,18 @@ def build_airlock(fwd):
         p = part(f"FWD.ALK.INT.SUIT{nm}", f"Traje EVA {nm}", suit_mesh(f"suit_{nm}", k), ig, explode=("radial", 0.5),
                  desc="Traje EVA conceptual de torso rígido con mochila de soporte vital; representación estilizada.")
         p.matrix_basis = Matrix.Translation((XA + dx, dy, -2.18)) @ Matrix.Rotation(yaw, 4, 'Z') @ Matrix.Diagonal((0.92, 0.92, 0.92, 1))
+    from .singularity_geo import crew_atlas_mat, crew_tile_quad
+    crew_atlas_mat(emissive=False)
     mb = MB("alk_panel")
-    mb.box("M_InteriorGrey", 0.04, 0.42, 0.50, center=(XA + ALK_R - 0.07, 0, -1.85))
-    mb.box("M_InteriorDark", 0.01, 0.30, 0.18, center=(XA + ALK_R - 0.095, 0, -1.75))
+    mb.box("M_InteriorGrey", 0.04, 0.44, 0.56, center=(XA + ALK_R - 0.07, 0, -1.85))
+    mb.box("M_InteriorDark", 0.01, 0.34, 0.24, center=(XA + ALK_R - 0.095, 0, -1.72))
+    mi_pl = mb.mi("M_CrewAtlas")
+    crew_tile_quad(mb.bm, mi_pl, (XA + ALK_R - 0.102, 0, -1.72), (0, -0.32, 0), (0, 0, 0.22), 7)
     for k in range(3):
-        mb.box("M_LEDGreen" if k else "M_LEDRed", 0.006, 0.03, 0.03, center=(XA + ALK_R - 0.095, -0.08 + 0.08 * k, -1.98))
-    mb.cyl("M_DecalRed", 0.04, 0.04, 0.03, 16, center=(XA + ALK_R - 0.1, 0.13, -2.02), axis='X')
+        mb.box("M_LEDGreen" if k else "M_LEDRed", 0.008, 0.032, 0.032, center=(XA + ALK_R - 0.095, -0.08 + 0.08 * k, -1.96))
+    mb.cyl("M_DecalRed", 0.04, 0.04, 0.032, 16, center=(XA + ALK_R - 0.10, 0.13, -2.02), axis='X')
     pp = part("FWD.ALK.INT.PNL", "Panel de control de despresurización", mb.mesh(), ig, explode=(0.3, 0, 0),
-              desc="Panel con manómetro digital, válvulas de despresurización/represurización y luz de estado.")
+              desc="Panel con esquema de procedimiento EVA, manómetro digital, válvulas de despresurización y luz de estado.")
     ctl(pp, "airlock:panel")
     mb = MB("alk_int_rails")
     for k in range(4):
@@ -254,37 +241,54 @@ def cut_node_for_airlock(fwd_objects):
 # ---------------------------------------------------------------------------
 
 def _pouch(rnd):
+    from .singularity_geo import bm_pillow
     mb = MB(f"pouch_{rnd.randint(0, 9999)}")
-    mb.box("M_Teflon", 0.10, 0.16, 0.02, center=(0, 0, 0.01))
-    mb.box(rnd.choice(["M_DecalRed", "M_FabricBlue", "M_Accent", "M_EVAYellow"]), 0.10, 0.04, 0.021, center=(0, 0.04, 0.01))
-    mb.cyl("M_Rubber", 0.004, 0.004, 0.06, 8, center=(0.0, 0.10, 0.012), axis='Y')
-    return mb.mesh(smooth=None)
+    vs = bm_pillow(mb.bm, 0.11, 0.17, 0.032, nx=5, ny=6, nz=3, puff=0.009, roundness=0.58,
+                   wrinkle=0.002, seed=rnd.randint(1, 999), center=(0, 0, 0.016))
+    mb.tag(vs, "M_Teflon")
+    mb.box(rnd.choice(["M_DecalRed", "M_FabricBlue", "M_Accent", "M_EVAYellow"]), 0.095, 0.038, 0.034, center=(0, 0.04, 0.016))
+    mb.cyl("M_FabricBlue", 0.011, 0.011, 0.014, 12, center=(0.0, 0.088, 0.016), axis='Y')
+    mb.cyl("M_ShieldWhite", 0.004, 0.004, 0.068, 10, center=(0.0, 0.125, 0.016), axis='Y')
+    return mb.mesh(smooth=50)
 
 
 def _tablet():
+    from .singularity_geo import crew_atlas_mat, crew_tile_quad
+    crew_atlas_mat(emissive=True)
     mb = MB("tablet")
-    mb.box("M_InteriorDark", 0.25, 0.17, 0.008, center=(0, 0, 0.004))
-    mb.box("M_ScreenAmber", 0.22, 0.14, 0.001, center=(0, 0, 0.0085))
-    mb.box("M_Fabric", 0.04, 0.12, 0.004, center=(-0.14, 0, 0.004))
-    return mb.mesh(smooth=None)
+    mb.box("M_AlAnodBlack", 0.25, 0.17, 0.009, center=(0, 0, 0.0045))
+    mi = mb.mi("M_CrewAtlasEmit")
+    crew_tile_quad(mb.bm, mi, (0, 0, 0.0096), (0.225, 0, 0), (0, 0.145, 0), 3)
+    mb.box("M_FabricBlue", 0.04, 0.12, 0.005, center=(-0.14, 0, 0.0045))
+    return mb.mesh(smooth=35, bevel=0.002)
 
 
 def _laptop():
+    from .singularity_geo import crew_atlas_mat, crew_tile_quad
+    crew_atlas_mat(emissive=True)
     mb = MB("laptop")
-    mb.box("M_InteriorDark", 0.34, 0.24, 0.015, center=(0, 0, 0.0075))
-    mb.box("M_InteriorDark", 0.34, 0.012, 0.23, center=(0, 0.12, 0.12), rot=Matrix.Rotation(-0.25, 4, 'X'))
-    mb.box("M_Screen", 0.31, 0.003, 0.19, center=(0, 0.112, 0.125), rot=Matrix.Rotation(-0.25, 4, 'X'))
-    mb.box("M_InteriorGrey", 0.28, 0.12, 0.002, center=(0, -0.03, 0.016))
-    return mb.mesh(smooth=None)
+    mb.box("M_AlBare", 0.34, 0.24, 0.013, center=(0, 0, 0.0065))
+    mb.box("M_InteriorDark", 0.29, 0.11, 0.003, center=(0, 0.01, 0.014))
+    mb.box("M_InteriorGrey", 0.09, 0.06, 0.002, center=(0, -0.075, 0.0138))
+    Rlid = Matrix.Translation((0, 0.118, 0.115)) @ Matrix.Rotation(-0.25, 4, 'X')
+    mb.box("M_AlBare", 0.34, 0.009, 0.22, center=(0, 0, 0), rot=Rlid)
+    mi = mb.mi("M_CrewAtlasEmit")
+    c = Rlid @ Vector((0, -0.006, 0))
+    u = Rlid.to_3x3() @ Vector((0.31, 0, 0))
+    v = Rlid.to_3x3() @ Vector((0, 0, 0.19))
+    crew_tile_quad(mb.bm, mi, c, u, v, 4)
+    return mb.mesh(smooth=35, bevel=0.002)
 
 
 def _camera():
     mb = MB("dslr")
-    mb.box("M_InteriorDark", 0.14, 0.08, 0.10, center=(0, 0, 0.05))
-    mb.cyl("M_AlAnodBlack", 0.04, 0.04, 0.12, 20, center=(0, -0.10, 0.05), axis='Y')
-    mb.cyl("M_Lens", 0.032, 0.032, 0.004, 20, center=(0, -0.161, 0.05), axis='Y')
-    mb.box("M_FabricBlue", 0.02, 0.10, 0.004, center=(0.07, 0, 0.09))
-    return mb.mesh(smooth=40)
+    mb.box("M_AlAnodBlack", 0.145, 0.082, 0.102, center=(0, 0, 0.052))
+    mb.box("M_AlAnodBlack", 0.065, 0.065, 0.032, center=(0, 0.0, 0.115))
+    mb.cyl("M_AlAnodBlack", 0.042, 0.046, 0.13, 24, center=(0, -0.105, 0.052), axis='Y')
+    mb.torus("M_DecalRed", 0.046, 0.003, 24, 6, center=(0, -0.155, 0.052), axis='Y')
+    mb.cyl("M_Lens", 0.035, 0.035, 0.005, 24, center=(0, -0.171, 0.052), axis='Y')
+    mb.box("M_FabricBlue", 0.022, 0.10, 0.004, center=(0.072, 0, 0.09))
+    return mb.mesh(smooth=45)
 
 
 def _clipboard():
@@ -298,64 +302,61 @@ def _clipboard():
 
 
 def _plant_unit():
-    mb = MB("plant_unit")
-    mb.box("M_InteriorPanel", 0.42, 0.30, 0.03, center=(0, 0, 0.015))
-    mb.box("M_LEDRed", 0.38, 0.02, 0.01, center=(0, 0.12, 0.33))
-    mb.box("M_LED", 0.38, 0.02, 0.01, center=(0, 0.09, 0.33))
-    for x in (-0.19, 0.19):
-        mb.box("M_AlBare", 0.015, 0.015, 0.34, center=(x, 0.12, 0.17))
-    mb.box("M_GlassInner", 0.40, 0.003, 0.30, center=(0, -0.14, 0.17))
-    rnd = random.Random(3)
-    for k in range(9):
-        x, y = -0.14 + 0.14 * (k % 3), -0.08 + 0.08 * (k // 3)
-        mb.box("M_Fabric", 0.08, 0.06, 0.03, center=(x, y, 0.045))
-        for j in range(4):
-            h = 0.06 + rnd.random() * 0.14
-            mb.tube("M_Leaf", [(x, y, 0.06), (x + (rnd.random() - 0.5) * 0.04, y + (rnd.random() - 0.5) * 0.04, 0.06 + h)], 0.003, 5)
-            mb.sphere("M_Leaf", 0.018 + rnd.random() * 0.01, 8, 5, center=(x + (rnd.random() - 0.5) * 0.05, y + (rnd.random() - 0.5) * 0.05, 0.06 + h), scale=(1.2, 0.8, 0.5))
-    return mb.mesh(smooth=40)
+    from .singularity_geo import build_botanical_plant_unit_mesh
+    return build_botanical_plant_unit_mesh()
 
 
 def _bungee(length):
     mb = MB(f"bungee_{length:.2f}")
     for k in range(3):
-        mb.tube("M_Cable", [(-length / 2, -0.25 + 0.25 * k, 0.02), (0, -0.25 + 0.25 * k, 0.035), (length / 2, -0.25 + 0.25 * k, 0.02)], 0.004, 6)
+        mb.tube("M_Cable", [(-length / 2, -0.25 + 0.25 * k, 0.02), (0, -0.25 + 0.25 * k, 0.035), (length / 2, -0.25 + 0.25 * k, 0.02)], 0.0045, 6)
         mb.box("M_AlBare", 0.02, 0.012, 0.012, center=(-length / 2, -0.25 + 0.25 * k, 0.02))
         mb.box("M_AlBare", 0.02, 0.012, 0.012, center=(length / 2, -0.25 + 0.25 * k, 0.02))
     return mb.mesh(smooth=40)
 
 
 def _patch(mat):
+    from .singularity_geo import crew_atlas_mat, crew_tile_quad
+    crew_atlas_mat(emissive=False)
     mb = MB(f"patch_{mat}")
-    mb.cyl("M_FabricBlue", 0.06, 0.06, 0.003, 32, center=(0, 0, 0.0015), axis='Z')
-    mb.torus("M_EVAYellow", 0.058, 0.004, 32, 4, center=(0, 0, 0.003), axis='Z')
-    mb.box(mat, 0.07, 0.012, 0.001, center=(0, -0.01, 0.0035), rot=Matrix.Rotation(0.6, 4, 'Z'))
-    mb.box("M_ShieldWhite", 0.035, 0.035, 0.001, center=(0.01, 0.018, 0.0035), rot=Matrix.Rotation(0.78, 4, 'Z'))
-    return mb.mesh(smooth=None)
+    mb.cyl("M_FabricBlue", 0.064, 0.064, 0.004, 32, center=(0, 0, 0.002), axis='Z')
+    mb.torus("M_EVAYellow", 0.062, 0.004, 32, 6, center=(0, 0, 0.004), axis='Z')
+    mi = mb.mi("M_CrewAtlas")
+    crew_tile_quad(mb.bm, mi, (0, 0, 0.0046), (0.11, 0, 0), (0, 0.11, 0), 2)
+    return mb.mesh(smooth=40)
 
 
 def _photo(seed):
+    from .singularity_geo import crew_atlas_mat, crew_tile_quad
+    crew_atlas_mat(emissive=False)
     mb = MB(f"photo_{seed}")
-    mb.box("M_ShieldWhite", 0.10, 0.075, 0.001, center=(0, 0, 0.0005))
-    mb.box(["M_FabricBlue", "M_Water", "M_Accent", "M_SolarBack"][seed % 4], 0.088, 0.058, 0.0012, center=(0, 0.004, 0.0008))
+    mb.box("M_ShieldWhite", 0.13, 0.13, 0.002, center=(0, 0, 0.001))
+    mi = mb.mi("M_CrewAtlas")
+    crew_tile_quad(mb.bm, mi, (0, 0, 0.0026), (0.122, 0, 0), (0, 0.122, 0), seed % 2)
     return mb.mesh(smooth=None)
 
 
 def _towel():
+    from .singularity_geo import bm_pillow
     mb = MB("towel")
-    mb.box("M_Fabric", 0.30, 0.45, 0.012, center=(0, 0, 0.006), rot=Matrix.Rotation(0.04, 4, 'X'))
-    mb.box("M_FabricBlue", 0.30, 0.03, 0.013, center=(0, 0.20, 0.006))
-    return mb.mesh(smooth=30)
+    vs = bm_pillow(mb.bm, 0.30, 0.45, 0.022, nx=5, ny=7, nz=2, puff=0.008, roundness=0.55,
+                   wrinkle=0.004, seed=71, center=(0, 0, 0.012))
+    mb.tag(vs, "M_Fabric")
+    mb.box("M_FabricBlue", 0.29, 0.032, 0.024, center=(0, 0.19, 0.012))
+    return mb.mesh(smooth=50)
 
 
 def _toolbag():
+    from .singularity_geo import bm_pillow
     mb = MB("toolbag")
-    mb.box("M_Fabric", 0.36, 0.22, 0.10, center=(0, 0, 0.05))
-    mb.box("M_FabricBlue", 0.37, 0.03, 0.105, center=(0, 0.06, 0.05))
+    vs = bm_pillow(mb.bm, 0.37, 0.23, 0.11, nx=6, ny=5, nz=4, puff=0.014, roundness=0.52,
+                   wrinkle=0.004, seed=88, center=(0, 0, 0.055))
+    mb.tag(vs, "M_Fabric")
+    mb.box("M_FabricBlue", 0.38, 0.032, 0.115, center=(0, 0.055, 0.055))
     for k in range(5):
-        mb.cyl("M_Steel", 0.006, 0.006, 0.09, 8, center=(-0.12 + 0.06 * k, -0.05, 0.12), axis='Z')
-    mb.box("M_EVAYellow", 0.05, 0.02, 0.12, center=(0.14, -0.05, 0.13))
-    return mb.mesh(smooth=None)
+        mb.cyl("M_Steel", 0.006, 0.006, 0.09, 10, center=(-0.12 + 0.06 * k, -0.05, 0.125), axis='Z')
+    mb.box("M_EVAYellow", 0.05, 0.022, 0.12, center=(0.14, -0.05, 0.135))
+    return mb.mesh(smooth=50)
 
 
 def _headset():

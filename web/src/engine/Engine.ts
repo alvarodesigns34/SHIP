@@ -1,13 +1,8 @@
 /**
- * ALCIÓN · BEYOND ORBIT — motor de simulación.
- *
- * Dos escenas con origen flotante:
- *  - escena lejana (km): Tierra, Luna, Sol y estrellas (Astro), cámara en el origen;
- *  - escena cercana (m): nave y objetos, con el origen en la posición de la nave.
- * Las posiciones absolutas se guardan en doble precisión (JS) y solo se envían a la
- * GPU coordenadas relativas pequeñas.
- * La simulación (vuelo, sistemas, tripulante) avanza con paso fijo y el
- * renderizado interpola.
+ * ALCIÓN HX-4 — PROJECT SINGULARITY
+ * Motor de simulación modular de doble escena con origen flotante (escena lejana en km +
+ * escena cercana en metros), lightmaps horneados en Cycles, sondas PMREM diferenciadas,
+ * manos anatómicas riggeadas de 25 articulaciones y persistencia v3 completa.
  */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -17,19 +12,23 @@ import {
 import { N8AOPostPass } from 'n8ao';
 import { Astro, ScenarioId } from './world/Astro';
 import { buildStation, buildSatellite, buildCanister, WorldObject } from './world/Props';
-import { ShipModel, PartNode, SECTION } from './ship/ShipModel';
+import { ShipModel, PartNode, SECTION, type ExplodePreset } from './ship/ShipModel';
+import { initKTX2 } from './ship/texturesLib';
 import { Mechanisms } from './ship/Mechanisms';
 import { Systems, SwitchId, SWITCH_LABEL } from './ship/Systems';
 import { Cockpit, Telemetry } from './ship/Cockpit';
 import { Flight } from './sim/Flight';
 import { Player } from './player/Player';
 import { Input } from './Input';
-import { Audio } from './Audio';
+import { Audio, type AcousticZone } from './Audio';
 import { Crew, ACTIVITIES, type ActivityId } from './sim/Crew';
 import { Hands } from './player/Hands';
 import { MissionRunner } from './Missions';
 import { Sandbox } from './Sandbox';
-import { b2t, clamp, damp, easeInOut, easeOut, stageOf, t2b } from './util';
+import { SceneLighting } from './SceneLighting';
+import { EffectsManager } from './EffectsManager';
+import { writeSave, readSave, clearSave, readSettings, writeSettings } from './Persistence';
+import { b2t, clamp, easeInOut, easeOut, t2b } from './util';
 
 export type Mode = 'CINEMATIC' | 'FLIGHT' | 'INTERIOR' | 'EVA' | 'ENGINEERING' | 'SANDBOX' | 'MISSIONS';
 export type FlightCam = 'chase' | 'orbit' | 'cockpit' | 'free';
@@ -44,30 +43,36 @@ class ExposureEffect extends Effect {
 }
 
 export const WAYPOINTS: Record<string, { label: string; pos: [number, number, number]; look: [number, number, number] }> = {
-  cabina: { label: 'Cabina de vuelo', pos: [6.35, 0, 0.35], look: [8.8, 0, -0.2] },
-  lab: { label: 'Laboratorio', pos: [4.3, 0.3, 0.45], look: [6.6, -0.9, -0.5] },
-  cq: { label: 'Habitáculos', pos: [3.65, -0.4, 0.4], look: [3.65, 1.4, -0.2] },
-  servicios: { label: 'Servicios', pos: [2.7, 0.3, 0.45], look: [0.9, -0.6, -0.3] },
-  nodo: { label: 'Nodo de proa', pos: [10.25, 0, 0.1], look: [12.2, 0, 0.0] },
-  cupula: { label: 'Cúpula', pos: [11.0, 0, 0.75], look: [11.15, 0.1, 2.4] },
-  esclusa: { label: 'Esclusa', pos: [11.05, 0, -0.4], look: [11.05, 0, -2.6] },
+  cabina: { label: 'Cabina de vuelo', pos: [6.42, 0, 0.35], look: [8.85, 0, -0.18] },
+  lab: { label: 'Laboratorio', pos: [4.35, 0.3, 0.45], look: [6.55, -0.85, -0.45] },
+  cq: { label: 'Habitáculos', pos: [3.65, -0.45, 0.38], look: [3.65, 1.45, -0.15] },
+  servicios: { label: 'Servicios', pos: [2.75, 0.3, 0.42], look: [0.85, -0.55, -0.25] },
+  nodo: { label: 'Nodo de proa', pos: [10.25, 0, 0.10], look: [12.15, 0, 0.0] },
+  // Posición real dentro de la cúpula hexagonal acristalada (entre z=1.36 y z=2.00) mirando hacia el horizonte y la ventana cenital W7!
+  cupula: { label: 'Cúpula', pos: [10.95, 0, 1.56], look: [11.35, 0.18, 2.24] },
+  esclusa: { label: 'Esclusa', pos: [10.95, -0.35, -1.60], look: [10.95, 0.25, -2.55] },
 };
 
 export interface Snapshot {
   mode: Mode; flightCam: FlightCam; ready: boolean; interiorReady: boolean; progress: { stage: string; p: number };
   speed: number; vel: [number, number, number]; w: number; throttle: number; assist: boolean; thrustScale: number; docked: string | null;
-  altKm: number; body: string; eclipse: number; seated: boolean; eva: boolean; airlock: string; jetFuel: number;
+  altKm: number; body: string; eclipse: number;
+  orbit: { vOrbKmS: number; periodMin: number; apogeeKm: number; perigeeKm: number; inclinationDeg: number };
+  seated: boolean; eva: boolean; airlock: string; jetFuel: number;
   prompt: string | null; holdProgress: number;
-  crew: { needs: Crew['needs']; clock: string; samples: number; stored: number; log: string[] }; activity: { label: string; p: number } | null; fade: number;
-  locomotion: 'walk' | 'float'; crouch: boolean; climbing: boolean; systems: ReturnType<Systems['snapshot']>; alerts: { level: string; text: string }[];
-  mission: ReturnType<MissionRunner['current']>; missionsDone: string[]; sandbox: { score: number; streak: number; shots: number } | null;
+  crew: { needs: Crew['needs']; clock: string; samples: number; stored: number; log: string[]; freeExplore: boolean };
+  activity: { label: string; p: number } | null; fade: number;
+  locomotion: 'walk' | 'float'; crouch: boolean; climbing: boolean;
+  systems: ReturnType<Systems['snapshot']>; alerts: { level: string; text: string }[];
+  mission: ReturnType<MissionRunner['current']>; missionsDone: string[];
+  sandbox: { score: number; streak: number; shots: number } | null;
   stats: { fps: number; ms: number; calls: number; tris: number; dpr: number; batches: number; instances: number };
-  dock: Telemetry['dock']; targets: Telemetry['targets']; explode: number; xray: boolean; section: boolean; hudHidden: boolean; toast: string | null;
+  dock: Telemetry['dock']; targets: Telemetry['targets'];
+  explode: number; explodePreset: ExplodePreset; xray: boolean; section: boolean; hudHidden: boolean; toast: string | null;
   scenario: ScenarioId; inspect: { label: string; desc: string } | null; arm: number[]; armGrabbed: string | null;
 }
 
 export class Engine {
-  // núcleo
   container: HTMLElement;
   renderer: THREE.WebGLRenderer;
   camera = new THREE.PerspectiveCamera(50, 1, 0.03, 3000);
@@ -81,6 +86,9 @@ export class Engine {
   controls: OrbitControls;
   input: Input;
   audio = new Audio();
+  // subsistemas modulares
+  lighting: SceneLighting;
+  fx: EffectsManager;
   // mundo
   astro = new Astro();
   model = new ShipModel();
@@ -96,12 +104,12 @@ export class Engine {
   satellite = buildSatellite();
   canister = buildCanister();
   scenario: ScenarioId = 'leo';
-  /** posición absoluta (m) del origen del mundo «cercano» respecto al centro de la Tierra */
   shipKm0 = new THREE.Vector3();
   // estado
   mode: Mode = 'CINEMATIC';
   flightCam: FlightCam = 'chase';
   seated = false;
+  private seatSide = 0.62;
   airlock: 'pres' | 'depress' | 'vac' | 'repress' = 'pres';
   private airlockT = 0;
   hudHidden = false;
@@ -114,9 +122,6 @@ export class Engine {
   inspect: { label: string; desc: string } | null = null;
   private toastMsg: { t: string; until: number } | null = null;
   private interp = { pos: new THREE.Vector3(), vel: new THREE.Vector3(), q: new THREE.Quaternion(), w: new THREE.Vector3() };
-  private sunLight = new THREE.DirectionalLight(0xfff6ea, 3.2);
-  private earthLight = new THREE.HemisphereLight(0x8fb4ff, 0x000000, 0.2);
-  private exposure = 1;
   private dpr = 1;
   private dprScale = 1;
   private frameMs = 16;
@@ -129,6 +134,7 @@ export class Engine {
   private prog = { stage: 'Iniciando', p: 0 };
   ready = false;
   interiorReady = false;
+  private restored = false;
   private freeCam = { pos: new THREE.Vector3(), yaw: 0, pitch: 0 };
   private chaseQ = new THREE.Quaternion();
   private cine = { shot: 0, t: 0 };
@@ -136,17 +142,11 @@ export class Engine {
   private hoverCtl: { node: PartNode; ctl: string } | null = null;
   crew = new Crew();
   private ac = new AbortController();
-  /** manos y antebrazos en primera persona */
   hands = new Hands();
-  /** actividad en curso (bloquea el movimiento mientras dura) */
   activity: { id: ActivityId; t: number } | null = null;
-  /** fundido a negro (dormir) 0..1 */
   fade = 0;
   private nadirBox: THREE.Box3 | null = null;
-  private plumes = new THREE.Group();
-  private tether: THREE.Line;
   private labelsLayer: HTMLDivElement;
-  private labelEls = new Map<string, HTMLDivElement>();
   labels = true;
   private clipPlaneLocal = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
   private clipPlane = new THREE.Plane();
@@ -154,8 +154,14 @@ export class Engine {
   private explodeAnim: null | { a: number; b: number; t0: number; dur: number } = null;
   private camAnim: null | { p0: THREE.Vector3; p1: THREE.Vector3; t0: THREE.Vector3; t1: THREE.Vector3; s: number; dur: number } = null;
   private damagedPanel = 'HAB.MMOD.R2.P14';
-  private markers = new THREE.Group();
   onSelect: (n: PartNode | null) => void = () => {};
+  touchFire = 0;
+  hoverNode: PartNode | null = null;
+  hoverXY: [number, number] = [0, 0];
+  private pendingGrab = false;
+  private pendingPhoto = false;
+  private camFrame = 0;
+  private ray = new THREE.Raycaster();
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -167,35 +173,33 @@ export class Engine {
     this.renderer.localClippingEnabled = true;
     this.renderer.info.autoReset = false;
     this.renderer.autoClear = false;
+    initKTX2(this.renderer);
     container.appendChild(this.renderer.domElement);
     this.renderer.domElement.style.touchAction = 'none';
+
     this.labelsLayer = document.createElement('div');
     this.labelsLayer.className = 'labels-layer';
     container.appendChild(this.labelsLayer);
+
     this.input = new Input(this.renderer.domElement, this.loadSettings()?.bindings);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.08;
     this.controls.minDistance = 0.5;
     this.controls.maxDistance = 400;
-    this.near.add(this.model.root, this.sandbox.group, this.plumes, this.markers);
+
+    this.near.add(this.model.root, this.sandbox.group);
     this.model.root.add(this.cockpit.lights);
-    this.sunLight.castShadow = true;
-    this.sunLight.shadow.mapSize.set(4096, 4096);
-    const sc = this.sunLight.shadow.camera as THREE.OrthographicCamera;
-    sc.left = -22; sc.right = 22; sc.top = 22; sc.bottom = -22; sc.near = 1; sc.far = 160;
-    this.sunLight.shadow.bias = -0.00015; this.sunLight.shadow.normalBias = 0.02;
-    this.near.add(this.sunLight, this.sunLight.target, this.earthLight);
+    this.lighting = new SceneLighting(this.near);
+    this.fx = new EffectsManager(this.near, this.model.root, this.labelsLayer);
     for (const o of [this.station.obj, this.satellite.obj, this.canister]) { this.objects.push(o); this.near.add(o.group); }
-    const tg = new THREE.BufferGeometry().setFromPoints(Array.from({ length: 24 }, () => new THREE.Vector3()));
-    this.tether = new THREE.Line(tg, new THREE.LineBasicMaterial({ color: 0xe8e0c8 }));
-    this.tether.frustumCulled = false; this.tether.visible = false;
-    this.near.add(this.tether);
     this.near.add(this.hands.group);
-    this.buildPlumes();
+
     this.setupComposer();
     this.applyQuality(this.loadSettings()?.quality ?? (matchMedia('(max-width: 860px)').matches ? 'baja' : 'alta'));
-    const loco = this.loadSettings()?.locomotion; if (loco === 'walk' || loco === 'float') this.player.locomotion = loco;
+    const settings = this.loadSettings();
+    if (settings?.locomotion === 'walk' || settings?.locomotion === 'float') this.player.locomotion = settings.locomotion;
+    if (typeof settings?.freeExplore === 'boolean') this.crew.freeExplore = settings.freeExplore;
     this.player.onStep = (k) => this.audio.footstep(k);
     window.addEventListener('resize', this.resize, { signal: this.ac.signal });
     this.bindPointer();
@@ -204,7 +208,6 @@ export class Engine {
     this.loop();
   }
 
-  // ---------------------------------------------------------------- composición
   private setupComposer() {
     this.composer = new EffectComposer(this.renderer, { frameBufferType: THREE.HalfFloatType, multisampling: 0 });
     this.farPass = new RenderPass(this.astro.scene, this.astro.camera);
@@ -215,40 +218,19 @@ export class Engine {
     (nearPass.clearPass as any).depth = true;
     this.composer.addPass(nearPass);
     this.n8ao = new N8AOPostPass(this.near, this.camera, this.container.clientWidth || 1, this.container.clientHeight || 1);
-    this.n8ao.configuration.aoRadius = 0.6;
+    this.n8ao.configuration.aoRadius = 0.55;
     this.n8ao.configuration.distanceFalloff = 0.5;
-    this.n8ao.configuration.intensity = 2.0;
+    this.n8ao.configuration.intensity = 1.65;
     this.n8ao.configuration.gammaCorrection = false;
     this.composer.addPass(this.n8ao);
     this.outline = new OutlineEffect(this.near, this.camera, {
       blendFunction: BlendFunction.SCREEN, edgeStrength: 3, pulseSpeed: 0, visibleEdgeColor: 0xe2572b, hiddenEdgeColor: 0x6a2410, xRay: true, blur: true, resolutionScale: 0.75,
     } as any);
-    this.bloom = new BloomEffect({ intensity: 0.35, luminanceThreshold: 1.3, luminanceSmoothing: 0.25, mipmapBlur: true, radius: 0.55 });
+    this.bloom = new BloomEffect({ intensity: 0.36, luminanceThreshold: 1.25, luminanceSmoothing: 0.25, mipmapBlur: true, radius: 0.55 });
     const tone = new ToneMappingEffect({ mode: ToneMappingMode.AGX });
-    const vig = new VignetteEffect({ offset: 0.32, darkness: 0.38 });
+    const vig = new VignetteEffect({ offset: 0.34, darkness: 0.34 });
     this.composer.addPass(new EffectPass(this.camera, this.outline, this.exposureFx, this.bloom, tone, vig));
     this.composer.addPass(new EffectPass(this.camera, new SMAAEffect()));
-    this.near.environment = this.buildEnv();
-    (this.near as any).environmentIntensity = 0.8;
-  }
-
-  /** Mapa de entorno para reflejos: negro espacial, Sol y resplandor terrestre. */
-  private buildEnv() {
-    const pm = new THREE.PMREMGenerator(this.renderer);
-    const s = new THREE.Scene();
-    const earthDir = this.earthDirWorld();
-    const sph = new THREE.Mesh(new THREE.SphereGeometry(50, 64, 32), new THREE.ShaderMaterial({
-      side: THREE.BackSide, uniforms: { ed: { value: earthDir }, ea: { value: this.earthAngularRadius() } },
-      vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
-      fragmentShader: `varying vec3 vP; uniform vec3 ed; uniform float ea; void main(){ float c = dot(normalize(vP), normalize(ed)); float e = smoothstep(cos(ea*1.05), cos(ea*0.9), c);
-        vec3 col = mix(vec3(0.004,0.005,0.008), vec3(0.20,0.30,0.48), e); gl_FragColor = vec4(col, 1.0);} `,
-    }));
-    s.add(sph);
-    const sun = new THREE.Mesh(new THREE.CircleGeometry(4, 32), new THREE.MeshBasicMaterial({ color: new THREE.Color(1, 0.97, 0.92).multiplyScalar(40) }));
-    sun.position.copy(this.astro.sunDir).multiplyScalar(45); sun.lookAt(0, 0, 0); s.add(sun);
-    const tex = pm.fromScene(s, 0).texture;
-    pm.dispose();
-    return tex;
   }
 
   applyQuality(q: Quality) {
@@ -260,9 +242,9 @@ export class Engine {
     this.n8ao.configuration.halfRes = q !== 'ultra';
     this.renderer.shadowMap.enabled = q !== 'baja';
     const ms = q === 'ultra' ? 4096 : q === 'alta' ? 3072 : 2048;
-    this.sunLight.shadow.mapSize.set(ms, ms);
-    this.sunLight.shadow.map?.dispose(); (this.sunLight.shadow as any).map = null;
-    this.bloom.intensity = q === 'baja' ? 0.25 : 0.45;
+    this.lighting.sunLight.shadow.mapSize.set(ms, ms);
+    this.lighting.sunLight.shadow.map?.dispose(); (this.lighting.sunLight.shadow as any).map = null;
+    this.bloom.intensity = q === 'baja' ? 0.24 : 0.40;
     this.resize();
   }
 
@@ -274,7 +256,6 @@ export class Engine {
     this.n8ao?.setSize?.(w, h);
   };
 
-  // ---------------------------------------------------------------- carga
   async load() {
     const base = 'models/';
     const loader = await this.model.load(base, (stage, p) => { this.prog = { stage, p }; });
@@ -288,9 +269,10 @@ export class Engine {
     this.model.loadInterior(loader, base).then(() => {
       this.interiorReady = true;
       this.cockpit.setup();
-      this.setSection(false); // asigna el plano de corte (inactivo) a los materiales interiores
+      this.setSection(false);
       this.player.buildColliders();
       this.restore();
+      this.restored = true;
       this.emitSnap();
     });
   }
@@ -299,7 +281,6 @@ export class Engine {
     this.scenario = id;
     const sc = this.astro.scenarios().find((s) => s.id === id)!;
     this.shipKm0.copy(sc.shipKm);
-    // orientación inicial: proa hacia la órbita, cenit alejándose del cuerpo central
     const upAway = id === 'lunar' ? sc.shipKm.clone().sub(this.astro.moonPos).normalize() : sc.shipKm.clone().normalize();
     const fwd = new THREE.Vector3(0, 1, 0).cross(upAway).normalize();
     if (fwd.lengthSq() < 0.1) fwd.set(1, 0, 0);
@@ -308,25 +289,36 @@ export class Engine {
     const q = new THREE.Quaternion().setFromRotationMatrix(m);
     this.flight.teleport(new THREE.Vector3(0, 0, 0), q);
     this.flight.docked = null;
-    // objetos del mundo cerca de la nave
     const P = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z).applyQuaternion(q);
     this.station.obj.pos.copy(P(260, 15, -60));
     this.station.obj.group.quaternion.copy(q).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI));
     this.satellite.obj.pos.copy(P(-120, 40, 160));
     this.canister.pos.copy(P(40, 22, 18));
     this.canister.group.visible = true;
-    this.near.environment = this.buildEnv();
+    this.near.environment = this.lighting.rebuildExteriorEnv(
+      this.renderer, this.earthDirWorld(), this.earthAngularRadius(), this.astro.sunDir, id === 'lunar'
+    );
     if (!initial) this.toast(`Escenario: ${sc.label}`);
   }
 
-  // ---------------------------------------------------------------- utilidades geométricas
   earthDirWorld() { return this.shipKm0.clone().negate().normalize(); }
   earthAngularRadius() { return Math.asin(Math.min(1, 6371 / this.shipKm0.length())); }
   shipKm() { return this.shipKm0.clone().add(this.flight.state.pos.clone().divideScalar(1000)); }
-  /** Posición del observador en espacio de nave (three). */
   viewerLocal(): THREE.Vector3 {
     if (this.mode === 'INTERIOR' || this.mode === 'EVA') return this.player.pos.clone();
     return this.model.root.worldToLocal(this.camera.position.clone());
+  }
+
+  private currentAcousticZone(): AcousticZone {
+    if (this.mode === 'EVA') return 'eva';
+    if (this.mode !== 'INTERIOR' && !this.seated) return 'space';
+    const [x, , z] = t2b(this.seated ? b2t(7.5, this.seatSide, 0) : this.player.pos);
+    if (z < -1.35 && x > 9.8) return 'airlock';
+    if (x >= 9.5) return 'node';
+    if (x >= 6.75) return 'cockpit';
+    if (x >= 4.70) return 'lab';
+    if (x >= 2.65) return 'quarters';
+    return 'services';
   }
 
   placeNear(id: string, dist: number) {
@@ -336,7 +328,6 @@ export class Engine {
     const fwd = new THREE.Vector3(1, 0, 0).applyQuaternion(s.q);
     const up = new THREE.Vector3(0, 1, 0).applyQuaternion(s.q);
     if (id === 'tesela') {
-      // el puerto de la estación mira hacia la nave
       o.group.quaternion.copy(s.q).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI));
       const portWorld = this.station.dockLocal.clone().applyQuaternion(o.group.quaternion);
       o.pos.copy(s.pos).addScaledVector(fwd, dist + 13.23).sub(portWorld);
@@ -372,14 +363,19 @@ export class Engine {
 
   toast(t: string) { this.toastMsg = { t, until: performance.now() + 4500 }; }
 
-  // ---------------------------------------------------------------- modos
+  setFreeExplore(on: boolean) {
+    this.crew.freeExplore = on;
+    this.saveSettings();
+    this.toast(on ? 'Exploración libre: necesidades pausadas' : 'Simulación de tripulante activa');
+    this.emitSnap();
+  }
+
   setMode(m: Mode) {
     const prev = this.mode;
     this.mode = m;
     this.input.unlock();
     this.controls.enabled = false;
     this.inspect = null;
-    this.model.hideExteriorSkin = false;
     if (m !== 'ENGINEERING') {
       if (this.model.explode > 0) this.model.setExplode(0);
       if (this.model.xray) this.model.setXray(false);
@@ -389,7 +385,9 @@ export class Engine {
     if (m === 'ENGINEERING' || m === 'CINEMATIC') {
       this.controls.enabled = m === 'ENGINEERING';
       this.camera.fov = 32;
-      if (prev === 'INTERIOR' || prev === 'EVA' || !this.ready || prev === 'FLIGHT' || prev === 'SANDBOX') this.flyOrbit(new THREE.Vector3(26, 9, 30), new THREE.Vector3(2.5, -0.5, 0), 1200);
+      if (prev === 'INTERIOR' || prev === 'EVA' || !this.ready || prev === 'FLIGHT' || prev === 'SANDBOX') {
+        this.flyOrbit(new THREE.Vector3(26, 9, 30), new THREE.Vector3(2.5, -0.5, 0), 1200);
+      }
     } else if (m === 'FLIGHT' || m === 'SANDBOX') {
       this.camera.fov = 55;
       if (!this.seated) this.flightCam = this.flightCam === 'cockpit' ? 'chase' : this.flightCam;
@@ -428,7 +426,6 @@ export class Engine {
     else if (this.mode !== 'INTERIOR') this.mode = 'INTERIOR';
   }
 
-  /** Cámara orbital animada (espacio de nave → mundo). */
   flyOrbit(posLocal: THREE.Vector3, tgtLocal: THREE.Vector3, dur = 1200) {
     const p1 = this.model.root.localToWorld(posLocal.clone());
     const t1 = this.model.root.localToWorld(tgtLocal.clone());
@@ -448,17 +445,23 @@ export class Engine {
   }
 
   viewPreset(v: 'iso' | 'front' | 'rear' | 'side' | 'top' | 'bottom') {
-    const dirs: Record<string, THREE.Vector3> = { iso: new THREE.Vector3(0.7, 0.42, 0.62), front: new THREE.Vector3(1, 0, 0), rear: new THREE.Vector3(-1, 0, 0), side: new THREE.Vector3(0, 0.0001, 1), top: new THREE.Vector3(0.0001, 1, 0), bottom: new THREE.Vector3(0.0001, -1, 0) };
+    const dirs: Record<string, THREE.Vector3> = {
+      iso: new THREE.Vector3(0.7, 0.42, 0.62), front: new THREE.Vector3(1, 0, 0), rear: new THREE.Vector3(-1, 0, 0),
+      side: new THREE.Vector3(0, 0.0001, 1), top: new THREE.Vector3(0.0001, 1, 0), bottom: new THREE.Vector3(0.0001, -1, 0),
+    };
     const c = b2t(2, 0, 0);
     this.flyOrbit(c.clone().addScaledVector(dirs[v].normalize(), 48), c, 1100);
   }
 
-  // ---------------------------------------------------------------- ingeniería
   setExplode(t: number, animate = false) {
     if (animate) this.explodeAnim = { a: this.model.explode, b: t, t0: performance.now(), dur: this.reducedMotion ? 1 : 1600 };
-    else { this.explodeAnim = null; this.model.setExplode(t); }
+    else { this.explodeAnim = null; this.model.setExplode(t); this.emitSnap(); }
   }
-  /** Animación de ensamblaje: de piezas sueltas a nave completa. */
+  setExplodePreset(preset: ExplodePreset) {
+    this.model.setExplodePreset(preset);
+    if (this.model.explode < 0.05 && preset !== 'all') this.setExplode(0.65, true);
+    this.emitSnap();
+  }
   assemble() { this.model.setExplode(1); this.explodeAnim = { a: 1, b: 0, t0: performance.now() + 300, dur: this.reducedMotion ? 1 : 5200 }; }
 
   setSection(on: boolean, axis = this.section.axis, pos = this.section.pos, flip = this.section.flip) {
@@ -471,10 +474,6 @@ export class Engine {
     const mats = new Set<THREE.Material>();
     for (const b of this.model.batches) { mats.add(b.material); mats.add(b.xray); }
     for (const s of this.model.standalone) mats.add(s.mesh.material as THREE.Material);
-    // El plano de corte permanece siempre asignado (inactivo = desplazado al infinito):
-    // así activar la sección no cambia la clave de programa y no hay recompilación
-    // de sombreadores (antes ~3,5 s de parón con SwiftShader). Sólo los materiales
-    // de una cara cambian de variante al pasar a doble cara para dibujar las tapas.
     for (const m of mats) {
       if (m.clippingPlanes?.[0] !== this.clipPlane) { m.clippingPlanes = [this.clipPlane]; m.needsUpdate = true; }
       if (m.userData.side0 === undefined) m.userData.side0 = m.side;
@@ -490,7 +489,6 @@ export class Engine {
     if (n && focus) this.focus(n);
   }
 
-  // ---------------------------------------------------------------- interacción
   private bindPointer() {
     const el = this.renderer.domElement;
     let down: { x: number; y: number; t: number } | null = null;
@@ -524,10 +522,7 @@ export class Engine {
       this.hoverXY = [e.clientX, e.clientY];
     }, { signal: this.ac.signal });
   }
-  hoverNode: PartNode | null = null;
-  hoverXY: [number, number] = [0, 0];
 
-  private ray = new THREE.Raycaster();
   pickAt(cx?: number, cy?: number) {
     const rect = this.renderer.domElement.getBoundingClientRect();
     const p = cx === undefined ? new THREE.Vector2(0, 0) : new THREE.Vector2(((cx - rect.left) / rect.width) * 2 - 1, -(((cy ?? 0) - rect.top) / rect.height) * 2 + 1);
@@ -536,7 +531,6 @@ export class Engine {
     return this.model.pick(this.ray);
   }
 
-  /** Control interactivo bajo la retícula (o el puntero). */
   private ctlAt(cx?: number, cy?: number): { node: PartNode; ctl: string } | null {
     const hit = this.pickAt(cx, cy);
     if (!hit) return null;
@@ -545,7 +539,6 @@ export class Engine {
     const act = this.activityFor(hit.node.code);
     if (act) return { node: hit.node, ctl: 'act:' + act };
     while (n) { if (n.inspect) return { node: n, ctl: 'inspect' }; n = n.parent; }
-    // tareas de mantenimiento
     const c = hit.node.code;
     if (c.startsWith('HAB.INT.D.CL1') && this.systems.active('cdra_fan')) return { node: hit.node, ctl: 'repair:cdra_fan' };
     if (c.startsWith(this.damagedPanel) && this.systems.active('mmod_panel')) return { node: hit.node, ctl: 'repair:mmod_panel' };
@@ -570,8 +563,7 @@ export class Engine {
   tryInteract(cx?: number, cy?: number) {
     const c = cx === undefined ? this.hoverCtl : this.ctlAt(cx, cy);
     if (!c) return;
-    // la mano alcanza el punto tocado (excepto las actividades, que tienen su propia pose)
-    if ((this.mode === 'INTERIOR' || this.mode === 'EVA') && !c.ctl.startsWith('act:')) {
+    if ((this.mode === 'INTERIOR' || this.mode === 'EVA' || this.seated) && !c.ctl.startsWith('act:')) {
       const hit = this.pickAt(cx, cy);
       if (hit) this.hands.reach(this.camera.worldToLocal(hit.point.clone()));
     }
@@ -611,8 +603,6 @@ export class Engine {
     this.emitSnap();
   }
 
-  // ---------------------------------------------------------------- vida a bordo
-  /** Actividad asociada a la pieza bajo la retícula. */
   private activityFor(code: string): ActivityId | null {
     if (/^HAB\.INT\.LIV\.D\.O1[348]/.test(code)) return 'drink';
     if (code.startsWith('HAB.INT.D.PG')) return this.crew.needs.hydration < this.crew.needs.nutrition ? 'drink' : 'eat';
@@ -637,19 +627,17 @@ export class Engine {
 
   private stepCrew(dt: number) {
     const live = this.mode !== 'CINEMATIC' && this.mode !== 'ENGINEERING';
-    // observación de la Tierra: por la cúpula o por las ventanas de nadir del laboratorio
     let looking = false;
     if (this.mode === 'INTERIOR' && !this.activity) {
       const view = new THREE.Vector3(0, 0, -1).applyQuaternion(this.player.viewQuat());
       const [x, y, z] = t2b(this.player.pos);
       if (!this.nadirBox) { const n = this.model.nodes.get('HAB.INT.B.NAD'); this.nadirBox = n ? this.model.currentBox(n).clone().expandByScalar(0.9) : new THREE.Box3(); }
       const nb = this.nadirBox, pp = this.player.pos;
-      const overNadir = !nb.isEmpty() && pp.x > nb.min.x && pp.x < nb.max.x && pp.z > nb.min.z && pp.z < nb.max.z;   // en planta, a cualquier altura
-      const nearWindow = (Math.hypot(x - 11.05, y) < 0.9 && z > -0.2) || overNadir;
-      looking = nearWindow && view.dot(this.mech.earthLocal) > 0.7;
+      const overNadir = !nb.isEmpty() && pp.x > nb.min.x && pp.x < nb.max.x && pp.z > nb.min.z && pp.z < nb.max.z;
+      const nearWindow = (Math.hypot(x - 10.95, y) < 0.9 && z > 0.6) || overNadir;
+      looking = nearWindow && view.dot(this.mech.earthLocal) > 0.65;
     }
     if (live) this.crew.step(dt, { inCupolaLookingAtEarth: looking }, (m) => { this.toast(m); this.audio.beep('info'); });
-    // actividad en curso
     const target = this.activity?.id === 'sleep' ? 1 : 0;
     this.fade += (target - this.fade) * Math.min(1, dt * 2.5);
     if (this.activity) {
@@ -683,9 +671,9 @@ export class Engine {
     this.player.yaw = -Math.PI / 2; this.player.pitch = -0.32;
     this.seatSide = k === 1 ? 0.62 : -0.62;
     this.audio.thud(0.3);
+    this.save();
     this.emitSnap();
   }
-  private seatSide = 0.62;
   standUp() {
     this.seated = false;
     this.enterInterior('cabina');
@@ -703,8 +691,6 @@ export class Engine {
     }
   }
 
-  // ---------------------------------------------------------------- fotografía
-  private pendingPhoto = false;
   photo() { this.pendingPhoto = true; this.audio.shutter(); }
   private capturePhoto() {
     this.renderer.domElement.toBlob((b) => {
@@ -715,7 +701,6 @@ export class Engine {
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 4000);
     }, 'image/png');
-    // comprobaciones de misión
     const camW = this.camera.getWorldDirection(new THREE.Vector3());
     if (this.photoTargets.length) {
       const sat = this.satellite;
@@ -727,15 +712,18 @@ export class Engine {
         return !ok;
       });
     }
-    const inCupola = this.mode === 'INTERIOR' && t2b(this.player.pos)[2] > 1.0 && Math.abs(t2b(this.player.pos)[0] - 11.05) < 0.7;
+    const [bx, , bz] = t2b(this.player.pos);
+    const inCupola = this.mode === 'INTERIOR' && bz > 1.0 && Math.abs(bx - 10.95) < 0.75;
     if (inCupola) {
       const toEarth = this.earthDirWorld();
       const toMoon = this.astro.moonPos.clone().sub(this.shipKm()).normalize();
-      if (camW.angleTo(toEarth) < this.earthAngularRadius() + 0.5 || camW.angleTo(toMoon) < 0.4) { this.scienceShot = true; this.toast('Fotografía científica registrada'); }
+      if (camW.angleTo(toEarth) < this.earthAngularRadius() + 0.55 || camW.angleTo(toMoon) < 0.45) {
+        this.scienceShot = true;
+        this.toast('Fotografía científica registrada');
+      }
     }
   }
 
-  // ---------------------------------------------------------------- bucle
   private loop = () => {
     this.raf = requestAnimationFrame(this.loop);
     const now = performance.now();
@@ -748,17 +736,19 @@ export class Engine {
     this.renderFrame(dt);
     if (this.pendingPhoto) { this.pendingPhoto = false; this.capturePhoto(); }
     this.input.endFrame();
-    // telemetría
     this.frameMs = this.frameMs * 0.9 + (performance.now() - t0) * 0.1;
     this.fpsAcc.n++;
-    if (now - this.fpsAcc.t > 1000) { this.fpsAcc.fps = Math.round((this.fpsAcc.n * 1000) / (now - this.fpsAcc.t)); this.fpsAcc.n = 0; this.fpsAcc.t = now; this.adaptResolution(); }
+    if (now - this.fpsAcc.t > 1000) {
+      this.fpsAcc.fps = Math.round((this.fpsAcc.n * 1000) / (now - this.fpsAcc.t));
+      this.fpsAcc.n = 0; this.fpsAcc.t = now;
+      this.adaptResolution();
+    }
     this.snapT += dt;
     if (this.snapT > 0.1) { this.snapT = 0; this.emitSnap(); }
     this.saveT += dt;
     if (this.saveT > 15) { this.saveT = 0; this.save(); }
   };
 
-  /** Un paso de simulación + actualización de escena (sin dibujar). */
   private simStep(dt: number) {
     this.handleInput(dt);
     const alpha = this.flight.advance(dt);
@@ -768,10 +758,6 @@ export class Engine {
     this.updateScene(dt);
   }
 
-  /**
-   * Avance determinista de la simulación sin renderizar (pruebas automatizadas
-   * y validación): `seconds` de tiempo simulado en pasos de `h`.
-   */
   tick(seconds: number, h = 1 / 30) {
     for (let t = 0; t < seconds; t += h) this.simStep(h);
     this.input.endFrame();
@@ -796,24 +782,29 @@ export class Engine {
     if (flying && !(this.flightCam === 'free' && !this.seated)) {
       fi.t.set(I.axis('back', 'fwd'), I.axis('down', 'up'), I.axis('left', 'right'));
       fi.r.set(I.axis('rollLeft', 'rollRight') * -1, I.axis('yawRight', 'yawLeft'), I.axis('pitchDown', 'pitchUp') * -1);
-      if (I.locked && this.flightCam === 'cockpit') { /* el ratón mira dentro de la cabina */ }
+      if (I.locked && this.flightCam === 'cockpit') { /* mirar dentro de la cabina */ }
       else if (I.locked) { fi.r.y += clamp(-I.mouseDX * 0.02 * I.sensitivity, -1, 1); fi.r.z += clamp(-I.mouseDY * 0.02 * I.sensitivity * (I.invertY ? -1 : 1), -1, 1); }
       if (I.held('throttleUp')) fi.throttle = Math.min(1, fi.throttle + dt * 0.6);
       if (I.held('throttleDown')) fi.throttle = Math.max(0, fi.throttle - dt * 0.9);
       fi.brake = I.held('brake');
       if (I.hit('assist')) { this.flight.assist = !this.flight.assist; this.toast(this.flight.assist ? 'Modo asistido' : 'Modo manual (newtoniano)'); this.audio.click(true); }
-      if (I.hit('camera') && !this.seated) { const order: FlightCam[] = ['chase', 'orbit', 'free']; this.flightCam = order[(order.indexOf(this.flightCam) + 1) % order.length]; if (this.flightCam === 'free') { this.freeCam.pos.copy(this.camera.position); } this.toast(`Cámara: ${{ chase: 'persecución', orbit: 'exterior orbital', free: 'libre', cockpit: 'cabina' }[this.flightCam]}`); }
+      if (I.hit('camera') && !this.seated) {
+        const order: FlightCam[] = ['chase', 'orbit', 'free'];
+        this.flightCam = order[(order.indexOf(this.flightCam) + 1) % order.length];
+        if (this.flightCam === 'free') this.freeCam.pos.copy(this.camera.position);
+        this.toast(`Cámara: ${{ chase: 'persecución', orbit: 'exterior orbital', free: 'libre', cockpit: 'cabina' }[this.flightCam]}`);
+      }
       if (this.mode === 'SANDBOX' && (I.held('fire') || (this.touchFire && performance.now() - this.touchFire < 150))) {
         const dir = this.camera.getWorldDirection(new THREE.Vector3());
         if (this.sandbox.fire(this.camera.position.clone().add(this.interp.pos), dir, this.flight.state.vel)) this.audio.pulse();
       }
       if (this.seated && I.hit('exit')) this.standUp();
       if (this.seated && I.hit('interact')) this.tryInteract();
-      // la orientación del armado/sistemas condiciona el control
       this.flight.rcsArmed = this.systems.on('RCS');
       this.flight.mainArmed = this.systems.on('MAIN');
       if ((fi.t.lengthSq() > 0.01 || fi.r.lengthSq() > 0.01) && !this.flight.rcsArmed && Math.random() < dt) this.toast('RCS desarmado: actívalo en el panel cenital (fila PROPULSIÓN)');
     } else fi.throttle = Math.max(0, fi.throttle - dt);
+
     if (this.flightCam === 'free' && flying && !this.seated) {
       const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(this.freeCam.pitch, this.freeCam.yaw, 0, 'YXZ'));
       const mv = new THREE.Vector3(I.axis('left', 'right'), I.axis('down', 'up'), -I.axis('back', 'fwd')).applyQuaternion(q);
@@ -827,7 +818,6 @@ export class Engine {
       I.touchLook.x = 0; I.touchLook.y = 0;
       const move = new THREE.Vector3(I.axis('left', 'right'), I.axis('down', 'up'), -I.axis('back', 'fwd'));
       if (this.activity) {
-        // durante una actividad el tripulante permanece en su sitio (moverse la cancela)
         if (move.lengthSq() > 0.01 && this.activity.id !== 'sleep') { this.toast('Actividad interrumpida'); this.activity = null; }
         else move.set(0, 0, 0);
       }
@@ -847,15 +837,13 @@ export class Engine {
       if (I.locked) this.player.look(I.mouseDX * 0.0022, I.mouseDY * 0.0022);
     } else this.hoverCtl = null;
   }
-  touchFire = 0;
 
   private stepWorld(dt: number) {
-    // sistemas
     const ecl = this.astro.eclipse;
     const metab = this.activity ? (ACTIVITIES[this.activity.id].metabolic ?? 1) - 1 : 0;
     this.systems.step(dt, { sunFactor: 1 - ecl, wingsDeployed: 1, thrust: this.flight.throttle, sep: 0, rcsUse: this.flight.rcsActivity, hgaError: this.mech.hgaError(), crew: 4 + metab });
     this.stepCrew(dt);
-    // mecanismos especiales (dirección Sol/Tierra en espacio de nave)
+
     const qInv = this.interp.q.clone().invert();
     this.mech.sunLocal.copy(this.astro.sunDir).applyQuaternion(qInv);
     this.mech.earthLocal.copy(this.earthDirWorld()).applyQuaternion(qInv);
@@ -865,7 +853,7 @@ export class Engine {
     const armAct = this.mech.update(dt);
     const mechAct = this.model.stepMechs(dt);
     this.model.setMech('dock:ring', this.systems.on('DOCK') && !this.flight.docked ? 0 : -0.26);
-    // esclusa
+
     if (this.airlock === 'depress' || this.airlock === 'repress') {
       this.airlockT += dt;
       if (this.airlockT > 6) {
@@ -873,9 +861,8 @@ export class Engine {
         else { this.airlock = 'pres'; this.audio.beep('ok'); this.toast('Esclusa presurizada'); }
       }
     }
-    // transición interior ↔ EVA por la escotilla exterior
+
     const [px, py, pz0] = t2b(this.player.pos);
-    // en modo caminar se usan los pies (los ojos quedan 1,6 m por encima)
     const pz = this.mode === 'INTERIOR' && this.player.locomotion === 'walk' ? pz0 - this.player.eyeH + 0.05 : pz0;
     if (this.mode === 'INTERIOR' && this.airlock === 'vac' && pz < -3.25 && Math.hypot(px - 11.05, py) < 0.6) {
       this.player.eva = true; this.mode = 'EVA'; this.camera.fov = 70; this.camera.updateProjectionMatrix();
@@ -883,7 +870,7 @@ export class Engine {
     } else if (this.mode === 'EVA' && pz > -3.6 && pz < -2.2 && Math.hypot(px - 11.05, py) < 0.55) {
       this.player.eva = false; this.mode = 'INTERIOR'; this.player.pos.copy(b2t(11.05, 0, -2.8)); this.player.vel.set(0, 0, 0); this.audio.comms('Bienvenido a bordo.'); this.emitSnap();
     }
-    // atraque
+
     if (!this.flight.docked && this.systems.on('DOCK')) {
       const d = this.dockInfo();
       if (d.range < 0.6 && d.angle < 6 && d.closing < 0.25) {
@@ -891,7 +878,7 @@ export class Engine {
         this.audio.thud(1); this.audio.comms('Captura confirmada. Alción atracada en Tesela.'); this.toast('Captura: atracado en la estación Tesela');
       }
     }
-    // colisiones simples con objetos (esferas)
+
     for (const o of this.objects) {
       if (o.id === 'tesela' && (this.flight.docked || this.dockInfo().range < 3)) continue;
       if (o.id === 'canister' && (this.mech.grabbed === 'canister' || !o.group.visible)) continue;
@@ -903,24 +890,30 @@ export class Engine {
         if (vn < 0) { this.flight.state.vel.addScaledVector(n, -vn * 1.5); this.audio.thud(0.8); this.systems.alert('collision', 'alarm', 'Contacto con ' + o.label); }
       }
     }
-    // objetos del mundo
     for (const o of this.objects) {
       o.pos.addScaledVector(o.vel, dt);
       o.group.rotation.x += o.spin.x * dt; o.group.rotation.y += o.spin.y * dt; o.group.rotation.z += o.spin.z * dt;
     }
-    // cápsula capturada: viaja con el efector
     if (this.mech.grabbed === 'canister') {
       this.canister.pos.copy(this.mech.tip()).applyQuaternion(this.interp.q).add(this.interp.pos);
       this.canister.vel.set(0, 0, 0); this.canister.spin.set(0, 0, 0);
     }
     if (this.sandbox.active) { const h = this.sandbox.update(dt, this.interp.pos); if (h) this.audio.burst(); }
-    // audio
+
     const inside = this.mode === 'INTERIOR' || this.seated;
-    this.audio.update({ fans: this.systems.on('FANS') ? 1 : 0, power: this.systems.sw.BAT ? 1 : 0, thrust: Math.max(this.flight.throttle, this.flight.rcsActivity * 0.4), mech: Math.max(armAct, mechAct), inside, suit: this.mode === 'EVA' });
+    this.audio.update({
+      fans: this.systems.on('FANS') ? 1 : 0,
+      power: this.systems.sw.BAT ? 1 : 0,
+      thrust: Math.max(this.flight.throttle, this.flight.rcsActivity * 0.4),
+      mech: Math.max(armAct, mechAct),
+      inside,
+      suit: this.mode === 'EVA',
+      zone: this.currentAcousticZone(),
+      airlockCycling: this.airlock === 'depress' || this.airlock === 'repress',
+    });
     if (this.flight.rcsActivity > 0.3 && Math.random() < dt * 6) this.audio.rcs();
   }
 
-  /** Orden de captura del brazo: IK hacia la cápsula si está al alcance. */
   armCapture() {
     if (!this.systems.on('RBT')) { this.toast('Brazo sin alimentación (RBT)'); return; }
     const local = this.canister.pos.clone().sub(this.interp.pos).applyQuaternion(this.interp.q.clone().invert());
@@ -928,10 +921,8 @@ export class Engine {
     if (err < 0.5) { this.toast('Brazo en ruta de captura'); this.pendingGrab = true; }
     else { this.toast(`Fuera de alcance (${err.toFixed(1)} m)`); this.audio.beep('warn'); }
   }
-  private pendingGrab = false;
 
   private updateScene(dt: number) {
-    // nave en el origen del renderizado
     this.model.root.position.set(0, 0, 0);
     this.model.root.quaternion.copy(this.interp.q);
     this.model.root.updateMatrixWorld(true);
@@ -940,73 +931,67 @@ export class Engine {
       const tipW = this.mech.tip().applyQuaternion(this.interp.q).add(this.interp.pos);
       if (tipW.distanceTo(this.canister.pos) < 0.9) { this.mech.grabbed = 'canister'; this.audio.thud(0.6); this.toast('Cápsula capturada'); }
     }
-    // explosión animada
     if (this.explodeAnim) {
       const a = this.explodeAnim;
       const k = clamp((performance.now() - a.t0) / a.dur, 0, 1);
       this.model.setExplode(a.a + (a.b - a.a) * easeInOut(k));
       if (k >= 1) this.explodeAnim = null;
     }
-    this.model.hideExteriorSkin = (this.mode === 'INTERIOR' || (this.seated && this.flightCam === 'cockpit'));
+
+    // Desde la Cúpula / Nodo (X > 9.3 m) mantenemos VISIBLE el exterior del vehículo (casco, alas, brazo)
+    // para que al mirar por las ventanas se vea la nave enmarcada sobre la Tierra!
+    // Y sólo marcamos visDirty cuando realmente cambia el estado (elimina el bucle por fotograma!).
+    const [pbx] = t2b(this.player.pos);
+    const inNodeOrCupola = this.mode === 'INTERIOR' && pbx > 9.3;
+    const hideSkin = (this.mode === 'INTERIOR' && !inNodeOrCupola) || (this.seated && this.flightCam === 'cockpit');
     const camLocal = this.model.root.worldToLocal(this.camera.position.clone());
-    this.model.showInterior = this.mode === 'ENGINEERING' || this.mode === 'INTERIOR' || this.seated || camLocal.length() < 30 || this.model.explode > 0;
-    this.model.markVisDirty();
+    const showInt = this.mode === 'ENGINEERING' || this.mode === 'INTERIOR' || this.seated || camLocal.length() < 30 || this.model.explode > 0;
+    this.model.setInteriorVisibility(hideSkin, showInt);
     this.model.applyTransforms();
     this.model.updateVisibility();
-    // objetos (origen flotante)
+
     for (const o of this.objects) o.group.position.copy(o.pos).sub(this.interp.pos);
-    // cámara
+
     this.updateCamera(dt);
-    // manos en primera persona (después de colocar la cámara)
-    const fp = this.mode === 'INTERIOR' || this.mode === 'EVA';
+
+    const fp = this.mode === 'INTERIOR' || this.mode === 'EVA' || (this.seated && this.flightCam === 'cockpit');
     this.hands.group.visible = fp;
     if (fp) {
       this.hands.setEVA(this.mode === 'EVA');
       const a = this.activity;
-      this.hands.setActivity(a ? a.id : null, a ? a.t / ACTIVITIES[a.id].dur : 0, !!this.player.grabbing, this.mode === 'EVA');
+      this.hands.setActivity(a ? a.id : null, a ? a.t / ACTIVITIES[a.id].dur : 0, !!this.player.grabbing, this.mode === 'EVA', this.seated && this.flightCam === 'cockpit');
       this.hands.update(dt, this.camera, this.reducedMotion);
     }
-    // luces
-    const ecl = this.astro.eclipse;
-    this.sunLight.intensity = 3.4 * (1 - ecl);
-    this.sunLight.position.copy(this.astro.sunDir).multiplyScalar(80);
-    this.sunLight.target.position.set(0, 0, 0);
-    const ed = this.earthDirWorld();
-    const earthPhase = clamp(0.5 + 0.5 * this.astro.sunDir.dot(ed.clone().negate()), 0, 1);
-    const altK = this.earthAngularRadius() / (Math.PI / 2);
-    this.earthLight.position.copy(ed);
-    this.earthLight.intensity = 0.05 + 0.9 * altK * earthPhase * (this.scenario === 'lunar' ? 0.25 : 1);
+
+    const indoor = this.mode === 'INTERIOR' || (this.seated && this.flightCam === 'cockpit');
+    const exposure = this.lighting.update({
+      dt, near: this.near, renderer: this.renderer,
+      sunDir: this.astro.sunDir, earthDir: this.earthDirWorld(), earthAngRad: this.earthAngularRadius(),
+      eclipse: this.astro.eclipse, isLunar: this.scenario === 'lunar',
+      indoor, reducedMotion: this.reducedMotion,
+    });
+    this.exposureFx.value = exposure;
+
+    // N8AO complementa suavemente el Contact AO ya horneado en el lightmap de Cycles
+    this.n8ao.configuration.aoRadius = indoor ? 0.65 : 0.55;
+    this.n8ao.configuration.intensity = indoor ? 1.85 : 1.75;
+
     const interiorActive = this.mode === 'INTERIOR' || this.seated || (this.mode === 'ENGINEERING' && this.model.explode === 0) || this.mode === 'EVA';
     this.cockpit.updateLights(this.systems, interiorActive ? this.viewerLocal() : null, interiorActive || camLocal.length() < 25, this.airlock);
-    // pantallas
     this.cockpit.draw(performance.now() / 1000, this.systems, this.telemetry(), this.viewerLocal());
-    // plumas RCS y motores
-    this.updatePlumes();
-    // cordón de seguridad en EVA
-    this.tether.visible = this.mode === 'EVA';
-    if (this.tether.visible) {
-      const a = this.model.root.localToWorld(b2t(11.05 + 0.6, 0, -3.3));
-      const b = this.model.root.localToWorld(this.player.pos.clone()).add(new THREE.Vector3(0, -0.4, 0));
-      const pos = this.tether.geometry.attributes.position as THREE.BufferAttribute;
-      for (let i = 0; i < pos.count; i++) { const t = i / (pos.count - 1); const p = a.clone().lerp(b, t); const sag = Math.sin(Math.PI * t) * Math.min(1.2, a.distanceTo(b) * 0.12); p.y -= sag; pos.setXYZ(i, p.x, p.y, p.z); }
-      pos.needsUpdate = true;
-    }
-    // marcador del panel dañado (EVA)
-    this.updateMarkers();
-    // exposición adaptativa (no instantánea)
-    const indoor = this.mode === 'INTERIOR' || (this.seated && this.flightCam === 'cockpit');
-    const target = indoor ? 1.4 : ecl > 0.5 ? 2.6 : 1.0;
-    this.exposure = damp(this.exposure, target, this.reducedMotion ? 20 : 1.6, dt);
-    this.exposureFx.value = this.exposure;
-    (this.near as any).environmentIntensity = damp((this.near as any).environmentIntensity ?? 0.8, indoor ? 0.14 : 0.8, 3, dt);
-    // AO de contacto más marcado en interiores (espacios estrechos, juntas y huecos de bastidor)
-    this.n8ao.configuration.aoRadius = indoor ? 0.9 : 0.6;
-    this.n8ao.configuration.intensity = indoor ? 3.2 : 2.0;
-    // escena lejana
+
+    this.fx.updatePlumes(this.mode, this.model, this.flight, this.systems);
+    this.fx.updateTether(this.mode === 'EVA', this.model.root, this.player.pos);
+    this.fx.updateDamageMarker(this.mode, this.model, this.systems, this.damagedPanel, this.interp.q);
+
     const camKm = this.shipKm().add(this.camera.position.clone().divideScalar(1000));
     this.astro.update(dt, camKm, this.camera.getWorldQuaternion(new THREE.Quaternion()), this.camera.fov, this.camera.aspect, 1, this.renderer.getPixelRatio());
-    // etiquetas de ingeniería
-    this.updateLabels();
+
+    this.fx.updateLabels(
+      this.mode, this.labels, this.model, this.camera,
+      this.renderer.domElement.clientWidth, this.renderer.domElement.clientHeight,
+      (n) => this.select(n, true)
+    );
   }
 
   private updateCamera(dt: number) {
@@ -1028,7 +1013,6 @@ export class Engine {
       this.camera.quaternion.copy(this.interp.q).multiply(this.player.viewQuat());
       return;
     }
-    // vuelo / sandbox
     if (this.seated || this.flightCam === 'cockpit') {
       const head = b2t(7.48, this.seatSide, 0.02);
       this.camera.position.copy(root.localToWorld(head));
@@ -1054,13 +1038,11 @@ export class Engine {
       this.controls.update();
       return;
     }
-    // libre: la cámara se queda en el espacio (no sigue a la nave)
     this.freeCam.pos.sub(this.interp.vel.clone().multiplyScalar(dt));
     this.camera.position.copy(this.freeCam.pos);
     this.camera.quaternion.setFromEuler(new THREE.Euler(this.freeCam.pitch, this.freeCam.yaw, 0, 'YXZ'));
   }
 
-  /** Director de fotografía: planos lentos alrededor de la nave. */
   private cinematic(dt: number) {
     const shots: [THREE.Vector3, THREE.Vector3, THREE.Vector3, THREE.Vector3][] = [
       [b2t(-34, 22, 6), b2t(-18, 30, 10), b2t(2, 0, 0), b2t(3, 0, 0)],
@@ -1083,16 +1065,13 @@ export class Engine {
   private renderFrame(dt: number) {
     if (this.section.on) this.clipPlane.copy(this.clipPlaneLocal).applyMatrix4(this.model.root.matrixWorld);
     else { this.clipPlane.normal.set(0, 1, 0); this.clipPlane.constant = 1e9; }
-    // sombras del Sol: caja centrada en la cámara si está cerca, en la nave si no
-    this.sunLight.shadow.camera.updateProjectionMatrix();
-    // cámaras de las pantallas (render-to-texture, a ritmo reducido)
+    this.lighting.sunLight.shadow.camera.updateProjectionMatrix();
     this.camFrame = (this.camFrame + 1) % 4;
     if (this.camFrame === 0 && (this.cockpit.wantsCam || this.cockpit.wantsArmCam)) this.renderScreenCams();
     this.outline.selection.set(this.model.proxies.children as THREE.Object3D[]);
     this.renderer.info.reset();
     this.composer.render(dt);
   }
-  private camFrame = 0;
 
   private renderScreenCams() {
     const r = this.renderer;
@@ -1116,101 +1095,6 @@ export class Engine {
     this.astro.update(0, camKm, this.camera.getWorldQuaternion(new THREE.Quaternion()), this.camera.fov, this.camera.aspect, 1, this.renderer.getPixelRatio());
   }
 
-  // ---------------------------------------------------------------- efectos
-  private plumeMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.9, 0.95, 1.2), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
-  private hallMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.5, 0.7, 3.0), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
-  private engineMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(2.2, 1.5, 1.0), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
-  private buildPlumes() {
-    const cone = new THREE.ConeGeometry(0.12, 1.2, 16, 1, true); cone.translate(0, -0.6, 0);
-    const quads: [number, number, number, number][] = [];
-    for (const a of [Math.PI / 4, 3 * Math.PI / 4, 5 * Math.PI / 4, 7 * Math.PI / 4]) { quads.push([8.35, a, 2.26, 1]); quads.push([-4.05, a, 2.2, -1]); }
-    for (const [x, a, r] of quads) {
-      for (const dir of [1, -1]) {
-        const m = new THREE.Mesh(cone, this.plumeMat);
-        const p = b2t(x + dir * 0.2, r * Math.cos(a), r * Math.sin(a));
-        m.position.copy(p);
-        m.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), b2t(dir, 0, 0).normalize());
-        m.userData.dir = dir;
-        this.model.root.add(m);
-        this.plumeMeshes.push(m);
-      }
-    }
-    const big = new THREE.ConeGeometry(0.28, 3.2, 24, 1, true); big.translate(0, -1.6, 0);
-    for (const a of [Math.PI / 4, 3 * Math.PI / 4, 5 * Math.PI / 4, 7 * Math.PI / 4]) {
-      const m = new THREE.Mesh(big, this.engineMat);
-      m.position.copy(b2t(-6.35, 0.95 * Math.cos(a), 0.95 * Math.sin(a)));
-      m.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), b2t(-1, 0, 0).normalize());
-      this.model.root.add(m);
-    }
-    const hall = new THREE.ConeGeometry(0.16, 2.4, 20, 1, true); hall.translate(0, -1.2, 0);
-    for (const s of [1, -1]) for (const z of [0.2, -0.2]) {
-      const m = new THREE.Mesh(hall, this.hallMat);
-      m.position.copy(b2t(-5.6, s * 2.62, z));
-      m.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), b2t(-1, 0, 0).normalize());
-      this.model.root.add(m);
-    }
-  }
-  private plumeMeshes: THREE.Mesh[] = [];
-  private updatePlumes() {
-    const f = this.flight;
-    const vis = this.mode !== 'ENGINEERING' && this.model.explode === 0;
-    const fwd = f.rcsFiring.x;
-    this.plumeMat.opacity = vis ? Math.min(0.55, f.rcsActivity * 0.55) : 0;
-    for (const m of this.plumeMeshes) m.visible = vis && f.rcsActivity > 0.05 && (Math.abs(fwd) < 0.1 || Math.sign(-fwd) === m.userData.dir || f.rotFiring.lengthSq() > 0.01);
-    this.engineMat.opacity = vis ? f.throttle * 0.35 : 0;
-    this.hallMat.opacity = vis && this.systems.on('SEP') && f.throttle > 0 ? 0.3 : 0;
-  }
-
-  private updateMarkers() {
-    const show = this.systems.active('mmod_panel');
-    if (show && this.markers.children.length === 0) {
-      const ring = new THREE.Mesh(new THREE.RingGeometry(0.25, 0.32, 32), new THREE.MeshBasicMaterial({ color: new THREE.Color(3, 1.6, 0.2), toneMapped: false, side: THREE.DoubleSide }));
-      this.markers.add(ring);
-    }
-    this.markers.visible = show && (this.mode === 'EVA' || this.mode === 'FLIGHT' || this.mode === 'CINEMATIC');
-    if (show) {
-      const n = this.model.nodes.get(this.damagedPanel);
-      if (n) {
-        const c = this.model.currentBox(n).getCenter(new THREE.Vector3());
-        const out = c.clone().setX(0).normalize();
-        const p = this.model.root.localToWorld(c.clone().addScaledVector(out, 0.03));
-        const ring = this.markers.children[0];
-        ring.position.copy(p);
-        ring.quaternion.copy(this.interp.q).multiply(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), out));
-        ring.scale.setScalar(1 + 0.15 * Math.sin(performance.now() / 200));
-      }
-    }
-  }
-
-  private updateLabels() {
-    const want: PartNode[] = [];
-    const m = this.model;
-    if (this.mode === 'ENGINEERING' && this.labels && m.top) {
-      const sel = m.selected;
-      if (sel && sel.children.length && sel.depth >= 1) want.push(...sel.children);
-      else if (!sel) { want.push(...m.top.children); if (m.explode > 0.4) want.push(...(m.nodes.get('HAB')?.children ?? [])); }
-    }
-    const keep = new Set(want.map((n) => n.code));
-    for (const [code, el] of this.labelEls) if (!keep.has(code)) { el.remove(); this.labelEls.delete(code); }
-    const w = this.renderer.domElement.clientWidth, h = this.renderer.domElement.clientHeight;
-    for (const n of want.slice(0, 40)) {
-      if (n.sector === 'int' && !m.interiorLoaded) continue;
-      let el = this.labelEls.get(n.code);
-      if (!el) {
-        el = document.createElement('div');
-        el.className = 'label3d';
-        el.innerHTML = `<span class="dot"></span><span class="txt">${n.label}</span>`;
-        el.onclick = (e) => { e.stopPropagation(); this.select(n, true); };
-        this.labelsLayer.appendChild(el);
-        this.labelEls.set(n.code, el);
-      }
-      const v = m.currentBox(n).getCenter(new THREE.Vector3()).applyMatrix4(m.root.matrixWorld).project(this.camera);
-      el.style.opacity = v.z < 1 && Math.abs(v.x) < 1.05 && Math.abs(v.y) < 1.05 ? '1' : '0';
-      el.style.transform = `translate3d(${((v.x + 1) / 2) * w}px, ${((1 - v.y) / 2) * h}px, 0)`;
-    }
-  }
-
-  // ---------------------------------------------------------------- telemetría
   telemetry(): Telemetry {
     const s = this.flight.state;
     const qInv = s.q.clone().invert();
@@ -1220,11 +1104,12 @@ export class Engine {
       return { label: o.label, range, rate: -s.vel.dot(rel.normalize()), bearing: rel.clone().applyQuaternion(qInv).normalize() };
     });
     const alt = this.astro.altitude(this.shipKm());
+    const orbit = this.flight.computeOrbit(alt.body, alt.km);
     const dock = this.rangeTo('tesela') < 400 ? this.dockInfo() : null;
     const mc = this.missions.current();
     return {
       vel: s.vel.clone().applyQuaternion(qInv), w: s.w, q: s.q, throttle: this.flight.throttle, assist: this.flight.assist, rcsArmed: this.flight.rcsArmed,
-      mainArmed: this.flight.mainArmed, altKm: alt.km, body: alt.body, eclipse: this.astro.eclipse, targets, dock,
+      mainArmed: this.flight.mainArmed, altKm: alt.km, body: alt.body, eclipse: this.astro.eclipse, orbit, targets, dock,
       mission: mc ? { title: mc.title, step: mc.step, progress: mc.progress } : null, arm: this.mech.joints.map((j) => j.angle),
       checklist: [
         { label: 'Batería maestra', done: this.systems.sw.BAT }, { label: 'Buses A y B', done: this.systems.sw.BUSA && this.systems.sw.BUSB },
@@ -1242,75 +1127,113 @@ export class Engine {
     const s = this.flight.state;
     const tel = this.ready ? this.telemetry() : null;
     const alt = this.astro.altitude(this.shipKm());
+    const orbit = tel?.orbit ?? this.flight.computeOrbit(alt.body, alt.km);
     const info = this.renderer.info.render;
     if (this.toastMsg && performance.now() > this.toastMsg.until) this.toastMsg = null;
     return {
       mode: this.mode, flightCam: this.flightCam, ready: this.ready, interiorReady: this.interiorReady, progress: this.prog,
       speed: s.vel.length(), vel: tel ? [tel.vel.x, tel.vel.y, tel.vel.z] : [0, 0, 0], w: s.w.length(), throttle: this.flight.throttle, assist: this.flight.assist,
-      thrustScale: this.flight.thrustScale, docked: this.flight.docked, altKm: alt.km, body: alt.body, eclipse: this.astro.eclipse, seated: this.seated, eva: this.player.eva,
-      airlock: this.airlock, jetFuel: this.player.jetFuel, prompt: this.activity ? ACTIVITIES[this.activity.id].doing : this.hoverCtl ? this.ctlLabel(this.hoverCtl) : null, holdProgress: this.activity ? this.activity.t / ACTIVITIES[this.activity.id].dur : this.holdT,
-      crew: { needs: { ...this.crew.needs }, clock: this.crew.clockText(), samples: this.crew.samples, stored: this.crew.stored, log: [...this.crew.log] }, activity: this.activity ? { label: ACTIVITIES[this.activity.id].doing, p: this.activity.t / ACTIVITIES[this.activity.id].dur } : null, fade: this.fade,
-      locomotion: this.player.locomotion, crouch: this.player.crouch, climbing: this.player.climbing,
+      thrustScale: this.flight.thrustScale, docked: this.flight.docked, altKm: alt.km, body: alt.body, eclipse: this.astro.eclipse, orbit,
+      seated: this.seated, eva: this.player.eva, airlock: this.airlock, jetFuel: this.player.jetFuel,
+      prompt: this.activity ? ACTIVITIES[this.activity.id].doing : this.hoverCtl ? this.ctlLabel(this.hoverCtl) : null,
+      holdProgress: this.activity ? this.activity.t / ACTIVITIES[this.activity.id].dur : this.holdT,
+      crew: { needs: { ...this.crew.needs }, clock: this.crew.clockText(), samples: this.crew.samples, stored: this.crew.stored, log: [...this.crew.log], freeExplore: this.crew.freeExplore },
+      activity: this.activity ? { label: ACTIVITIES[this.activity.id].doing, p: this.activity.t / ACTIVITIES[this.activity.id].dur } : null,
+      fade: this.fade, locomotion: this.player.locomotion, crouch: this.player.crouch, climbing: this.player.climbing,
       systems: this.systems.snapshot(), alerts: this.systems.alerts.slice(0, 4).map((a) => ({ level: a.level, text: a.text })),
       mission: this.missions.current(), missionsDone: [...this.missions.done],
       sandbox: this.sandbox.active ? { score: this.sandbox.score, streak: this.sandbox.streak, shots: this.sandbox.shots } : null,
       stats: { fps: this.fpsAcc.fps, ms: this.frameMs, calls: info.calls, tris: info.triangles, dpr: this.renderer.getPixelRatio(), batches: this.model.stats.batches, instances: this.model.stats.instances },
-      dock: tel?.dock ?? null, targets: tel?.targets ?? [], explode: this.model.explode, xray: this.model.xray, section: this.section.on, hudHidden: this.hudHidden,
+      dock: tel?.dock ?? null, targets: tel?.targets ?? [],
+      explode: this.model.explode, explodePreset: this.model.explodePreset, xray: this.model.xray, section: this.section.on, hudHidden: this.hudHidden,
       toast: this.toastMsg?.t ?? null, scenario: this.scenario, inspect: this.inspect, arm: this.mech.joints.map((j) => j.angle), armGrabbed: this.mech.grabbed,
     };
   }
 
-  // ---------------------------------------------------------------- persistencia
+  // ---------------------------------------------------------------- persistencia v3 completa
   save() {
-    if (!this.ready) return;
-    try {
-      localStorage.setItem('alcion-bo-save', JSON.stringify({
-        v: 2, scenario: this.scenario, flight: this.flight.serialize(), systems: this.systems.snapshot(), player: this.player.serialize(), crew: this.crew.serialize(),
-        missionsDone: [...this.missions.done], airlock: this.airlock, seated: this.seated, mode: this.mode === 'MISSIONS' ? 'FLIGHT' : this.mode,
-        mechs: Object.fromEntries([...this.model.mechs.entries()].filter(([id]) => /^(hatch|shutter)/.test(id)).map(([id, n]) => [id, n.mech!.target])),
-      }));
-    } catch { /* almacenamiento no disponible */ }
+    if (!this.ready || !this.restored) return;
+    writeSave({
+      v: 3,
+      scenario: this.scenario,
+      mode: this.mode === 'MISSIONS' ? 'FLIGHT' : this.mode,
+      flightCam: this.flightCam,
+      seated: this.seated,
+      seatSide: this.seatSide,
+      airlock: this.airlock === 'vac' ? 'vac' : 'pres',
+      flight: this.flight.serialize(),
+      systems: this.systems.snapshot(),
+      player: this.player.serialize(),
+      crew: this.crew.serialize(),
+      missionsDone: [...this.missions.done],
+      arm: this.mech.joints.map((j) => j.angle),
+      armGrabbed: this.mech.grabbed,
+      mechs: Object.fromEntries([...this.model.mechs.entries()].filter(([id]) => /^(hatch|shutter)/.test(id)).map(([id, n]) => [id, n.mech!.target])),
+    });
   }
+
   restore() {
+    const o = readSave();
+    if (!o) return false;
     try {
-      const raw = localStorage.getItem('alcion-bo-save');
-      if (!raw) return false;
-      const o = JSON.parse(raw);
-      if (o.v !== 2) return false;
       this.setScenario(o.scenario ?? 'leo', true);
-      this.flight.deserialize(o.flight);
-      this.systems.load(o.systems);
-      this.player.deserialize(o.player);
-      this.crew.deserialize(o.crew);
+      if (o.flight) this.flight.deserialize(o.flight);
+      if (o.systems) this.systems.load(o.systems as any);
+      if (o.player) this.player.deserialize(o.player);
+      if (o.crew) this.crew.deserialize(o.crew);
       (o.missionsDone ?? []).forEach((d: string) => this.missions.done.add(d));
       this.airlock = o.airlock === 'vac' || o.airlock === 'pres' ? o.airlock : 'pres';
       for (const [id, v] of Object.entries(o.mechs ?? {})) this.model.setMech(id, v as number, true);
       for (const [id, on] of Object.entries(this.systems.sw)) this.model.setMech('sw:' + id, on ? 0.45 : -0.45, true);
+      // Restauración completa de brazo robótico, cámara, asiento y modo (v3!)
+      if (Array.isArray(o.arm) && o.arm.length === this.mech.joints.length) {
+        this.mech.joints.forEach((j, i) => { j.angle = j.target = o.arm![i]; });
+      }
+      if (o.armGrabbed !== undefined) this.mech.grabbed = o.armGrabbed;
+      if (typeof o.seatSide === 'number') this.seatSide = o.seatSide;
+      if (o.flightCam) this.flightCam = o.flightCam;
+      if (o.seated) {
+        this.seated = true;
+        this.flightCam = 'cockpit';
+        this.mode = 'FLIGHT';
+        this.camera.fov = 70; this.camera.updateProjectionMatrix();
+      } else if (o.mode && o.mode !== 'CINEMATIC') {
+        if (o.mode === 'EVA' && this.player.eva) { this.mode = 'EVA'; this.camera.fov = 70; this.camera.updateProjectionMatrix(); }
+        else if (o.mode === 'INTERIOR' && Player.insidePressurized(this.player.pos)) { this.mode = 'INTERIOR'; this.camera.fov = 72; this.camera.updateProjectionMatrix(); }
+        else if (o.mode === 'FLIGHT' || o.mode === 'ENGINEERING' || o.mode === 'SANDBOX') this.setMode(o.mode);
+      }
       this.toast('Estado restaurado');
       return true;
     } catch { return false; }
   }
+
   resetState() {
-    try { localStorage.removeItem('alcion-bo-save'); } catch { /* */ }
+    clearSave();
     this.systems = new Systems(false);
     this.systems.listeners.push((a) => { this.audio.beep(a.level === 'alarm' ? 'alarm' : a.level === 'warn' ? 'warn' : 'info'); });
     this.setScenario(this.scenario);
     for (const [id, on] of Object.entries(this.systems.sw)) this.model.setMech('sw:' + id, on ? 0.45 : -0.45, true);
     this.mech.grabbed = null; this.mech.setPose('stow');
     this.airlock = 'pres';
+    this.seated = false;
     this.setMode('CINEMATIC');
   }
-  loadSettings(): any { try { return JSON.parse(localStorage.getItem('alcion-bo-settings') ?? 'null'); } catch { return null; } }
+
+  loadSettings(): any { return readSettings(); }
   saveSettings(extra: Record<string, unknown> = {}) {
-    try { localStorage.setItem('alcion-bo-settings', JSON.stringify({ quality: this.quality, bindings: this.input.bindings, invertY: this.input.invertY, sens: this.input.sensitivity, volume: this.audio.volume, sound: this.audio.mode, reduced: this.reducedMotion, dynamicRes: this.dynamicRes, locomotion: this.player.locomotion, ...extra })); } catch { /* */ }
+    writeSettings({
+      quality: this.quality, bindings: this.input.bindings, invertY: this.input.invertY, sens: this.input.sensitivity,
+      volume: this.audio.volume, sound: this.audio.mode, reduced: this.reducedMotion, dynamicRes: this.dynamicRes,
+      locomotion: this.player.locomotion, freeExplore: this.crew.freeExplore, ...extra,
+    });
   }
 
-  /** Libera listeners, bucle, audio y memoria de GPU (geometrías, materiales, texturas, render targets). */
   dispose() {
     cancelAnimationFrame(this.raf);
     this.ac.abort();
     this.input.dispose();
     this.hands.dispose();
+    this.lighting.dispose();
     this.listeners.clear();
     try { (this.audio as any).ctx?.close?.(); } catch { /* */ }
     const seen = new Set<unknown>();
@@ -1323,9 +1246,11 @@ export class Engine {
         free(m);
       }
     });
+    free(this.near.environment);
+    free(this.cockpit.camRT); free(this.cockpit.armRT);
     this.composer?.dispose();
     this.renderer.dispose();
+    this.renderer.domElement.remove();
+    this.labelsLayer.remove();
   }
 }
-
-export { stageOf };

@@ -1,13 +1,8 @@
 /**
- * Modelo de la nave para el motor.
- *
- * Jerarquía lógica completa (nave → módulo → sistema → conjunto → pieza) en un
- * «rig» de transformaciones que NO se dibuja. El dibujado se hace con
- * THREE.BatchedMesh: un lote por material y sector (exterior/interior), con
- * una instancia por primitiva. Cada instancia conserva su identidad
- * (instancia → pieza), de modo que la selección, el aislamiento, la vista
- * explosionada y los mecanismos siguen funcionando pieza a pieza con una
- * sola llamada de dibujo por material.
+ * ALCIÓN HX-4 — PROJECT SINGULARITY
+ * Modelo de la nave sobre THREE.BatchedMesh preservando identidad de cada pieza,
+ * canal UV1 para lightmaps horneados en Cycles, atenuación dinámica por bahía
+ * vinculada a los interruptores de cabina, y actualización optimizada sin GC.
  */
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -62,7 +57,23 @@ interface Batch { key: string; bm: THREE.BatchedMesh; material: THREE.Material; 
 
 export const SECTION = { on: { value: 0 }, capA: { value: new THREE.Color(0xe2572b) }, capB: { value: new THREE.Color(0x7a2a12) } };
 
-function patchMaterial(m: THREE.Material, emissiveByColor: boolean) {
+/**
+ * Intensidades de luz en tiempo real por bahía [A, B, C, D, Nodo/Esclusa] que modulan
+ * dinámicamente el lightmap horneado en Cycles cuando el usuario acciona los interruptores LT_A..LT_N.
+ */
+export const BAY_LIGHTS = {
+  /** [Bay A Cockpit, Bay B Lab, Bay C Quarters, Bay D Services, Node+Airlock] */
+  value: [1.0, 1.0, 1.0, 1.0, 1.0],
+};
+
+/** Cascos interiores del sector 'ext' que también tienen UVMap_LM horneado en Cycles. */
+const INNER_SHELL_CODES = new Set([
+  'HAB.STR.CON', 'HAB.STR.DOM',
+  'FWD.STR.BRL', 'FWD.STR.BHF', 'FWD.STR.BHA', 'FWD.STR.CPR',
+  'FWD.ALK.STR', 'FWD.ALK.HO.DOOR', 'FWD.ALK.HO.FRM',
+]);
+
+function patchMaterial(m: THREE.Material, emissiveByColor: boolean, hasBakedLM: boolean) {
   if (m.userData.alcPatched) return;
   m.userData.alcPatched = true;
   const prev = m.onBeforeCompile;
@@ -71,41 +82,107 @@ function patchMaterial(m: THREE.Material, emissiveByColor: boolean) {
     sh.uniforms.uSection = SECTION.on;
     sh.uniforms.uCapA = SECTION.capA;
     sh.uniforms.uCapB = SECTION.capB;
+    sh.uniforms.uBayLight = BAY_LIGHTS;
+
+    if (hasBakedLM) {
+      // Pasamos la coordenada X en espacio de la nave (misma dirección X en Blender y Three.js)
+      // para atenuar el lightmap horneado de cada bahía según su interruptor físico LT_A..LT_N!
+      sh.vertexShader = 'varying float vShipX;\n' + sh.vertexShader;
+      sh.vertexShader = sh.vertexShader.replace(
+        '#include <begin_vertex>',
+        `#include <begin_vertex>
+         vec4 alcPos = vec4(transformed, 1.0);
+         #ifdef USE_BATCHING
+           alcPos = batchingMatrix * alcPos;
+         #endif
+         vShipX = alcPos.x;`
+      );
+      sh.fragmentShader = 'uniform float uBayLight[5];\nvarying float vShipX;\n' + sh.fragmentShader;
+      sh.fragmentShader = sh.fragmentShader.replace(
+        '#include <lightmap_fragment>',
+        `#include <lightmap_fragment>
+         #ifdef USE_LIGHTMAP
+           // Mezcla suave entre bahías contiguas (D < 2.65, C < 4.70, B < 6.75, A < 9.60, Nodo >= 9.60)
+           float wD = 1.0 - smoothstep(2.40, 2.90, vShipX);
+           float wC = smoothstep(2.40, 2.90, vShipX) * (1.0 - smoothstep(4.45, 4.95, vShipX));
+           float wB = smoothstep(4.45, 4.95, vShipX) * (1.0 - smoothstep(6.50, 7.00, vShipX));
+           float wA = smoothstep(6.50, 7.00, vShipX) * (1.0 - smoothstep(9.20, 9.85, vShipX));
+           float wN = smoothstep(9.20, 9.85, vShipX);
+           float bayGain = wD * uBayLight[3] + wC * uBayLight[2] + wB * uBayLight[1] + wA * uBayLight[0] + wN * uBayLight[4];
+           // Mantener un tenue rebote de luz de emergencia/pantallas (0.09) cuando una bahía se apaga
+           reflectedLight.indirectDiffuse *= mix(0.09, 1.0, clamp(bayGain, 0.0, 1.25));
+         #endif`
+      );
+    }
+
     sh.fragmentShader = 'uniform float uSection; uniform vec3 uCapA; uniform vec3 uCapB;\n' + sh.fragmentShader;
     if (emissiveByColor) {
-      sh.fragmentShader = sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n#ifdef USE_COLOR\n totalEmissiveRadiance *= vColor;\n#endif');
+      sh.fragmentShader = sh.fragmentShader.replace(
+        '#include <emissivemap_fragment>',
+        '#include <emissivemap_fragment>\n#ifdef USE_COLOR\n totalEmissiveRadiance *= vColor;\n#endif'
+      );
     }
-    sh.fragmentShader = sh.fragmentShader.replace('#include <dithering_fragment>', `#include <dithering_fragment>
-      if (uSection > 0.5 && !gl_FrontFacing) { float s = step(0.5, fract((gl_FragCoord.x + gl_FragCoord.y) / 14.0)); gl_FragColor = vec4(mix(uCapA, uCapB, s) * 0.85, 1.0); }`);
+    sh.fragmentShader = sh.fragmentShader.replace(
+      '#include <dithering_fragment>',
+      `#include <dithering_fragment>
+      if (uSection > 0.5 && !gl_FrontFacing) { float s = step(0.5, fract((gl_FragCoord.x + gl_FragCoord.y) / 14.0)); gl_FragColor = vec4(mix(uCapA, uCapB, s) * 0.85, 1.0); }`
+    );
   };
-  m.customProgramCacheKey = () => (emissiveByColor ? 'alc-em' : 'alc');
+  m.customProgramCacheKey = () => `alc-${emissiveByColor ? 'em' : 'std'}-${hasBakedLM ? 'lm' : 'nolm'}`;
 }
 
 function xrayMaterial() {
-  const m = new THREE.MeshStandardMaterial({ color: 0x9fb6d4, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
+  const m = new THREE.MeshStandardMaterial({
+    color: 0x9fb6d4, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+  });
   m.onBeforeCompile = (sh) => {
-    sh.fragmentShader = sh.fragmentShader.replace('#include <dithering_fragment>', `#include <dithering_fragment>
+    sh.fragmentShader = sh.fragmentShader.replace(
+      '#include <dithering_fragment>',
+      `#include <dithering_fragment>
       float fr = pow(1.0 - abs(dot(normalize(normal), normalize(vViewPosition))), 2.2);
-      gl_FragColor = vec4(vec3(0.62, 0.71, 0.83) * (fr + 0.025), fr * 0.55 + 0.025);`);
+      gl_FragColor = vec4(vec3(0.62, 0.71, 0.83) * (fr + 0.025), fr * 0.55 + 0.025);`
+    );
   };
   m.customProgramCacheKey = () => 'xray';
   return m;
 }
 
-/** Convierte cualquier geometría (incluida la cuantizada) a un formato común para los lotes. */
-function normalizeGeometry(g: THREE.BufferGeometry): THREE.BufferGeometry {
+/**
+ * Convierte cualquier geometría (incluida la cuantizada con meshopt) a un formato
+ * común para los BatchedMesh, PRESERVANDO el canal `uv1` (TEXCOORD_1) de lightmaps Cycles!
+ */
+function normalizeGeometry(g: THREE.BufferGeometry, includeUV1: boolean): THREE.BufferGeometry {
   const out = new THREE.BufferGeometry();
   const pos = g.attributes.position as THREE.BufferAttribute;
   const n = pos.count;
   const P = new Float32Array(n * 3), N = new Float32Array(n * 3), U = new Float32Array(n * 2);
-  for (let i = 0; i < n; i++) { P[i * 3] = pos.getX(i); P[i * 3 + 1] = pos.getY(i); P[i * 3 + 2] = pos.getZ(i); }
+  for (let i = 0; i < n; i++) {
+    P[i * 3] = pos.getX(i); P[i * 3 + 1] = pos.getY(i); P[i * 3 + 2] = pos.getZ(i);
+  }
   const nor = g.attributes.normal as THREE.BufferAttribute | undefined;
-  if (nor) for (let i = 0; i < n; i++) { N[i * 3] = nor.getX(i); N[i * 3 + 1] = nor.getY(i); N[i * 3 + 2] = nor.getZ(i); }
+  if (nor) for (let i = 0; i < n; i++) {
+    N[i * 3] = nor.getX(i); N[i * 3 + 1] = nor.getY(i); N[i * 3 + 2] = nor.getZ(i);
+  }
   const uv = g.attributes.uv as THREE.BufferAttribute | undefined;
-  if (uv) for (let i = 0; i < n; i++) { U[i * 2] = uv.getX(i); U[i * 2 + 1] = uv.getY(i); }
+  if (uv) for (let i = 0; i < n; i++) {
+    U[i * 2] = uv.getX(i); U[i * 2 + 1] = uv.getY(i);
+  }
   out.setAttribute('position', new THREE.BufferAttribute(P, 3));
   out.setAttribute('normal', new THREE.BufferAttribute(N, 3));
   out.setAttribute('uv', new THREE.BufferAttribute(U, 2));
+
+  if (includeUV1) {
+    const U1 = new Float32Array(n * 2);
+    const uv1 = g.attributes.uv1 as THREE.BufferAttribute | undefined;
+    if (uv1) {
+      for (let i = 0; i < n; i++) { U1[i * 2] = uv1.getX(i); U1[i * 2 + 1] = uv1.getY(i); }
+    } else {
+      // Punto neutro luminoso (0.004, 0.004) en el atlas para piezas sin UV1
+      for (let i = 0; i < n; i++) { U1[i * 2] = 0.004; U1[i * 2 + 1] = 0.004; }
+    }
+    out.setAttribute('uv1', new THREE.BufferAttribute(U1, 2));
+  }
+
   const idx = g.index ? Uint32Array.from(g.index.array as ArrayLike<number>) : Uint32Array.from({ length: n }, (_, i) => i);
   out.setIndex(new THREE.BufferAttribute(idx, 1));
   if (!nor) out.computeVertexNormals();
@@ -116,10 +193,10 @@ function normalizeGeometry(g: THREE.BufferGeometry): THREE.BufferGeometry {
 
 const STANDALONE_MAT = /^M_Screen/;
 
+export type ExplodePreset = 'all' | 'hull' | 'interior' | 'service' | 'power';
+
 export class ShipModel {
-  /** raíz de dibujado (se mueve con la nave) */
   root = new THREE.Group();
-  /** rig lógico de transformaciones (no se dibuja) */
   rig = new THREE.Object3D();
   nodes = new Map<string, PartNode>();
   top: PartNode | null = null;
@@ -129,16 +206,18 @@ export class ShipModel {
   mechs = new Map<string, PartNode>();
   controls = new Map<string, PartNode[]>();
   explode = 0;
+  explodePreset: ExplodePreset = 'all';
   xray = false;
   selected: PartNode | null = null;
   isolate: PartNode | null = null;
   interiorLoaded = false;
-  /** matrices adicionales de mecanismos especiales (brazo, radiadores) */
   extra = new Map<string, THREE.Matrix4>();
   hideExteriorSkin = false;
   showInterior = true;
   private dirty = true;
   private visDirty = true;
+  private lastHideSkin = false;
+  private lastShowInt = true;
   private instByMesh = new Map<THREE.Mesh, Inst[]>();
   stats = { batches: 0, instances: 0, tris: 0 };
 
@@ -202,47 +281,60 @@ export class ShipModel {
       for (const ch of o.children) register(ch, node);
     };
     if (sector === 'ext') register(rootObj, null);
-    else for (const pn of ['HAB', 'FWD']) { const p = this.nodes.get(pn)!; for (const ch of p.obj.children) if (!this.nodes.has((ch.userData as any)?.code) || this.nodes.get((ch.userData as any).code)!.obj !== ch) register(ch, p); }
+    else for (const pn of ['HAB', 'FWD']) {
+      const p = this.nodes.get(pn)!;
+      for (const ch of p.obj.children) {
+        if (!this.nodes.has((ch.userData as any)?.code) || this.nodes.get((ch.userData as any).code)!.obj !== ch) register(ch, p);
+      }
+    }
     this.rig.updateMatrixWorld(true);
-    // reunir mallas por material
-    const groups = new Map<string, { mat: THREE.Material; items: { mesh: THREE.Mesh; node: PartNode }[] }>();
-    const nodeOf = (o: THREE.Object3D | null): PartNode | null => { while (o) { const c = (o.userData as any)?.code; if (c && this.nodes.has(c)) return this.nodes.get(c)!; o = o.parent; } return null; };
+
+    const groups = new Map<string, { mat: THREE.Material; lm: boolean; items: { mesh: THREE.Mesh; node: PartNode }[] }>();
+    const nodeOf = (o: THREE.Object3D | null): PartNode | null => {
+      while (o) { const c = (o.userData as any)?.code; if (c && this.nodes.has(c)) return this.nodes.get(c)!; o = o.parent; }
+      return null;
+    };
     rootObj.updateMatrixWorld(true);
     const meshes: THREE.Mesh[] = [];
     const scan = sector === 'ext' ? [rootObj] : fresh.filter((n) => n.parent && !fresh.includes(n.parent)).map((n) => n.obj);
     for (const s of scan) s.traverse((o) => { if ((o as THREE.Mesh).isMesh) meshes.push(o as THREE.Mesh); });
+
     for (const mesh of meshes) {
       const node = nodeOf(mesh);
       if (!node) continue;
-      const mat = enhanceMaterial(mesh.material as THREE.Material) as THREE.MeshStandardMaterial;
+      // Interior sector + inner pressure shells receive Cycles baked lightmap via uv1!
+      const wantLM = (sector === 'int' || INNER_SHELL_CODES.has(node.code) || node.code.startsWith('FWD.ALK.INT')) && !!(mesh.geometry.attributes.uv1);
+      const mat = enhanceMaterial(mesh.material as THREE.Material, wantLM) as THREE.MeshStandardMaterial;
       mesh.material = mat;
       mesh.visible = false;
+
       if (STANDALONE_MAT.test(mat.name) || (node.ctl ?? '').startsWith('scr:')) {
         const m2 = new THREE.Mesh(mesh.geometry, mat);
         m2.matrixAutoUpdate = false;
         m2.castShadow = false; m2.receiveShadow = false;
         m2.userData.node = node;
-        patchMaterial(mat, false);
+        patchMaterial(mat, false, false);
         this.root.add(m2);
         this.standalone.push({ mesh: m2, src: mesh, node });
         continue;
       }
-      const key = sector + ':' + mat.name;
-      if (!groups.has(key)) groups.set(key, { mat, items: [] });
+      const key = `${sector}:${wantLM ? 'lm' : 'std'}:${mat.name}`;
+      if (!groups.has(key)) groups.set(key, { mat, lm: wantLM, items: [] });
       groups.get(key)!.items.push({ mesh, node });
     }
-    for (const [key, { mat, items }] of groups) {
+
+    for (const [key, { mat, lm, items }] of groups) {
       const geos = new Map<THREE.BufferGeometry, THREE.BufferGeometry>();
       let v = 0, i = 0;
       for (const it of items) {
         if (!geos.has(it.mesh.geometry)) {
-          const ng = normalizeGeometry(it.mesh.geometry);
+          const ng = normalizeGeometry(it.mesh.geometry, lm);
           geos.set(it.mesh.geometry, ng);
           v += ng.attributes.position.count; i += ng.index!.count;
         }
       }
-      const emissive = /^M_(LED|NavLight|Screen)/.test(mat.name) || (mat as THREE.MeshStandardMaterial).emissiveIntensity > 0 && (mat as any).emissive?.getHex?.() > 0;
-      patchMaterial(mat, emissive);
+      const emissive = /^M_(LED|NavLight|Screen|CrewAtlasEmit)/.test(mat.name) || ((mat as THREE.MeshStandardMaterial).emissiveIntensity > 0 && (mat as any).emissive?.getHex?.() > 0);
+      patchMaterial(mat, emissive, !!(mat as any).userData?.hasBakedLM);
       const bm = new THREE.BatchedMesh(items.length + geos.size + 8, v, i, mat);
       bm.castShadow = !(mat as any).userData?.glass;
       bm.receiveShadow = true;
@@ -257,10 +349,9 @@ export class ShipModel {
       for (const it of items) {
         const id = bm.addInstance(gid.get(it.mesh.geometry)!);
         bm.setMatrixAt(id, it.mesh.matrixWorld);
-        // variación sutil entre piezas: lote de fabricación, exposición UV, polvo
         if (variant) {
           const h = hash(it.node.code);
-          col.setRGB(0.94 + 0.06 * h, 0.94 + 0.06 * hash(it.node.code + 'g') * 0.9 + 0.06 * h * 0.1, 0.93 + 0.07 * hash(it.node.code + 'b') * 0.8);
+          col.setRGB(0.95 + 0.05 * h, 0.95 + 0.05 * hash(it.node.code + 'g') * 0.9 + 0.05 * h * 0.1, 0.94 + 0.06 * hash(it.node.code + 'b') * 0.8);
         } else col.setRGB(1, 1, 1);
         bm.setColorAt(id, col);
         const inst: Inst = { batch, id, mesh: it.mesh, node: it.node };
@@ -307,16 +398,25 @@ export class ShipModel {
     this.applyTransforms(true);
   }
 
-  // ------------------------------------------------------------ transformaciones
+  // ------------------------------------------------------------ transformaciones sin asignaciones por fotograma
   private tmp = new THREE.Matrix4();
   private tmp2 = new THREE.Matrix4();
+  private tmp3 = new THREE.Matrix4();
   private q = new THREE.Quaternion();
 
-  /** local = T(explosión) · R(mecanismo) · M(base) */
+  private presetMatches(code: string): boolean {
+    switch (this.explodePreset) {
+      case 'all': return true;
+      case 'hull': return code.startsWith('HAB.MMOD') || code.startsWith('HAB.MLI') || code.startsWith('FWD.MMOD') || code.startsWith('FWD.CUP');
+      case 'interior': return code.startsWith('HAB.INT') || code.startsWith('HAB.UTL') || code.startsWith('FWD.INT') || code.startsWith('HAB.MMOD');
+      case 'service': return code.startsWith('SVC') || code.startsWith('PRP');
+      case 'power': return code.startsWith('PWR') || code.startsWith('THR') || code.startsWith('COM') || code.startsWith('RBT');
+    }
+  }
+
   private composeLocal(n: PartNode) {
-    const k = n.parent ? stageOf(n.depth, this.explode) : 0;
+    let k = (n.parent && this.explode > 0 && this.presetMatches(n.code)) ? stageOf(n.depth, this.explode) : 0;
     let exk = k;
-    // explosión de subsistema: un antecesor con localEx > 0 separa su rama
     let a: PartNode | null = n.parent;
     while (a) { if (a.localEx > 0) { exk = Math.max(exk, a.localEx); break; } a = a.parent; }
     const m = n.obj.matrix;
@@ -327,7 +427,7 @@ export class ShipModel {
         this.q.setFromAxisAngle(mech.axis, mech.value);
         this.tmp.makeTranslation(mech.pivot.x, mech.pivot.y, mech.pivot.z)
           .multiply(this.tmp2.makeRotationFromQuaternion(this.q))
-          .multiply(new THREE.Matrix4().makeTranslation(-mech.pivot.x, -mech.pivot.y, -mech.pivot.z));
+          .multiply(this.tmp3.makeTranslation(-mech.pivot.x, -mech.pivot.y, -mech.pivot.z));
       } else {
         this.tmp.makeTranslation(mech.axis.x * mech.value, mech.axis.y * mech.value, mech.axis.z * mech.value);
       }
@@ -346,16 +446,26 @@ export class ShipModel {
     if (!this.dirty && !force) return false;
     for (const n of this.nodes.values()) this.composeLocal(n);
     this.rig.updateMatrixWorld(true);
-    for (const b of this.batches) for (const it of b.insts) if (it) b.bm.setMatrixAt(it.id, it.mesh.matrixWorld);
+    for (const b of this.batches) {
+      for (const it of b.insts) if (it) b.bm.setMatrixAt(it.id, it.mesh.matrixWorld);
+    }
     for (const s of this.standalone) s.mesh.matrix.copy(s.src.matrixWorld);
     for (const p of this.proxies.children as THREE.Mesh[]) p.matrix.copy((p.userData.src as THREE.Mesh).matrixWorld);
     this.dirty = false;
     return true;
   }
 
-  setExplode(t: number) { this.explode = t; this.dirty = true; }
+  setExplode(t: number, preset?: ExplodePreset) {
+    this.explode = t;
+    if (preset) this.explodePreset = preset;
+    this.dirty = true;
+  }
 
-  /** Avanza los mecanismos hacia su objetivo. Devuelve actividad (0..1) para el audio. */
+  setExplodePreset(preset: ExplodePreset) {
+    this.explodePreset = preset;
+    this.dirty = true;
+  }
+
   stepMechs(dt: number) {
     let act = 0;
     for (const n of this.mechs.values()) {
@@ -365,7 +475,7 @@ export class ShipModel {
       const step = Math.sign(d) * Math.min(Math.abs(d), m.speed * dt);
       m.value += step;
       this.dirty = true;
-      if (!n.code.includes('TGL') && !n.code.includes('.L') ) act = Math.max(act, 1);
+      if (!n.code.includes('TGL') && !n.code.includes('.L')) act = Math.max(act, 1);
       else act = Math.max(act, 0.25);
     }
     return act;
@@ -386,9 +496,20 @@ export class ShipModel {
     return open !== m.rest;
   }
 
-  // ------------------------------------------------------------ visibilidad
+  // ------------------------------------------------------------ visibilidad (sólo se recalcula cuando cambia!)
   private skinPrefixes = ['HAB.MMOD', 'HAB.MLI', 'FWD.MMOD', 'SVC.SKN', 'PRP', 'SVC.PRP', 'SVC.STR'];
   private isSkin(n: PartNode) { return this.skinPrefixes.some((p) => n.code === p || n.code.startsWith(p + '.')); }
+
+  /** Sincroniza visibilidad exterior/interior sin ensuciar cada fotograma. */
+  setInteriorVisibility(hideSkin: boolean, showInt: boolean) {
+    if (hideSkin !== this.lastHideSkin || showInt !== this.lastShowInt) {
+      this.hideExteriorSkin = hideSkin;
+      this.showInterior = showInt;
+      this.lastHideSkin = hideSkin;
+      this.lastShowInt = showInt;
+      this.visDirty = true;
+    }
+  }
 
   updateVisibility() {
     if (!this.visDirty) return;
@@ -403,12 +524,11 @@ export class ShipModel {
         if (!it) continue;
         let v = !hiddenBy(it.node) && (!keep || keep.has(it.mesh));
         if (this.hideExteriorSkin && this.isSkin(it.node)) v = false;
-        if (selected && selected.has(it.mesh)) v = false; // se dibuja con su proxy
+        if (selected && selected.has(it.mesh)) v = false;
         b.bm.setVisibleAt(it.id, v);
       }
     }
     for (const s of this.standalone) s.mesh.visible = !hiddenBy(s.node) && (!keep || keep.has(s.src)) && (s.node.sector === 'ext' || this.showInterior);
-    // proxies de la selección (dibujados con su material original y contorno)
     for (const p of [...this.proxies.children]) this.proxies.remove(p);
     if (this.selected) {
       for (const m of this.selected.meshes) {
@@ -437,30 +557,36 @@ export class ShipModel {
   setHidden(n: PartNode, h: boolean) { n.hidden = h; this.visDirty = true; }
   showAll() { for (const n of this.nodes.values()) n.hidden = false; this.isolate = null; this.visDirty = true; }
 
-  /** Color por instancia (emisión de luminarias/pantallas, variaciones). */
   setNodeColor(n: PartNode, c: THREE.Color) {
     for (const m of n.meshes) for (const it of this.instByMesh.get(m) ?? []) it.batch.bm.setColorAt(it.id, c);
   }
 
-  // ------------------------------------------------------------ selección
+  // ------------------------------------------------------------ selección y plano de corte
+  clip: THREE.Plane | null = null;
+
   pick(raycaster: THREE.Raycaster): { node: PartNode; point: THREE.Vector3; dist: number } | null {
-    const objs: THREE.Object3D[] = [...this.batches.filter((b) => b.bm.visible).map((b) => b.bm), ...this.standalone.filter((s) => s.mesh.visible).map((s) => s.mesh), ...this.proxies.children];
+    const objs: THREE.Object3D[] = [
+      ...this.batches.filter((b) => b.bm.visible).map((b) => b.bm),
+      ...this.standalone.filter((s) => s.mesh.visible).map((s) => s.mesh),
+      ...this.proxies.children,
+    ];
     const hits = raycaster.intersectObjects(objs, false);
     for (const h of hits) {
       if (SECTION.on.value > 0.5 && this.clip && this.clip.distanceToPoint(h.point) < 0) continue;
-      let node: PartNode | null = null;
-      const bm = h.object as THREE.BatchedMesh;
-      if ((bm as any).isBatchedMesh && h.batchId !== undefined) node = (bm.userData.batch as Batch).insts[h.batchId]?.node ?? null;
-      else if (h.object.userData.node) node = h.object.userData.node;
-      else if (h.object.userData.src) node = this.nodeOfMesh(h.object.userData.src);
-      if (this.xray && this.selected && node && !this.selected.meshes.some((m) => node!.meshes.includes(m))) continue;
-      if (node) return { node, point: h.point, dist: h.distance };
+      const obj = h.object as any;
+      if (obj.userData?.batch && h.batchId != null) {
+        const inst = (obj.userData.batch as Batch).insts[h.batchId];
+        if (inst) return { node: inst.node, point: h.point.clone(), dist: h.distance };
+      }
+      if (obj.userData?.node) return { node: obj.userData.node as PartNode, point: h.point.clone(), dist: h.distance };
+      if (obj.userData?.src) {
+        const n = this.nodeOfMesh(obj.userData.src as THREE.Mesh);
+        if (n) return { node: n, point: h.point.clone(), dist: h.distance };
+      }
     }
     return null;
   }
-  clip: THREE.Plane | null = null;
 
-  /** Centro actual (con explosión) de un nodo en espacio de nave. */
   currentBox(n: PartNode) {
     const b = new THREE.Box3();
     for (const m of n.meshes) {
@@ -481,11 +607,21 @@ export class ShipModel {
     return out;
   }
 
-  drawCallsEstimate() { return this.batches.filter((b) => b.bm.visible).length + this.standalone.length + this.proxies.children.length; }
+  setClip(plane: THREE.Plane | null) {
+    this.clip = plane;
+    SECTION.on.value = plane ? 1 : 0;
+    const planes = plane ? [plane] : [];
+    for (const b of this.batches) {
+      b.material.clippingPlanes = planes;
+      b.material.side = plane ? THREE.DoubleSide : (b.material.name === 'M_Leaf' ? THREE.DoubleSide : THREE.FrontSide);
+      b.xray.clippingPlanes = planes;
+    }
+    for (const s of this.standalone) (s.mesh.material as THREE.Material).clippingPlanes = planes;
+  }
 }
 
 function hash(s: string) {
   let h = 2166136261;
   for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
-  return ((h >>> 0) % 10000) / 10000;
+  return (h >>> 0) / 4294967296;
 }

@@ -220,64 +220,14 @@ SEAT_PARTS = [
 
 
 def seat_meshes(cmd=False):
-    """Asiento dividido en subpiezas inspeccionables. El tripulante mira a +X."""
-    tag = "cmd" if cmd else "std"
-    R = Matrix.Rotation(-0.18, 4, 'Y')
-    frm = MB(f"seat_{tag}_frame")
-    for y in (-0.24, 0.24):
-        frm.tube("M_AlBare", [(-0.30, y, -0.55), (-0.30, y, -0.20), (0.15, y, -0.20), (0.32, y, -0.05)], 0.018, 10, round_r=0.05)
-        frm.tube("M_AlBare", [(-0.30, y, -0.20), (-0.42, y, 0.45)], 0.018, 10)
-        frm.box("M_AlBare", 0.10, 0.06, 0.03, center=(-0.30, y, -0.565))
-    frm.tube("M_AlBare", [(-0.30, -0.24, -0.55), (-0.30, 0.24, -0.55)], 0.02, 10)
-    frm.tube("M_AlBare", [(0.32, -0.24, -0.05), (0.32, 0.24, -0.05)], 0.016, 10)
-    csh = MB(f"seat_{tag}_cushion")
-    csh.box("M_InteriorGrey", 0.46, 0.50, 0.03, center=(-0.06, 0, -0.17))
-    csh.box("M_SeatCushion", 0.44, 0.46, 0.06, center=(-0.06, 0, -0.125))
-    csh.box("M_InteriorGrey", 0.03, 0.50, 0.66, center=(-0.37, 0, 0.13), rot=R)
-    csh.box("M_SeatCushion", 0.06, 0.46, 0.62, center=(-0.33, 0, 0.13), rot=R)
-    csh.box("M_SeatCushion", 0.08, 0.28, 0.18, center=(-0.40, 0, 0.56), rot=R)
-    for y in (-0.17, 0.17):
-        csh.box("M_SeatCushion", 0.07, 0.07, 0.22, center=(-0.35, y, 0.56), rot=R)
-    hrn = MB(f"seat_{tag}_harness")
-    for y in (-0.12, 0.12):
-        hrn.box("M_FabricBlue", 0.012, 0.045, 0.52, center=(-0.285, y, 0.15), rot=R)
-    hrn.box("M_FabricBlue", 0.012, 0.42, 0.045, center=(-0.11, 0, -0.085))
-    hrn.box("M_FabricBlue", 0.30, 0.045, 0.012, center=(-0.05, 0, -0.088))
-    hrn.cyl("M_AlBare", 0.045, 0.045, 0.02, 20, center=(-0.12, 0, -0.07), axis='X')
-    arm = MB(f"seat_{tag}_arms")
-    for y in (-0.29, 0.29):
-        arm.box("M_InteriorGrey", 0.36, 0.07, 0.04, center=(-0.12, y, 0.02))
-        arm.box("M_AlBare", 0.03, 0.03, 0.18, center=(-0.24, y, -0.07))
-    if cmd:
-        arm.cyl("M_AlAnodBlack", 0.035, 0.035, 0.07, 16, center=(0.02, 0.29, 0.08), axis='Z')
-        arm.sphere("M_InteriorDark", 0.04, 16, 8, center=(0.02, 0.29, 0.14), scale=(1, 1, 1.4))
-        arm.box("M_AlAnodBlack", 0.07, 0.07, 0.06, center=(0.02, -0.29, 0.07))
-        arm.cyl("M_InteriorDark", 0.02, 0.03, 0.12, 16, center=(0.02, -0.29, 0.15), axis='Z')
-        arm.box("M_LEDRed", 0.012, 0.012, 0.004, center=(0.03, -0.29, 0.215))
-    ftr = MB(f"seat_{tag}_foot")
-    ftr.tube("M_AlBare", [(0.32, -0.24, -0.05), (0.62, -0.20, -0.30), (0.62, 0.20, -0.30), (0.32, 0.24, -0.05)], 0.016, 10, round_r=0.06)
-    ftr.box("M_Rubber", 0.10, 0.40, 0.02, center=(0.62, 0, -0.31))
-    return {"FRM": frm.mesh(smooth=40), "CSH": csh.mesh(smooth=40, bevel=0.008), "HRN": hrn.mesh(smooth=40),
-            "ARM": arm.mesh(smooth=40), "FTR": ftr.mesh(smooth=40)}
+    """Asiento ergonómico esculpido dividido en 5 subpiezas inspeccionables. El tripulante mira a +X."""
+    from .singularity_geo import build_ergonomic_seat_meshes
+    return build_ergonomic_seat_meshes(cmd)
 
 
 def console_mesh(side):
-    mb = MB(f"console_{side}")
-    # pedestal anclado al suelo, panel inclinado mirando a -X (hacia los asientos)
-    mb.box("M_InteriorDark", 0.30, 0.78, 0.70, center=(0.0, 0, -0.80))
-    R = Matrix.Rotation(-0.55, 4, 'Y')
-    mb.box("M_InteriorGrey", 0.08, 0.86, 0.62, center=(-0.05, 0, -0.18), rot=R)
-    mb.box("M_InteriorDark", 0.04, 0.80, 0.56, center=(-0.10, 0, -0.17), rot=R)
-    # filas de teclas de bisel
-    for k in range(6):
-        for s in (-1, 1):
-            mb.box("M_InteriorGrey", 0.02, 0.035, 0.025, center=(-0.12, s * 0.38, -0.40 + 0.08 * k), rot=R)
-    mb.box("M_InteriorGrey", 0.28, 0.70, 0.04, center=(-0.22, 0, -0.50))
-    for k in range(12):
-        for j in range(3):
-            mb.box("M_InteriorDark", 0.03, 0.045, 0.012, center=(-0.28 + 0.06 * j, -0.30 + 0.055 * k, -0.475))
-    mb.tube("M_Handrail", [(-0.30, -0.42, -0.42), (-0.36, -0.42, -0.36), (-0.36, 0.42, -0.36), (-0.30, 0.42, -0.42)], 0.012, 10, round_r=0.04)
-    return mb.mesh(smooth=35, bevel=0.006)
+    from .singularity_geo import build_ergonomic_console_mesh
+    return build_ergonomic_console_mesh(side)
 
 
 def switch_panel_mesh():
@@ -308,25 +258,33 @@ def _bay_A(g, x0, x1):
                         "Bastidor de aviónica de cabina con pantalla multifunción auxiliar.", lockers=False)
         mb = MB(f"avx_front_{side}")
         front_panel(mb, RACK_W - 0.04, 2.16, "M_InteriorGrey")
-        mb.box("M_InteriorDark", 0.62, 0.42, 0.03, center=(0, 0.45, 0.03))
+        mb.box("M_InteriorDark", 0.64, 0.44, 0.032, center=(0, 0.45, 0.03))
         for k in range(8):
-            mb.box("M_InteriorPanel", 0.08, 0.03, 0.03, center=(-0.30 + 0.085 * k, 0.18, 0.03))
+            mb.box("M_InteriorPanel", 0.075, 0.03, 0.03, center=(-0.30 + 0.085 * k, 0.18, 0.03))
         for k in range(10):
-            mb.box("M_AlAnodBlack", 0.86, 0.008, 0.012, center=(0, -0.95 + 0.06 * k, 0.026))
-        place(f"HAB.INT.A.{side}W.FRT", "Panel frontal de aviónica", mb.mesh(smooth=None), gw, W, explode=tuple(n * 0.3),
+            mb.box("M_AlAnodBlack", 0.86, 0.009, 0.014, center=(0, -0.95 + 0.06 * k, 0.026))
+        place(f"HAB.INT.A.{side}W.FRT", "Panel frontal de aviónica", mb.mesh(smooth=None, bevel=0.003), gw, W, explode=tuple(n * 0.3),
               desc="Panel con rejilla de ventilación forzada y teclado de función.")
+        # Corrección de orientación para CanvasTexture (flipY=true sobre UV glTF):
+        # en pared de babor (+Y apunta a +Z) rotar 180° en Z; en estribor (+Y apunta a -Z) queda derecho
+        rz_scr = PI if wall == "port" else 0.0
         sp = place(f"HAB.INT.A.{side}W.SCR", "Pantalla multifunción auxiliar", screen_mesh(f"scr_aux_{side}", 0.56, 0.36, "ECLSS" if side == "P" else "TRAJ"),
-                   gw, W, L(0, 0.45, 0.047), explode=tuple(n * 0.45), desc="Pantalla de 26\" de sistemas.")
+                   gw, W, L(0, 0.45, 0.049, rz=rz_scr), explode=tuple(n * 0.45), desc="Pantalla de 26\" de sistemas.")
         ctl(sp, f"scr:AUX{side}")
         rack(g, f"HAB.INT.A.{side}2", f"Bastidor de estiba A ({WALL_LBL[wall]})", wall, xa, "Estiba de uso diario.")
+    # Detalle estructural del mamparo cónico de proa (nervios radiales, brida de escotilla, asideros y mantas acústicas)
+    from .singularity_geo import build_forward_bulkhead_detail_mesh
+    part("HAB.INT.A.BHD", "Estructura interior y revestimiento del mamparo de proa",
+         build_forward_bulkhead_detail_mesh(), g, explode=(0.5, 0, 0),
+         desc="Nervios radiales mecanizados, brida atornillada de escotilla, mantas acústicas, pasamanos IVA e intercomunicador.")
     # consolas y asientos
     cg = group("HAB.INT.A.CNS", "Consolas de pilotaje", g, explode=(0.0, 0, 0.9),
-               desc="Dos consolas independientes (comandante y piloto) con 3 pantallas cada una; el pasillo central queda libre hacia la escotilla del nodo.")
+               desc="Dos consolas independientes (comandante y piloto) con visera antideslumbramiento, anunciadores y 3 pantallas cada una.")
     for i, (y, lbl) in enumerate(((0.62, "comandante"), (-0.62, "piloto"))):
         sub = group(f"HAB.INT.A.CNS.C{i+1}", f"Consola del {lbl}", cg, explode=(0, 0.5 * (1 if y > 0 else -1), 0))
         Wc = Matrix.Translation((x1 - 0.22, y, -0.15))
-        place(f"HAB.INT.A.CNS.C{i+1}.STR", "Pedestal y bisel", shared(f"console", lambda: console_mesh("x")), sub, Wc,
-              explode=("none", 0), desc="Pedestal con electrónica de pantalla y teclado de entrada de datos.")
+        place(f"HAB.INT.A.CNS.C{i+1}.STR", "Pedestal, visera y panel de teclas", shared("console", lambda: console_mesh("x")), sub, Wc,
+              explode=("none", 0), desc="Pedestal de CFRP con visera antideslumbramiento, anunciadores, teclas de bisel, codificadores y teclado.")
         keys = ("PFD", "TRAJ", "CAMERA") if i == 0 else ("CAMERA", "PFD", "ECLSS")
         for k, key in enumerate(keys):
             yy = (-0.27 + 0.27 * k)
@@ -335,13 +293,13 @@ def _bay_A(g, x0, x1):
                        explode=(-0.25, 0, 0.12), desc="Pantalla táctil de 13\" de alto brillo con unidad de visualización redundante.")
             ctl(sp, f"scr:C{i+1}D{k+1}")
     sg = group("HAB.INT.A.SEAT", "Asientos de tripulación", g, explode=(-0.6, 0, 0.5),
-               desc="4 asientos con arnés de 5 puntos para fases dinámicas (encendidos de motor, atraque).")
+               desc="4 asientos ergonómicos de CFRP con acolchado acolchado multicapa y arnés de 5 puntos.")
     for i, (x, y, cmd, lbl) in enumerate([(x1 - 1.05, 0.62, True, "Comandante"), (x1 - 1.05, -0.62, True, "Piloto"),
                                            (x0 + 0.42, 0.62, False, "Especialista 1"), (x0 + 0.42, -0.62, False, "Especialista 2")]):
         z = -0.42 if cmd else -0.30
         meshes = shared(f"seat_{cmd}", lambda: seat_meshes(cmd))
         g2 = group(f"HAB.INT.A.SEAT.S{i+1}", f"Asiento {lbl}", sg, explode=("auto", 0.5),
-                   desc="Asiento de CFRP/aluminio con amortiguación, regulable en altura" + (", con controladores manuales de traslación y rotación." if cmd else "."))
+                   desc="Asiento monocasco de CFRP/aluminio con cojines contorneados, amortiguadores y arnés de 5 puntos" + (", con controladores manuales de traslación y rotación." if cmd else "."))
         ctl(g2, f"seat:{i+1}")
         offs = {"FRM": (0, 0, -0.25), "CSH": (0, 0, 0.12), "HRN": (0.22, 0, 0.05), "ARM": (0, 0.22 if y > 0 else -0.22, 0.05), "FTR": (0.25, 0, -0.1)}
         for key, plbl, pdesc in SEAT_PARTS:
@@ -351,49 +309,18 @@ def _bay_A(g, x0, x1):
 # --- Bahía B: laboratorio ---------------------------------------------------
 
 def glovebox_mesh():
-    mb = MB("glovebox")
-    front_panel(mb, RACK_W - 0.04, 2.16, "M_InteriorPanel")
-    mb.box("M_InteriorGrey", 0.88, 0.95, 0.38, center=(0, 0.25, 0.19))
-    mb.box("M_GlassInner", 0.80, 0.70, 0.01, center=(0, 0.30, 0.385))
-    mb.box("M_Glass", 0.80, 0.70, 0.005, center=(0, 0.30, 0.39))
-    for x in (-0.2, 0.2):
-        mb.torus("M_InteriorDark", 0.075, 0.018, 24, 8, center=(x, -0.12, 0.39), axis='Z')
-        mb.cyl("M_Rubber", 0.07, 0.05, 0.25, 16, center=(x, -0.12, 0.27), axis='Z')
-    mb.box("M_LED", 0.70, 0.02, 0.01, center=(0, 0.66, 0.37))
-    mb.box("M_InteriorDark", 0.88, 0.20, 0.06, center=(0, -0.55, 0.03))
-    for k in range(5):
-        mb.cyl("M_AlBare", 0.015, 0.015, 0.02, 12, center=(-0.3 + 0.15 * k, -0.55, 0.07), axis='Z')
-    return mb.mesh(smooth=None)
+    from .singularity_geo import build_glovebox_mesh
+    return build_glovebox_mesh()
 
 
 def freezer_mesh():
-    mb = MB("freezer")
-    front_panel(mb, RACK_W - 0.04, 2.16, "M_InteriorPanel")
-    for j in range(4):
-        y = -0.80 + 0.52 * j
-        mb.box("M_ShieldWhite", 0.86, 0.46, 0.05, center=(0, y, 0.035))
-        mb.box("M_InteriorGrey", 0.40, 0.04, 0.03, center=(0, y - 0.18, 0.075))
-        mb.box("M_LEDGreen", 0.03, 0.015, 0.006, center=(0.36, y + 0.18, 0.063))
-        mb.box("M_ScreenAmber", 0.12, 0.05, 0.004, center=(0.27, y + 0.18, 0.062))
-    return mb.mesh(smooth=None)
+    from .singularity_geo import build_freezer_mesh
+    return build_freezer_mesh()
 
 
 def exp_rack_mesh(seed):
-    import random
-    rnd = random.Random(seed)
-    mb = MB(f"exp_rack_{seed}")
-    front_panel(mb, RACK_W - 0.04, 2.16, "M_InteriorGrey")
-    y = -1.05
-    while y < 0.95:
-        h = rnd.choice([0.18, 0.26, 0.34, 0.44])
-        if y + h > 1.05:
-            h = 1.05 - y
-        mb.box(rnd.choice(["M_InteriorPanel", "M_AlChromate", "M_InteriorPanel", "M_AlBare"]), 0.86, h - 0.02, 0.06, center=(0, y + h / 2, 0.04))
-        for k in range(rnd.randint(1, 4)):
-            mb.cyl("M_GoldPlate", 0.012, 0.012, 0.03, 10, center=(-0.35 + 0.08 * k, y + h / 2, 0.08), axis='Z')
-        mb.box(rnd.choice(["M_LEDGreen", "M_LEDRed", "M_LEDGreen"]), 0.015, 0.015, 0.005, center=(0.38, y + h - 0.04, 0.073))
-        y += h
-    return mb.mesh(smooth=None)
+    from .singularity_geo import build_exp_rack_mesh
+    return build_exp_rack_mesh(seed)
 
 
 def _bay_B(g, x0, x1):
@@ -419,13 +346,9 @@ def _bay_B(g, x0, x1):
         mb.cyl("M_GlassInner", 0.205, 0.205, 0.008, 32, center=(xw, 0, -2.04), axis='Z')
         place(f"HAB.INT.B.NAD.W{i+1}", f"Pozo de ventana de nadir {i+1}", mb.mesh(), og, Matrix.Identity(4), explode=(0, 0, -0.3),
               desc="Túnel de ventana con panel interior antirayado.")
-    mb = MB("nadir_camera")
-    mb.box("M_AlAnodBlack", 0.16, 0.12, 0.10, center=(0, 0, 0.0))
-    mb.cyl("M_AlAnodBlack", 0.05, 0.05, 0.22, 20, center=(0, 0, -0.14), axis='Z')
-    mb.cyl("M_Lens", 0.045, 0.045, 0.005, 20, center=(0, 0, -0.25), axis='Z')
-    mb.box("M_AlBare", 0.35, 0.04, 0.02, center=(0.12, 0, 0.06))
-    place("HAB.INT.B.NAD.CAM", "Cámara científica de nadir", mb.mesh(), og, Matrix.Translation((LAB_WINDOWS_X[0], 0.0, -A2 + 0.16)),
-          explode=(0, 0, 0.4), desc="Cámara multiespectral montada sobre brazo de bloqueo.")
+    from .singularity_geo import build_nadir_camera_mesh
+    place("HAB.INT.B.NAD.CAM", "Cámara científica de nadir", build_nadir_camera_mesh(), og, Matrix.Translation((LAB_WINDOWS_X[0], 0.0, -A2 + 0.16)),
+          explode=(0, 0, 0.4), desc="Cámara multiespectral DSLR con teleobjetivo y brazo cardán de bloqueo.")
     for i, xx in enumerate((xa, xb)):
         W = wall_matrix("deck", xx)
         mb = MB(f"nadir_closeout_{i}")
@@ -443,53 +366,19 @@ def _bay_B(g, x0, x1):
 
 # --- Bahía C: habitáculos y refugio ----------------------------------------
 
-def cq_mesh(open_door=True):
-    mb = MB("crew_quarter")
-    w = RACK_W - 0.04
-    # caja interior del habitáculo (paredes laterales y trasera)
-    mb.box("M_InteriorPanel", 0.02, 2.14, 0.70, center=(-w / 2 + 0.01, 0, -0.35))
-    mb.box("M_InteriorPanel", 0.02, 2.14, 0.70, center=(w / 2 - 0.01, 0, -0.35))
-    mb.box("M_InteriorPanel", w, 0.02, 0.70, center=(0, 1.06, -0.35))
-    mb.box("M_InteriorPanel", w, 0.02, 0.70, center=(0, -1.06, -0.35))
-    mb.box("M_HDPE", w, 2.12, 0.03, center=(0, 0, -0.70))
-    # marco frontal
-    for x in (-w / 2, w / 2):
-        mb.box("M_InteriorGrey", 0.04, 2.16, 0.04, center=(x, 0, 0.0))
-    for y in (-1.08, 1.08):
-        mb.box("M_InteriorGrey", w, 0.04, 0.04, center=(0, y, 0.0))
-    # puerta plegada (acordeón) a un lado
-    for k in range(6):
-        mb.box("M_InteriorPanel", 0.025, 2.05, 0.10, center=(w / 2 - 0.05 - 0.028 * k, 0, 0.03 + (0.025 if k % 2 else 0.0)), rot=Matrix.Rotation(0.5 if k % 2 else -0.5, 4, 'Y'))
-    return mb.mesh(smooth=None)
+def cq_mesh(k=1):
+    from .singularity_geo import build_crew_quarter_mesh
+    return build_crew_quarter_mesh(k)
 
 
-def sleeping_bag_mesh():
-    mb = MB("sleeping_bag")
-    mb.box("M_FabricBlue", 0.50, 1.75, 0.16, center=(0, -0.05, -0.50))
-    mb.sphere("M_FabricBlue", 0.25, 16, 8, center=(0, 0.80, -0.50), scale=(1, 0.5, 0.35))
-    for k in range(5):
-        mb.box("M_Fabric", 0.52, 0.03, 0.17, center=(0, -0.8 + 0.35 * k, -0.50))
-    for y in (-0.6, 0.6):
-        mb.box("M_FabricBlue", 0.04, 0.04, 0.32, center=(0.24, y, -0.42))
-    return mb.mesh(smooth=50)
+def sleeping_bag_mesh(seed=1):
+    from .singularity_geo import build_sleeping_bag_mesh
+    return build_sleeping_bag_mesh(seed)
 
 
-def cq_equipment_mesh():
-    mb = MB("cq_equipment")
-    # portátil en brazo articulado
-    mb.tube("M_AlBare", [(-0.40, 0.55, -0.62), (-0.30, 0.55, -0.40), (-0.15, 0.50, -0.30)], 0.012, 8, round_r=0.05)
-    mb.box("M_InteriorDark", 0.30, 0.22, 0.015, center=(-0.12, 0.48, -0.28), rot=Matrix.Rotation(-0.4, 4, 'X'))
-    mb.box("M_InteriorGrey", 0.30, 0.20, 0.012, center=(-0.12, 0.55, -0.18), rot=Matrix.Rotation(-1.3, 4, 'X'))
-    # luz de lectura y difusor de ventilación
-    mb.cyl("M_LED", 0.05, 0.05, 0.012, 20, center=(0.0, 0.95, -0.35), axis='Y')
-    mb.box("M_InteriorGrey", 0.25, 0.02, 0.18, center=(0.25, 1.04, -0.35))
-    for k in range(6):
-        mb.box("M_InteriorDark", 0.22, 0.004, 0.008, center=(0.25, 1.03, -0.42 + 0.028 * k))
-    # red de estiba personal
-    for k in range(7):
-        mb.box("M_Fabric", 0.005, 0.60, 0.005, center=(0.42, -0.6 + 0.0, -0.65 + 0.04 * k))
-        mb.box("M_Fabric", 0.005, 0.005, 0.26, center=(0.42, -0.9 + 0.1 * k, -0.53))
-    return mb.mesh(smooth=None)
+def cq_equipment_mesh(k=1):
+    from .singularity_geo import build_cq_equipment_mesh
+    return build_cq_equipment_mesh(k)
 
 
 def water_wall_mesh():
@@ -520,14 +409,16 @@ def _bay_C(g, x0, x1):
         for xx in (xa, xb):
             k += 1
             W = wall_matrix(wall, xx)
+            # En estribor (+Y local apunta hacia abajo) rotar 180° en Z para que almohada y portátil queden arriba
+            Wq = W @ (Matrix.Rotation(PI, 4, 'Z') if wall == "stbd" else Matrix.Identity(4))
             n = (W.to_3x3() @ Vector((0, 0, 1))).normalized()
             cg = group(f"HAB.INT.C.CQ{k}", f"Habitáculo de tripulante {k}", g, explode=("radial", 1.2),
-                       desc="Habitáculo individual de ~1,3 m³ con saco de dormir, puesto informático, luz, ventilación propia y paredes de HDPE.",
+                       desc="Habitáculo individual de ~1,3 m³ con saco acolchado, cortina plisada, puesto informático, lámpara de lectura, fotografía personal y paredes de HDPE.",
                        func="Descanso, privacidad y refugio frente a radiación")
-            place(f"HAB.INT.C.CQ{k}.ENC", "Envolvente y puerta plegable", shared("cq", cq_mesh), cg, W, explode=("none", 0),
-                  desc="Paneles de compuesto con capa de polietileno de alta densidad (HDPE) y puerta acordeón acústica.")
-            place(f"HAB.INT.C.CQ{k}.BAG", "Saco de dormir con sujeciones", shared("bag", sleeping_bag_mesh), cg, W, explode=tuple(n * 0.6))
-            place(f"HAB.INT.C.CQ{k}.EQP", "Portátil, luz, ventilación y red de estiba", shared("cqe", cq_equipment_mesh), cg, W, explode=tuple(n * 0.9))
+            place(f"HAB.INT.C.CQ{k}.ENC", "Envolvente acústica y cortina plisada", cq_mesh(k), cg, Wq, explode=("none", 0),
+                  desc="Paneles acústicos acolchados con capa de HDPE y cortina plisada de tela sobre carril.")
+            place(f"HAB.INT.C.CQ{k}.BAG", "Saco de dormir acolchado con almohada y sujeciones", sleeping_bag_mesh(k), cg, Wq, explode=tuple(n * 0.6))
+            place(f"HAB.INT.C.CQ{k}.EQP", "Portátil, lámpara flexible, fotos y red personal", cq_equipment_mesh(k), cg, Wq, explode=tuple(n * 0.9))
             place(f"HAB.INT.C.CQ{k}.WTR", "Bolsas del muro de agua", shared("ww", water_wall_mesh), cg, W, explode=tuple(-n * 0.5),
                   desc="Bolsas de agua potable de reserva que añaden ~8 g/cm² de blindaje en la trasera del habitáculo.")
     for wall in ("deck", "ceil"):
@@ -541,49 +432,13 @@ def _bay_C(g, x0, x1):
 # --- Bahía D: servicios -----------------------------------------------------
 
 def galley_mesh():
-    mb = MB("galley")
-    front_panel(mb, RACK_W - 0.04, 2.16, "M_InteriorPanel")
-    mb.box("M_AlBare", 0.80, 0.45, 0.25, center=(0, 0.45, 0.13))  # calentador
-    mb.box("M_InteriorDark", 0.70, 0.35, 0.01, center=(0, 0.45, 0.26))
-    mb.box("M_ScreenAmber", 0.12, 0.05, 0.004, center=(0.30, 0.71, 0.03))
-    for k in range(3):
-        mb.cyl("M_Steel", 0.015, 0.015, 0.10, 12, center=(-0.25 + 0.25 * k, -0.10, 0.08), axis='Z')
-        mb.cyl("M_InteriorDark", 0.03, 0.03, 0.04, 12, center=(-0.25 + 0.25 * k, -0.10, 0.03), axis='Z')
-    # mesa abatible desplegada, perpendicular a la pared
-    mb.box("M_InteriorGrey", 0.85, 0.025, 0.52, center=(0, -0.55, 0.28))
-    mb.box("M_AlBare", 0.86, 0.04, 0.03, center=(0, -0.55, 0.015))
-    for x in (-0.4, 0.4):
-        mb.tube("M_AlBare", [(x, -0.56, 0.02), (x, -0.85, 0.02), (x, -0.57, 0.50)], 0.008, 8)
-    for k in range(6):
-        mb.box("M_Fabric", 0.12, 0.008, 0.09, center=(-0.30 + 0.12 * k, -0.535, 0.30))
-    for x in (-0.3, 0.3):
-        mb.box("M_FabricBlue", 0.02, 0.004, 0.50, center=(x, -0.534, 0.28))
-    return mb.mesh(smooth=None)
+    from .singularity_geo import build_galley_mesh
+    return build_galley_mesh()
 
 
 def hygiene_mesh():
-    mb = MB("hygiene")
-    w = RACK_W - 0.04
-    mb.box("M_InteriorPanel", w, 2.16, 0.02, center=(0, 0, -0.70))
-    for x in (-w / 2, w / 2):
-        mb.box("M_InteriorPanel", 0.02, 2.16, 0.70, center=(x, 0, -0.35))
-    # inodoro (embudo, asiento y unidad de separación)
-    mb.box("M_AlBare", 0.40, 0.40, 0.40, center=(0, -0.70, -0.45))
-    mb.cyl("M_ShieldWhite", 0.15, 0.18, 0.12, 24, center=(0, -0.70, -0.20), axis='Z')
-    mb.torus("M_InteriorDark", 0.17, 0.02, 24, 8, center=(0, -0.70, -0.13), axis='Z')
-    mb.tube("M_DuctFlex", [(0.20, -0.55, -0.30), (0.32, -0.30, -0.10), (0.30, -0.10, -0.05)], 0.03, 10, round_r=0.08)
-    mb.lathe("M_InteriorDark", [(0.0, 0.0), (0.035, 0.0), (0.05, 0.14), (0.0, 0.14)], 16, axis='Z', center=(0.30, -0.10, -0.06))
-    for x in (-0.15, 0.15):
-        mb.tube("M_Handrail", [(x, -0.95, -0.25), (x, -0.95, -0.05)], 0.012, 8)
-    # lavabo/ducha de toallitas, espejo, estiba de higiene
-    mb.box("M_GlassInner", 0.40, 0.30, 0.01, center=(0, 0.55, -0.68))
-    mb.box("M_AlBare", 0.50, 0.30, 0.12, center=(0, 0.15, -0.62))
-    mb.box("M_Fabric", 0.80, 0.25, 0.15, center=(0, 0.88, -0.60))
-    # cortina/puerta
-    mb.box("M_FabricBlue", 0.02, 2.0, 0.02, center=(-w / 2 + 0.02, 0, 0.0))
-    for k in range(8):
-        mb.box("M_FabricBlue", 0.10, 2.0, 0.01, center=(-w / 2 + 0.06 + 0.09 * k, 0, 0.02 + 0.015 * (k % 2)), rot=Matrix.Rotation(0.35 if k % 2 else -0.35, 4, 'Y'))
-    return mb.mesh(smooth=None)
+    from .singularity_geo import build_hygiene_mesh
+    return build_hygiene_mesh()
 
 
 def eclss_mesh(kind):
@@ -619,24 +474,8 @@ def eclss_mesh(kind):
 
 
 def exercise_mesh():
-    mb = MB("exercise")
-    # cicloergómetro anclado al suelo + dispositivo resistivo de vacío
-    mb.box("M_AlBare", 0.60, 0.40, 0.04, center=(0, 0, 0.02))
-    mb.cyl("M_AlAnodBlack", 0.20, 0.20, 0.08, 32, center=(0, 0, 0.28), axis='Y')
-    mb.cyl("M_AlBare", 0.06, 0.06, 0.12, 20, center=(0, 0, 0.28), axis='Y')
-    for s in (-1, 1):
-        mb.tube("M_AlBare", [(0, s * 0.08, 0.28), (0.12 * s, s * 0.16, 0.28 + 0.12 * s)], 0.012, 8)
-        mb.box("M_InteriorDark", 0.12, 0.05, 0.03, center=(0.12 * s, s * 0.20, 0.28 + 0.12 * s))
-    mb.tube("M_AlBare", [(-0.25, 0, 0.04), (-0.25, 0, 0.75), (-0.10, 0, 0.92)], 0.02, 10, round_r=0.08)
-    mb.tube("M_AlBare", [(-0.10, -0.25, 0.92), (-0.10, 0.25, 0.92)], 0.015, 10)
-    mb.box("M_InteriorGrey", 0.30, 0.30, 0.03, center=(0.35, 0, 0.62), rot=Matrix.Rotation(0.4, 4, 'Y'))
-    # dispositivo resistivo (cilindros de vacío y barra)
-    for s in (-1, 1):
-        mb.cyl("M_AlBare", 0.06, 0.06, 0.70, 20, center=(0.55, s * 0.35, 0.37), axis='Z')
-        mb.cyl("M_AlAnodBlack", 0.065, 0.065, 0.06, 20, center=(0.55, s * 0.35, 0.05), axis='Z')
-    mb.tube("M_Steel", [(0.55, -0.42, 0.78), (0.55, 0.42, 0.78)], 0.018, 10)
-    mb.box("M_Rubber", 0.40, 0.70, 0.02, center=(0.55, 0, 0.05))
-    return mb.mesh(smooth=40)
+    from .singularity_geo import build_exercise_mesh
+    return build_exercise_mesh()
 
 
 def _bay_D(g, x0, x1):
@@ -645,7 +484,7 @@ def _bay_D(g, x0, x1):
     place("HAB.INT.D.PG.GAL", "Calentador, dispensador y mesa", shared("gal", galley_mesh), gw, W, explode=tuple(n * 0.4))
     rack(g, "HAB.INT.D.PS", "Estiba de alimentos", "port", xa, "Despensa para 45 días × 4 tripulantes (~1,8 kg/persona/día).", grid=(2, 8))
     gw, W, n = rack(g, "HAB.INT.D.SH", "Compartimento de higiene", "stbd", xa, "Inodoro de separación por flujo de aire, puesto de aseo con toallitas y cortina de privacidad.", lockers=False)
-    place("HAB.INT.D.SH.HYG", "Inodoro, aseo y cortina", shared("hyg", hygiene_mesh), gw, W, explode=tuple(n * 0.4))
+    place("HAB.INT.D.SH.HYG", "Inodoro, aseo y cortina", shared("hyg", hygiene_mesh), gw, W @ Matrix.Rotation(PI, 4, 'Z'), explode=tuple(n * 0.4))
     gw, W, n = rack(g, "HAB.INT.D.SO", "Generador de oxígeno (OGA)", "stbd", xb, "Electrolizador de membrana de intercambio protónico: divide agua en O₂ para cabina e H₂.", lockers=False,
                     func="Producción de oxígeno a partir de agua")
     place("HAB.INT.D.SO.EQP", "Celdas de electrólisis y separadores", shared("oga", lambda: eclss_mesh("OGA")), gw, W, explode=tuple(n * 0.4))
@@ -670,7 +509,7 @@ def _bay_D(g, x0, x1):
 
 def _aft_bulkhead(it):
     g = group("HAB.INT.AFT", "Estiba y depósitos del mamparo de popa", it, explode=(-2.0, 0, 0),
-              desc="Volumen del mamparo elipsoidal: depósitos de O₂/N₂ de alta presión, bolsas de transferencia y extintor.")
+              desc="Volumen del mamparo elipsoidal: depósitos de O₂/N₂ de alta presión con colectores y manómetros, bolsas blandas CTB en red de carga y extintor.")
     for i, a in enumerate((PI / 4, 3 * PI / 4, 5 * PI / 4, 7 * PI / 4)):
         c = ring_xyz(1.15, a, 0.55)
         mb = MB(f"o2n2_{i}")
@@ -682,14 +521,9 @@ def _aft_bulkhead(it):
         mb.torus("M_AlBare", 0.165, 0.012, 24, 6, center=(-0.1, 0, 0), axis='X')
         p = part(f"HAB.INT.AFT.T{i+1}", f"Depósito de {'O₂' if i % 2 == 0 else 'N₂'} de alta presión {i//2+1}", mb.mesh(), g, loc=c,
                  explode=("radial", 0.6), desc="COPV a ~20 MPa para reposición de atmósfera y repress de emergencia.")
-    mb = MB("ctb_bags")
-    for j in range(3):
-        for i in range(3):
-            mb.box("M_Fabric", 0.42, 0.25, 0.30, center=(0.40, -0.45 + 0.45 * i, -0.45 + 0.45 * j))
-            mb.box("M_FabricBlue", 0.43, 0.03, 0.02, center=(0.40, -0.45 + 0.45 * i, -0.45 + 0.45 * j + 0.14))
-            mb.box("M_ShieldWhite", 0.12, 0.003, 0.08, center=(0.40, -0.45 + 0.45 * i - 0.126, -0.45 + 0.45 * j))
-    part("HAB.INT.AFT.CTB", "Bolsas de transferencia de carga (9)", mb.mesh(smooth=None), g, explode=(-0.6, 0, 0),
-         desc="Bolsas de Nomex de tamaño normalizado fijadas a la red del mamparo.")
+    from .singularity_geo import build_aft_bulkhead_stowage_mesh
+    part("HAB.INT.AFT.CTB", "Bolsas blandas CTB en red de carga del mamparo", build_aft_bulkhead_stowage_mesh(), g, explode=(-0.6, 0, 0),
+         desc="Bolsas blandas acolchadas de Nomex en distintos tamaños sujetas tras red elástica cruzada, con manómetros y colectores.")
     mb = MB("extinguisher")
     mb.cyl("M_DecalRed", 0.07, 0.07, 0.45, 20, center=(0, 0, 0), axis='Z')
     mb.sphere("M_DecalRed", 0.07, 20, 8, center=(0, 0, 0.225), scale=(1, 1, 0.5))
@@ -749,17 +583,21 @@ def _utilities(hab):
 def _lighting(it):
     g = group("HAB.INT.LGT", "Iluminación general de cabina", it, explode=(0, 0, 0.8),
               desc="Luminarias LED de espectro ajustable (ritmo circadiano), dos por bahía en las aristas del techo.")
-    me = None
     mb = MB("light_strip")
-    mb.box("M_InteriorGrey", 1.60, 0.12, 0.03, center=(0, 0, 0))
-    mb.box("M_LED", 1.50, 0.08, 0.01, center=(0, 0, -0.018))
-    me = mb.mesh(smooth=None)
+    # Extruded anodized housing, chamfered side louvers, machined end-caps & recessed polycarbonate diffuser
+    mb.box("M_AlAnodBlack", 1.66, 0.135, 0.034, center=(0, 0, 0.004))
+    mb.box("M_AlBare", 1.62, 0.115, 0.014, center=(0, 0, -0.012))
+    for sx in (-0.815, 0.815):
+        mb.box("M_AlBare", 0.032, 0.140, 0.042, center=(sx, 0, 0.0))
+    for k in range(3):
+        mb.box("M_InteriorDark", 0.022, 0.120, 0.016, center=(-0.48 + 0.48 * k, 0, -0.015))
+    mb.box("M_LED", 1.52, 0.082, 0.010, center=(0, 0, -0.020))
+    me = mb.mesh(smooth=None, bevel=0.003)
     k = 0
     for i in range(S.N_BARRELS):
         xc = (XS[i] + XS[i + 1]) / 2
         for sy in (1, -1):
             k += 1
-            R = Matrix.Rotation(sy * PI / 4, 4, 'X')
             part(f"HAB.INT.LGT.L{k}", f"Luminaria LED {k}", me, g, loc=(xc, sy * (A2 - 0.10), A2 - 0.10), rot=(sy * PI / 4 * 1, 0, 0),
                  explode=(0, 0, 0), desc="Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato.")
 
@@ -769,20 +607,8 @@ def _lighting(it):
 # ---------------------------------------------------------------------------
 
 def hatch_mesh(r, name, window=True):
-    mb = MB(name)
-    mb.cyl("M_AlBare", r, r, 0.05, 48, center=(0, 0, 0.0), axis='Z')
-    for k in range(4):
-        a = PI / 4 * k
-        mb.box("M_AlBare", 2 * r * 0.9, 0.03, 0.04, center=(0, 0, 0.04), rot=Matrix.Rotation(a, 4, 'Z'))
-    mb.torus("M_Rubber", r - 0.02, 0.01, 48, 8, center=(0, 0, -0.025), axis='Z')
-    if window:
-        mb.cyl("M_Glass", 0.08, 0.08, 0.06, 24, center=(0, r * 0.45, 0.01), axis='Z')
-        mb.torus("M_AlBare", 0.085, 0.012, 24, 6, center=(0, r * 0.45, 0.04), axis='Z')
-    mb.cyl("M_AlAnodBlack", 0.06, 0.06, 0.04, 20, center=(0, 0, 0.08), axis='Z')
-    mb.tube("M_AlAnodBlack", [(-0.20, 0, 0.10), (0.20, 0, 0.10)], 0.015, 10)
-    mb.cyl("M_Steel", 0.025, 0.025, 0.05, 12, center=(r * 0.6, -r * 0.3, 0.06), axis='Z')
-    mb.cyl("M_Steel", 0.03, 0.03, 0.16, 12, center=(-r - 0.03, 0, 0.0), axis='Y')
-    return mb.mesh(smooth=40)
+    from .singularity_geo import build_detailed_hatch_mesh
+    return build_detailed_hatch_mesh(r, name)
 
 
 def build_node_interior(fwd):

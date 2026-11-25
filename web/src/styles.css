@@ -396,8 +396,10 @@ kbd { font-family: var(--mono); border: 1px solid var(--hairline-strong); border
 .mech-tool .btn.on { border-color: var(--accent, #e2572b); color: var(--ink, #ece8e1); }
 
 /* Vida a bordo */
-.crew-block { min-width: 236px; }
-.crew-block .need { display: grid; grid-template-columns: 84px 1fr 26px; align-items: center; gap: 8px; margin: 3px 0; }
+.crew-block { min-width: 244px; }
+.crew-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.crew-block.free-explore .need { opacity: 0.62; }
+.crew-block .need { display: grid; grid-template-columns: 84px 1fr 26px; align-items: center; gap: 8px; margin: 3px 0; transition: opacity var(--dur-fast); }
 .crew-block .need .hbar { margin: 0; height: 4px; }
 .crew-block .need.low .hbar > div { background: #e2572b; }
 .crew-block .need.low span:first-child { color: #ffb08f; }
@@ -408,3 +410,18 @@ kbd { font-family: var(--mono); border: 1px solid var(--hairline-strong); border
 .sleep-fade span { color: #ece8e1; font-size: 15px; letter-spacing: .12em; opacity: .7; }
 @media (max-width: 860px) { .loco { top: auto; bottom: 120px; right: 12px; } .loco p { display: none; } .crew-block { min-width: 0; } }
 .loco p { background: rgba(12,13,15,.72); padding: 6px 10px; border-radius: 4px; color: #cfc9bf; }
+
+/* Singularity UI polish */
+.btn.xs { padding: 2px 8px; font-size: 0.7rem; letter-spacing: 0.03em; }
+.explode-wrap { display: flex; flex-direction: column; }
+.explode-presets { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 0 18px 12px; border-top: 1px solid rgba(236, 232, 225, 0.06); padding-top: 8px; }
+.explode-presets .eyebrow { margin-right: 6px; font-size: 0.66rem; }
+.hud-block { background: rgba(10, 12, 16, 0.64); border-radius: 0 var(--r-sm) var(--r-sm) 0; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28); backdrop-filter: blur(8px); }
+.hud-right .hud-block { border-radius: var(--r-sm) 0 0 var(--r-sm); }
+.topbar { backdrop-filter: blur(12px); }
+.app { overflow: hidden; max-width: 100vw; }
+@media (max-width: 860px) {
+  .explode-presets { padding: 6px 12px 10px; gap: 4px; }
+  .waypoints { max-width: calc(100vw - 16px); }
+}
+
