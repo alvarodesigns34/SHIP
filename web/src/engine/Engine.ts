@@ -26,6 +26,7 @@ import { Player } from './player/Player';
 import { Input } from './Input';
 import { Audio } from './Audio';
 import { Crew, ACTIVITIES, type ActivityId } from './sim/Crew';
+import { Hands } from './player/Hands';
 import { MissionRunner } from './Missions';
 import { Sandbox } from './Sandbox';
 import { b2t, clamp, damp, easeInOut, easeOut, stageOf, t2b } from './util';
@@ -134,6 +135,8 @@ export class Engine {
   private holdT = 0;
   private hoverCtl: { node: PartNode; ctl: string } | null = null;
   crew = new Crew();
+  /** manos y antebrazos en primera persona */
+  hands = new Hands();
   /** actividad en curso (bloquea el movimiento mientras dura) */
   activity: { id: ActivityId; t: number } | null = null;
   /** fundido a negro (dormir) 0..1 */
@@ -187,6 +190,7 @@ export class Engine {
     this.tether = new THREE.Line(tg, new THREE.LineBasicMaterial({ color: 0xe8e0c8 }));
     this.tether.frustumCulled = false; this.tether.visible = false;
     this.near.add(this.tether);
+    this.near.add(this.hands.group);
     this.buildPlumes();
     this.setupComposer();
     this.applyQuality(this.loadSettings()?.quality ?? (matchMedia('(max-width: 860px)').matches ? 'baja' : 'alta'));
@@ -565,6 +569,11 @@ export class Engine {
   tryInteract(cx?: number, cy?: number) {
     const c = cx === undefined ? this.hoverCtl : this.ctlAt(cx, cy);
     if (!c) return;
+    // la mano alcanza el punto tocado (excepto las actividades, que tienen su propia pose)
+    if ((this.mode === 'INTERIOR' || this.mode === 'EVA') && !c.ctl.startsWith('act:')) {
+      const hit = this.pickAt(cx, cy);
+      if (hit) this.hands.reach(this.camera.worldToLocal(hit.point.clone()));
+    }
     const [k, v] = c.ctl.split(':');
     this.audio.start();
     switch (k) {
@@ -947,6 +956,15 @@ export class Engine {
     for (const o of this.objects) o.group.position.copy(o.pos).sub(this.interp.pos);
     // cámara
     this.updateCamera(dt);
+    // manos en primera persona (después de colocar la cámara)
+    const fp = this.mode === 'INTERIOR' || this.mode === 'EVA';
+    this.hands.group.visible = fp;
+    if (fp) {
+      this.hands.setEVA(this.mode === 'EVA');
+      const a = this.activity;
+      this.hands.setActivity(a ? a.id : null, a ? a.t / ACTIVITIES[a.id].dur : 0, !!this.player.grabbing, this.mode === 'EVA');
+      this.hands.update(dt, this.camera, this.reducedMotion);
+    }
     // luces
     const ecl = this.astro.eclipse;
     this.sunLight.intensity = 3.4 * (1 - ecl);

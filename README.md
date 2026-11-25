@@ -16,7 +16,7 @@ Proyecto de ingeniería conceptual y modelado 3D de una nave espacial **original
 | Presurizado | ≈ 139 m³ (nodo con cúpula + módulo habitable de 4 bahías) |
 | Propulsión | 4 Hall de clase 6 kW (SEP) + 4 bipropelentes de 400–500 N + 40 propulsores RCS |
 | Potencia | 2 alas enrollables de 4,4 × 16 m (≈ 48 kW al inicio de vida) |
-| Modelo | **681 piezas** en **130 grupos** (5 niveles), **1.787 tornillos** por instancia, ≈ 544 k triángulos, 61 materiales PBR |
+| Modelo | **778 piezas** en **144 grupos** (5 niveles), **1.791 tornillos** modelados, ≈ 621 k triángulos, 63 materiales PBR (cifras de `docs/stats.json`) |
 
 ## Entregables
 
