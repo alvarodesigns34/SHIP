@@ -70,6 +70,7 @@ cd web
 npm run dev        # desarrollo en http://localhost:5173
 npm run build      # producción en web/dist (estática, se puede servir desde cualquier hosting)
 npx vite preview   # servir la build
+bash scripts/deploy-pages.sh   # publicar en GitHub Pages (rama gh-pages)
 ```
 
 ## Aplicación web
