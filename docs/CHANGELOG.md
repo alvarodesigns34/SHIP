@@ -1,5 +1,30 @@
 # Registro de cambios
 
+## Ultimate Fidelity — iteración 1
+- **Materiales fotográficos CC0 (ambientCG):**
+  - lámina metalizada para el MLI;
+  - metal mecanizado;
+  - tejido;
+  - tapizado de cuero;
+  - polímero de paneles;
+  - tejido de carbono para el CFRP;
+  - goma.
+- **Iluminación interior:** temperatura de color por bahía, menos relleno ambiental, AO de contacto reforzado y albedo realista de paneles.
+- **Densidad interior:**
+  - atlas de etiquetas legible (`blender/make_labels.py`) con etiqueta de inventario en cada taquilla;
+  - 18 señales de seguridad y orientación;
+  - 8 bolsas de carga con cintas y etiqueta;
+  - 4 mazos de cables con abrazaderas.
+- **Manos y antebrazos en primera persona**, con guantes en EVA, poses por actividad (beber, comer, ejercicio, aseo, cultivo, ciencia, lectura, dormir) y alcance al interactuar.
+- **Ventanas de nadir:**
+  - el isogrid ya no deja tapas de booleana;
+  - el marco es anular y la contraventana queda abatida;
+  - el vidrio no tiene componente difusa;
+  - resultado: se ve la Tierra.
+- **Cielo:** las estrellas ya no se pintan encima de la Tierra.
+- **Inventario y planos** regenerados desde el modelo actual (778 piezas, 144 grupos, ≈621 k triángulos).
+- **Deuda técnica:** `Engine.dispose()` libera listeners (AbortController), audio, geometrías, materiales y texturas. Las pruebas Playwright están versionadas en `web/tests/`.
+
 ## Beyond Orbit — iteración 3 (vida a bordo)
 - **Caminar por la nave:** nueva locomoción a pie con gravedad de entrenamiento de 1 g.
   - Suelo y techo detectados por sondeo.

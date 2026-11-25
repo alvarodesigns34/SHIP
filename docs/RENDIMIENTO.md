@@ -21,9 +21,10 @@ La reducción viene de agrupar las 2 357 instancias en 86 lotes `BatchedMesh` (s
 
 | Recurso | Tamaño |
 |---|---|
-| GLB exterior (meshopt + cuantización) | 3,06 MB (10,46 MB sin comprimir) |
-| GLB interior | 1,55 MB (4,10 MB sin comprimir) |
-| JS de la aplicación | 1 587 kB (551 kB gzip) |
+| GLB exterior (meshopt + cuantización) | 3,19 MB (10,82 MB sin comprimir) |
+| GLB interior (incluye el atlas de etiquetas) | 2,27 MB (6,98 MB sin comprimir) |
+| Texturas PBR fotográficas (14 JPG 1K) | 3,0 MB |
+| JS de la aplicación | 1 595 kB (556 kB gzip) |
 | CSS | 29 kB (7 kB gzip) |
 
 ## Paradas medidas y corregidas
@@ -35,3 +36,6 @@ La reducción viene de agrupar las 2 357 instancias en 86 lotes `BatchedMesh` (s
 
 - Hay cuatro niveles de calidad (AO N8AO, sombras y resolución de mapa de sombras) y resolución dinámica opcional.
 - Las sombras interiores usan las 2 luces focales más cercanas.
+
+## Liberación de memoria
+Medido tras `Engine.dispose()` en SwiftShader: geometrías en GPU de 63 a 6. Quedan texturas de render targets y de lienzo de las pantallas: no se ha verificado que se liberen todas (159 entradas en `renderer.info.memory.textures`).
