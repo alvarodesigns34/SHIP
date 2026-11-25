@@ -108,7 +108,7 @@ export const mliNormal = () => cached('mliN', () => {
 export const roughNoise = (seed = 1) => cached('rough' + seed, () => {
   const S = 256;
   const h = fbm(S, [4, 8, 16, 32, 64], seed);
-  return toTexture(S, (x, y) => { const v = 150 + (h[y * S + x] - 0.5) * 140; return [v, v, v]; });
+  return toTexture(S, (x, y) => { const v = 160 + (h[y * S + x] - 0.5) * 60; return [v, v, v]; });
 });
 
 /** Microrrelieve de pintura/aluminio. */
@@ -188,3 +188,23 @@ export function makeStarfield(count = 6000, radius = 900) {
   p.renderOrder = -10;
   return p;
 }
+
+/** Mecanizado/cepillado direccional (aluminio, titanio). */
+export const brushedNormal = () => cached('brushN', () => {
+  const S = 512;
+  const r = rng(21);
+  const h = new Float32Array(S * S);
+  for (let y = 0; y < S; y++) {
+    let acc = 0;
+    const rowBias = r() * 0.3;
+    for (let x = 0; x < S; x++) { acc = acc * 0.97 + (r() - 0.5) * 0.6; h[y * S + x] = acc + rowBias; }
+  }
+  return heightToNormal(h, S, 0.9);
+});
+
+/** Suciedad/desgaste de baja frecuencia para la rugosidad (evita superficies perfectas). */
+export const grimeMap = () => cached('grime', () => {
+  const S = 512;
+  const h = fbm(S, [3, 6, 12, 24, 96], 33);
+  return toTexture(S, (x, y) => { const v = 165 + (h[y * S + x] - 0.5) * 38 + ((x * 13 + y * 7) % 29 === 0 ? 10 : 0); return [v, v, v]; });
+});
