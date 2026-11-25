@@ -97,3 +97,18 @@ renders/            renders Cycles
 docs/               informe técnico, investigación, inventario, validación
 web/                aplicación React + TypeScript + three.js
 ```
+
+## Galería
+
+| | |
+|---|---|
+| ![](renders/hero2_final.png) Vista trasera: propulsión, Hall, alas y radiadores | ![](renders/front34_final.png) Proa: nodo, cúpula, atraque IDSS y brazo |
+| ![](renders/dock_final.png) Puerto IDSS activo y sensores de aproximación | ![](renders/cupola_final.png) Cúpula de 7 ventanas con contraventanas abiertas |
+| ![](renders/exploded_x100_final.png) Vista explosionada al 100 % | ![](renders/exploded_mid_x50_final.png) Vista explosionada al 50 % (sistemas) |
+| ![](renders/section_final.png) Sección longitudinal iluminada | ![](renders/cockpit_final.png) Cabina de vuelo (Bahía A) |
+| ![](renders/interior_lab_final.png) Laboratorio y estación de nadir (Bahía B) | ![](renders/interior_cq_final.png) Habitáculos y refugio antiradiación (Bahía C) |
+| ![](renders/interior_aft_final.png) Servicios y soporte vital (Bahía D) | ![](renders/engines_final.png) Motores bipropelentes y escudo de popa |
+| ![](blueprints/side.png) BP-02 Vista lateral | ![](blueprints/section_long.png) BP-06 Sección longitudinal |
+| ![](blueprints/layout.png) BP-08 Distribución interior | ![](blueprints/systems.png) BP-09 Arquitectura de sistemas |
+
+Los renders son de Cycles a 1920×1080. La Luna de fondo usa texturas de dominio público del CGI Moon Kit de NASA SVS (ver `blender/textures/nasa/SOURCES.md`).
