@@ -265,12 +265,14 @@ export class Engine {
     this.prog = { stage: 'Preparando mecanismos', p: 1 };
     this.setScenario('leo', true);
     this.model.setMech('dock:ring', 0, true);
+    this.setSection(false);
     this.ready = true;
     this.setMode('CINEMATIC');
     this.emitSnap();
     this.model.loadInterior(loader, base).then(() => {
       this.interiorReady = true;
       this.cockpit.setup();
+      this.setSection(false); // asigna el plano de corte (inactivo) a los materiales interiores
       this.player.buildColliders();
       this.restore();
       this.emitSnap();
@@ -321,7 +323,7 @@ export class Engine {
       // el puerto de la estación mira hacia la nave
       o.group.quaternion.copy(s.q).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI));
       const portWorld = this.station.dockLocal.clone().applyQuaternion(o.group.quaternion);
-      o.pos.copy(s.pos).addScaledVector(fwd, dist + 13.3).sub(portWorld).addScaledVector(up, 4);
+      o.pos.copy(s.pos).addScaledVector(fwd, dist + 13.23).sub(portWorld);
     } else if (id === 'canister') {
       o.pos.copy(s.pos).addScaledVector(fwd, 3).addScaledVector(up, dist * 0.4).add(new THREE.Vector3(0, 0, dist * 0.6).applyQuaternion(s.q));
       o.vel.set(0, 0, 0); o.group.visible = true;
@@ -452,7 +454,16 @@ export class Engine {
     const mats = new Set<THREE.Material>();
     for (const b of this.model.batches) { mats.add(b.material); mats.add(b.xray); }
     for (const s of this.model.standalone) mats.add(s.mesh.material as THREE.Material);
-    for (const m of mats) { m.clippingPlanes = on ? [this.clipPlane] : null; m.side = on ? THREE.DoubleSide : ((m as any).userData?.glass ? THREE.FrontSide : THREE.FrontSide); m.needsUpdate = true; }
+    // El plano de corte permanece siempre asignado (inactivo = desplazado al infinito):
+    // así activar la sección no cambia la clave de programa y no hay recompilación
+    // de sombreadores (antes ~3,5 s de parón con SwiftShader). Sólo los materiales
+    // de una cara cambian de variante al pasar a doble cara para dibujar las tapas.
+    for (const m of mats) {
+      if (m.clippingPlanes?.[0] !== this.clipPlane) { m.clippingPlanes = [this.clipPlane]; m.needsUpdate = true; }
+      if (m.userData.side0 === undefined) m.userData.side0 = m.side;
+      const side = on ? THREE.DoubleSide : m.userData.side0;
+      if (m.side !== side) { m.side = side; m.needsUpdate = true; }
+    }
     this.model.clip = on ? this.clipPlane : null;
   }
 
@@ -579,7 +590,7 @@ export class Engine {
     this.flightCam = 'cockpit';
     this.mode = 'FLIGHT';
     this.camera.fov = 70; this.camera.updateProjectionMatrix();
-    this.player.yaw = -Math.PI / 2; this.player.pitch = -0.12;
+    this.player.yaw = -Math.PI / 2; this.player.pitch = -0.32;
     this.seatSide = k === 1 ? 0.62 : -0.62;
     this.audio.thud(0.3);
     this.emitSnap();
@@ -643,14 +654,7 @@ export class Engine {
     if (!this.ready) return;
     const t0 = performance.now();
     this.input.pollGamepad();
-    this.handleInput(dt);
-    // simulación
-    const alpha = this.flight.advance(dt);
-    this.flight.interp(alpha, this.interp);
-    this.stepWorld(dt);
-    this.missions.update(this, dt);
-    // escena
-    this.updateScene(dt);
+    this.simStep(dt);
     this.renderFrame(dt);
     if (this.pendingPhoto) { this.pendingPhoto = false; this.capturePhoto(); }
     this.input.endFrame();
@@ -663,6 +667,25 @@ export class Engine {
     this.saveT += dt;
     if (this.saveT > 15) { this.saveT = 0; this.save(); }
   };
+
+  /** Un paso de simulación + actualización de escena (sin dibujar). */
+  private simStep(dt: number) {
+    this.handleInput(dt);
+    const alpha = this.flight.advance(dt);
+    this.flight.interp(alpha, this.interp);
+    this.stepWorld(dt);
+    this.missions.update(this, dt);
+    this.updateScene(dt);
+  }
+
+  /**
+   * Avance determinista de la simulación sin renderizar (pruebas automatizadas
+   * y validación): `seconds` de tiempo simulado en pasos de `h`.
+   */
+  tick(seconds: number, h = 1 / 30) {
+    for (let t = 0; t < seconds; t += h) this.simStep(h);
+    this.input.endFrame();
+  }
 
   private adaptResolution() {
     if (!this.dynamicRes) { if (this.dprScale !== 1) { this.dprScale = 1; this.renderer.setPixelRatio(this.dpr); this.resize(); } return; }
@@ -893,7 +916,7 @@ export class Engine {
     }
     // vuelo / sandbox
     if (this.seated || this.flightCam === 'cockpit') {
-      const head = b2t(7.72, this.seatSide, 0.18);
+      const head = b2t(7.48, this.seatSide, 0.02);
       this.camera.position.copy(root.localToWorld(head));
       this.camera.quaternion.copy(this.interp.q).multiply(this.player.viewQuat());
       return;
@@ -944,7 +967,8 @@ export class Engine {
   }
 
   private renderFrame(dt: number) {
-    this.clipPlane.copy(this.clipPlaneLocal).applyMatrix4(this.model.root.matrixWorld);
+    if (this.section.on) this.clipPlane.copy(this.clipPlaneLocal).applyMatrix4(this.model.root.matrixWorld);
+    else { this.clipPlane.normal.set(0, 1, 0); this.clipPlane.constant = 1e9; }
     // sombras del Sol: caja centrada en la cámara si está cerca, en la nave si no
     this.sunLight.shadow.camera.updateProjectionMatrix();
     // cámaras de las pantallas (render-to-texture, a ritmo reducido)

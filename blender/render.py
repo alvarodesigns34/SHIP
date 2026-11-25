@@ -128,6 +128,7 @@ def setup_preview():
     sh.cavity_type = 'BOTH'
     sh.show_shadows = True
     sh.show_specular_highlight = True
+    sh.show_backface_culling = '--cull' in argv
     scn.display.shading.background_type = 'VIEWPORT' if hasattr(sh, 'background_type') else None
     w = bpy.data.worlds.new("W") if not scn.world else scn.world
     scn.world = w

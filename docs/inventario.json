@@ -2,7 +2,7 @@
  "vehicle": "ALCIÓN HX-4",
  "parts": 732,
  "groups": 140,
- "triangles": 590973,
+ "triangles": 590312,
  "tree": {
   "code": "ALCION",
   "label": "ALCIÓN HX-4",
@@ -785,7 +785,7 @@
           "desc": "Tejido Nomex de bolsa de estiba"
          }
         ],
-        "tris": 3373,
+        "tris": 3480,
         "dims_m": [
          1.908,
          1.908,
@@ -811,7 +811,7 @@
           "desc": "Aleación Al-Li 2195 (casco presurizado, isogrid)"
          }
         ],
-        "tris": 4322,
+        "tris": 3554,
         "dims_m": [
          1.72,
          1.72,

@@ -438,7 +438,7 @@ function Settings({ eng, s, onClose }: { eng: Engine; s: Snapshot; onClose: () =
 function Engineering({ eng, s, sel }: { eng: Engine; s: Snapshot; sel: PartNode | null }) {
   const [, f] = useState(0);
   const re = () => f((x) => x + 1);
-  const [tool, setTool] = useState<'explode' | 'section' | 'views' | 'compare'>('explode');
+  const [tool, setTool] = useState<'explode' | 'section' | 'views' | 'compare' | 'mech'>('explode');
   const [snapA, setSnapA] = useState<number | null>(null);
   const [snapB, setSnapB] = useState<number | null>(null);
   const m = eng.model;
@@ -469,7 +469,7 @@ function Engineering({ eng, s, sel }: { eng: Engine; s: Snapshot; sel: PartNode 
       {sel && <Info eng={eng} n={sel} onChange={re} />}
       <div className="instrument">
         <div className="tool-tabs">
-          {([['explode', 'Explosión'], ['section', 'Sección'], ['views', 'Vistas'], ['compare', 'Comparar']] as const).map(([id, l]) => (
+          {([['explode', 'Explosión'], ['section', 'Sección'], ['views', 'Vistas'], ['compare', 'Comparar'], ['mech', 'Mecanismos']] as const).map(([id, l]) => (
             <button key={id} className={tool === id ? 'on' : ''} onClick={() => setTool(id)}>{l}</button>
           ))}
           <span className="spacer" />
@@ -504,6 +504,7 @@ function Engineering({ eng, s, sel }: { eng: Engine; s: Snapshot; sel: PartNode 
             {([['iso', 'Isométrica'], ['front', 'Frontal'], ['side', 'Lateral'], ['top', 'Superior'], ['bottom', 'Inferior'], ['rear', 'Posterior']] as const).map(([id, l]) => <button key={id} className="btn" onClick={() => eng.viewPreset(id)}>{l}</button>)}
           </div>
         )}
+        {tool === 'mech' && <MechTool eng={eng} onChange={re} />}
         {tool === 'compare' && (
           <div className="tool views-tool">
             <span className="small muted">Instantáneas de explosión: guarda dos estados y alterna entre ellos con transición.</span>
@@ -516,6 +517,46 @@ function Engineering({ eng, s, sel }: { eng: Engine; s: Snapshot; sel: PartNode 
       </div>
       {eng.hoverNode && <div className="hover-tip" style={{ transform: `translate(${eng.hoverXY[0] + 14}px, ${eng.hoverXY[1] + 14}px)` }}><span className="mono">{eng.hoverNode.code}</span> {eng.hoverNode.label}</div>}
     </>
+  );
+}
+
+/** Control directo de los mecanismos animados. Respeta los interlocks del simulador:
+ *  el brazo y el seguimiento solar dependen de sus interruptores de potencia y la
+ *  escotilla exterior de la esclusa sólo se abre mediante el ciclo de presión. */
+function MechTool({ eng, onChange }: { eng: Engine; onChange: () => void }) {
+  const m = eng.model;
+  const [, tick] = useState(0);
+  useEffect(() => { const id = window.setInterval(() => tick((x) => x + 1), 250); return () => window.clearInterval(id); }, []);
+  const ids = [...m.mechs.keys()];
+  const hatches = ids.filter((id) => id.startsWith('hatch:') && id !== 'hatch:alk_out').sort();
+  const shutters = ids.filter((id) => id.startsWith('shutter:'));
+  const lockers = ids.filter((id) => id.startsWith('locker:'));
+  const isOpen = (id: string) => { const x = m.mech(id); return !!x && Math.abs(x.target - x.rest) > 1e-3; };
+  const setAll = (list: string[], open: boolean) => { for (const id of list) if (isOpen(id) !== open) m.toggleMech(id); eng.audio.click(true); onChange(); };
+  const label: Record<string, string> = { 'hatch:idss': 'Escotilla IDSS (proa)', 'hatch:aft': 'Escotilla nodo → hábitat', 'hatch:alk_in': 'Escotilla interior esclusa' };
+  const rad = eng.mech.radiatorTarget > 0.5;
+  const armOn = eng.systems.on('RBT');
+  return (
+    <div className="tool views-tool mech-tool">
+      <div className="mech-group">
+        <span className="eyebrow">Radiadores</span>
+        <button className="btn" onClick={() => { eng.mech.radiatorTarget = rad ? 0 : 1; onChange(); }}>{rad ? 'Plegar' : 'Desplegar'}</button>
+        <span className="mono small">{Math.round(eng.mech.radiatorDeploy * 100)} %</span>
+      </div>
+      <div className="mech-group">
+        <span className="eyebrow">Brazo{!armOn && ' · sin potencia (RBT)'}</span>
+        {([['stow', 'Estiba'], ['deploy', 'Despliegue'], ['inspect', 'Inspección']] as const).map(([p, l]) => <button key={p} className="btn" disabled={!armOn} onClick={() => eng.mech.setPose(p)}>{l}</button>)}
+      </div>
+      <div className="mech-group">
+        <span className="eyebrow">Escotillas</span>
+        {hatches.map((id) => <button key={id} className={'btn' + (isOpen(id) ? ' on' : '')} onClick={() => { m.toggleMech(id); eng.audio.hatch(isOpen(id)); onChange(); }}>{label[id] ?? id}</button>)}
+      </div>
+      <div className="mech-group">
+        <span className="eyebrow">Cúpula · taquillas</span>
+        <button className="btn" onClick={() => setAll(shutters, !shutters.some(isOpen))}>{shutters.some(isOpen) ? 'Cerrar' : 'Abrir'} contraventanas</button>
+        <button className="btn" onClick={() => setAll(lockers, !lockers.some(isOpen))}>{lockers.some(isOpen) ? 'Cerrar' : 'Abrir'} taquillas ({lockers.length})</button>
+      </div>
+    </div>
   );
 }
 

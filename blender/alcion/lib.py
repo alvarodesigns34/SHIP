@@ -143,6 +143,11 @@ def _finish(bm, name, smooth=30, mats=None):
     me = bpy.data.meshes.new(name)
     bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-6)
     bm.normal_update()
+    # normales coherentes hacia el exterior (la web descarta caras traseras)
+    try:
+        bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    except Exception:
+        pass
     if not bm.loops.layers.uv:
         box_uv(bm)
     bm.to_mesh(me)

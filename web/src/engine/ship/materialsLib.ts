@@ -56,7 +56,8 @@ export function enhanceMaterial(src: THREE.Material): THREE.Material {
     p.normalMap = tile(brushedNormal(), 0.35);
     p.normalScale = new THREE.Vector2(0.18, 0.18);
     p.roughnessMap = tile(roughNoise(7), 0.6);
-    p.anisotropy = 0.4;
+    // sin anisotropía: con tangentes por derivadas producía NaN en UV degeneradas
+    // (medido: píxeles NaN que bloom/AO propagaban a toda la imagen)
     p.envMapIntensity = 0.8;
     m = p as unknown as THREE.MeshStandardMaterial;
   } else if (has('M_Nozzle') || has('M_HallBody') || has('M_AlAnodBlack') || has('M_Bolt')) {

@@ -24,8 +24,8 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,FWD.ALK.INT.PNL,Panel de control de despresurización,part,M_InteriorGrey;M_InteriorDark;M_LEDRed;M_LEDGreen;M_DecalRed,0.065x0.42x0.5,120,"Panel con manómetro digital, válvulas de despresurización/represurización y luz de estado."
 4,FWD.ALK.INT.SUITA,Traje EVA A,part,M_ShieldWhite;M_BetaCloth;M_AlBare;M_DecalRed;M_MLI_Gold;M_Fabric;M_InteriorDark;M_AlAnodBlack,0.807x0.928x1.601,2804,Traje EVA conceptual de torso rígido con mochila de soporte vital; representación estilizada.
 4,FWD.ALK.INT.SUITB,Traje EVA B,part,M_ShieldWhite;M_BetaCloth;M_AlBare;M_FabricBlue;M_MLI_Gold;M_Fabric;M_InteriorDark;M_AlAnodBlack,0.807x0.928x1.601,2804,Traje EVA conceptual de torso rígido con mochila de soporte vital; representación estilizada.
-3,FWD.ALK.MMOD,Manta MMOD y MLI de la esclusa,part,M_BetaCloth;M_Fabric,1.908x1.908x2.468,3373,"Manta Whipple flexible (beta cloth, Nextel, Kevlar) sobre MLI de 20 capas, con costuras de unión."
-3,FWD.ALK.STR,Casco presurizado (unión en silla al nodo),part,M_AlLi,1.72x1.72x2.466,4322,"Cilindro de Al-Li soldado en silla al barril del nodo, con 3 marcos y cúpula inferior."
+3,FWD.ALK.MMOD,Manta MMOD y MLI de la esclusa,part,M_BetaCloth;M_Fabric,1.908x1.908x2.468,3480,"Manta Whipple flexible (beta cloth, Nextel, Kevlar) sobre MLI de 20 capas, con costuras de unión."
+3,FWD.ALK.STR,Casco presurizado (unión en silla al nodo),part,M_AlLi,1.72x1.72x2.466,3554,"Cilindro de Al-Li soldado en silla al barril del nodo, con 3 marcos y cúpula inferior."
 2,FWD.CUP,Cúpula de observación,group,,1.936x1.863x1.305,,Cúpula hexagonal de 7 ventanas para observación directa durante operaciones de proximidad y robótica.
 3,FWD.CUP.FRM,Estructura de la cúpula (forja de aluminio),part,M_AlBare,1.48x1.48x0.7,528,Forja de aluminio 2219 con seis montantes y anillo superior.
 3,FWD.CUP.HRL,Pasamanos EVA perimetral de la cúpula,part,M_EVAYellow,1.665x1.665x0.093,936,
