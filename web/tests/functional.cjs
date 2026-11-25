@@ -15,7 +15,7 @@ const { chromium } = require('playwright');
   await t('modos', async () => { const e = window.__engine; const ms = ['FLIGHT','INTERIOR','ENGINEERING','MISSIONS','SANDBOX','CINEMATIC']; const seen = []; for (const m of ms) { e.setMode(m); seen.push(e.mode); } return { ok: seen.join() === ms.join(), info: seen }; });
   // 2 interruptor: luces bahía A apagadas => luz rect a 0
   await t('interruptor luces', async () => { const e = window.__engine; e.enterInterior('cabina'); e.systems.sw.LT_A = true; await new Promise(r => setTimeout(r, 600)); const before = e.cockpit.bayLights.filter(l => l.bay==='A' && l.rect).map(l => l.rect.intensity)[0];
-     const n = e.model.mechs.get('sw:LT_A'); e.hoverCtlForce = null; const c = { node: n, ctl: 'sw:LT_A' }; e['hoverCtl'] = c; e.tryInteract(); await new Promise(r => setTimeout(r, 1200)); const after = e.cockpit.bayLights.filter(l => l.bay==='A' && l.rect).map(l => l.rect.intensity)[0];
+     const n = e.model.mechs.get('sw:LT_A'); e.hoverCtlForce = null; const c = { node: n, ctl: 'sw:LT_A' }; e['hoverCtl'] = c; e.tryInteract(); e.tick(1.2); const after = e.cockpit.bayLights.filter(l => l.bay==='A' && l.rect).map(l => l.rect.intensity)[0];
      const lever = e.model.mech('sw:LT_A').value; e['hoverCtl'] = c; e.tryInteract(); return { ok: before > 0 && after === 0 && lever < 0, info: { before, after, lever } }; });
   await wait(500);
   // 3 aviónica apagada => pantallas apagadas (página en negro), encendida => arranque
