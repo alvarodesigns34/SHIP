@@ -149,7 +149,7 @@ def _node_structure(fwd):
                             (0.52, S.X_NODE_A), (0.52, S.X_NODE_A + 0.06)], 64)
     part("FWD.STR.BHA", "Mamparo de popa del nodo", mb.mesh(), g, explode=(-0.6, 0, 0),
          desc="Mamparo anular con escotilla de 1,04 m hacia el módulo habitable.")
-    for i, x in enumerate([S.X_NODE_A + 0.1, (S.X_NODE_A + S.X_NODE_F) / 2, S.X_NODE_F - 0.1]):
+    for i, x in enumerate([S.X_NODE_A + 0.1, S.X_NODE_A + 0.36, S.X_NODE_F - 0.1]):
         part(f"FWD.STR.FRM{i+1}", f"Marco anular del nodo {i+1}", ring_frame(f"node_frame{i}", S.R_N - 0.11, S.R_N - 0.03, x, 0.05),
              g, explode=("auto", 0.4), desc="Marco de rigidización circunferencial (sección en T).")
     # anillo de base de la cúpula
@@ -252,8 +252,10 @@ def _docking(fwd):
     for i in range(3):
         a = TAU * i / 3 + PI / 2 + PI / 3
         mb.box("M_Steel", 0.04, 0.06, 0.06, center=ring_xyz(0.64, a, xs + 0.075), rot=Matrix.Rotation(a, 4, 'X'))
-    part("FWD.DCK.SCS.RNG", "Anillo de captura blanda con 3 pétalos guía", mb.mesh(), act, explode=(0.5, 0, 0),
-         desc="Anillo con tres pétalos de guiado y tres pestillos de captura magnéticos-mecánicos.")
+    sr = part("FWD.DCK.SCS.RNG", "Anillo de captura blanda con 3 pétalos guía", mb.mesh(), act, explode=(0.5, 0, 0),
+              desc="Anillo con tres pétalos de guiado y tres pestillos de captura magnéticos-mecánicos.")
+    from .expansion import mech
+    mech(sr, "slide", (xs, 0, 0), (1, 0, 0), -0.26, 0.0, -0.26, ident="dock:ring", speed=0.25)
     # cámaras, luces, diana, láser
     eq = group("FWD.DCK.SNS", "Sensores de aproximación y atraque", g, explode=("radial", 0.6),
                desc="Cámaras de visión estéreo, LIDAR de destello y luces de atraque para la aproximación final autónoma.")
@@ -373,8 +375,13 @@ def _cupola(fwd):
         for s_ in (-1, 1):
             mb.box("M_AlBare", 0.05, 0.05, 0.05, center=h0 + tdir * s_ * w_top * 0.38 - n * 0.03, rot=Rh)
         mb.box("M_AlAnodBlack", 0.05, 0.03, 0.03, center=h0.lerp(b0.lerp(b1, 0.5), 0.6) - nrm * 0.02)
-        part(f"FWD.CUP.SHT.S{i+1}", f"Contraventana {i+1} (abierta)", mb.mesh(), sg, explode=("auto", 0.4),
-             desc="Contraventana de aluminio con manta MMOD, abierta 105° sobre bisagra superior con retén.")
+        sp = part(f"FWD.CUP.SHT.S{i+1}", f"Contraventana {i+1}", mb.mesh(), sg, explode=("auto", 0.4),
+                  desc="Contraventana de aluminio con manta MMOD sobre bisagra superior con retén; se cierra desde la cúpula.")
+        from .expansion import mech, ctl
+        tgt = ((bot[i] + bot[j]) / 2 - mtop).normalized()
+        phi = math.atan2(tdir.dot(dirv.cross(tgt)), dirv.dot(tgt))
+        mech(sp, "hinge", h0, tdir, min(0.0, phi * 0.97), max(0.0, phi * 0.97), 0.0, ident=f"shutter:{i+1}", speed=1.2)
+        ctl(sp, "shutters")
     mb = MB("cup_top_shutter")
     ztop = z0 + 0.12 + h + 0.06
     hinge = Vector((xc - 0.36, 0, ztop))
@@ -384,8 +391,11 @@ def _cupola(fwd):
     mb.poly("M_ShieldWhite", quad, [q + nn * 0.016 for q in quad])
     mb.poly("M_BetaCloth", [q - nn * 0.012 for q in quad], [q - nn * 0.002 for q in quad])
     mb.cyl("M_Steel", 0.016, 0.016, 0.56, 10, center=hinge, axis='Y')
-    part("FWD.CUP.SHT.S7", "Contraventana cenital (abierta)", mb.mesh(), sg, explode=(-0.3, 0, 0.3),
-         desc="Contraventana circular de la ventana cenital, abierta hacia popa.")
+    sp = part("FWD.CUP.SHT.S7", "Contraventana cenital", mb.mesh(), sg, explode=(-0.3, 0, 0.3),
+              desc="Contraventana de la ventana cenital, abierta hacia popa.")
+    from .expansion import mech, ctl
+    mech(sp, "hinge", hinge, (0, 1, 0), 0.0, 1.80, 0.0, ident="shutter:7", speed=1.2)
+    ctl(sp, "shutters")
     # pasamanos cúpula
     hr = MB("cup_handrails")
     for i in range(6):

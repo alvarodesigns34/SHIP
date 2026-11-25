@@ -28,7 +28,8 @@ import alcion.spec as S
 import alcion.exterior as ext
 import alcion.systems as sysm
 import alcion.interior as inter
-for m in (lib, mats, S, ext, sysm, inter):
+import alcion.expansion as expn
+for m in (lib, mats, S, ext, sysm, inter, expn):
     importlib.reload(m)
 
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
@@ -43,17 +44,20 @@ root = lib.group("ALCION", "ALCIÓN HX-4", None, explode=("none", 0),
                  func="Salidas de hasta 45 días desde una estación en órbita lunar para servicio de observatorios, recogida de muestras y ciencia en órbita")
 fwd = ext.build_forward(root)
 inter.build_node_interior(fwd)
+expn.build_airlock(fwd)
 hab = lib.group("HAB", "Módulo Habitable Presurizado", root, explode=(0, 0, 0),
                 desc="Módulo presurizado principal de Ø4,20 m y 8,2 m de barril cilíndrico; volumen presurizado total del vehículo ≈ 150 m³.",
                 func="Alojar a la tripulación, la cabina de vuelo, el laboratorio y el soporte vital")
 ext.build_hab_exterior(hab)
 inter.build_interior(hab)
+expn.build_lived_in(hab)
 sysm.build_service(root)
 sysm.build_propulsion(root)
 sysm.build_power(root)
 sysm.build_thermal(root)
 sysm.build_comms(root)
 sysm.build_robot(root)
+expn.cut_node_for_airlock(None)
 print(f"[build] geometría creada en {time.time()-t0:.1f}s")
 
 # ---------------------------------------------------------------------------
@@ -252,7 +256,7 @@ if DO_EXPORT:
     bpy.ops.export_scene.gltf(filepath=glb, **common)
     print("[build] exportado", glb, os.path.getsize(glb) // 1024, "KiB")
     # división para carga progresiva: exterior (inmediato) + interior (diferido)
-    INTERIOR_ROOTS = {"HAB.INT", "HAB.UTL", "FWD.INT"}
+    INTERIOR_ROOTS = {"HAB.INT", "HAB.UTL", "FWD.INT", "HAB.INT.LIV"}
 
     def under_interior(o):
         p = o

@@ -72,6 +72,7 @@ SPEC = {
     "M_Dish":         ((0.88, 0.88, 0.86), 0.0, 0.45, {"desc": "Reflector de antena (CFRP pintado)"}),
     "M_Battery":      ((0.20, 0.22, 0.24), 0.5, 0.45, {"desc": "Carcasa de batería Li-ion"}),
     "M_COPV":         ((0.05, 0.05, 0.055), 0.3, 0.30, {"weave": True, "desc": "Depósito COPV (liner de titanio + bobinado de carbono)"}),
+    "M_Leaf":         ((0.05, 0.16, 0.035), 0.0, 0.55, {"noise": 0.1, "desc": "Hojas de cultivo (lechuga roja/verde)"}),
     "M_TankTi":       ((0.55, 0.54, 0.52), 1.0, 0.30, {"noise": 0.1, "desc": "Depósito de titanio"}),
 }
 

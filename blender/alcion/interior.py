@@ -156,8 +156,12 @@ def rack(parent, code, label, wall, x, desc="", lockers=True, grid=(2, 6), func=
             for j in range(ny):
                 xx = -RACK_W / 2 + 0.02 + lw * (i + 0.5)
                 yy = -1.08 + lh * (j + 0.5)
-                place(f"{code}.L{i+1}{j+1}", f"Taquilla {i+1}-{j+1}", lm, g, W, L(xx, yy, 0.0),
-                      explode=tuple(n_world * 0.25), desc="Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.")
+                lk = place(f"{code}.L{i+1}{j+1}", f"Taquilla {i+1}-{j+1}", lm, g, W, L(xx, yy, 0.0),
+                           explode=tuple(n_world * 0.25), desc="Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.")
+                from .expansion import mech, ctl
+                mech(lk, "hinge", W @ Vector((xx - lw / 2 + 0.006, yy, 0.011)), W.to_3x3() @ Vector((0, 1, 0)), -1.9, 0.0, 0.0,
+                     ident=f"locker:{code}.L{i+1}{j+1}", speed=2.5)
+                ctl(lk, "locker")
     place(f"{code}.HR", "Pasamanos interior", shared("ivahr", handrail_int_mesh), g, W, L(0, 1.0 if wall != "deck" else -1.0, 0.0),
           explode=tuple(n_world * 0.4), desc="Pasamanos IVA de aluminio anodizado.")
     return g, W, n_world
@@ -292,10 +296,8 @@ def _bay_A(g, x0, x1):
     rack(g, "HAB.INT.A.DK1", "Bastidor de estiba de suelo A1", "deck", xa, "Estiba de repuestos de aviónica y kits de emergencia.")
     rack(g, "HAB.INT.A.DK2", "Bastidor de estiba de suelo A2", "deck", xb, "Estiba de trajes de presión IVA (4 unidades).")
     gc, W, n = rack(g, "HAB.INT.A.CL1", "Panel de mando cenital", "ceil", xb, "Paneles de interruptores de los buses de potencia, armado de RCS y pirotecnia.", lockers=False)
-    place("HAB.INT.A.CL1.SW", "Panel de interruptores cenital", shared("swp", switch_panel_mesh), gc, W, L(0, 0.0, 0.0),
-          explode=tuple(n * 0.3), desc="36 interruptores protegidos con indicadores LED de estado.")
-    place("HAB.INT.A.CL1.SCR", "Pantalla de estado de buses", screen_mesh("scr_switch", 0.55, 0.34, "SWITCH"), gc, W, L(0, 0.0, 0.08),
-          explode=tuple(n * 0.45), desc="Sinóptico de distribución eléctrica.")
+    from .expansion import build_switch_panel, ctl, mech
+    build_switch_panel(gc, W, n)
     rack(g, "HAB.INT.A.CL2", "Bastidor de estiba cenital A", "ceil", xa, "Estiba de procedimientos y equipos de fotografía.")
     for side, wall in (("P", "port"), ("S", "stbd")):
         gw, W, n = rack(g, f"HAB.INT.A.{side}W", f"Estación de vuelo lateral ({WALL_LBL[wall]})", wall, xb,
@@ -309,8 +311,9 @@ def _bay_A(g, x0, x1):
             mb.box("M_AlAnodBlack", 0.86, 0.008, 0.012, center=(0, -0.95 + 0.06 * k, 0.026))
         place(f"HAB.INT.A.{side}W.FRT", "Panel frontal de aviónica", mb.mesh(smooth=None), gw, W, explode=tuple(n * 0.3),
               desc="Panel con rejilla de ventilación forzada y teclado de función.")
-        place(f"HAB.INT.A.{side}W.SCR", "Pantalla multifunción auxiliar", screen_mesh(f"scr_aux_{side}", 0.56, 0.36, "ECLSS" if side == "P" else "TRAJ"),
-              gw, W, L(0, 0.45, 0.047), explode=tuple(n * 0.45), desc="Pantalla de 26\" de sistemas.")
+        sp = place(f"HAB.INT.A.{side}W.SCR", "Pantalla multifunción auxiliar", screen_mesh(f"scr_aux_{side}", 0.56, 0.36, "ECLSS" if side == "P" else "TRAJ"),
+                   gw, W, L(0, 0.45, 0.047), explode=tuple(n * 0.45), desc="Pantalla de 26\" de sistemas.")
+        ctl(sp, f"scr:AUX{side}")
         rack(g, f"HAB.INT.A.{side}2", f"Bastidor de estiba A ({WALL_LBL[wall]})", wall, xa, "Estiba de uso diario.")
     # consolas y asientos
     cg = group("HAB.INT.A.CNS", "Consolas de pilotaje", g, explode=(0.0, 0, 0.9),
@@ -324,8 +327,9 @@ def _bay_A(g, x0, x1):
         for k, key in enumerate(keys):
             yy = (-0.27 + 0.27 * k)
             Rp = Matrix.Translation((-0.125, yy, -0.185)) @ Matrix.Rotation(-0.55, 4, 'Y') @ Matrix.Rotation(-PI / 2, 4, 'Y') @ Matrix.Rotation(PI / 2, 4, 'Z')
-            place(f"HAB.INT.A.CNS.C{i+1}.D{k+1}", f"Pantalla de vuelo {k+1}", screen_mesh(f"scr_{i}_{k}", 0.25, 0.34, key), sub, Wc @ Rp,
-                  explode=(-0.25, 0, 0.12), desc="Pantalla táctil de 13\" de alto brillo con unidad de visualización redundante.")
+            sp = place(f"HAB.INT.A.CNS.C{i+1}.D{k+1}", f"Pantalla de vuelo {k+1}", screen_mesh(f"scr_{i}_{k}", 0.25, 0.34, key), sub, Wc @ Rp,
+                       explode=(-0.25, 0, 0.12), desc="Pantalla táctil de 13\" de alto brillo con unidad de visualización redundante.")
+            ctl(sp, f"scr:C{i+1}D{k+1}")
     sg = group("HAB.INT.A.SEAT", "Asientos de tripulación", g, explode=(-0.6, 0, 0.5),
                desc="4 asientos con arnés de 5 puntos para fases dinámicas (encendidos de motor, atraque).")
     for i, (x, y, cmd, lbl) in enumerate([(x1 - 1.05, 0.62, True, "Comandante"), (x1 - 1.05, -0.62, True, "Piloto"),
@@ -334,6 +338,7 @@ def _bay_A(g, x0, x1):
         meshes = shared(f"seat_{cmd}", lambda: seat_meshes(cmd))
         g2 = group(f"HAB.INT.A.SEAT.S{i+1}", f"Asiento {lbl}", sg, explode=("auto", 0.5),
                    desc="Asiento de CFRP/aluminio con amortiguación, regulable en altura" + (", con controladores manuales de traslación y rotación." if cmd else "."))
+        ctl(g2, f"seat:{i+1}")
         offs = {"FRM": (0, 0, -0.25), "CSH": (0, 0, 0.12), "HRN": (0.22, 0, 0.05), "ARM": (0, 0.22 if y > 0 else -0.22, 0.05), "FTR": (0.25, 0, -0.1)}
         for key, plbl, pdesc in SEAT_PARTS:
             part(f"HAB.INT.A.SEAT.S{i+1}.{key}", plbl, meshes[key], g2, loc=(x, y, z), explode=offs[key], desc=pdesc)
@@ -779,12 +784,17 @@ def hatch_mesh(r, name, window=True):
 def build_node_interior(fwd):
     g = group("FWD.INT", "Interior del nodo", fwd, explode=(0, 0, -3.0),
               desc="Escotillas, estación de trabajo robótica bajo la cúpula y estiba de acceso rápido.")
-    p = part("FWD.INT.HF", "Escotilla de atraque IDSS (cerrada)", hatch_mesh(0.46, "hatch_fwd"), g, explode=(0.5, 0, 0),
-             desc="Escotilla de 0,92 m con mirilla, válvula de ecualización de presión y mecanismo de cierre de 6 pestillos.")
-    p.matrix_basis = Matrix.Translation((S.X_NODE_F - 0.05, 0, 0)) @ Matrix.Rotation(-PI / 2, 4, 'Y')
-    p = part("FWD.INT.HA", "Escotilla nodo–hábitat (abierta)", hatch_mesh(0.56, "hatch_aft"), g, explode=(-0.4, 0, 0),
-             desc="Escotilla de 1,12 m abierta 100° y retenida contra la pared del nodo.")
-    p.matrix_basis = Matrix.Translation((S.X_NODE_A + 0.70, 0.85, 0.0)) @ Matrix.Rotation(PI / 2, 4, 'X') @ Matrix.Rotation(0.15, 4, 'Y')
+    from .expansion import mech, ctl
+    p = part("FWD.INT.HF", "Escotilla de atraque IDSS", hatch_mesh(0.46, "hatch_fwd"), g, explode=(0.5, 0, 0),
+             desc="Escotilla de 0,92 m con mirilla, válvula de ecualización de presión y mecanismo de cierre de 6 pestillos. Cerrada mientras el puerto está libre.")
+    p.matrix_basis = Matrix.Translation((S.X_NODE_F - 0.05, 0, 0)) @ Matrix.Rotation(-PI / 2, 4, 'Y') @ Matrix.Rotation(PI / 2, 4, 'Z')
+    mech(p, "hinge", (S.X_NODE_F - 0.05, -0.49, 0), (0, 0, 1), 0.0, 1.75, 0.0, ident="hatch:idss", speed=0.8)
+    ctl(p, "hatch:idss")
+    p = part("FWD.INT.HA", "Escotilla nodo–hábitat", hatch_mesh(0.56, "hatch_aft"), g, explode=(-0.4, 0, 0),
+             desc="Escotilla de 1,12 m, abierta 100° y retenida contra la pared del nodo durante la operación normal.")
+    p.matrix_basis = Matrix.Translation((S.X_NODE_A + 0.10, 0, 0)) @ Matrix.Rotation(PI / 2, 4, 'Y') @ Matrix.Rotation(-PI / 2, 4, 'Z')
+    mech(p, "hinge", (S.X_NODE_A + 0.10, 0.59, 0), (0, 0, 1), 0.0, 1.75, 1.75, ident="hatch:aft", speed=0.8)
+    ctl(p, "hatch:aft")
     # estación de trabajo robótica (RWS)
     rws = group("FWD.INT.RWS", "Estación de trabajo robótica", g, explode=(0, 0, 0.6),
                 desc="Puesto bajo la cúpula con 2 pantallas, controladores manuales de traslación y rotación y portátil de mando.",
@@ -801,13 +811,14 @@ def build_node_interior(fwd):
     place("FWD.INT.RWS.FRM", "Bastidor, reposamanos y controladores manuales", mb.mesh(), rws, Matrix.Identity(4), explode=(0.3, 0, 0))
     for k, (y, key) in enumerate(((0.27, "CAMERA"), (-0.27, "TRAJ"))):
         Wd = Matrix.Translation((xc + 0.495, y, 0.58)) @ Matrix.Rotation(-PI / 2, 4, 'Y') @ Matrix.Rotation(PI / 2, 4, 'Z')
-        place(f"FWD.INT.RWS.D{k+1}", f"Pantalla de la estación robótica {k+1}", screen_mesh(f"rws_scr_{k}", 0.48, 0.32, key), rws, Wd,
-              explode=(-0.3, 0, 0.1), desc="Pantalla de 22\" para vídeo de las cámaras del brazo.")
+        sp = place(f"FWD.INT.RWS.D{k+1}", f"Pantalla de la estación robótica {k+1}", screen_mesh(f"rws_scr_{k}", 0.48, 0.32, key), rws, Wd,
+                   explode=(-0.3, 0, 0.1), desc="Pantalla de 22\" para vídeo de las cámaras del brazo.")
+        ctl(sp, f"scr:RWS{k+1}")
     # estiba del nodo
     st = group("FWD.INT.STW", "Estiba del nodo", g, explode=("radial", 0.0))
     lm = shared("node_locker", lambda: locker_mesh(0.46, 0.40))
     k = 0
-    for a in (-PI / 2 - 0.55, -PI / 2, -PI / 2 + 0.55, PI + 0.3, -0.3):
+    for a in (-PI / 2 - 0.62, -PI / 2 + 0.62, PI + 0.3, -0.3):
         for x in (10.35, 10.85, 11.35, 11.85):
             if a in (PI + 0.3, -0.3) and x > 11.5:
                 continue
@@ -817,7 +828,7 @@ def build_node_interior(fwd):
             place(f"FWD.INT.STW.L{k:02d}", f"Taquilla del nodo {k:02d}", lm, st, Wl, explode=("radial", 0.4),
                   desc="Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).")
     mb = MB("node_backing")
-    for a in (-PI / 2 - 0.55, -PI / 2, -PI / 2 + 0.55):
+    for a in (-PI / 2 - 0.62, -PI / 2 + 0.62):
         mb.box("M_InteriorDark", 2.0, 0.46, 0.14, center=Vector(ring_xyz(S.R_N - 0.09, a, 11.1)), rot=Matrix.Rotation(a - PI / 2, 4, 'X'))
     for a in (PI + 0.3, -0.3):
         mb.box("M_InteriorDark", 1.5, 0.46, 0.14, center=Vector(ring_xyz(S.R_N - 0.09, a, 10.85)), rot=Matrix.Rotation(a - PI / 2, 4, 'X'))

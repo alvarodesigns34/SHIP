@@ -7,18 +7,36 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,COM.DSH.REF,"Reflector parabólico de Ø1,6 m",part,M_Dish;M_AlBare;M_CFRP,1.422x1.278x1.278,4960,Reflector de CFRP con nervios traseros; superficie pintada en blanco térmico.
 2,COM.GMB,Cardán de elevación,part,M_AlAnodBlack;M_AlBare,0.3x0.231x0.231,104,Actuador de elevación con codificador absoluto.
 2,COM.MST,Mástil de CFRP,part,M_CFRP;M_Cable,0.137x0.735x0.735,88,Mástil tubular con guía de ondas y mazo de control.
-1,FWD,Módulo Nodo de Proa,group,,3.33x3.04x4.101,,Nodo presurizado de proa con puerto de atraque IDSS activo y cúpula de observación de 7 ventanas. Aloja la estación de trabajo robótica y la estiba de acceso rápido.
+1,FWD,Módulo Nodo de Proa,group,,3.373x3.04x6.239,,Nodo presurizado de proa con puerto de atraque IDSS activo y cúpula de observación de 7 ventanas. Aloja la estación de trabajo robótica y la estiba de acceso rápido.
+2,FWD.ALK,Esclusa EVA (nadir del nodo),group,,2.233x2.11x2.56,,"Esclusa de tripulación de Ø1,72 m y 2,2 m de altura bajo el nodo, con escotilla interior IDSS de 1,0 m y escotilla exterior de 1,0 m. Aloja 2 trajes EVA conceptuales."
+3,FWD.ALK.EXT,Equipos exteriores de la esclusa,group,,2.233x2.11x1.964,,
+4,FWD.ALK.EXT.APFR,Plataforma de sujeción de pies,part,M_AlBare;M_EVAYellow,0.487x0.3x0.347,52,Restricción de pies orientable para trabajos junto a la escotilla.
+4,FWD.ALK.EXT.HR,Pasamanos EVA de la esclusa,part,M_EVAYellow,1.985x1.722x1.964,1440,6 pasamanos longitudinales y anillo de traslación alrededor de la escotilla.
+4,FWD.ALK.EXT.L1,Foco EVA 1,part,M_AlAnodBlack;M_NavLight,0.168x0.095x0.14,164,Foco LED de la zona de salida.
+4,FWD.ALK.EXT.L2,Foco EVA 2,part,M_AlAnodBlack;M_NavLight,0.168x0.095x0.14,164,Foco LED de la zona de salida.
+4,FWD.ALK.EXT.UMB,Panel de umbilicales y punto de anclaje,part,M_AlBare;M_GoldPlate;M_EVAYellow;M_DecalRed,0.3x0.24x0.4,168,"Conexiones de oxígeno, agua y datos para los trajes y punto de anclaje de la línea de seguridad."
+3,FWD.ALK.HO,Escotilla exterior EVA,group,,1.2x1.2x0.149,,
+4,FWD.ALK.HO.DOOR,Escotilla exterior (puerta),part,M_AlBare;M_Rubber;M_Glass;M_AlAnodBlack;M_Steel,1.0x1.06x0.149,1584,"Puerta de 1,0 m con mirilla, válvula de ecualización y cierre de 6 pestillos; abre hacia el interior de la esclusa."
+4,FWD.ALK.HO.RNG,Marco de la escotilla exterior,part,M_AlBare;M_Rubber;M_EVAYellow,1.2x1.2x0.095,1136,
+3,FWD.ALK.INT,Interior de la esclusa,group,,1.605x1.696x2.083,,
+4,FWD.ALK.INT.HI,Escotilla interior nodo–esclusa,part,M_AlBare;M_Rubber;M_Glass;M_AlAnodBlack;M_Steel,1.0x1.06x0.149,1584,"Escotilla de 1,0 m en el suelo del nodo; se abre hacia el nodo."
+4,FWD.ALK.INT.HR,Pasamanos y luminarias interiores,part,M_Handrail;M_LED,1.59x1.042x1.5,136,
+4,FWD.ALK.INT.PNL,Panel de control de despresurización,part,M_InteriorGrey;M_InteriorDark;M_LEDRed;M_LEDGreen;M_DecalRed,0.065x0.42x0.5,120,"Panel con manómetro digital, válvulas de despresurización/represurización y luz de estado."
+4,FWD.ALK.INT.SUITA,Traje EVA A,part,M_ShieldWhite;M_BetaCloth;M_AlBare;M_DecalRed;M_MLI_Gold;M_Fabric;M_InteriorDark;M_AlAnodBlack,0.807x0.928x1.601,2804,Traje EVA conceptual de torso rígido con mochila de soporte vital; representación estilizada.
+4,FWD.ALK.INT.SUITB,Traje EVA B,part,M_ShieldWhite;M_BetaCloth;M_AlBare;M_FabricBlue;M_MLI_Gold;M_Fabric;M_InteriorDark;M_AlAnodBlack,0.807x0.928x1.601,2804,Traje EVA conceptual de torso rígido con mochila de soporte vital; representación estilizada.
+3,FWD.ALK.MMOD,Manta MMOD y MLI de la esclusa,part,M_BetaCloth;M_Fabric,1.908x1.908x2.468,3373,"Manta Whipple flexible (beta cloth, Nextel, Kevlar) sobre MLI de 20 capas, con costuras de unión."
+3,FWD.ALK.STR,Casco presurizado (unión en silla al nodo),part,M_AlLi,1.72x1.72x2.466,4322,"Cilindro de Al-Li soldado en silla al barril del nodo, con 3 marcos y cúpula inferior."
 2,FWD.CUP,Cúpula de observación,group,,1.936x1.863x1.305,,Cúpula hexagonal de 7 ventanas para observación directa durante operaciones de proximidad y robótica.
 3,FWD.CUP.FRM,Estructura de la cúpula (forja de aluminio),part,M_AlBare,1.48x1.48x0.7,528,Forja de aluminio 2219 con seis montantes y anillo superior.
 3,FWD.CUP.HRL,Pasamanos EVA perimetral de la cúpula,part,M_EVAYellow,1.665x1.665x0.093,936,
 3,FWD.CUP.SHT,Contraventanas MMOD,group,,1.936x1.863x0.67,,"Contraventanas giratorias de aluminio con manta MMOD, accionadas manualmente desde el interior."
-4,FWD.CUP.SHT.S1,Contraventana 1 (abierta),part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.72x0.709x0.3,96,"Contraventana de aluminio con manta MMOD, abierta 105° sobre bisagra superior con retén."
-4,FWD.CUP.SHT.S2,Contraventana 2 (abierta),part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.644x0.538x0.3,96,"Contraventana de aluminio con manta MMOD, abierta 105° sobre bisagra superior con retén."
-4,FWD.CUP.SHT.S3,Contraventana 3 (abierta),part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.72x0.709x0.3,96,"Contraventana de aluminio con manta MMOD, abierta 105° sobre bisagra superior con retén."
-4,FWD.CUP.SHT.S4,Contraventana 4 (abierta),part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.72x0.709x0.3,96,"Contraventana de aluminio con manta MMOD, abierta 105° sobre bisagra superior con retén."
-4,FWD.CUP.SHT.S5,Contraventana 5 (abierta),part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.644x0.538x0.3,96,"Contraventana de aluminio con manta MMOD, abierta 105° sobre bisagra superior con retén."
-4,FWD.CUP.SHT.S6,Contraventana 6 (abierta),part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.72x0.709x0.3,96,"Contraventana de aluminio con manta MMOD, abierta 105° sobre bisagra superior con retén."
-4,FWD.CUP.SHT.S7,Contraventana cenital (abierta),part,M_ShieldWhite;M_BetaCloth;M_Steel,0.181x0.6x0.621,60,"Contraventana circular de la ventana cenital, abierta hacia popa."
+4,FWD.CUP.SHT.S1,Contraventana 1,part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.72x0.709x0.3,96,Contraventana de aluminio con manta MMOD sobre bisagra superior con retén; se cierra desde la cúpula.
+4,FWD.CUP.SHT.S2,Contraventana 2,part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.644x0.538x0.3,96,Contraventana de aluminio con manta MMOD sobre bisagra superior con retén; se cierra desde la cúpula.
+4,FWD.CUP.SHT.S3,Contraventana 3,part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.72x0.709x0.3,96,Contraventana de aluminio con manta MMOD sobre bisagra superior con retén; se cierra desde la cúpula.
+4,FWD.CUP.SHT.S4,Contraventana 4,part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.72x0.709x0.3,96,Contraventana de aluminio con manta MMOD sobre bisagra superior con retén; se cierra desde la cúpula.
+4,FWD.CUP.SHT.S5,Contraventana 5,part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.644x0.538x0.3,96,Contraventana de aluminio con manta MMOD sobre bisagra superior con retén; se cierra desde la cúpula.
+4,FWD.CUP.SHT.S6,Contraventana 6,part,M_ShieldWhite;M_BetaCloth;M_Steel;M_AlBare;M_AlAnodBlack,0.72x0.709x0.3,96,Contraventana de aluminio con manta MMOD sobre bisagra superior con retén; se cierra desde la cúpula.
+4,FWD.CUP.SHT.S7,Contraventana cenital,part,M_ShieldWhite;M_BetaCloth;M_Steel,0.181x0.6x0.621,60,"Contraventana de la ventana cenital, abierta hacia popa."
 3,FWD.CUP.WIN,Ventanas de la cúpula,group,,1.38x1.237x0.566,,"Cada ventana: panel de escombros exterior, dos paneles de presión redundantes de sílice fundida y panel interior de protección."
 4,FWD.CUP.WIN.W1,Ventana trapezoidal 1,part,M_Glass;M_GlassInner,0.461x0.561x0.458,24,Conjunto de 4 paneles; paneles de presión de 25 mm.
 4,FWD.CUP.WIN.W2,Ventana trapezoidal 2,part,M_Glass;M_GlassInner,0.616x0.238x0.458,24,Conjunto de 4 paneles; paneles de presión de 25 mm.
@@ -55,47 +73,43 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,FWD.EXT.LGA2,Antena de baja ganancia banda S 2,part,M_Teflon;M_AlBare;M_Cable,0.207x0.216x0.133,212,Antena de parche omnidireccional de banda S para enlace de emergencia.
 3,FWD.EXT.NAV1,Baliza de navegación babor (roja),part,M_AlAnodBlack;M_LEDRed,0.08x0.09x0.08,284,Baliza LED de navegación para identificación visual de orientación.
 3,FWD.EXT.NAV2,Baliza de navegación estribor (verde),part,M_AlAnodBlack;M_LEDGreen,0.08x0.09x0.08,284,Baliza LED de navegación para identificación visual de orientación.
-2,FWD.INT,Interior del nodo,group,,2.203x2.677x2.394,,"Escotillas, estación de trabajo robótica bajo la cúpula y estiba de acceso rápido."
-3,FWD.INT.HA,Escotilla nodo–hábitat (abierta),part,M_AlBare;M_Rubber;M_Glass;M_AlAnodBlack;M_Steel,1.189x0.324x1.12,1584,"Escotilla de 1,12 m abierta 100° y retenida contra la pared del nodo."
-3,FWD.INT.HF,Escotilla de atraque IDSS (cerrada),part,M_AlBare;M_Rubber;M_Glass;M_AlAnodBlack;M_Steel,0.149x0.92x0.98,1584,"Escotilla de 0,92 m con mirilla, válvula de ecualización de presión y mecanismo de cierre de 6 pestillos."
+2,FWD.INT,Interior del nodo,group,,2.22x2.677x2.28,,"Escotillas, estación de trabajo robótica bajo la cúpula y estiba de acceso rápido."
+3,FWD.INT.HA,Escotilla nodo–hábitat,part,M_AlBare;M_Rubber;M_Glass;M_AlAnodBlack;M_Steel,0.149x1.18x1.12,1584,"Escotilla de 1,12 m, abierta 100° y retenida contra la pared del nodo durante la operación normal."
+3,FWD.INT.HF,Escotilla de atraque IDSS,part,M_AlBare;M_Rubber;M_Glass;M_AlAnodBlack;M_Steel,0.149x0.98x0.92,1584,"Escotilla de 0,92 m con mirilla, válvula de ecualización de presión y mecanismo de cierre de 6 pestillos. Cerrada mientras el puerto está libre."
 3,FWD.INT.LGT,Luminarias del nodo,part,M_LED,1.2x2.097x0.053,24,
 3,FWD.INT.RWS,Estación de trabajo robótica,group,,0.363x1.1x0.776,,"Puesto bajo la cúpula con 2 pantallas, controladores manuales de traslación y rotación y portátil de mando."
 4,FWD.INT.RWS.D1,Pantalla de la estación robótica 1,part,M_Screen_CAMERA,0.0x0.48x0.32,2,"Pantalla de 22"" para vídeo de las cámaras del brazo."
 4,FWD.INT.RWS.D2,Pantalla de la estación robótica 2,part,M_Screen_TRAJ,0.0x0.48x0.32,2,"Pantalla de 22"" para vídeo de las cámaras del brazo."
 4,FWD.INT.RWS.FRM,"Bastidor, reposamanos y controladores manuales",part,M_InteriorDark;M_InteriorGrey;M_Handrail;M_AlAnodBlack;M_AlBare,0.363x1.1x0.776,340,
-3,FWD.INT.STW,Estiba del nodo,group,,2.0x2.677x1.202,,
-4,FWD.INT.STW.BCK,Bastidores de soporte de taquillas,part,M_InteriorDark,2.0x2.677x1.198,60,
-4,FWD.INT.STW.L01,Taquilla del nodo 01,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.4x0.263,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L02,Taquilla del nodo 02,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.4x0.263,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L03,Taquilla del nodo 03,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.4x0.263,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L04,Taquilla del nodo 04,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.4x0.263,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L05,Taquilla del nodo 05,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.448x0.034,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L06,Taquilla del nodo 06,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.448x0.034,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L07,Taquilla del nodo 07,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.448x0.034,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L08,Taquilla del nodo 08,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.448x0.034,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L09,Taquilla del nodo 09,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.4x0.263,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L10,Taquilla del nodo 10,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.4x0.263,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L11,Taquilla del nodo 11,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.4x0.263,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L12,Taquilla del nodo 12,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.4x0.263,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+3,FWD.INT.STW,Estiba del nodo,group,,2.0x2.677x1.088,,
+4,FWD.INT.STW.BCK,Bastidores de soporte de taquillas,part,M_InteriorDark,2.0x2.677x1.084,48,
+4,FWD.INT.STW.L01,Taquilla del nodo 01,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+4,FWD.INT.STW.L02,Taquilla del nodo 02,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+4,FWD.INT.STW.L03,Taquilla del nodo 03,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+4,FWD.INT.STW.L04,Taquilla del nodo 04,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+4,FWD.INT.STW.L05,Taquilla del nodo 05,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+4,FWD.INT.STW.L06,Taquilla del nodo 06,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+4,FWD.INT.STW.L07,Taquilla del nodo 07,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+4,FWD.INT.STW.L08,Taquilla del nodo 08,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+4,FWD.INT.STW.L09,Taquilla del nodo 09,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+4,FWD.INT.STW.L10,Taquilla del nodo 10,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+4,FWD.INT.STW.L11,Taquilla del nodo 11,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+4,FWD.INT.STW.L12,Taquilla del nodo 12,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
 4,FWD.INT.STW.L13,Taquilla del nodo 13,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
 4,FWD.INT.STW.L14,Taquilla del nodo 14,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L15,Taquilla del nodo 15,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L16,Taquilla del nodo 16,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L17,Taquilla del nodo 17,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L18,Taquilla del nodo 18,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-2,FWD.MMOD,Protección MMOD y térmica del nodo,group,,2.26x2.872x2.872,,"Mantas MMOD blandas tipo 'stuffed Whipple' (beta cloth + Nextel + Kevlar) sobre MLI. Se eligen mantas flexibles en el nodo por su geometría compleja (cúpula, atraque)."
+2,FWD.MMOD,Protección MMOD y térmica del nodo,group,,2.26x2.872x2.866,,"Mantas MMOD blandas tipo 'stuffed Whipple' (beta cloth + Nextel + Kevlar) sobre MLI. Se eligen mantas flexibles en el nodo por su geometría compleja (cúpula, atraque)."
 3,FWD.MMOD.BLK1,"Manta MMOD del nodo, cuadrante 1",part,M_BetaCloth,2.26x1.416x1.416,272,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
 3,FWD.MMOD.BLK1.Q,"Costuras de acolchado, cuadrante 1",part,M_Fabric,1.545x1.422x1.422,240,Costuras de unión de capas (hilo de PTFE).
 3,FWD.MMOD.BLK2,"Manta MMOD del nodo, cuadrante 2",part,M_BetaCloth,2.26x1.416x1.416,272,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
 3,FWD.MMOD.BLK2.Q,"Costuras de acolchado, cuadrante 2",part,M_Fabric,1.545x1.422x1.422,240,Costuras de unión de capas (hilo de PTFE).
-3,FWD.MMOD.BLK3,"Manta MMOD del nodo, cuadrante 3",part,M_BetaCloth,2.26x1.416x1.416,132,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
-3,FWD.MMOD.BLK3.Q,"Costuras de acolchado, cuadrante 3",part,M_Fabric,1.545x1.422x1.422,240,Costuras de unión de capas (hilo de PTFE).
-3,FWD.MMOD.BLK4,"Manta MMOD del nodo, cuadrante 4",part,M_BetaCloth,2.26x1.416x1.416,132,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
-3,FWD.MMOD.BLK4.Q,"Costuras de acolchado, cuadrante 4",part,M_Fabric,1.545x1.422x1.422,240,Costuras de unión de capas (hilo de PTFE).
+3,FWD.MMOD.BLK3,"Manta MMOD del nodo, cuadrante 3",part,M_BetaCloth,2.26x1.416x1.416,284,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
+3,FWD.MMOD.BLK3.Q,"Costuras de acolchado, cuadrante 3",part,M_Fabric,1.545x1.017x1.353,174,Costuras de unión de capas (hilo de PTFE).
+3,FWD.MMOD.BLK4,"Manta MMOD del nodo, cuadrante 4",part,M_BetaCloth,2.26x1.416x1.416,284,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
+3,FWD.MMOD.BLK4.Q,"Costuras de acolchado, cuadrante 4",part,M_Fabric,1.545x1.017x1.353,174,Costuras de unión de capas (hilo de PTFE).
 2,FWD.STR,Estructura primaria del nodo,group,,2.382x2.7x2.716,,"Barril presurizado de Al-Li 2195 soldado por fricción-agitación, con mamparos mecanizados y marcos anulares."
 3,FWD.STR.BHA,Mamparo de popa del nodo,part,M_AlLi,0.06x2.64x2.64,512,"Mamparo anular con escotilla de 1,04 m hacia el módulo habitable."
 3,FWD.STR.BHF,Mamparo de proa,part,M_AlLi;M_Bolt,0.102x2.7x2.7,3072,"Mamparo mecanizado con abertura de paso IDSS de 0,80 m y círculo de 36 tornillos de la brida de atraque."
-3,FWD.STR.BRL,Barril presurizado del nodo,part,M_AlLi,2.3x2.7x2.7,796,"Cilindro de Ø2,70 m y 2,30 m de longitud; pared de Al-Li con refuerzo isogrid interno."
+3,FWD.STR.BRL,Barril presurizado del nodo,part,M_AlLi,2.3x2.7x2.7,1056,"Cilindro de Ø2,70 m y 2,30 m de longitud; pared de Al-Li con refuerzo isogrid interno."
 3,FWD.STR.CPR,Anillo de interfaz de la cúpula,part,M_AlLi;M_Bolt,1.6x1.6x0.346,1920,Anillo forjado que une la cúpula al barril del nodo; 24 tornillos de alta resistencia.
 3,FWD.STR.FRM1,Marco anular del nodo 1,part,M_AlLi,0.05x2.64x2.64,512,Marco de rigidización circunferencial (sección en T).
 3,FWD.STR.FRM2,Marco anular del nodo 2,part,M_AlLi,0.05x2.64x2.64,512,Marco de rigidización circunferencial (sección en T).
@@ -128,11 +142,35 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.EXT.WIN.W2,Ventana científica de nadir 2,part,M_AlBare;M_Glass;M_ShieldWhite;M_Steel;M_Bolt,0.583x0.54x0.476,1384,Marco con paneles de presión redundantes y contraventana MMOD (abierta).
 2,HAB.INT,Equipamiento interior presurizado,group,,8.601x3.94x4.02,,"Interior organizado en 4 bahías de 2,05 m (cabina de vuelo, laboratorio, refugio/habitáculos, servicios) más el mamparo de popa."
 3,HAB.INT.A,Bahía A — Cabina de vuelo,group,,2.064x3.94x3.94,,"Puesto de pilotaje con 4 asientos, 2 consolas de 3 pantallas y paneles de mando cenitales."
-4,HAB.INT.A.CL1,Panel de mando cenital,group,,0.99x2.21x0.91,,"Paneles de interruptores de los buses de potencia, armado de RCS y pirotecnia."
+4,HAB.INT.A.CL1,Panel de mando cenital,group,,0.99x2.21x0.93,,"Paneles de interruptores de los buses de potencia, armado de RCS y pirotecnia."
 5,HAB.INT.A.CL1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.A.CL1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.CL1.SCR,Pantalla de estado de buses,part,M_Screen_SWITCH,0.55x0.34x0.0,2,Sinóptico de distribución eléctrica.
-5,HAB.INT.A.CL1.SW,Panel de interruptores cenital,part,M_InteriorGrey;M_AlBare;M_Steel;M_LEDRed;M_LEDGreen;M_ShieldWhite,0.9x1.1x0.09,1932,36 interruptores protegidos con indicadores LED de estado.
+5,HAB.INT.A.CL1.SW,Panel de interruptores cenital,part,M_InteriorGrey;M_InteriorDark;M_ShieldWhite;M_AlBare;M_AlAnodBlack;M_Bolt,0.903x1.1x0.085,11020,"24 interruptores protegidos en 4 filas (potencia, iluminación, sistemas, propulsión). Cada palanca es una pieza funcional del simulador."
+5,HAB.INT.A.CL1.TGL,Palancas de interruptor,group,,0.704x0.804x0.055,,
+6,HAB.INT.A.CL1.TGL.AVX,Interruptor: Aviónica,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
+6,HAB.INT.A.CL1.TGL.BAT,Interruptor: Batería maestra,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
+6,HAB.INT.A.CL1.TGL.BUSA,Interruptor: Bus A 120 V,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
+6,HAB.INT.A.CL1.TGL.BUSB,Interruptor: Bus B 120 V,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
+6,HAB.INT.A.CL1.TGL.COMM,Interruptor: Comunicaciones,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
+6,HAB.INT.A.CL1.TGL.DOCK,Interruptor: Sistema de atraque,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
+6,HAB.INT.A.CL1.TGL.ECLSS,Interruptor: Soporte vital,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
+6,HAB.INT.A.CL1.TGL.FANS,Interruptor: Ventilación,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
+6,HAB.INT.A.CL1.TGL.FWD,Interruptor: Alimentación del nodo,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
+6,HAB.INT.A.CL1.TGL.HEAT,Interruptor: Calentadores,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
+6,HAB.INT.A.CL1.TGL.LT_A,Interruptor: Luces bahía A,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
+6,HAB.INT.A.CL1.TGL.LT_B,Interruptor: Luces bahía B,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
+6,HAB.INT.A.CL1.TGL.LT_C,Interruptor: Luces bahía C,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
+6,HAB.INT.A.CL1.TGL.LT_D,Interruptor: Luces bahía D,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
+6,HAB.INT.A.CL1.TGL.LT_EXT,Interruptor: Focos exteriores,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
+6,HAB.INT.A.CL1.TGL.LT_N,Interruptor: Luces del nodo,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
+6,HAB.INT.A.CL1.TGL.MAIN,Interruptor: Armado motores,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
+6,HAB.INT.A.CL1.TGL.NAV,Interruptor: Navegación,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
+6,HAB.INT.A.CL1.TGL.RBT,Interruptor: Brazo robótico,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
+6,HAB.INT.A.CL1.TGL.RCS,Interruptor: Armado RCS,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
+6,HAB.INT.A.CL1.TGL.SCI,Interruptor: Laboratorio,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
+6,HAB.INT.A.CL1.TGL.SEP,Interruptor: Propulsión eléctrica,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
+6,HAB.INT.A.CL1.TGL.SOLAR,Interruptor: Alas solares,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
+6,HAB.INT.A.CL1.TGL.THERM,Interruptor: Bombeo térmico,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
 4,HAB.INT.A.CL2,Bastidor de estiba cenital A,group,,0.99x2.21x0.892,,Estiba de procedimientos y equipos de fotografía.
 5,HAB.INT.A.CL2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.A.CL2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
@@ -420,6 +458,29 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.LGT.L6,Luminaria LED 6,part,M_InteriorGrey;M_LED,1.6x0.112x0.112,24,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
 4,HAB.INT.LGT.L7,Luminaria LED 7,part,M_InteriorGrey;M_LED,1.6x0.112x0.112,24,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
 4,HAB.INT.LGT.L8,Luminaria LED 8,part,M_InteriorGrey;M_LED,1.6x0.112x0.112,24,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
+2,HAB.INT.LIV,Vida a bordo: objetos cotidianos,group,,6.673x2.239x2.331,,Objetos personales y de trabajo sujetos con velcro y cintas elásticas: indican que cuatro personas viven y trabajan aquí.
+3,HAB.INT.LIV.A,Objetos de la bahía A,group,,0.303x2.23x2.328,,
+4,HAB.INT.LIV.A.O01,Lista de comprobación de vuelo,part,M_InteriorGrey;M_ShieldWhite;M_Decal;M_AlBare,0.251x0.015x0.333,144,Procedimientos impresos de respaldo.
+4,HAB.INT.LIV.A.O02,Tableta de procedimientos,part,M_InteriorDark;M_ScreenAmber;M_Fabric,0.303x0.009x0.203,36,Tableta con procedimientos electrónicos.
+4,HAB.INT.LIV.A.O03,Parches de velcro,part,M_InteriorDark,0.232x0.063x0.002,48,Puntos de sujeción para objetos sueltos.
+4,HAB.INT.LIV.A.O04,Auriculares de comunicaciones,part,M_InteriorDark;M_SeatCushion,0.218x0.137x0.196,440,Auriculares con micrófono para el circuito de voz.
+3,HAB.INT.LIV.B,Objetos de la bahía B,group,,1.345x2.23x2.238,,
+4,HAB.INT.LIV.B.O05,Portátil del laboratorio,part,M_InteriorDark;M_Screen;M_InteriorGrey,0.356x0.233x0.294,48,Estación de control de experimentos.
+4,HAB.INT.LIV.B.O06,Unidad de cultivo vegetal,part,M_InteriorPanel;M_LEDRed;M_LED;M_AlBare;M_GlassInner;M_Fabric;M_Leaf,0.433x0.318x0.34,3060,Cámara de crecimiento con LED rojo/azul y 9 almohadillas de cultivo.
+4,HAB.INT.LIV.B.O07,Cámara fotográfica,part,M_InteriorDark;M_AlAnodBlack;M_Lens;M_FabricBlue,0.17x0.1x0.227,176,Cámara con objetivo de 100 mm para fotografía científica.
+4,HAB.INT.LIV.B.O08,Bolsa de herramientas,part,M_Fabric;M_FabricBlue;M_Steel;M_EVAYellow,0.391x0.257x0.193,176,Herramientas manuales de mantenimiento.
+3,HAB.INT.LIV.C,Objetos de la bahía C,group,,1.119x2.231x1.611,,
+4,HAB.INT.LIV.C.O09,Fotografías personales,part,M_ShieldWhite;M_SolarBack,0.108x0.001x0.086,24,Recuerdos personales del tripulante.
+4,HAB.INT.LIV.C.O10,Fotografías personales,part,M_ShieldWhite;M_FabricBlue,0.105x0.001x0.082,24,Recuerdos personales del tripulante.
+4,HAB.INT.LIV.C.O11,Fotografías personales,part,M_ShieldWhite;M_FabricBlue,0.101x0.001x0.077,24,Recuerdos personales del tripulante.
+4,HAB.INT.LIV.C.O12,Parche de misión,part,M_FabricBlue;M_EVAYellow;M_Accent;M_ShieldWhite,0.131x0.008x0.131,404,Emblema de la misión de servicio.
+3,HAB.INT.LIV.D,Objetos de la bahía D,group,,1.605x2.239x2.23,,
+4,HAB.INT.LIV.D.O13,Bolsa de bebida,part,M_Teflon;M_EVAYellow;M_Rubber,0.114x0.021x0.216,52,Bolsa de bebida con pajita y pinza.
+4,HAB.INT.LIV.D.O14,Bolsa de bebida,part,M_Teflon;M_Accent;M_Rubber,0.116x0.021x0.217,52,Bolsa de bebida con pajita y pinza.
+4,HAB.INT.LIV.D.O15,Cintas elásticas de estiba,part,M_Cable;M_AlBare,0.877x0.024x0.609,168,Cintas elásticas para sujetar paquetes de comida.
+4,HAB.INT.LIV.D.O16,Toalla,part,M_Fabric;M_FabricBlue,0.334x0.03x0.472,24,Toalla de microfibra del compartimento de higiene.
+4,HAB.INT.LIV.D.O17,Registro de mantenimiento,part,M_InteriorGrey;M_ShieldWhite;M_Decal;M_AlBare,0.256x0.336x0.015,144,Registro de cambios de filtros del soporte vital.
+4,HAB.INT.LIV.D.O18,Bolsa de bebida,part,M_Teflon;M_Accent;M_Rubber,0.118x0.218x0.021,52,Bolsa de bebida con pajita y pinza.
 2,HAB.MLI,Aislamiento multicapa (MLI),group,,9.91x4.27x4.27,,Mantas MLI de 20 capas (Mylar aluminizado con separador de red de Dacron) entre casco y escudo MMOD.
 3,HAB.MLI.CON,Manta MLI del cono,part,M_MLI_Gold,1.08x4.27x4.27,512,
 3,HAB.MLI.DOM,Manta MLI del mamparo de popa,part,M_MLI_Gold,0.63x4.26x4.26,1472,

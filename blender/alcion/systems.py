@@ -532,6 +532,8 @@ def build_power(root):
     for s, sgn in enumerate((1, -1)):
         side = "babor" if sgn > 0 else "estribor"
         wg = group(f"PWR.W{s+1}", f"Ala solar de {side}", pwr, explode=(0, sgn * 3.2, 0))
+        from .expansion import mech
+        mech(wg, "hinge", (S.SADA_X, 0, 0), (0, 1, 0), -math.pi, math.pi, 0.0, ident=f"wing:{s+1}", speed=0.3)
         _wing(wg, f"PWR.W{s+1}", sgn)
     return pwr
 
@@ -684,6 +686,8 @@ def build_comms(root):
     mb.cyl("M_AlAnodBlack", 0.12, 0.12, 0.18, 32, center=base + out * 0.13, rot=R)
     part("COM.BAS", "Base y actuador de acimut", mb.mesh(), com, explode=(0, 0, 0),
          desc="Actuador de acimut con junta rotativa de RF.")
+    from .expansion import mech
+    mech(com, "hinge", base, out, -math.pi, math.pi, 0.0, ident="hga:az", speed=0.4)
     tip = base + out * 1.15
     mb = MB("hga_mast")
     mb.tube("M_CFRP", [base + out * 0.22, tip], 0.055, 16)
@@ -701,6 +705,7 @@ def build_comms(root):
     Rd = aim.to_track_quat('Z', 'X').to_matrix().to_4x4()
     dg = group("COM.DSH", "Reflector y alimentador", com, explode=tuple(out * 1.1),
                desc="Reflector Cassegrain con subreflector hiperbólico.")
+    mech(dg, "hinge", tip, (1, 0, 0), -1.4, 1.4, 0.0, ident="hga:el", speed=0.4)
     Rr = 0.80
     f = Rr * Rr / (4 * 0.18)
     prof = []
