@@ -73,18 +73,52 @@ npx vite preview   # servir la build
 bash scripts/deploy-pages.sh   # publicar en GitHub Pages (rama gh-pages)
 ```
 
-## Aplicación web
+## Aplicación web — ALCIÓN: Beyond Orbit
 
-- **Inspector:** árbol jerárquico de 811 nodos con búsqueda, ocultación por rama, ficha de cada pieza (descripción, función, materiales, envolvente, triángulos), enfocar, aislar y subir de nivel.
-- **Vista explosionada:** deslizador continuo de 0 a 100 % con etapas *Módulos → Sistemas → Conjuntos → Piezas*, animación reversible, guías de trayectoria y etiquetas.
-- **Sección:** plano de corte transversal, longitudinal u horizontal con posición continua.
-- **Rayos X:** transparencia de Fresnel; la selección se mantiene opaca.
-- **Vistas:** isométrica, frontal, lateral, superior, inferior y posterior, con opción cuasi-ortográfica.
-- **Interior:** navegación en primera persona (arrastrar y WASD/QE, con controles táctiles en móvil) con 6 puntos de visita.
-- **Iluminación:** Órbita lunar (Luna LRO de fondo), Sol directo, Estudio y Técnico.
-- **Presentación:** recorrido guiado por el scroll (cámara, explosión y rayos X interpolados), introducción cinematográfica y modo de pantalla completa con órbita automática.
-- **Planos** con zoom y desplazamiento, y **ficha técnica** con perfil de misión, filosofía de diseño y fuentes.
-- **Rendimiento:** carga progresiva (el exterior primero y el interior en segundo plano), compresión meshopt, renderizado bajo demanda, descarte de detalles por debajo de 1 px, tres niveles de calidad y diseño adaptable a móvil.
+Simulación interactiva en el navegador (React + TypeScript + three.js r169). Siete modos (Alt+1…7):
+
+| Modo | Qué se puede hacer |
+|---|---|
+| **Cinemático** | Planos automáticos de la nave en órbita baja, órbita lunar o eclipse. |
+| **Vuelo** | Vuelo 6DOF newtoniano (paso fijo 120 Hz) con modo asistido/manual, freno, cámaras persecución/órbita/cabina/libre, atraque con la estación ficticia Tesela y brazo robótico con IK. |
+| **Interior** | **Caminar** por toda la nave en primera persona o **flotar** en microgravedad; usar interruptores, pantallas, taquillas, escotillas, asientos y las actividades de la vida a bordo. |
+| **EVA** | Salida por la esclusa (ciclo de presión de 6 s) con unidad de maniobra y línea de seguridad. |
+| **Ingeniería** | Árbol de 800+ piezas, vista explosionada por etapas, sección con tapas, rayos X, vistas, comparación y control directo de los **mecanismos**. |
+| **Misiones** | Activación en frío, acoplamiento, inspección fotográfica, captura con el brazo, averías, EVA, fotografía científica y **Un día a bordo**. |
+| **Sandbox** | Pulsos de luz ficticios contra blancos (sin armas reales). |
+
+### Caminar por la nave y vida a bordo
+
+- **Locomoción a pie** (por defecto): gravedad de entrenamiento de 1 g, como en una maqueta de entrenamiento en tierra. El tripulante pisa la cubierta del pasillo, sube umbrales de hasta 0,75 m y **se agacha solo** al cruzar la escotilla nodo–hábitat (Ø≈1,05 m) o bajo equipos. Hay escalerillas en el pozo de la esclusa y en la cúpula. Incluye pisadas con sonido procedural y un ligero balanceo de cabeza, que se desactiva con «movimiento reducido».
+  - Controles: WASD para andar, Mayús para correr, Ctrl para agacharse o bajar por la escalerilla, Espacio para saltar o subir, G o clic para interactuar. Táctil y mando también funcionan.
+- **Flotar** (microgravedad realista): impulso con WASD y R/F, y agarrarse a los asideros con V. Se cambia con el selector *Caminar / Flotar* del HUD.
+- **Necesidades del tripulante:** hidratación, nutrición, descanso, higiene y ánimo, con un reloj de misión acelerado ×60.
+- **Actividades** (G sobre el equipo):
+  - beber agua en el dispensador o con las bolsas de bebida;
+  - preparar y comer una ración en la cocina;
+  - ejercicio en el cicloergómetro, que **eleva el CO₂ de cabina** en el modelo de soporte vital;
+  - aseo en el compartimento de higiene;
+  - dormir 8 h en un habitáculo, con fundido a negro;
+  - cuidar el cultivo;
+  - hacer un experimento en la guantera y congelar la muestra a −80 °C;
+  - leer el plan del día;
+  - mirar la Tierra por las ventanas de nadir o desde la cúpula, que sube el ánimo.
+- La misión **Un día a bordo** recorre esa rutina, y cada paso se comprueba sobre el estado real del simulador.
+
+### Ejecución y pruebas
+
+```bash
+cd web && npm install && npm run build && npx vite preview   # http://localhost:4173
+```
+
+La batería funcional con Playwright tiene 15 comprobaciones: modos, interruptores, aviónica, física, atraque, esclusa y EVA, colisiones, misiones, explosión, guardado, caminar, escalerilla, vida a bordo, flotar y cúpula. Se describe en `docs/VALIDACION.md`. La arquitectura está en `docs/ARQUITECTURA.md`, las mediciones en `docs/RENDIMIENTO.md` y los cambios en `docs/CHANGELOG.md`.
+
+<p>
+<img src="docs/capturas/interior_caminar_cabina.jpg" width="49%"> <img src="docs/capturas/interior_caminar_popa.jpg" width="49%">
+<img src="docs/capturas/interior_habitaculo_dormir.jpg" width="49%"> <img src="docs/capturas/cabina_puesto_piloto.jpg" width="49%">
+</p>
+
+Las capturas son de Chromium sin GPU (SwiftShader). En una GPU real la imagen es la misma, pero la fluidez no es comparable.
 
 ## Estructura
 

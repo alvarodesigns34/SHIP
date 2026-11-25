@@ -27,6 +27,20 @@ export const MISSIONS: Mission[] = [
     ],
   },
   {
+    id: 'rutina', title: 'Un día a bordo', mode: 'INTERIOR',
+    brief: 'Rutina diaria de un tripulante: hidratarse, comer, entrenar, asearse, cuidar el cultivo, hacer ciencia y observar la Tierra antes de dormir. Camina por la nave (o flota) y usa G sobre cada equipo.',
+    setup: (e) => { e.enterInterior('cq'); e.crew.log.clear(); },
+    steps: [
+      { text: 'Bebe agua en el dispensador de la cocina (Bahía D, popa).', hint: 'Mira la cocina y pulsa G. Las bolsas de bebida sueltas también sirven.', check: (e) => e.crew.log.has('drink') },
+      { text: 'Prepara y come una ración en la cocina.', check: (e) => e.crew.log.has('eat') },
+      { text: 'Completa una sesión de ejercicio en el cicloergómetro (suelo de la Bahía D). Observa cómo sube el CO₂.', check: (e) => e.crew.log.has('exercise') },
+      { text: 'Aséate en el compartimento de higiene.', check: (e) => e.crew.log.has('hygiene') },
+      { text: 'Riega y revisa la unidad de cultivo del laboratorio (Bahía B).', check: (e) => e.crew.log.has('plants') },
+      { text: 'Realiza un experimento en la guantera y guarda la muestra en el congelador a −80 °C.', check: (e) => e.crew.stored > 0 && e.crew.log.has('sample') },
+      { text: 'Observa la Tierra unos segundos por las ventanas de nadir del laboratorio.', hint: 'Colócate sobre los pozos de ventana del suelo del laboratorio y mira hacia abajo.', check: (e) => e.crew.log.has('earth') },
+    ],
+  },
+  {
     id: 'acoplamiento', title: 'Acoplamiento con la estación Tesela', mode: 'FLIGHT',
     brief: 'Aproxímate al puerto de la estación ficticia Tesela y atraca con el sistema IDSS. Captura: distancia < 0,6 m, velocidad de cierre < 0,25 m/s, desalineación < 6°.',
     setup: (e) => { e.placeNear('tesela', 140); e.systems.sw.DOCK = true; e.setMode('FLIGHT'); },

@@ -118,6 +118,31 @@ export class Audio {
     const g = c.createGain(); s.connect(f).connect(g).connect(this.master); this.env(g, 0.002, 0.5, 0.05); s.start(0, Math.random() * 5); s.stop(c.currentTime + 0.1);
   }
 
+  /** Pisada sobre panel de cubierta: golpe sordo + chasquido filtrado del panel. */
+  footstep(strength = 0.5) {
+    const c = this.ctx; if (!c) return;
+    const t = c.currentTime;
+    const o = c.createOscillator(); o.type = 'sine'; o.frequency.setValueAtTime(110 + Math.random() * 20, t); o.frequency.exponentialRampToValueAtTime(55, t + 0.12);
+    const g = c.createGain(); o.connect(g).connect(this.master); this.env(g, 0.003, 0.22 * strength, 0.14); o.start(t); o.stop(t + 0.25);
+    const s = c.createBufferSource(); s.buffer = this.noiseBuf; s.playbackRate.value = 0.8 + Math.random() * 0.4;
+    const f = c.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 900 + Math.random() * 500; f.Q.value = 1.2;
+    const g2 = c.createGain(); s.connect(f).connect(g2).connect(this.master); this.env(g2, 0.002, 0.12 * strength, 0.07); s.start(t, Math.random() * 4); s.stop(t + 0.15);
+  }
+
+  /** Bucle breve de actividad (agua, calentador, pedaleo…): ruido filtrado durante `dur` s. */
+  activity(kind: 'water' | 'heat' | 'exercise' | 'zip' | 'wipe', dur = 1) {
+    const c = this.ctx; if (!c) return;
+    const t = c.currentTime;
+    const s = c.createBufferSource(); s.buffer = this.noiseBuf; s.loop = true;
+    const f = c.createBiquadFilter();
+    const cfg = { water: ['bandpass', 1800, 2, 0.08, 1.6], heat: ['lowpass', 400, 0.7, 0.06, 0.5], exercise: ['bandpass', 300, 3, 0.07, 0.9], zip: ['highpass', 2500, 0.8, 0.1, 2.5], wipe: ['bandpass', 3000, 1, 0.05, 1.2] } as const;
+    const [type, fr, q, vol, rate] = cfg[kind];
+    f.type = type; f.frequency.value = fr; f.Q.value = q; s.playbackRate.value = rate;
+    const g = c.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.08); g.gain.setValueAtTime(vol, t + Math.max(0.1, dur - 0.15)); g.gain.linearRampToValueAtTime(0, t + dur);
+    if (kind === 'exercise') { const lfo = c.createOscillator(); lfo.frequency.value = 1.4; const lg = c.createGain(); lg.gain.value = vol * 0.8; lfo.connect(lg).connect(g.gain); lfo.start(t); lfo.stop(t + dur); }
+    s.connect(f).connect(g).connect(this.master); s.start(t, Math.random() * 3); s.stop(t + dur + 0.05);
+  }
+
   thud(strength = 1) {
     const c = this.ctx; if (!c) return;
     const o = c.createOscillator(); o.type = 'sine'; o.frequency.setValueAtTime(90, c.currentTime); o.frequency.exponentialRampToValueAtTime(38, c.currentTime + 0.35);

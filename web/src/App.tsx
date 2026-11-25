@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Engine, Mode, Snapshot, WAYPOINTS, Quality } from './engine/Engine';
 import type { PartNode } from './engine/ship/ShipModel';
 import { MISSIONS } from './engine/Missions';
+import { NEED_LABEL, type NeedId } from './engine/sim/Crew';
 import { ACTION_LABELS, Action, DEFAULT_BINDINGS } from './engine/Input';
 import { SWITCH_LABEL, SWITCH_ORDER } from './engine/ship/Systems';
 import { IDENTITY, SPEC, PROFILE, PHILOSOPHY, SOURCES } from './data/spec';
@@ -260,17 +261,38 @@ function ArmPanel({ eng, s, onClose }: { eng: Engine; s: Snapshot; onClose: () =
 
 // ---------------------------------------------------------------- interior y EVA
 function InteriorHUD({ s, eng }: { s: Snapshot; eng: Engine }) {
+  const needs = Object.entries(s.crew.needs) as [NeedId, number][];
+  const walk = s.locomotion === 'walk';
   return (
     <div className="hud interior-hud">
       <div className="crosshair" aria-hidden />
-      {s.prompt && <div className="prompt"><kbd>G</kbd> {s.prompt}{s.holdProgress > 0 && s.holdProgress < 1 && <span className="hold"><i style={{ width: `${s.holdProgress * 100}%` }} /></span>}</div>}
+      {s.fade > 0.01 && <div className="sleep-fade" style={{ opacity: s.fade }}><span className="mono">{s.crew.clock}</span></div>}
+      {s.prompt && <div className="prompt">{!s.activity && <kbd>G</kbd>} {s.prompt}{s.holdProgress > 0 && s.holdProgress < 1 && <span className="hold"><i style={{ width: `${s.holdProgress * 100}%` }} /></span>}</div>}
       <div className="hud-left">
+        <div className="hud-block crew-block">
+          <p className="eyebrow">Tripulante · {s.crew.clock}</p>
+          {needs.map(([k, v]) => (
+            <div key={k} className={'need' + (v < 25 ? ' low' : '')}>
+              <span className="small">{NEED_LABEL[k]}</span>
+              <div className="hbar"><div style={{ width: `${v}%` }} /></div>
+              <span className="mono small">{Math.round(v)}</span>
+            </div>
+          ))}
+          {(s.crew.samples > 0 || s.crew.stored > 0) && <p className="mono small muted">Muestras: {s.crew.samples} pendiente(s) · {s.crew.stored} congelada(s)</p>}
+        </div>
         <div className="hud-block">
           <p className="eyebrow">Cabina</p>
           <p className="mono small">O₂ {fmt(s.systems.o2, 1)} kPa · CO₂ {fmt(s.systems.co2, 2)} kPa</p>
           <p className="mono small">{fmt(s.systems.temp, 1)} °C · Batería {Math.round(s.systems.soc * 100)} %</p>
           <p className="mono small">Esclusa: {({ pres: 'presurizada', depress: 'despresurizando', vac: 'vacío', repress: 'represurizando' } as Record<string, string>)[s.airlock]}</p>
         </div>
+      </div>
+      <div className="loco">
+        <div className="seg">
+          <button className={walk ? 'on' : ''} onClick={() => eng.setLocomotion('walk')} title="Gravedad de entrenamiento 1 g: caminar sobre la cubierta">Caminar</button>
+          <button className={!walk ? 'on' : ''} onClick={() => eng.setLocomotion('float')} title="Microgravedad: flotar y agarrarse a los asideros">Flotar</button>
+        </div>
+        <p className="mono small muted">{walk ? (s.climbing ? 'Escalerilla · Espacio sube · Ctrl baja' : `WASD andar · Mayús correr · Ctrl agacharse${s.crouch ? ' (agachado)' : ''} · Espacio saltar`) : 'WASD · R/F subir/bajar · V agarrarse'}</p>
       </div>
       <div className="waypoints">
         {Object.entries(WAYPOINTS).map(([id, w]) => <button key={id} className="btn sm" onClick={() => eng.enterInterior(id)}>{w.label}</button>)}

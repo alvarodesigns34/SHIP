@@ -25,6 +25,7 @@ import { Flight } from './sim/Flight';
 import { Player } from './player/Player';
 import { Input } from './Input';
 import { Audio } from './Audio';
+import { Crew, ACTIVITIES, type ActivityId } from './sim/Crew';
 import { MissionRunner } from './Missions';
 import { Sandbox } from './Sandbox';
 import { b2t, clamp, damp, easeInOut, easeOut, stageOf, t2b } from './util';
@@ -55,7 +56,9 @@ export interface Snapshot {
   mode: Mode; flightCam: FlightCam; ready: boolean; interiorReady: boolean; progress: { stage: string; p: number };
   speed: number; vel: [number, number, number]; w: number; throttle: number; assist: boolean; thrustScale: number; docked: string | null;
   altKm: number; body: string; eclipse: number; seated: boolean; eva: boolean; airlock: string; jetFuel: number;
-  prompt: string | null; holdProgress: number; systems: ReturnType<Systems['snapshot']>; alerts: { level: string; text: string }[];
+  prompt: string | null; holdProgress: number;
+  crew: { needs: Crew['needs']; clock: string; samples: number; stored: number; log: string[] }; activity: { label: string; p: number } | null; fade: number;
+  locomotion: 'walk' | 'float'; crouch: boolean; climbing: boolean; systems: ReturnType<Systems['snapshot']>; alerts: { level: string; text: string }[];
   mission: ReturnType<MissionRunner['current']>; missionsDone: string[]; sandbox: { score: number; streak: number; shots: number } | null;
   stats: { fps: number; ms: number; calls: number; tris: number; dpr: number; batches: number; instances: number };
   dock: Telemetry['dock']; targets: Telemetry['targets']; explode: number; xray: boolean; section: boolean; hudHidden: boolean; toast: string | null;
@@ -130,6 +133,12 @@ export class Engine {
   private cine = { shot: 0, t: 0 };
   private holdT = 0;
   private hoverCtl: { node: PartNode; ctl: string } | null = null;
+  crew = new Crew();
+  /** actividad en curso (bloquea el movimiento mientras dura) */
+  activity: { id: ActivityId; t: number } | null = null;
+  /** fundido a negro (dormir) 0..1 */
+  fade = 0;
+  private nadirBox: THREE.Box3 | null = null;
   private plumes = new THREE.Group();
   private tether: THREE.Line;
   private labelsLayer: HTMLDivElement;
@@ -181,6 +190,8 @@ export class Engine {
     this.buildPlumes();
     this.setupComposer();
     this.applyQuality(this.loadSettings()?.quality ?? (matchMedia('(max-width: 860px)').matches ? 'baja' : 'alta'));
+    const loco = this.loadSettings()?.locomotion; if (loco === 'walk' || loco === 'float') this.player.locomotion = loco;
+    this.player.onStep = (k) => this.audio.footstep(k);
     window.addEventListener('resize', this.resize);
     this.bindPointer();
     this.systems.listeners.push((a) => { this.audio.beep(a.level === 'alarm' ? 'alarm' : a.level === 'warn' ? 'warn' : 'info'); });
@@ -406,6 +417,7 @@ export class Engine {
     this.player.yaw = Math.atan2(-d.x, -d.z);
     this.player.pitch = Math.asin(clamp(d.y, -1, 1));
     this.player.eva = false;
+    this.player.settle();
     this.seated = false;
     if (this.mode !== 'INTERIOR' && !silent) this.setMode('INTERIOR');
     else if (this.mode !== 'INTERIOR') this.mode = 'INTERIOR';
@@ -524,7 +536,10 @@ export class Engine {
     const hit = this.pickAt(cx, cy);
     if (!hit) return null;
     let n: PartNode | null = hit.node;
-    while (n) { if (n.ctl) return { node: n, ctl: n.ctl }; if (n.inspect) return { node: n, ctl: 'inspect' }; n = n.parent; }
+    for (let m: PartNode | null = n; m; m = m.parent) if (m.ctl) return { node: m, ctl: m.ctl };
+    const act = this.activityFor(hit.node.code);
+    if (act) return { node: hit.node, ctl: 'act:' + act };
+    while (n) { if (n.inspect) return { node: n, ctl: 'inspect' }; n = n.parent; }
     // tareas de mantenimiento
     const c = hit.node.code;
     if (c.startsWith('HAB.INT.D.CL1') && this.systems.active('cdra_fan')) return { node: hit.node, ctl: 'repair:cdra_fan' };
@@ -543,6 +558,7 @@ export class Engine {
     if (k === 'airlock') return `Esclusa: ${this.airlock === 'pres' ? 'despresurizar' : this.airlock === 'vac' ? 'represurizar' : 'ciclo en curso…'}`;
     if (k === 'repair') return 'Mantén pulsado para reparar';
     if (k === 'inspect') return `Inspeccionar: ${c.node.label}`;
+    if (k === 'act') return ACTIVITIES[v as ActivityId].prompt;
     return c.node.label;
   }
 
@@ -579,8 +595,72 @@ export class Engine {
       case 'seat': this.sit(Number(v)); break;
       case 'scr': { const pg = this.cockpit.cyclePage(c.ctl); if (pg) this.viewedPage = pg; this.audio.click(true); break; }
       case 'airlock': this.cycleAirlock(); break;
+      case 'act': this.startActivity(v as ActivityId); break;
       case 'inspect': this.inspect = { label: c.node.label, desc: c.node.desc }; this.audio.click(true); break;
     }
+    this.emitSnap();
+  }
+
+  // ---------------------------------------------------------------- vida a bordo
+  /** Actividad asociada a la pieza bajo la retícula. */
+  private activityFor(code: string): ActivityId | null {
+    if (/^HAB\.INT\.LIV\.D\.O1[348]/.test(code)) return 'drink';
+    if (code.startsWith('HAB.INT.D.PG')) return this.crew.needs.hydration < this.crew.needs.nutrition ? 'drink' : 'eat';
+    if (/^HAB\.INT\.C\.CQ\d/.test(code)) return 'sleep';
+    if (code.startsWith('HAB.INT.D.DK2')) return 'exercise';
+    if (code.startsWith('HAB.INT.D.SH')) return 'hygiene';
+    if (code.startsWith('HAB.INT.LIV.B.O06')) return 'plants';
+    if (code.startsWith('HAB.INT.B.PG')) return 'science';
+    if (code.startsWith('HAB.INT.B.PF')) return 'sample';
+    if (/^HAB\.INT\.LIV\.(D\.O17|A\.O0[12])/.test(code)) return 'read';
+    return null;
+  }
+
+  startActivity(id: ActivityId) {
+    const why = this.crew.can(id);
+    if (why) { this.toast(why); this.audio.beep('info'); return; }
+    const a = ACTIVITIES[id];
+    this.activity = { id, t: 0 };
+    if (a.sound) this.audio.activity(a.sound, a.dur);
+    if (id === 'sleep') this.audio.comms('Buenas noches, Alción. Luces de habitáculo atenuadas.');
+  }
+
+  private stepCrew(dt: number) {
+    const live = this.mode !== 'CINEMATIC' && this.mode !== 'ENGINEERING';
+    // observación de la Tierra: por la cúpula o por las ventanas de nadir del laboratorio
+    let looking = false;
+    if (this.mode === 'INTERIOR' && !this.activity) {
+      const view = new THREE.Vector3(0, 0, -1).applyQuaternion(this.player.viewQuat());
+      const [x, y, z] = t2b(this.player.pos);
+      if (!this.nadirBox) { const n = this.model.nodes.get('HAB.INT.B.NAD'); this.nadirBox = n ? this.model.currentBox(n).clone().expandByScalar(0.9) : new THREE.Box3(); }
+      const nb = this.nadirBox, pp = this.player.pos;
+      const overNadir = !nb.isEmpty() && pp.x > nb.min.x && pp.x < nb.max.x && pp.z > nb.min.z && pp.z < nb.max.z;   // en planta, a cualquier altura
+      const nearWindow = (Math.hypot(x - 11.05, y) < 0.9 && z > -0.2) || overNadir;
+      looking = nearWindow && view.dot(this.mech.earthLocal) > 0.7;
+    }
+    if (live) this.crew.step(dt, { inCupolaLookingAtEarth: looking }, (m) => { this.toast(m); this.audio.beep('info'); });
+    // actividad en curso
+    const target = this.activity?.id === 'sleep' ? 1 : 0;
+    this.fade += (target - this.fade) * Math.min(1, dt * 2.5);
+    if (this.activity) {
+      const a = ACTIVITIES[this.activity.id];
+      this.activity.t += dt;
+      if (this.activity.t >= a.dur) {
+        this.crew.apply(a.id);
+        this.activity = null;
+        this.toast(a.result);
+        this.audio.beep('ok');
+        if (a.id === 'sleep') this.audio.comms('Buenos días, Alción. Comienza el día ' + this.crew.clockText().split(' · ')[0].replace('Día ', '') + '.');
+      }
+    }
+  }
+
+  setLocomotion(l: 'walk' | 'float') {
+    this.player.locomotion = l;
+    this.player.vel.set(0, 0, 0);
+    if (l === 'walk') this.player.settle(); else { this.player.eyeH = 1.62; this.player.bob.set(0, 0, 0); }
+    this.saveSettings();
+    this.toast(l === 'walk' ? 'Caminar: gravedad de entrenamiento 1 g' : 'Flotar: microgravedad');
     this.emitSnap();
   }
 
@@ -736,13 +816,19 @@ export class Engine {
       this.player.look(look.x + pl.x * dt * 2.2, look.y + pl.y * dt * 2.2);
       I.touchLook.x = 0; I.touchLook.y = 0;
       const move = new THREE.Vector3(I.axis('left', 'right'), I.axis('down', 'up'), -I.axis('back', 'fwd'));
+      if (this.activity) {
+        // durante una actividad el tripulante permanece en su sitio (moverse la cancela)
+        if (move.lengthSq() > 0.01 && this.activity.id !== 'sleep') { this.toast('Actividad interrumpida'); this.activity = null; }
+        else move.set(0, 0, 0);
+      }
       if (I.hit('grab')) {
         const hr = this.player.nearestHandrail();
         if (hr) { this.player.grabbing = hr; this.audio.thud(0.15); this.toast('Agarrado al asidero'); } else this.toast('No hay ningún asidero al alcance');
       }
-      this.player.step(dt, move, I.held('boost'), null);
+      if (this.activity) this.player.step(dt, move, false, null);
+      else this.player.step(dt, move, I.held('boost'), null, I.held('down'), I.held('up'), I.hit('up'));
       this.hoverCtl = this.ctlAt();
-      if (I.hit('interact')) this.tryInteract();
+      if (I.hit('interact') && !this.activity) this.tryInteract();
       const rep = this.hoverCtl?.ctl.startsWith('repair:') ? this.hoverCtl.ctl.split(':')[1] : null;
       if (rep && I.held('interact')) { this.holdT = this.systems.repair(rep as any, dt); if (this.holdT >= 1) this.audio.beep('ok'); }
       else this.holdT = 0;
@@ -756,7 +842,9 @@ export class Engine {
   private stepWorld(dt: number) {
     // sistemas
     const ecl = this.astro.eclipse;
-    this.systems.step(dt, { sunFactor: 1 - ecl, wingsDeployed: 1, thrust: this.flight.throttle, sep: 0, rcsUse: this.flight.rcsActivity, hgaError: this.mech.hgaError(), crew: 4 });
+    const metab = this.activity ? (ACTIVITIES[this.activity.id].metabolic ?? 1) - 1 : 0;
+    this.systems.step(dt, { sunFactor: 1 - ecl, wingsDeployed: 1, thrust: this.flight.throttle, sep: 0, rcsUse: this.flight.rcsActivity, hgaError: this.mech.hgaError(), crew: 4 + metab });
+    this.stepCrew(dt);
     // mecanismos especiales (dirección Sol/Tierra en espacio de nave)
     const qInv = this.interp.q.clone().invert();
     this.mech.sunLocal.copy(this.astro.sunDir).applyQuaternion(qInv);
@@ -776,12 +864,14 @@ export class Engine {
       }
     }
     // transición interior ↔ EVA por la escotilla exterior
-    const [px, py, pz] = t2b(this.player.pos);
+    const [px, py, pz0] = t2b(this.player.pos);
+    // en modo caminar se usan los pies (los ojos quedan 1,6 m por encima)
+    const pz = this.mode === 'INTERIOR' && this.player.locomotion === 'walk' ? pz0 - this.player.eyeH + 0.05 : pz0;
     if (this.mode === 'INTERIOR' && this.airlock === 'vac' && pz < -3.25 && Math.hypot(px - 11.05, py) < 0.6) {
       this.player.eva = true; this.mode = 'EVA'; this.camera.fov = 70; this.camera.updateProjectionMatrix();
       this.player.pos.copy(b2t(11.05, 0, -3.9)); this.player.jetFuel = 1; this.audio.comms('Alción, EVA iniciada. Línea de seguridad conectada.'); this.emitSnap();
     } else if (this.mode === 'EVA' && pz > -3.6 && pz < -2.2 && Math.hypot(px - 11.05, py) < 0.55) {
-      this.player.eva = false; this.mode = 'INTERIOR'; this.player.pos.copy(b2t(11.05, 0, -2.8)); this.audio.comms('Bienvenido a bordo.'); this.emitSnap();
+      this.player.eva = false; this.mode = 'INTERIOR'; this.player.pos.copy(b2t(11.05, 0, -2.8)); this.player.vel.set(0, 0, 0); this.audio.comms('Bienvenido a bordo.'); this.emitSnap();
     }
     // atraque
     if (!this.flight.docked && this.systems.on('DOCK')) {
@@ -910,7 +1000,8 @@ export class Engine {
     if (this.mode === 'ENGINEERING') { this.controls.update(); return; }
     if (this.mode === 'CINEMATIC') { this.cinematic(dt); return; }
     if (this.mode === 'INTERIOR' || this.mode === 'EVA') {
-      this.camera.position.copy(root.localToWorld(this.player.pos.clone()));
+      const bob = this.reducedMotion ? new THREE.Vector3() : this.player.bob.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), this.player.yaw);
+      this.camera.position.copy(root.localToWorld(this.player.pos.clone().add(bob)));
       this.camera.quaternion.copy(this.interp.q).multiply(this.player.viewQuat());
       return;
     }
@@ -1134,7 +1225,9 @@ export class Engine {
       mode: this.mode, flightCam: this.flightCam, ready: this.ready, interiorReady: this.interiorReady, progress: this.prog,
       speed: s.vel.length(), vel: tel ? [tel.vel.x, tel.vel.y, tel.vel.z] : [0, 0, 0], w: s.w.length(), throttle: this.flight.throttle, assist: this.flight.assist,
       thrustScale: this.flight.thrustScale, docked: this.flight.docked, altKm: alt.km, body: alt.body, eclipse: this.astro.eclipse, seated: this.seated, eva: this.player.eva,
-      airlock: this.airlock, jetFuel: this.player.jetFuel, prompt: this.hoverCtl ? this.ctlLabel(this.hoverCtl) : null, holdProgress: this.holdT,
+      airlock: this.airlock, jetFuel: this.player.jetFuel, prompt: this.activity ? ACTIVITIES[this.activity.id].doing : this.hoverCtl ? this.ctlLabel(this.hoverCtl) : null, holdProgress: this.activity ? this.activity.t / ACTIVITIES[this.activity.id].dur : this.holdT,
+      crew: { needs: { ...this.crew.needs }, clock: this.crew.clockText(), samples: this.crew.samples, stored: this.crew.stored, log: [...this.crew.log] }, activity: this.activity ? { label: ACTIVITIES[this.activity.id].doing, p: this.activity.t / ACTIVITIES[this.activity.id].dur } : null, fade: this.fade,
+      locomotion: this.player.locomotion, crouch: this.player.crouch, climbing: this.player.climbing,
       systems: this.systems.snapshot(), alerts: this.systems.alerts.slice(0, 4).map((a) => ({ level: a.level, text: a.text })),
       mission: this.missions.current(), missionsDone: [...this.missions.done],
       sandbox: this.sandbox.active ? { score: this.sandbox.score, streak: this.sandbox.streak, shots: this.sandbox.shots } : null,
@@ -1149,7 +1242,7 @@ export class Engine {
     if (!this.ready) return;
     try {
       localStorage.setItem('alcion-bo-save', JSON.stringify({
-        v: 2, scenario: this.scenario, flight: this.flight.serialize(), systems: this.systems.snapshot(), player: this.player.serialize(),
+        v: 2, scenario: this.scenario, flight: this.flight.serialize(), systems: this.systems.snapshot(), player: this.player.serialize(), crew: this.crew.serialize(),
         missionsDone: [...this.missions.done], airlock: this.airlock, seated: this.seated, mode: this.mode === 'MISSIONS' ? 'FLIGHT' : this.mode,
         mechs: Object.fromEntries([...this.model.mechs.entries()].filter(([id]) => /^(hatch|shutter)/.test(id)).map(([id, n]) => [id, n.mech!.target])),
       }));
@@ -1165,6 +1258,7 @@ export class Engine {
       this.flight.deserialize(o.flight);
       this.systems.load(o.systems);
       this.player.deserialize(o.player);
+      this.crew.deserialize(o.crew);
       (o.missionsDone ?? []).forEach((d: string) => this.missions.done.add(d));
       this.airlock = o.airlock === 'vac' || o.airlock === 'pres' ? o.airlock : 'pres';
       for (const [id, v] of Object.entries(o.mechs ?? {})) this.model.setMech(id, v as number, true);
@@ -1185,7 +1279,7 @@ export class Engine {
   }
   loadSettings(): any { try { return JSON.parse(localStorage.getItem('alcion-bo-settings') ?? 'null'); } catch { return null; } }
   saveSettings(extra: Record<string, unknown> = {}) {
-    try { localStorage.setItem('alcion-bo-settings', JSON.stringify({ quality: this.quality, bindings: this.input.bindings, invertY: this.input.invertY, sens: this.input.sensitivity, volume: this.audio.volume, sound: this.audio.mode, reduced: this.reducedMotion, dynamicRes: this.dynamicRes, ...extra })); } catch { /* */ }
+    try { localStorage.setItem('alcion-bo-settings', JSON.stringify({ quality: this.quality, bindings: this.input.bindings, invertY: this.input.invertY, sens: this.input.sensitivity, volume: this.audio.volume, sound: this.audio.mode, reduced: this.reducedMotion, dynamicRes: this.dynamicRes, locomotion: this.player.locomotion, ...extra })); } catch { /* */ }
   }
 
   dispose() { cancelAnimationFrame(this.raf); window.removeEventListener('resize', this.resize); this.renderer.dispose(); }

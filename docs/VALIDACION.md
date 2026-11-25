@@ -50,7 +50,7 @@ Este informe dice **qué se ha comprobado de verdad**, cómo se ha comprobado y 
 ### Ingeniería
 - **Sin validación de ingeniería:** no hay análisis estructural (cargas de lanzamiento y de atraque), térmico, de dosis de radiación, de trayectorias ni de fiabilidad. Masas, Δv, potencia y rechazo térmico son **estimaciones de orden de magnitud**.
 - **Volumen habitable neto** de ≈ 14 m³ por tripulante, por debajo de la recomendación HRP de 25 m³ para misiones largas. Solo se justifica para salidas de ≤ 45 días.
-- **No hay esclusa EVA.** Se asume que la EVA de contingencia se hace desde el vehículo atracado, y el servicio rutinario es robótico. Una versión futura debería evaluar una esclusa.
+- **Esclusa EVA** (añadida en Beyond Orbit): es conceptual, con un volumen mínimo para un tripulante con traje. No se han dimensionado la bomba de recuperación de aire ni los consumibles.
 - El conjunto **lanzamiento/carenado** no se ha estudiado: el casco de Ø4,52 m sobre el escudo cabría en carenados de 5 m, pero las alas, radiadores y brazos solo se representan desplegados.
 - Las cotas del isogrid, de las fijaciones y de los espesores son **ilustrativas**, no dimensionadas.
 
@@ -58,10 +58,18 @@ Este informe dice **qué se ha comprobado de verdad**, cómo se ha comprobado y 
 - Las piezas repetidas (tornillería, pestañas, tubos de radiador) forman parte de la malla de su conjunto. Se pueden inspeccionar **como conjunto**, no tornillo a tornillo; separarlas multiplicaría por 3 las llamadas de dibujo.
 - No se modelan las rutas internas de cableado dentro de cada bastidor ni los mazos dentro del módulo de servicio más allá de los troncales.
 - **Materiales web:** el microdetalle se reconstruye con texturas procedurales del navegador. Es más simple que los materiales Cycles del modelo maestro.
-- La **sección** web no dibuja tapas sólidas en el plano de corte; muestra las caras interiores (doble cara).
-- El brazo robótico solo se representa en estiba, sin cinemática.
-- La iluminación interior web usa luces rectangulares sin sombras; las sombras interiores realistas solo están en los renders Cycles.
+- La **sección** web dibuja tapas rayadas con las caras traseras. No es una tapa geométrica cerrada, así que en piezas abiertas la trama puede verse incompleta.
+- El brazo robótico tiene FK e IK (CCD) sin dinámica ni límites de par.
+- La iluminación interior web combina luces rectangulares (sin sombras) con focos que proyectan sombra, limitados a los 2 más cercanos. La iluminación global solo está en los renders Cycles.
 - **Renders:** Cycles en CPU, 96 muestras más desenfoque de ruido OpenImageDenoise. Con GPU y más muestras se ganaría nitidez en reflejos y zonas oscuras.
+
+### Simulación interactiva (Beyond Orbit)
+- **Caminar con 1 g** es una licencia de jugabilidad, presentada como gravedad de entrenamiento (maqueta en tierra). La nave real estaría en microgravedad, que es el modo **flotar**.
+- **Colisiones a pie** aproximadas con cajas de piezas y una función analítica del casco. En zonas con equipos de forma irregular el contacto no es exacto. El cicloergómetro bloquea el centro del pasillo de popa, como en el modelo, y se rodea por el lado de estribor.
+- **Necesidades del tripulante:** los ritmos son órdenes de magnitud plausibles, no un modelo fisiológico validado. Dormir avanza 8 h de reloj de misión sin simular la nave durante ese tiempo.
+- **Sin cuerpo visible:** el tripulante no tiene brazos ni piernas renderizados. Las actividades se representan con sonido, texto, progreso y efectos en el simulador, sin animación de personaje.
+- **Rendimiento en GPU real no medido:** ver `docs/RENDIMIENTO.md`. Todas las capturas y pruebas se hicieron con WebGL por CPU (SwiftShader).
+- **Resultados de la batería Playwright** (`func.js`, 15 comprobaciones): todas PASS en la última ejecución, sin errores de página.
 
 ## 4. Conclusión
 Los entregables son reproducibles desde código y mutuamente coherentes: modelo, GLB, planos, inventario y web salen de la misma fuente (`spec.py` → `build.py`). La nave es un **concepto internamente consistente y verosímil**, apoyado en principios publicados (IDSS, ECLSS, Whipple relleno, MLI, SEP, refugio de agua). Sus cifras de rendimiento son hipótesis que una fase de ingeniería tendría que validar o corregir.

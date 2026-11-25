@@ -394,3 +394,17 @@ kbd { font-family: var(--mono); border: 1px solid var(--hairline-strong); border
 .mech-group:last-child { border-right: 0; }
 .mech-group .eyebrow { width: 100%; font-size: 10px; }
 .mech-tool .btn.on { border-color: var(--accent, #e2572b); color: var(--ink, #ece8e1); }
+
+/* Vida a bordo */
+.crew-block { min-width: 236px; }
+.crew-block .need { display: grid; grid-template-columns: 84px 1fr 26px; align-items: center; gap: 8px; margin: 3px 0; }
+.crew-block .need .hbar { margin: 0; height: 4px; }
+.crew-block .need.low .hbar > div { background: #e2572b; }
+.crew-block .need.low span:first-child { color: #ffb08f; }
+.interior-hud .hud-left { display: flex; flex-direction: column; gap: 10px; }
+.loco { position: absolute; right: 20px; top: 76px; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; pointer-events: auto; max-width: 340px; text-align: right; }
+.loco .seg button { padding: 6px 12px; }
+.sleep-fade { position: absolute; inset: 0; background: #000; display: grid; place-items: center; pointer-events: none; z-index: 5; }
+.sleep-fade span { color: #ece8e1; font-size: 15px; letter-spacing: .12em; opacity: .7; }
+@media (max-width: 860px) { .loco { top: auto; bottom: 120px; right: 12px; } .loco p { display: none; } .crew-block { min-width: 0; } }
+.loco p { background: rgba(12,13,15,.72); padding: 6px 10px; border-radius: 4px; color: #cfc9bf; }
