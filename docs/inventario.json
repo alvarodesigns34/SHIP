@@ -2,7 +2,7 @@
  "vehicle": "ALCIÓN HX-4",
  "parts": 665,
  "groups": 126,
- "triangles": 424800,
+ "triangles": 540764,
  "tree": {
   "code": "ALCION",
   "label": "ALCIÓN HX-4",
@@ -237,7 +237,7 @@
     "children": [
      {
       "code": "FWD.CUP",
-      "label": "Cúpola de observación",
+      "label": "Cúpula de observación",
       "kind": "group",
       "desc": "Cúpula hexagonal de 7 ventanas para observación directa durante operaciones de proximidad y robótica.",
       "func": "Visibilidad directa de 360° del hemisferio cenital",
@@ -2022,7 +2022,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.4,
@@ -2064,7 +2064,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.4,
@@ -2106,7 +2106,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.4,
@@ -2148,7 +2148,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.4,
@@ -2190,7 +2190,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.448,
@@ -2232,7 +2232,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.448,
@@ -2274,7 +2274,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.448,
@@ -2316,7 +2316,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.448,
@@ -2358,7 +2358,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.4,
@@ -2400,7 +2400,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.4,
@@ -2442,7 +2442,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.4,
@@ -2484,7 +2484,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.4,
@@ -2526,7 +2526,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.165,
@@ -2568,7 +2568,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.165,
@@ -2610,7 +2610,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.165,
@@ -2652,7 +2652,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.165,
@@ -2694,7 +2694,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.165,
@@ -2736,7 +2736,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 120,
+          "tris": 384,
           "dims_m": [
            0.388,
            0.165,
@@ -3983,12 +3983,12 @@
       "func": "Habitabilidad para 4 tripulantes durante salidas de hasta 45 días (hipótesis)",
       "depth": 2,
       "dims_m": [
-       8.596,
+       8.601,
        3.94,
        4.02
       ],
       "center_m": [
-       4.477,
+       4.479,
        0.0,
        -0.04
       ],
@@ -4001,12 +4001,12 @@
         "func": "",
         "depth": 3,
         "dims_m": [
-         2.06,
+         2.065,
          3.94,
          3.94
         ],
         "center_m": [
-         7.745,
+         7.747,
          0.0,
          0.0
         ],
@@ -4019,8 +4019,8 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.91
           ],
           "center_m": [
@@ -4050,10 +4050,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -4176,8 +4176,8 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.892
           ],
           "center_m": [
@@ -4207,10 +4207,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -4279,7 +4279,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4321,7 +4321,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4363,7 +4363,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4405,7 +4405,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4447,7 +4447,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4489,7 +4489,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4531,7 +4531,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4573,7 +4573,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4615,7 +4615,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4657,7 +4657,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4699,7 +4699,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4741,7 +4741,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -4767,12 +4767,12 @@
           "dims_m": [
            0.522,
            2.104,
-           1.255
+           1.253
           ],
           "center_m": [
            8.469,
-           0.0,
-           -0.672
+           -0.0,
+           -0.674
           ],
           "children": [
            {
@@ -4785,12 +4785,12 @@
             "dims_m": [
              0.522,
              0.864,
-             1.255
+             1.253
             ],
             "center_m": [
              8.469,
              0.62,
-             -0.672
+             -0.674
             ],
             "children": [
              {
@@ -4892,16 +4892,16 @@
                 "desc": "Pasamanos (aluminio anodizado amarillo)"
                }
               ],
-              "tris": 860,
+              "tris": 5068,
               "dims_m": [
                0.522,
                0.864,
-               1.255
+               1.253
               ],
               "center_m": [
                8.469,
                0.62,
-               -0.672
+               -0.674
               ],
               "count": 1
              }
@@ -4918,12 +4918,12 @@
             "dims_m": [
              0.522,
              0.864,
-             1.255
+             1.253
             ],
             "center_m": [
              8.469,
              -0.62,
-             -0.672
+             -0.674
             ],
             "children": [
              {
@@ -5025,16 +5025,16 @@
                 "desc": "Pasamanos (aluminio anodizado amarillo)"
                }
               ],
-              "tris": 860,
+              "tris": 5068,
               "dims_m": [
                0.522,
                0.864,
-               1.255
+               1.253
               ],
               "center_m": [
                8.469,
                -0.62,
-               -0.672
+               -0.674
               ],
               "count": 1
              }
@@ -5052,8 +5052,8 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.892
           ],
           "center_m": [
@@ -5083,10 +5083,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -5155,7 +5155,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5197,7 +5197,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5239,7 +5239,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5281,7 +5281,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5323,7 +5323,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5365,7 +5365,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5407,7 +5407,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5449,7 +5449,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5491,7 +5491,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5533,7 +5533,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5575,7 +5575,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5617,7 +5617,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5641,8 +5641,8 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.892
           ],
           "center_m": [
@@ -5672,10 +5672,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -5744,7 +5744,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5786,7 +5786,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5828,7 +5828,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5870,7 +5870,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5912,7 +5912,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5954,7 +5954,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -5996,7 +5996,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -6038,7 +6038,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -6080,7 +6080,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -6122,7 +6122,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -6164,7 +6164,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -6206,7 +6206,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -6230,9 +6230,9 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            0.892,
-           2.2
+           2.21
           ],
           "center_m": [
            7.265,
@@ -6261,11 +6261,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              7.265,
@@ -6333,7 +6333,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6375,7 +6375,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6417,7 +6417,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6459,7 +6459,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6501,7 +6501,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6543,7 +6543,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6585,7 +6585,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6627,7 +6627,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6669,7 +6669,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6711,7 +6711,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6753,7 +6753,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6795,7 +6795,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -6819,9 +6819,9 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            0.892,
-           2.2
+           2.21
           ],
           "center_m": [
            8.285,
@@ -6850,11 +6850,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              8.285,
@@ -6968,9 +6968,9 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            0.892,
-           2.2
+           2.21
           ],
           "center_m": [
            7.265,
@@ -6999,11 +6999,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              7.265,
@@ -7071,7 +7071,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7113,7 +7113,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7155,7 +7155,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7197,7 +7197,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7239,7 +7239,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7281,7 +7281,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7323,7 +7323,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7365,7 +7365,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7407,7 +7407,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7449,7 +7449,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7491,7 +7491,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7533,7 +7533,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -7762,9 +7762,9 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            0.892,
-           2.2
+           2.21
           ],
           "center_m": [
            8.285,
@@ -7793,11 +7793,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              8.285,
@@ -8139,7 +8139,7 @@
         "func": "",
         "depth": 3,
         "dims_m": [
-         2.0,
+         2.01,
          3.94,
          4.02
         ],
@@ -8157,8 +8157,8 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.892
           ],
           "center_m": [
@@ -8188,10 +8188,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -8260,7 +8260,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8302,7 +8302,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8344,7 +8344,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8386,7 +8386,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8428,7 +8428,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8470,7 +8470,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8512,7 +8512,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8554,7 +8554,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8596,7 +8596,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8638,7 +8638,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8680,7 +8680,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8722,7 +8722,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8746,8 +8746,8 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.892
           ],
           "center_m": [
@@ -8777,10 +8777,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -8849,7 +8849,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8891,7 +8891,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8933,7 +8933,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -8975,7 +8975,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -9017,7 +9017,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -9059,7 +9059,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -9101,7 +9101,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -9143,7 +9143,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -9185,7 +9185,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -9227,7 +9227,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -9269,7 +9269,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -9311,7 +9311,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -9526,9 +9526,9 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            0.91,
-           2.2
+           2.21
           ],
           "center_m": [
            5.215,
@@ -9557,11 +9557,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              5.215,
@@ -9653,9 +9653,9 @@
           "func": "Manipulación segura de muestras lunares y experimentos biológicos",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            1.228,
-           2.2
+           2.21
           ],
           "center_m": [
            6.235,
@@ -9684,11 +9684,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              6.235,
@@ -9792,9 +9792,9 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            0.915,
-           2.2
+           2.21
           ],
           "center_m": [
            5.215,
@@ -9823,11 +9823,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              5.215,
@@ -9927,9 +9927,9 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            0.915,
-           2.2
+           2.21
           ],
           "center_m": [
            6.235,
@@ -9958,11 +9958,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              6.235,
@@ -10061,7 +10061,7 @@
         "func": "",
         "depth": 3,
         "dims_m": [
-         2.0,
+         2.01,
          3.91,
          3.94
         ],
@@ -10079,8 +10079,8 @@
           "func": "Blindaje frente a eventos de partículas solares",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.892
           ],
           "center_m": [
@@ -10110,10 +10110,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -10202,8 +10202,8 @@
           "func": "Blindaje frente a eventos de partículas solares",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.892
           ],
           "center_m": [
@@ -10233,10 +10233,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -10953,8 +10953,8 @@
           "func": "Blindaje frente a eventos de partículas solares",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.892
           ],
           "center_m": [
@@ -10984,10 +10984,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -11076,8 +11076,8 @@
           "func": "Blindaje frente a eventos de partículas solares",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.892
           ],
           "center_m": [
@@ -11107,10 +11107,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -11202,7 +11202,7 @@
         "func": "",
         "depth": 3,
         "dims_m": [
-         2.0,
+         2.01,
          3.94,
          3.94
         ],
@@ -11220,8 +11220,8 @@
           "func": "Mantener la presión parcial de CO₂ por debajo del límite operativo",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.895
           ],
           "center_m": [
@@ -11251,10 +11251,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -11363,8 +11363,8 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.892
           ],
           "center_m": [
@@ -11394,10 +11394,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -11466,7 +11466,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11508,7 +11508,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11550,7 +11550,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11592,7 +11592,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11634,7 +11634,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11676,7 +11676,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11718,7 +11718,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11760,7 +11760,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11802,7 +11802,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11844,7 +11844,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11886,7 +11886,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11928,7 +11928,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.348,
@@ -11952,8 +11952,8 @@
           "func": "Recuperar el agua de condensado y orina",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            0.895
           ],
           "center_m": [
@@ -11983,10 +11983,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -12087,8 +12087,8 @@
           "func": "Contramedida frente a la pérdida ósea y muscular",
           "depth": 4,
           "dims_m": [
-           0.98,
-           2.2,
+           0.99,
+           2.21,
            1.784
           ],
           "center_m": [
@@ -12118,10 +12118,10 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
-             2.2,
+             0.99,
+             2.21,
              0.82
             ],
             "center_m": [
@@ -12248,9 +12248,9 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            1.36,
-           2.2
+           2.21
           ],
           "center_m": [
            2.135,
@@ -12279,11 +12279,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              2.135,
@@ -12387,9 +12387,9 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            0.892,
-           2.2
+           2.21
           ],
           "center_m": [
            1.115,
@@ -12418,11 +12418,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              1.115,
@@ -12490,7 +12490,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12532,7 +12532,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12574,7 +12574,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12616,7 +12616,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12658,7 +12658,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12700,7 +12700,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12742,7 +12742,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12784,7 +12784,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12826,7 +12826,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12868,7 +12868,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12910,7 +12910,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12952,7 +12952,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -12994,7 +12994,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -13036,7 +13036,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -13078,7 +13078,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -13120,7 +13120,7 @@
               "desc": "Marcado serigrafiado (negro)"
              }
             ],
-            "tris": 120,
+            "tris": 384,
             "dims_m": [
              0.458,
              0.034,
@@ -13144,9 +13144,9 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            0.9,
-           2.2
+           2.21
           ],
           "center_m": [
            1.115,
@@ -13175,11 +13175,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              1.115,
@@ -13287,9 +13287,9 @@
           "func": "Producción de oxígeno a partir de agua",
           "depth": 4,
           "dims_m": [
-           0.98,
+           0.99,
            0.895,
-           2.2
+           2.21
           ],
           "center_m": [
            2.135,
@@ -13318,11 +13318,11 @@
               "desc": "Acero inoxidable A286"
              }
             ],
-            "tris": 156,
+            "tris": 614,
             "dims_m": [
-             0.98,
+             0.99,
              0.82,
-             2.2
+             2.21
             ],
             "center_m": [
              2.135,
@@ -14436,7 +14436,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.028,
@@ -14482,7 +14482,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.357,
@@ -14528,7 +14528,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.631,
@@ -14574,7 +14574,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.809,
@@ -14620,7 +14620,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.864,
@@ -14694,7 +14694,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.809,
@@ -14740,7 +14740,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.631,
@@ -14786,7 +14786,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.357,
@@ -14832,7 +14832,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.028,
@@ -14878,7 +14878,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.357,
@@ -14924,7 +14924,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.631,
@@ -14970,7 +14970,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.809,
@@ -15016,7 +15016,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.864,
@@ -15062,7 +15062,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.809,
@@ -15108,7 +15108,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.631,
@@ -15154,7 +15154,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.357,
@@ -15243,7 +15243,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.028,
@@ -15309,7 +15309,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.357,
@@ -15347,7 +15347,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.631,
@@ -15385,7 +15385,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.809,
@@ -15423,7 +15423,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.864,
@@ -15461,7 +15461,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.809,
@@ -15499,7 +15499,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.631,
@@ -15537,7 +15537,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.357,
@@ -15575,7 +15575,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.028,
@@ -15641,7 +15641,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.357,
@@ -15679,7 +15679,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.631,
@@ -15717,7 +15717,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.809,
@@ -15783,7 +15783,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.864,
@@ -15821,7 +15821,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.809,
@@ -15859,7 +15859,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.631,
@@ -15897,7 +15897,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.357,
@@ -15986,7 +15986,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.028,
@@ -16078,7 +16078,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.357,
@@ -16116,7 +16116,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.631,
@@ -16154,7 +16154,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.809,
@@ -16192,7 +16192,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.864,
@@ -16230,7 +16230,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.809,
@@ -16268,7 +16268,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.631,
@@ -16306,7 +16306,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.357,
@@ -16344,7 +16344,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.028,
@@ -16436,7 +16436,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.357,
@@ -16474,7 +16474,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.631,
@@ -16512,7 +16512,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.809,
@@ -16550,7 +16550,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1360,
+          "tris": 1432,
           "dims_m": [
            2.03,
            0.864,
@@ -16588,7 +16588,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.809,
@@ -16626,7 +16626,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.631,
@@ -16664,7 +16664,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1288,
+          "tris": 1720,
           "dims_m": [
            2.03,
            0.357,
@@ -16761,7 +16761,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.028,
@@ -16807,7 +16807,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.357,
@@ -16853,7 +16853,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.631,
@@ -16927,7 +16927,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.809,
@@ -16973,7 +16973,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.864,
@@ -17019,7 +17019,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.809,
@@ -17065,7 +17065,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.631,
@@ -17111,7 +17111,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.357,
@@ -17157,7 +17157,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.028,
@@ -17203,7 +17203,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.357,
@@ -17249,7 +17249,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.631,
@@ -17295,7 +17295,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.809,
@@ -17341,7 +17341,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.864,
@@ -17415,7 +17415,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.809,
@@ -17461,7 +17461,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.631,
@@ -17507,7 +17507,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1312,
+          "tris": 1744,
           "dims_m": [
            2.03,
            0.357,
@@ -24080,7 +24080,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            0.044,
@@ -24118,7 +24118,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            1.272,
@@ -24152,7 +24152,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 1004,
+          "tris": 1700,
           "dims_m": [
            2.47,
            1.754,
@@ -24190,7 +24190,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            1.272,
@@ -24228,7 +24228,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            0.044,
@@ -24266,7 +24266,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            1.272,
@@ -24300,7 +24300,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 1004,
+          "tris": 1700,
           "dims_m": [
            2.47,
            1.754,
@@ -24338,7 +24338,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            1.272,
@@ -24397,7 +24397,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            0.044,
@@ -24435,7 +24435,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            1.272,
@@ -24469,7 +24469,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 1004,
+          "tris": 1700,
           "dims_m": [
            2.47,
            1.754,
@@ -24507,7 +24507,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            1.272,
@@ -24545,7 +24545,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            0.044,
@@ -24583,7 +24583,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            1.272,
@@ -24617,7 +24617,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 1004,
+          "tris": 1700,
           "dims_m": [
            2.47,
            1.754,
@@ -24655,7 +24655,7 @@
             "desc": "Tornillería de acero pasivado / titanio"
            }
           ],
-          "tris": 956,
+          "tris": 1364,
           "dims_m": [
            2.47,
            1.272,
@@ -25814,12 +25814,12 @@
         "depth": 3,
         "dims_m": [
          3.24,
-         0.073,
+         0.072,
          5.41
         ],
         "center_m": [
          -2.3,
-         0.014,
+         0.015,
          5.045
         ],
         "children": [
@@ -25844,15 +25844,15 @@
             "desc": "Acero inoxidable A286"
            }
           ],
-          "tris": 788,
+          "tris": 5108,
           "dims_m": [
            3.24,
-           0.073,
+           0.072,
            1.79
           ],
           "center_m": [
            -2.3,
-           0.014,
+           0.015,
            3.235
           ],
           "count": 1
@@ -25878,15 +25878,15 @@
             "desc": "Acero inoxidable A286"
            }
           ],
-          "tris": 788,
+          "tris": 5108,
           "dims_m": [
            3.24,
-           0.073,
+           0.072,
            1.79
           ],
           "center_m": [
            -2.3,
-           0.014,
+           0.015,
            5.045
           ],
           "count": 1
@@ -25912,15 +25912,15 @@
             "desc": "Acero inoxidable A286"
            }
           ],
-          "tris": 788,
+          "tris": 5108,
           "dims_m": [
            3.24,
-           0.073,
+           0.072,
            1.79
           ],
           "center_m": [
            -2.3,
-           0.014,
+           0.015,
            6.855
           ],
           "count": 1
@@ -26060,12 +26060,12 @@
         "depth": 3,
         "dims_m": [
          3.24,
-         0.073,
+         0.072,
          5.41
         ],
         "center_m": [
          -2.3,
-         0.014,
+         0.015,
          -5.045
         ],
         "children": [
@@ -26090,15 +26090,15 @@
             "desc": "Acero inoxidable A286"
            }
           ],
-          "tris": 788,
+          "tris": 5108,
           "dims_m": [
            3.24,
-           0.073,
+           0.072,
            1.79
           ],
           "center_m": [
            -2.3,
-           0.014,
+           0.015,
            -3.235
           ],
           "count": 1
@@ -26124,15 +26124,15 @@
             "desc": "Acero inoxidable A286"
            }
           ],
-          "tris": 788,
+          "tris": 5108,
           "dims_m": [
            3.24,
-           0.073,
+           0.072,
            1.79
           ],
           "center_m": [
            -2.3,
-           0.014,
+           0.015,
            -5.045
           ],
           "count": 1
@@ -26158,15 +26158,15 @@
             "desc": "Acero inoxidable A286"
            }
           ],
-          "tris": 788,
+          "tris": 5108,
           "dims_m": [
            3.24,
-           0.073,
+           0.072,
            1.79
           ],
           "center_m": [
            -2.3,
-           0.014,
+           0.015,
            -6.855
           ],
           "count": 1

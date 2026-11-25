@@ -107,7 +107,7 @@ def rack_body_mesh():
     # pivotes de giro (para abatir el bastidor hacia el pasillo en mantenimiento)
     for x in (-w / 2 + 0.06, w / 2 - 0.06):
         mb.cyl("M_Steel", 0.025, 0.025, 0.06, 12, center=(x, -1.05, -0.7), axis='X')
-    return mb.mesh(smooth=None)
+    return mb.mesh(smooth=None, bevel=0.005)
 
 
 def locker_mesh(w=0.44, h=0.34):
@@ -118,7 +118,7 @@ def locker_mesh(w=0.44, h=0.34):
         mb.cyl("M_Steel", 0.008, 0.008, 0.006, 10, center=(x, h / 2 - 0.03, 0.025), axis='Z')
     mb.box("M_ShieldWhite", 0.10, 0.035, 0.002, center=(w / 2 - 0.085, h / 2 - 0.035, 0.023))
     mb.box("M_Decal", 0.07, 0.008, 0.001, center=(w / 2 - 0.085, h / 2 - 0.035, 0.0245))
-    return mb.mesh(smooth=None)
+    return mb.mesh(smooth=None, bevel=0.003)
 
 
 def handrail_int_mesh():
@@ -257,7 +257,7 @@ def console_mesh(side):
         for j in range(3):
             mb.box("M_InteriorDark", 0.03, 0.045, 0.012, center=(-0.28 + 0.06 * j, -0.30 + 0.055 * k, -0.475))
     mb.tube("M_Handrail", [(-0.30, -0.42, -0.42), (-0.36, -0.42, -0.36), (-0.36, 0.42, -0.36), (-0.30, 0.42, -0.42)], 0.012, 10, round_r=0.04)
-    return mb.mesh(smooth=35)
+    return mb.mesh(smooth=35, bevel=0.006)
 
 
 def switch_panel_mesh():

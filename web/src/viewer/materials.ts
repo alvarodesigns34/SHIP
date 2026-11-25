@@ -23,9 +23,9 @@ export function enhanceMaterial(mesh: THREE.Mesh) {
   const has = (p: string) => n.startsWith(p);
   if (has('M_MLI')) {
     m.normalMap = tile(mliNormal(), 1.1);
-    m.normalScale = new THREE.Vector2(0.55, 0.55);
+    m.normalScale = new THREE.Vector2(0.32, 0.32);
     m.roughnessMap = tile(roughNoise(3), 1.3);
-    m.roughness = 0.32;
+    m.roughness = 0.4;
     m.metalness = n.includes('Black') ? 0.3 : 1.0;
     m.envMapIntensity = 1.4;
   } else if (has('M_Shield') || has('M_Interior') || has('M_Accent') || has('M_Graphite') || has('M_Dish') || has('M_Decal')) {

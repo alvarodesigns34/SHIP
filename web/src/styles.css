@@ -76,6 +76,7 @@ select { background: var(--surface-raised); border: 1px solid var(--hairline-str
 /* paneles */
 .panel { position: absolute; top: calc(var(--top) + 12px); bottom: 184px; width: 316px; background: rgba(16, 17, 20, 0.9); border: 1px solid var(--hairline); border-radius: var(--r-lg); display: flex; flex-direction: column; z-index: 10; backdrop-filter: blur(10px); }
 .tree-panel { left: 12px; }
+.tree-panel:not(.open) { display: none; }
 .info-panel { right: 12px; width: 344px; padding: 0 20px 20px; overflow-y: auto; animation: slideIn var(--dur-base) var(--ease-out); }
 @keyframes slideIn { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
 .panel-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 4px 10px 16px; border-bottom: 1px solid var(--hairline); }
@@ -254,7 +255,9 @@ kbd { font-family: var(--mono); border: 1px solid var(--hairline-strong); border
 @media (max-width: 860px) {
   :root { --top: 52px; }
   .topbar { gap: 8px; padding: 0 12px; overflow-x: auto; }
-  .brand-desig, .top-right select:nth-of-type(2) { display: none; }
+  .brand-desig, .brand-name, .top-right select:nth-of-type(2), .top-right .icon-btn { display: none; }
+  .topbar { scrollbar-width: none; }
+  .label3d .txt { font-size: 0.68rem; padding: 2px 6px; }
   .tabs button { padding: 8px 8px; font-size: 0.8125rem; white-space: nowrap; }
   .top-right select { max-width: 112px; }
   .panel { left: 8px !important; right: 8px !important; width: auto !important; top: auto; bottom: 8px; max-height: 58vh; z-index: 30; }

@@ -24,6 +24,7 @@ TAU = math.tau
 # Registro de nodos y metadatos
 # ---------------------------------------------------------------------------
 _COLL = None
+STATS = {"bolts": 0}
 _ID_COUNTER = {}
 
 
@@ -513,6 +514,7 @@ class MB:
         return self.tag(bm_tube_path(self.bm, p, r, seg), mat)
 
     def bolt(self, mat, center, normal, size=0.012, height=0.008, washer=True):
+        self.nbolts = getattr(self, "nbolts", 0) + 1
         return self.tag(bm_hexbolt(self.bm, center, normal, size, height, washer), mat)
 
     def bolts(self, mat, pns, size=0.012, height=0.008, washer=True):
@@ -552,9 +554,19 @@ class MB:
     def transform(self, M, verts):
         bm_transform(self.bm, M, verts)
 
-    def mesh(self, smooth=30):
+    def mesh(self, smooth=30, bevel=None):
         from .materials import M as _M
+        if bevel:
+            bmesh.ops.remove_doubles(self.bm, verts=self.bm.verts, dist=1e-6)
+            skip = {self.mats.index(m) for m in ("M_Bolt", "M_Steel", "M_GoldPlate", "M_Decal", "M_Accent", "M_Graphite") if m in self.mats}
+            edges = [e for e in self.bm.edges if len(e.link_faces) == 2 and e.calc_face_angle(0) > math.radians(40)
+                     and not any(f.material_index in skip for f in e.link_faces)]
+            if edges:
+                bmesh.ops.bevel(self.bm, geom=edges, offset=bevel, offset_type='OFFSET', segments=2, profile=0.5,
+                                affect='EDGES', clamp_overlap=True)
+            smooth = 35 if smooth is None else smooth
         me = _finish(self.bm, self.name, smooth)
+        me["bolts"] = getattr(self, "nbolts", 0)
         for m in self.mats:
             me.materials.append(_M(m))
         return me

@@ -49,8 +49,9 @@ VIEWS = {
     "interior_cq":  ((3.65, -0.4, 0.5), (3.65, 1.4, -0.3), 14, {"interior": True}),
     "interior_lab": ((4.2, 0.4, 0.6), (6.6, -0.9, -0.6), 16, {"interior": True}),
     "cockpit":      ((6.3, 0.0, 0.55), (8.8, 0.0, -0.35), 18, {"interior": True}),
-    "exploded":     ((26.0, 34.0, 17.0), (0.5, 0.0, -2.5), 30, {}),
-    "section":      ((3.5, 22.0, 2.0), (3.5, 0.0, 0.0), 40, {"section": True}),
+    "exploded":     ((30.0, 40.0, 20.0), (0.5, 0.0, -2.8), 32, {"fill": 1.6}),
+    "exploded_mid": ((28.0, 36.0, 16.0), (1.0, 0.0, -1.5), 32, {"fill": 1.4}),
+    "section":      ((3.3, 22.0, 1.2), (3.3, 0.0, 0.0), 42, {"section": True, "fill": 1.2, "lights": True}),
 }
 sel = arg("--views", "hero,side,top,front34")
 views = list(VIEWS.keys()) if sel == "all" else sel.split(",")
@@ -128,6 +129,9 @@ def setup_preview():
     w = bpy.data.worlds.new("W") if not scn.world else scn.world
     scn.world = w
     w.color = (0.02, 0.025, 0.035)
+
+
+opts_cur = {}
 
 
 def setup_final(interior=False):
@@ -216,14 +220,15 @@ def setup_final(interior=False):
     fill.data.color = (0.6, 0.75, 1.0)
     fill.data.angle = math.radians(20)
     fill.rotation_euler = (math.radians(-130), math.radians(10), math.radians(140))
-    if interior:
+    if interior or opts_cur.get("lights"):
         add_interior_lights()
+    fill.data.energy = 0.25 * opts_cur.get("fill", 1.0) * (4 if opts_cur.get("fill") else 1)
 
 
 def add_interior_lights():
     if bpy.data.objects.get("INT_L1"):
         return
-    import alcion  # noqa
+
     xs = [0.6 + 2.05 * i for i in range(5)]
     k = 0
     for i in range(4):
@@ -290,6 +295,7 @@ def setup_moon(pos, tgt, cam, on):
 for v in views:
     pos, tgt, lens, opts = VIEWS[v]
     interior = opts.get("interior", False)
+    opts_cur = opts
     if MODE == "preview":
         setup_preview()
     else:

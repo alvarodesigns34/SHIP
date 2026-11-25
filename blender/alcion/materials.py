@@ -157,8 +157,8 @@ def build_all():
             br.inputs["Scale"].default_value = 1.0
             br.inputs["Color1"].default_value = (*col, 1)
             br.inputs["Color2"].default_value = (col[0] * 1.6, col[1] * 1.6, col[2] * 1.5, 1)
-            br.inputs["Mortar"].default_value = (0.30, 0.30, 0.32, 1)
-            br.inputs["Mortar Size"].default_value = 0.012
+            br.inputs["Mortar"].default_value = (0.06, 0.06, 0.07, 1)
+            br.inputs["Mortar Size"].default_value = 0.0015
             br.inputs["Brick Width"].default_value = 0.08
             br.inputs["Row Height"].default_value = 0.04
             cc = nt.nodes.new("ShaderNodeTexCoord")

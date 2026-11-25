@@ -1,0 +1,835 @@
+# Inventario jerárquico de componentes — ALCIÓN HX-4
+
+Generado automáticamente desde el modelo maestro (`blender/build.py` → `docs/inventario.json`). Cada línea es un nodo real del modelo 3D y de la aplicación web; el código es su identificador único.
+
+- Piezas (mallas individuales): **665**
+- Grupos de ensamblaje: **126**
+- Elementos de tornillería modelados (por instancia): **1787**
+- Triángulos (con instancias): **540.764**
+
+Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre paréntesis indican las piezas contenidas.
+
+## ALCIÓN HX-4 (790)
+
+
+### `COM` Comunicaciones de Alta Ganancia (6) — 1,42×1,93×1,93 m
+
+> Antena parabólica de 1,6 m banda X/Ka en mástil orientable de 2 ejes.
+
+  - `COM.BAS` **Base y actuador de acimut** — 0,36×0,37×0,37 m
+  - `COM.DSH` **Reflector y alimentador** (2) — 1,42×1,28×1,28 m
+    - `COM.DSH.FED` **Bocina alimentadora y subreflector** — 0,96×0,90×0,86 m
+    - `COM.DSH.REF` **Reflector parabólico de Ø1,6 m** — 1,42×1,28×1,28 m
+  - `COM.GMB` **Cardán de elevación** — 0,30×0,23×0,23 m
+  - `COM.MST` **Mástil de CFRP** — 0,14×0,73×0,73 m
+
+### `FWD` Módulo Nodo de Proa (92) — 3,33×3,04×4,10 m
+
+> Nodo presurizado de proa con puerto de atraque IDSS activo y cúpula de observación de 7 ventanas. Aloja la estación de trabajo robótica y la estiba de acceso rápido.
+
+  - `FWD.CUP` **Cúpula de observación** (18) — 1,94×1,86×1,30 m
+    - `FWD.CUP.FRM` **Estructura de la cúpula (forja de aluminio)** — 1,48×1,48×0,70 m
+    - `FWD.CUP.HRL` **Pasamanos EVA perimetral de la cúpula** — 1,67×1,67×0,09 m
+    - `FWD.CUP.SHT` **Contraventanas MMOD** (7) — 1,94×1,86×0,67 m
+      - `FWD.CUP.SHT.S1` **Contraventana 1 (abierta)**
+      - `FWD.CUP.SHT.S2` **Contraventana 2 (abierta)**
+      - `FWD.CUP.SHT.S3` **Contraventana 3 (abierta)**
+      - `FWD.CUP.SHT.S4` **Contraventana 4 (abierta)**
+      - `FWD.CUP.SHT.S5` **Contraventana 5 (abierta)**
+      - `FWD.CUP.SHT.S6` **Contraventana 6 (abierta)**
+      - `FWD.CUP.SHT.S7` **Contraventana cenital (abierta)**
+    - `FWD.CUP.WIN` **Ventanas de la cúpula** (7) — 1,38×1,24×0,57 m
+      - `FWD.CUP.WIN.W1` **Ventana trapezoidal 1**
+      - `FWD.CUP.WIN.W2` **Ventana trapezoidal 2**
+      - `FWD.CUP.WIN.W3` **Ventana trapezoidal 3**
+      - `FWD.CUP.WIN.W4` **Ventana trapezoidal 4**
+      - `FWD.CUP.WIN.W5` **Ventana trapezoidal 5**
+      - `FWD.CUP.WIN.W6` **Ventana trapezoidal 6**
+      - `FWD.CUP.WIN.W7` **Ventana cenital circular**
+  - `FWD.DCK` **Sistema de atraque IDSS (activo)** (18) — 0,98×2,27×2,23 m
+    - `FWD.DCK.HCS` **Sistema de captura dura (12 ganchos)** — 0,15×1,58×1,58 m
+    - `FWD.DCK.SCS` **Sistema de captura blanda** (7) — 0,62×1,44×1,44 m
+      - `FWD.DCK.SCS.ACT1` **Actuador lineal de captura blanda 1**
+      - `FWD.DCK.SCS.ACT2` **Actuador lineal de captura blanda 2**
+      - `FWD.DCK.SCS.ACT3` **Actuador lineal de captura blanda 3**
+      - `FWD.DCK.SCS.ACT4` **Actuador lineal de captura blanda 4**
+      - `FWD.DCK.SCS.ACT5` **Actuador lineal de captura blanda 5**
+      - `FWD.DCK.SCS.ACT6` **Actuador lineal de captura blanda 6**
+      - `FWD.DCK.SCS.RNG` **Anillo de captura blanda con 3 pétalos guía**
+    - `FWD.DCK.SNS` **Sensores de aproximación y atraque** (6) — 0,24×2,27×2,23 m
+      - `FWD.DCK.SNS.CAM1` **Cámara de atraque 1**
+      - `FWD.DCK.SNS.CAM2` **Cámara de atraque 2**
+      - `FWD.DCK.SNS.LDR` **LIDAR de destello 3D**
+      - `FWD.DCK.SNS.LGT1` **Foco de atraque 1**
+      - `FWD.DCK.SNS.LGT2` **Foco de atraque 2**
+      - `FWD.DCK.SNS.TGT` **Diana de atraque centrada**
+    - `FWD.DCK.TUN` **Túnel adaptador de atraque** — 0,30×1,24×1,24 m
+    - `FWD.DCK.UMB` **Conectores umbilicales de potencia y datos** — 0,12×0,13×1,01 m
+  - `FWD.EXT` **Equipos exteriores del nodo** (8) — 1,86×3,04×2,46 m
+    - `FWD.EXT.HR1` **Pasamanos EVA del nodo 1** — 1,64×0,09×0,09 m
+    - `FWD.EXT.HR2` **Pasamanos EVA del nodo 2** — 1,64×0,09×0,09 m
+    - `FWD.EXT.HR3` **Pasamanos EVA del nodo 3** — 1,64×0,09×0,09 m
+    - `FWD.EXT.HR4` **Pasamanos EVA del nodo 4** — 1,64×0,09×0,09 m
+    - `FWD.EXT.LGA1` **Antena de baja ganancia banda S 1** — 0,21×0,22×0,13 m
+    - `FWD.EXT.LGA2` **Antena de baja ganancia banda S 2** — 0,21×0,22×0,13 m
+    - `FWD.EXT.NAV1` **Baliza de navegación babor (roja)** — 0,08×0,09×0,08 m
+    - `FWD.EXT.NAV2` **Baliza de navegación estribor (verde)** — 0,08×0,09×0,08 m
+  - `FWD.INT` **Interior del nodo** (27) — 2,20×2,68×2,39 m
+    - `FWD.INT.HA` **Escotilla nodo–hábitat (abierta)** — 1,19×0,32×1,12 m
+    - `FWD.INT.HF` **Escotilla de atraque IDSS (cerrada)** — 0,15×0,92×0,98 m
+    - `FWD.INT.LGT` **Luminarias del nodo** — 1,20×2,10×0,05 m
+    - `FWD.INT.RWS` **Estación de trabajo robótica** (3) — 0,36×1,10×0,78 m
+      - `FWD.INT.RWS.D1` **Pantalla de la estación robótica 1**
+      - `FWD.INT.RWS.D2` **Pantalla de la estación robótica 2**
+      - `FWD.INT.RWS.FRM` **Bastidor, reposamanos y controladores manuales**
+    - `FWD.INT.STW` **Estiba del nodo** (19) — 2,00×2,68×1,20 m
+      - `FWD.INT.STW.BCK` **Bastidores de soporte de taquillas**
+      - `FWD.INT.STW.L01` **Taquilla del nodo 01**
+      - `FWD.INT.STW.L02` **Taquilla del nodo 02**
+      - `FWD.INT.STW.L03` **Taquilla del nodo 03**
+      - `FWD.INT.STW.L04` **Taquilla del nodo 04**
+      - `FWD.INT.STW.L05` **Taquilla del nodo 05**
+      - `FWD.INT.STW.L06` **Taquilla del nodo 06**
+      - `FWD.INT.STW.L07` **Taquilla del nodo 07**
+      - `FWD.INT.STW.L08` **Taquilla del nodo 08**
+      - `FWD.INT.STW.L09` **Taquilla del nodo 09**
+      - `FWD.INT.STW.L10` **Taquilla del nodo 10**
+      - `FWD.INT.STW.L11` **Taquilla del nodo 11**
+      - `FWD.INT.STW.L12` **Taquilla del nodo 12**
+      - `FWD.INT.STW.L13` **Taquilla del nodo 13**
+      - `FWD.INT.STW.L14` **Taquilla del nodo 14**
+      - `FWD.INT.STW.L15` **Taquilla del nodo 15**
+      - `FWD.INT.STW.L16` **Taquilla del nodo 16**
+      - `FWD.INT.STW.L17` **Taquilla del nodo 17**
+      - `FWD.INT.STW.L18` **Taquilla del nodo 18**
+  - `FWD.MMOD` **Protección MMOD y térmica del nodo** (8) — 2,26×2,87×2,87 m
+    - `FWD.MMOD.BLK1` **Manta MMOD del nodo, cuadrante 1** — 2,26×1,42×1,42 m
+    - `FWD.MMOD.BLK1.Q` **Costuras de acolchado, cuadrante 1** — 1,54×1,42×1,42 m
+    - `FWD.MMOD.BLK2` **Manta MMOD del nodo, cuadrante 2** — 2,26×1,42×1,42 m
+    - `FWD.MMOD.BLK2.Q` **Costuras de acolchado, cuadrante 2** — 1,54×1,42×1,42 m
+    - `FWD.MMOD.BLK3` **Manta MMOD del nodo, cuadrante 3** — 2,26×1,42×1,42 m
+    - `FWD.MMOD.BLK3.Q` **Costuras de acolchado, cuadrante 3** — 1,54×1,42×1,42 m
+    - `FWD.MMOD.BLK4` **Manta MMOD del nodo, cuadrante 4** — 2,26×1,42×1,42 m
+    - `FWD.MMOD.BLK4.Q` **Costuras de acolchado, cuadrante 4** — 1,54×1,42×1,42 m
+  - `FWD.STR` **Estructura primaria del nodo** (7) — 2,38×2,70×2,72 m
+    - `FWD.STR.BHA` **Mamparo de popa del nodo** — 0,06×2,64×2,64 m
+    - `FWD.STR.BHF` **Mamparo de proa** — 0,10×2,70×2,70 m
+    - `FWD.STR.BRL` **Barril presurizado del nodo** — 2,30×2,70×2,70 m
+    - `FWD.STR.CPR` **Anillo de interfaz de la cúpula** — 1,60×1,60×0,35 m
+    - `FWD.STR.FRM1` **Marco anular del nodo 1** — 0,05×2,64×2,64 m
+    - `FWD.STR.FRM2` **Marco anular del nodo 2** — 0,05×2,64×2,64 m
+    - `FWD.STR.FRM3` **Marco anular del nodo 3** — 0,05×2,64×2,64 m
+
+### `HAB` Módulo Habitable Presurizado (450) — 9,93×4,54×4,88 m
+
+> Módulo presurizado principal de Ø4,20 m y 8,2 m de barril cilíndrico; volumen presurizado total del vehículo ≈ 150 m³.
+
+  - `HAB.EXT` **Equipos exteriores del casco** (24) — 7,97×3,17×4,81 m
+    - `HAB.EXT.GF1` **Accesorio de agarre robótico (PDGF-like)** — 0,36×0,36×0,34 m
+    - `HAB.EXT.HR` **Pasamanos EVA del casco** (16) — 7,89×1,83×4,34 m
+      - `HAB.EXT.HR.H01` **Pasamanos EVA 01**
+      - `HAB.EXT.HR.H02` **Pasamanos EVA 02**
+      - `HAB.EXT.HR.H03` **Pasamanos EVA 03**
+      - `HAB.EXT.HR.H04` **Pasamanos EVA 04**
+      - `HAB.EXT.HR.H05` **Pasamanos EVA 05**
+      - `HAB.EXT.HR.H06` **Pasamanos EVA 06**
+      - `HAB.EXT.HR.H07` **Pasamanos EVA 07**
+      - `HAB.EXT.HR.H08` **Pasamanos EVA 08**
+      - `HAB.EXT.HR.H09` **Pasamanos EVA 09**
+      - `HAB.EXT.HR.H10` **Pasamanos EVA 10**
+      - `HAB.EXT.HR.H11` **Pasamanos EVA 11**
+      - `HAB.EXT.HR.H12` **Pasamanos EVA 12**
+      - `HAB.EXT.HR.H13` **Pasamanos EVA 13**
+      - `HAB.EXT.HR.H14` **Pasamanos EVA 14**
+      - `HAB.EXT.HR.H15` **Pasamanos EVA 15**
+      - `HAB.EXT.HR.H16` **Pasamanos EVA 16**
+    - `HAB.EXT.LGT1` **Foco exterior 1** — 0,17×0,14×0,17 m
+    - `HAB.EXT.LGT2` **Foco exterior 2** — 0,17×0,14×0,17 m
+    - `HAB.EXT.LGT3` **Foco exterior 3** — 0,17×0,17×0,14 m
+    - `HAB.EXT.WIN` **Ventanas científicas de nadir** (2) — 1,53×0,54×0,48 m
+      - `HAB.EXT.WIN.W1` **Ventana científica de nadir 1**
+      - `HAB.EXT.WIN.W2` **Ventana científica de nadir 2**
+  - `HAB.INT` **Equipamiento interior presurizado** (273) — 8,60×3,94×4,02 m
+    - `HAB.INT.A` **Bahía A — Cabina de vuelo** (106) — 2,06×3,94×3,94 m
+      - `HAB.INT.A.CL1` **Panel de mando cenital** (4)
+        - `HAB.INT.A.CL1.BDY` **Estructura del bastidor**
+        - `HAB.INT.A.CL1.HR` **Pasamanos interior**
+        - `HAB.INT.A.CL1.SCR` **Pantalla de estado de buses**
+        - `HAB.INT.A.CL1.SW` **Panel de interruptores cenital**
+      - `HAB.INT.A.CL2` **Bastidor de estiba cenital A** (14)
+        - `HAB.INT.A.CL2.BDY` **Estructura del bastidor**
+        - `HAB.INT.A.CL2.HR` **Pasamanos interior**
+        - `HAB.INT.A.CL2.L11` **Taquilla 1-1**
+        - `HAB.INT.A.CL2.L12` **Taquilla 1-2**
+        - `HAB.INT.A.CL2.L13` **Taquilla 1-3**
+        - `HAB.INT.A.CL2.L14` **Taquilla 1-4**
+        - `HAB.INT.A.CL2.L15` **Taquilla 1-5**
+        - `HAB.INT.A.CL2.L16` **Taquilla 1-6**
+        - `HAB.INT.A.CL2.L21` **Taquilla 2-1**
+        - `HAB.INT.A.CL2.L22` **Taquilla 2-2**
+        - `HAB.INT.A.CL2.L23` **Taquilla 2-3**
+        - `HAB.INT.A.CL2.L24` **Taquilla 2-4**
+        - `HAB.INT.A.CL2.L25` **Taquilla 2-5**
+        - `HAB.INT.A.CL2.L26` **Taquilla 2-6**
+      - `HAB.INT.A.CNS` **Consolas de pilotaje** (10)
+        - `HAB.INT.A.CNS.C1` **Consola del comandante** (4)
+          - `HAB.INT.A.CNS.C1.D1` **Pantalla de vuelo 1**
+          - `HAB.INT.A.CNS.C1.D2` **Pantalla de vuelo 2**
+          - `HAB.INT.A.CNS.C1.D3` **Pantalla de vuelo 3**
+          - `HAB.INT.A.CNS.C1.STR` **Pedestal y bisel**
+        - `HAB.INT.A.CNS.C2` **Consola del piloto** (4)
+          - `HAB.INT.A.CNS.C2.D1` **Pantalla de vuelo 1**
+          - `HAB.INT.A.CNS.C2.D2` **Pantalla de vuelo 2**
+          - `HAB.INT.A.CNS.C2.D3` **Pantalla de vuelo 3**
+          - `HAB.INT.A.CNS.C2.STR` **Pedestal y bisel**
+      - `HAB.INT.A.DK1` **Bastidor de estiba de suelo A1** (14)
+        - `HAB.INT.A.DK1.BDY` **Estructura del bastidor**
+        - `HAB.INT.A.DK1.HR` **Pasamanos interior**
+        - `HAB.INT.A.DK1.L11` **Taquilla 1-1**
+        - `HAB.INT.A.DK1.L12` **Taquilla 1-2**
+        - `HAB.INT.A.DK1.L13` **Taquilla 1-3**
+        - `HAB.INT.A.DK1.L14` **Taquilla 1-4**
+        - `HAB.INT.A.DK1.L15` **Taquilla 1-5**
+        - `HAB.INT.A.DK1.L16` **Taquilla 1-6**
+        - `HAB.INT.A.DK1.L21` **Taquilla 2-1**
+        - `HAB.INT.A.DK1.L22` **Taquilla 2-2**
+        - `HAB.INT.A.DK1.L23` **Taquilla 2-3**
+        - `HAB.INT.A.DK1.L24` **Taquilla 2-4**
+        - `HAB.INT.A.DK1.L25` **Taquilla 2-5**
+        - `HAB.INT.A.DK1.L26` **Taquilla 2-6**
+      - `HAB.INT.A.DK2` **Bastidor de estiba de suelo A2** (14)
+        - `HAB.INT.A.DK2.BDY` **Estructura del bastidor**
+        - `HAB.INT.A.DK2.HR` **Pasamanos interior**
+        - `HAB.INT.A.DK2.L11` **Taquilla 1-1**
+        - `HAB.INT.A.DK2.L12` **Taquilla 1-2**
+        - `HAB.INT.A.DK2.L13` **Taquilla 1-3**
+        - `HAB.INT.A.DK2.L14` **Taquilla 1-4**
+        - `HAB.INT.A.DK2.L15` **Taquilla 1-5**
+        - `HAB.INT.A.DK2.L16` **Taquilla 1-6**
+        - `HAB.INT.A.DK2.L21` **Taquilla 2-1**
+        - `HAB.INT.A.DK2.L22` **Taquilla 2-2**
+        - `HAB.INT.A.DK2.L23` **Taquilla 2-3**
+        - `HAB.INT.A.DK2.L24` **Taquilla 2-4**
+        - `HAB.INT.A.DK2.L25` **Taquilla 2-5**
+        - `HAB.INT.A.DK2.L26` **Taquilla 2-6**
+      - `HAB.INT.A.P2` **Bastidor de estiba A (babor)** (14)
+        - `HAB.INT.A.P2.BDY` **Estructura del bastidor**
+        - `HAB.INT.A.P2.HR` **Pasamanos interior**
+        - `HAB.INT.A.P2.L11` **Taquilla 1-1**
+        - `HAB.INT.A.P2.L12` **Taquilla 1-2**
+        - `HAB.INT.A.P2.L13` **Taquilla 1-3**
+        - `HAB.INT.A.P2.L14` **Taquilla 1-4**
+        - `HAB.INT.A.P2.L15` **Taquilla 1-5**
+        - `HAB.INT.A.P2.L16` **Taquilla 1-6**
+        - `HAB.INT.A.P2.L21` **Taquilla 2-1**
+        - `HAB.INT.A.P2.L22` **Taquilla 2-2**
+        - `HAB.INT.A.P2.L23` **Taquilla 2-3**
+        - `HAB.INT.A.P2.L24` **Taquilla 2-4**
+        - `HAB.INT.A.P2.L25` **Taquilla 2-5**
+        - `HAB.INT.A.P2.L26` **Taquilla 2-6**
+      - `HAB.INT.A.PW` **Estación de vuelo lateral (babor)** (4)
+        - `HAB.INT.A.PW.BDY` **Estructura del bastidor**
+        - `HAB.INT.A.PW.FRT` **Panel frontal de aviónica**
+        - `HAB.INT.A.PW.HR` **Pasamanos interior**
+        - `HAB.INT.A.PW.SCR` **Pantalla multifunción auxiliar**
+      - `HAB.INT.A.S2` **Bastidor de estiba A (estribor)** (14)
+        - `HAB.INT.A.S2.BDY` **Estructura del bastidor**
+        - `HAB.INT.A.S2.HR` **Pasamanos interior**
+        - `HAB.INT.A.S2.L11` **Taquilla 1-1**
+        - `HAB.INT.A.S2.L12` **Taquilla 1-2**
+        - `HAB.INT.A.S2.L13` **Taquilla 1-3**
+        - `HAB.INT.A.S2.L14` **Taquilla 1-4**
+        - `HAB.INT.A.S2.L15` **Taquilla 1-5**
+        - `HAB.INT.A.S2.L16` **Taquilla 1-6**
+        - `HAB.INT.A.S2.L21` **Taquilla 2-1**
+        - `HAB.INT.A.S2.L22` **Taquilla 2-2**
+        - `HAB.INT.A.S2.L23` **Taquilla 2-3**
+        - `HAB.INT.A.S2.L24` **Taquilla 2-4**
+        - `HAB.INT.A.S2.L25` **Taquilla 2-5**
+        - `HAB.INT.A.S2.L26` **Taquilla 2-6**
+      - `HAB.INT.A.SEAT` **Asientos de tripulación** (4)
+        - `HAB.INT.A.SEAT.S1` **Asiento Comandante**
+        - `HAB.INT.A.SEAT.S2` **Asiento Piloto**
+        - `HAB.INT.A.SEAT.S3` **Asiento Especialista 1**
+        - `HAB.INT.A.SEAT.S4` **Asiento Especialista 2**
+      - `HAB.INT.A.SW` **Estación de vuelo lateral (estribor)** (4)
+        - `HAB.INT.A.SW.BDY` **Estructura del bastidor**
+        - `HAB.INT.A.SW.FRT` **Panel frontal de aviónica**
+        - `HAB.INT.A.SW.HR` **Pasamanos interior**
+        - `HAB.INT.A.SW.SCR` **Pantalla multifunción auxiliar**
+    - `HAB.INT.AFT` **Estiba y depósitos del mamparo de popa** (6) — 0,81×2,02×1,98 m
+      - `HAB.INT.AFT.CTB` **Bolsas de transferencia de carga (9)**
+      - `HAB.INT.AFT.EXT` **Extintor de niebla de agua**
+      - `HAB.INT.AFT.T1` **Depósito de O₂ de alta presión 1**
+      - `HAB.INT.AFT.T2` **Depósito de N₂ de alta presión 1**
+      - `HAB.INT.AFT.T3` **Depósito de O₂ de alta presión 2**
+      - `HAB.INT.AFT.T4` **Depósito de N₂ de alta presión 2**
+    - `HAB.INT.B` **Bahía B — Laboratorio** (52) — 2,01×3,94×4,02 m
+      - `HAB.INT.B.CL1` **Bastidor de estiba cenital B1** (14)
+        - `HAB.INT.B.CL1.BDY` **Estructura del bastidor**
+        - `HAB.INT.B.CL1.HR` **Pasamanos interior**
+        - `HAB.INT.B.CL1.L11` **Taquilla 1-1**
+        - `HAB.INT.B.CL1.L12` **Taquilla 1-2**
+        - `HAB.INT.B.CL1.L13` **Taquilla 1-3**
+        - `HAB.INT.B.CL1.L14` **Taquilla 1-4**
+        - `HAB.INT.B.CL1.L15` **Taquilla 1-5**
+        - `HAB.INT.B.CL1.L16` **Taquilla 1-6**
+        - `HAB.INT.B.CL1.L21` **Taquilla 2-1**
+        - `HAB.INT.B.CL1.L22` **Taquilla 2-2**
+        - `HAB.INT.B.CL1.L23` **Taquilla 2-3**
+        - `HAB.INT.B.CL1.L24` **Taquilla 2-4**
+        - `HAB.INT.B.CL1.L25` **Taquilla 2-5**
+        - `HAB.INT.B.CL1.L26` **Taquilla 2-6**
+      - `HAB.INT.B.CL2` **Bastidor de estiba cenital B2** (14)
+        - `HAB.INT.B.CL2.BDY` **Estructura del bastidor**
+        - `HAB.INT.B.CL2.HR` **Pasamanos interior**
+        - `HAB.INT.B.CL2.L11` **Taquilla 1-1**
+        - `HAB.INT.B.CL2.L12` **Taquilla 1-2**
+        - `HAB.INT.B.CL2.L13` **Taquilla 1-3**
+        - `HAB.INT.B.CL2.L14` **Taquilla 1-4**
+        - `HAB.INT.B.CL2.L15` **Taquilla 1-5**
+        - `HAB.INT.B.CL2.L16` **Taquilla 1-6**
+        - `HAB.INT.B.CL2.L21` **Taquilla 2-1**
+        - `HAB.INT.B.CL2.L22` **Taquilla 2-2**
+        - `HAB.INT.B.CL2.L23` **Taquilla 2-3**
+        - `HAB.INT.B.CL2.L24` **Taquilla 2-4**
+        - `HAB.INT.B.CL2.L25` **Taquilla 2-5**
+        - `HAB.INT.B.CL2.L26` **Taquilla 2-6**
+      - `HAB.INT.B.NAD` **Estación de observación de nadir** (5)
+        - `HAB.INT.B.NAD.CAM` **Cámara científica de nadir**
+        - `HAB.INT.B.NAD.CLS1` **Paneles de cierre de suelo 1**
+        - `HAB.INT.B.NAD.CLS2` **Paneles de cierre de suelo 2**
+        - `HAB.INT.B.NAD.W1` **Pozo de ventana de nadir 1**
+        - `HAB.INT.B.NAD.W2` **Pozo de ventana de nadir 2**
+      - `HAB.INT.B.PF` **Congelador de muestras −80 °C** (3)
+        - `HAB.INT.B.PF.BDY` **Estructura del bastidor**
+        - `HAB.INT.B.PF.FRZ` **Cajones de congelación**
+        - `HAB.INT.B.PF.HR` **Pasamanos interior**
+      - `HAB.INT.B.PG` **Guantera científica** (3)
+        - `HAB.INT.B.PG.BDY` **Estructura del bastidor**
+        - `HAB.INT.B.PG.GBX` **Guantera (ventana, puertos de guantes, filtros)**
+        - `HAB.INT.B.PG.HR` **Pasamanos interior**
+      - `HAB.INT.B.SE1` **Bastidor experimental 1** (3)
+        - `HAB.INT.B.SE1.BDY` **Estructura del bastidor**
+        - `HAB.INT.B.SE1.EXP` **Cargas útiles experimentales**
+        - `HAB.INT.B.SE1.HR` **Pasamanos interior**
+      - `HAB.INT.B.SE2` **Bastidor experimental 2** (3)
+        - `HAB.INT.B.SE2.BDY` **Estructura del bastidor**
+        - `HAB.INT.B.SE2.EXP` **Cargas útiles experimentales**
+        - `HAB.INT.B.SE2.HR` **Pasamanos interior**
+    - `HAB.INT.C` **Bahía C — Habitáculos y refugio antiradiación** (36) — 2,01×3,91×3,94 m
+      - `HAB.INT.C.CE1` **Depósito del muro de agua (techo 1)** (3)
+        - `HAB.INT.C.CE1.BDY` **Estructura del bastidor**
+        - `HAB.INT.C.CE1.HR` **Pasamanos interior**
+        - `HAB.INT.C.CE1.TNK` **Depósitos de agua flexibles**
+      - `HAB.INT.C.CE2` **Depósito del muro de agua (techo 2)** (3)
+        - `HAB.INT.C.CE2.BDY` **Estructura del bastidor**
+        - `HAB.INT.C.CE2.HR` **Pasamanos interior**
+        - `HAB.INT.C.CE2.TNK` **Depósitos de agua flexibles**
+      - `HAB.INT.C.CQ1` **Habitáculo de tripulante 1** (4)
+        - `HAB.INT.C.CQ1.BAG` **Saco de dormir con sujeciones**
+        - `HAB.INT.C.CQ1.ENC` **Envolvente y puerta plegable**
+        - `HAB.INT.C.CQ1.EQP` **Portátil, luz, ventilación y red de estiba**
+        - `HAB.INT.C.CQ1.WTR` **Bolsas del muro de agua**
+      - `HAB.INT.C.CQ2` **Habitáculo de tripulante 2** (4)
+        - `HAB.INT.C.CQ2.BAG` **Saco de dormir con sujeciones**
+        - `HAB.INT.C.CQ2.ENC` **Envolvente y puerta plegable**
+        - `HAB.INT.C.CQ2.EQP` **Portátil, luz, ventilación y red de estiba**
+        - `HAB.INT.C.CQ2.WTR` **Bolsas del muro de agua**
+      - `HAB.INT.C.CQ3` **Habitáculo de tripulante 3** (4)
+        - `HAB.INT.C.CQ3.BAG` **Saco de dormir con sujeciones**
+        - `HAB.INT.C.CQ3.ENC` **Envolvente y puerta plegable**
+        - `HAB.INT.C.CQ3.EQP` **Portátil, luz, ventilación y red de estiba**
+        - `HAB.INT.C.CQ3.WTR` **Bolsas del muro de agua**
+      - `HAB.INT.C.CQ4` **Habitáculo de tripulante 4** (4)
+        - `HAB.INT.C.CQ4.BAG` **Saco de dormir con sujeciones**
+        - `HAB.INT.C.CQ4.ENC` **Envolvente y puerta plegable**
+        - `HAB.INT.C.CQ4.EQP` **Portátil, luz, ventilación y red de estiba**
+        - `HAB.INT.C.CQ4.WTR` **Bolsas del muro de agua**
+      - `HAB.INT.C.DE1` **Depósito del muro de agua (suelo 1)** (3)
+        - `HAB.INT.C.DE1.BDY` **Estructura del bastidor**
+        - `HAB.INT.C.DE1.HR` **Pasamanos interior**
+        - `HAB.INT.C.DE1.TNK` **Depósitos de agua flexibles**
+      - `HAB.INT.C.DE2` **Depósito del muro de agua (suelo 2)** (3)
+        - `HAB.INT.C.DE2.BDY` **Estructura del bastidor**
+        - `HAB.INT.C.DE2.HR` **Pasamanos interior**
+        - `HAB.INT.C.DE2.TNK` **Depósitos de agua flexibles**
+    - `HAB.INT.D` **Bahía D — Servicios y soporte vital** (59) — 2,01×3,94×3,94 m
+      - `HAB.INT.D.CL1` **Eliminación de CO₂ (tamices moleculares)** (3)
+        - `HAB.INT.D.CL1.BDY` **Estructura del bastidor**
+        - `HAB.INT.D.CL1.EQP` **Lechos adsorbentes y ventilador**
+        - `HAB.INT.D.CL1.HR` **Pasamanos interior**
+      - `HAB.INT.D.CL2` **Bastidor de control de contaminantes y estiba** (14)
+        - `HAB.INT.D.CL2.BDY` **Estructura del bastidor**
+        - `HAB.INT.D.CL2.HR` **Pasamanos interior**
+        - `HAB.INT.D.CL2.L11` **Taquilla 1-1**
+        - `HAB.INT.D.CL2.L12` **Taquilla 1-2**
+        - `HAB.INT.D.CL2.L13` **Taquilla 1-3**
+        - `HAB.INT.D.CL2.L14` **Taquilla 1-4**
+        - `HAB.INT.D.CL2.L15` **Taquilla 1-5**
+        - `HAB.INT.D.CL2.L16` **Taquilla 1-6**
+        - `HAB.INT.D.CL2.L21` **Taquilla 2-1**
+        - `HAB.INT.D.CL2.L22` **Taquilla 2-2**
+        - `HAB.INT.D.CL2.L23` **Taquilla 2-3**
+        - `HAB.INT.D.CL2.L24` **Taquilla 2-4**
+        - `HAB.INT.D.CL2.L25` **Taquilla 2-5**
+        - `HAB.INT.D.CL2.L26` **Taquilla 2-6**
+      - `HAB.INT.D.DK1` **Recuperación de agua (WRS)** (3)
+        - `HAB.INT.D.DK1.BDY` **Estructura del bastidor**
+        - `HAB.INT.D.DK1.EQP` **Destilador y lechos de filtración**
+        - `HAB.INT.D.DK1.HR` **Pasamanos interior**
+      - `HAB.INT.D.DK2` **Plataforma de ejercicio** (4)
+        - `HAB.INT.D.DK2.BDY` **Estructura del bastidor**
+        - `HAB.INT.D.DK2.EXD` **Cicloergómetro y dispositivo resistivo**
+        - `HAB.INT.D.DK2.HR` **Pasamanos interior**
+        - `HAB.INT.D.DK2.PLT` **Placa base con aislamiento de vibraciones**
+      - `HAB.INT.D.PG` **Cocina** (3)
+        - `HAB.INT.D.PG.BDY` **Estructura del bastidor**
+        - `HAB.INT.D.PG.GAL` **Calentador, dispensador y mesa**
+        - `HAB.INT.D.PG.HR` **Pasamanos interior**
+      - `HAB.INT.D.PS` **Estiba de alimentos** (18)
+        - `HAB.INT.D.PS.BDY` **Estructura del bastidor**
+        - `HAB.INT.D.PS.HR` **Pasamanos interior**
+        - `HAB.INT.D.PS.L11` **Taquilla 1-1**
+        - `HAB.INT.D.PS.L12` **Taquilla 1-2**
+        - `HAB.INT.D.PS.L13` **Taquilla 1-3**
+        - `HAB.INT.D.PS.L14` **Taquilla 1-4**
+        - `HAB.INT.D.PS.L15` **Taquilla 1-5**
+        - `HAB.INT.D.PS.L16` **Taquilla 1-6**
+        - `HAB.INT.D.PS.L17` **Taquilla 1-7**
+        - `HAB.INT.D.PS.L18` **Taquilla 1-8**
+        - `HAB.INT.D.PS.L21` **Taquilla 2-1**
+        - `HAB.INT.D.PS.L22` **Taquilla 2-2**
+        - `HAB.INT.D.PS.L23` **Taquilla 2-3**
+        - `HAB.INT.D.PS.L24` **Taquilla 2-4**
+        - `HAB.INT.D.PS.L25` **Taquilla 2-5**
+        - `HAB.INT.D.PS.L26` **Taquilla 2-6**
+        - `HAB.INT.D.PS.L27` **Taquilla 2-7**
+        - `HAB.INT.D.PS.L28` **Taquilla 2-8**
+      - `HAB.INT.D.SH` **Compartimento de higiene** (3)
+        - `HAB.INT.D.SH.BDY` **Estructura del bastidor**
+        - `HAB.INT.D.SH.HR` **Pasamanos interior**
+        - `HAB.INT.D.SH.HYG` **Inodoro, aseo y cortina**
+      - `HAB.INT.D.SO` **Generador de oxígeno (OGA)** (3)
+        - `HAB.INT.D.SO.BDY` **Estructura del bastidor**
+        - `HAB.INT.D.SO.EQP` **Celdas de electrólisis y separadores**
+        - `HAB.INT.D.SO.HR` **Pasamanos interior**
+    - `HAB.INT.LGT` **Iluminación general de cabina** (8) — 7,75×2,22×0,11 m
+      - `HAB.INT.LGT.L1` **Luminaria LED 1**
+      - `HAB.INT.LGT.L2` **Luminaria LED 2**
+      - `HAB.INT.LGT.L3` **Luminaria LED 3**
+      - `HAB.INT.LGT.L4` **Luminaria LED 4**
+      - `HAB.INT.LGT.L5` **Luminaria LED 5**
+      - `HAB.INT.LGT.L6` **Luminaria LED 6**
+      - `HAB.INT.LGT.L7` **Luminaria LED 7**
+      - `HAB.INT.LGT.L8` **Luminaria LED 8**
+  - `HAB.MLI` **Aislamiento multicapa (MLI)** (6) — 9,91×4,27×4,27 m
+    - `HAB.MLI.CON` **Manta MLI del cono** — 1,08×4,27×4,27 m
+    - `HAB.MLI.DOM` **Manta MLI del mamparo de popa** — 0,63×4,26×4,26 m
+    - `HAB.MLI.Q1` **Manta MLI del barril, cuadrante 1** — 8,14×2,13×2,13 m
+    - `HAB.MLI.Q2` **Manta MLI del barril, cuadrante 2** — 8,14×2,13×2,13 m
+    - `HAB.MLI.Q3` **Manta MLI del barril, cuadrante 3** — 8,14×2,13×2,13 m
+    - `HAB.MLI.Q4` **Manta MLI del barril, cuadrante 4** — 8,14×2,13×2,13 m
+  - `HAB.MMOD` **Escudo MMOD poligonal (Whipple relleno)** (99) — 9,24×4,54×4,54 m
+    - `HAB.MMOD.CN` **Paneles MMOD del cono** (16) — 1,04×4,53×4,53 m
+      - `HAB.MMOD.CN.P01` **Panel MMOD cónico 01**
+      - `HAB.MMOD.CN.P02` **Panel MMOD cónico 02**
+      - `HAB.MMOD.CN.P03` **Panel MMOD cónico 03**
+      - `HAB.MMOD.CN.P04` **Panel MMOD cónico 04**
+      - `HAB.MMOD.CN.P05` **Panel MMOD cónico 05**
+      - `HAB.MMOD.CN.P06` **Panel MMOD cónico 06**
+      - `HAB.MMOD.CN.P07` **Panel MMOD cónico 07**
+      - `HAB.MMOD.CN.P08` **Panel MMOD cónico 08**
+      - `HAB.MMOD.CN.P09` **Panel MMOD cónico 09**
+      - `HAB.MMOD.CN.P10` **Panel MMOD cónico 10**
+      - `HAB.MMOD.CN.P11` **Panel MMOD cónico 11**
+      - `HAB.MMOD.CN.P12` **Panel MMOD cónico 12**
+      - `HAB.MMOD.CN.P13` **Panel MMOD cónico 13**
+      - `HAB.MMOD.CN.P14` **Panel MMOD cónico 14**
+      - `HAB.MMOD.CN.P15` **Panel MMOD cónico 15**
+      - `HAB.MMOD.CN.P16` **Panel MMOD cónico 16**
+    - `HAB.MMOD.R1` **Anillo de paneles MMOD 1** (18) — 2,03×4,54×4,54 m
+      - `HAB.MMOD.R1.P01` **Panel MMOD R1-F01**
+      - `HAB.MMOD.R1.P02` **Panel MMOD R1-F02**
+      - `HAB.MMOD.R1.P03` **Panel MMOD R1-F03**
+      - `HAB.MMOD.R1.P04` **Panel MMOD R1-F04**
+      - `HAB.MMOD.R1.P05` **Panel MMOD R1-F05** (1)
+        - `HAB.EXT.MRK.W1` **Aviso: NO PISAR**
+      - `HAB.MMOD.R1.P06` **Panel MMOD R1-F06**
+      - `HAB.MMOD.R1.P07` **Panel MMOD R1-F07**
+      - `HAB.MMOD.R1.P08` **Panel MMOD R1-F08**
+      - `HAB.MMOD.R1.P09` **Panel MMOD R1-F09**
+      - `HAB.MMOD.R1.P10` **Panel MMOD R1-F10**
+      - `HAB.MMOD.R1.P11` **Panel MMOD R1-F11**
+      - `HAB.MMOD.R1.P12` **Panel MMOD R1-F12**
+      - `HAB.MMOD.R1.P13` **Panel MMOD R1-F13**
+      - `HAB.MMOD.R1.P14` **Panel MMOD R1-F14**
+      - `HAB.MMOD.R1.P15` **Panel MMOD R1-F15**
+      - `HAB.MMOD.R1.P16` **Panel MMOD R1-F16**
+      - `HAB.MMOD.R1.STO` **Soportes del escudo, anillo 1**
+    - `HAB.MMOD.R2` **Anillo de paneles MMOD 2** (20) — 2,03×4,54×4,54 m
+      - `HAB.MMOD.R2.P01` **Panel MMOD R2-F01** (1)
+        - `HAB.EXT.MRK.MKR_BABOR` **Fabricante (babor)**
+      - `HAB.MMOD.R2.P02` **Panel MMOD R2-F02**
+      - `HAB.MMOD.R2.P03` **Panel MMOD R2-F03**
+      - `HAB.MMOD.R2.P04` **Panel MMOD R2-F04**
+      - `HAB.MMOD.R2.P05` **Panel MMOD R2-F05**
+      - `HAB.MMOD.R2.P06` **Panel MMOD R2-F06**
+      - `HAB.MMOD.R2.P07` **Panel MMOD R2-F07**
+      - `HAB.MMOD.R2.P08` **Panel MMOD R2-F08**
+      - `HAB.MMOD.R2.P09` **Panel MMOD R2-F09** (1)
+        - `HAB.EXT.MRK.MKR_ESTRIBOR` **Fabricante (estribor)**
+      - `HAB.MMOD.R2.P10` **Panel MMOD R2-F10**
+      - `HAB.MMOD.R2.P11` **Panel MMOD R2-F11**
+      - `HAB.MMOD.R2.P12` **Panel MMOD R2-F12** (1)
+        - `HAB.EXT.MRK.W3` **Rótulo del accesorio de agarre**
+      - `HAB.MMOD.R2.P13` **Panel MMOD R2-F13**
+      - `HAB.MMOD.R2.P14` **Panel MMOD R2-F14**
+      - `HAB.MMOD.R2.P15` **Panel MMOD R2-F15**
+      - `HAB.MMOD.R2.P16` **Panel MMOD R2-F16**
+      - `HAB.MMOD.R2.STO` **Soportes del escudo, anillo 2**
+    - `HAB.MMOD.R3` **Anillo de paneles MMOD 3** (21) — 2,03×4,54×4,54 m
+      - `HAB.MMOD.R3.P01` **Panel MMOD R3-F01** (2)
+        - `HAB.EXT.MRK.NAME_BABOR` **Nombre 'ALCIÓN' (babor)**
+        - `HAB.EXT.MRK.REG_BABOR` **Matrícula VLA·HX-4·01 (babor)**
+      - `HAB.MMOD.R3.P02` **Panel MMOD R3-F02**
+      - `HAB.MMOD.R3.P03` **Panel MMOD R3-F03**
+      - `HAB.MMOD.R3.P04` **Panel MMOD R3-F04**
+      - `HAB.MMOD.R3.P05` **Panel MMOD R3-F05**
+      - `HAB.MMOD.R3.P06` **Panel MMOD R3-F06**
+      - `HAB.MMOD.R3.P07` **Panel MMOD R3-F07**
+      - `HAB.MMOD.R3.P08` **Panel MMOD R3-F08**
+      - `HAB.MMOD.R3.P09` **Panel MMOD R3-F09** (2)
+        - `HAB.EXT.MRK.NAME_ESTRIBOR` **Nombre 'ALCIÓN' (estribor)**
+        - `HAB.EXT.MRK.REG_ESTRIBOR` **Matrícula VLA·HX-4·01 (estribor)**
+      - `HAB.MMOD.R3.P10` **Panel MMOD R3-F10**
+      - `HAB.MMOD.R3.P11` **Panel MMOD R3-F11**
+      - `HAB.MMOD.R3.P12` **Panel MMOD R3-F12**
+      - `HAB.MMOD.R3.P13` **Panel MMOD R3-F13**
+      - `HAB.MMOD.R3.P14` **Panel MMOD R3-F14**
+      - `HAB.MMOD.R3.P15` **Panel MMOD R3-F15**
+      - `HAB.MMOD.R3.P16` **Panel MMOD R3-F16**
+      - `HAB.MMOD.R3.STO` **Soportes del escudo, anillo 3**
+    - `HAB.MMOD.R4` **Anillo de paneles MMOD 4** (19) — 2,03×4,54×4,54 m
+      - `HAB.MMOD.R4.P01` **Panel MMOD R4-F01**
+      - `HAB.MMOD.R4.P02` **Panel MMOD R4-F02**
+      - `HAB.MMOD.R4.P03` **Panel MMOD R4-F03** (1)
+        - `HAB.EXT.MRK.W2` **Aviso: peligro RCS**
+      - `HAB.MMOD.R4.P04` **Panel MMOD R4-F04**
+      - `HAB.MMOD.R4.P05` **Panel MMOD R4-F05**
+      - `HAB.MMOD.R4.P06` **Panel MMOD R4-F06**
+      - `HAB.MMOD.R4.P07` **Panel MMOD R4-F07**
+      - `HAB.MMOD.R4.P08` **Panel MMOD R4-F08**
+      - `HAB.MMOD.R4.P09` **Panel MMOD R4-F09**
+      - `HAB.MMOD.R4.P10` **Panel MMOD R4-F10**
+      - `HAB.MMOD.R4.P11` **Panel MMOD R4-F11**
+      - `HAB.MMOD.R4.P12` **Panel MMOD R4-F12**
+      - `HAB.MMOD.R4.P13` **Panel MMOD R4-F13** (1)
+        - `HAB.EXT.MRK.W4` **Aviso: NO PISAR**
+      - `HAB.MMOD.R4.P14` **Panel MMOD R4-F14**
+      - `HAB.MMOD.R4.P15` **Panel MMOD R4-F15**
+      - `HAB.MMOD.R4.P16` **Panel MMOD R4-F16**
+      - `HAB.MMOD.R4.STO` **Soportes del escudo, anillo 4**
+  - `HAB.RCS` **RCS delantero (4 cuadretes)** (4) — 0,58×3,99×3,99 m
+    - `HAB.RCS.Q1` **Cuadrete RCS de proa 1** — 0,58×0,60×0,60 m
+    - `HAB.RCS.Q2` **Cuadrete RCS de proa 2** — 0,58×0,60×0,60 m
+    - `HAB.RCS.Q3` **Cuadrete RCS de proa 3** — 0,58×0,60×0,60 m
+    - `HAB.RCS.Q4` **Cuadrete RCS de proa 4** — 0,58×0,60×0,60 m
+  - `HAB.STR` **Estructura primaria presurizada** (20) — 9,92×4,32×4,56 m
+    - `HAB.STR.B1` **Barril presurizado 1** (2) — 2,03×4,20×4,20 m
+      - `HAB.STR.B1.ISO` **Isogrid interno del barril 1**
+      - `HAB.STR.B1.SKN` **Piel del barril 1**
+    - `HAB.STR.B2` **Barril presurizado 2** (2) — 2,03×4,20×4,20 m
+      - `HAB.STR.B2.ISO` **Isogrid interno del barril 2**
+      - `HAB.STR.B2.SKN` **Piel del barril 2**
+    - `HAB.STR.B3` **Barril presurizado 3** (2) — 2,03×4,20×4,50 m
+      - `HAB.STR.B3.ISO` **Isogrid interno del barril 3**
+      - `HAB.STR.B3.SKN` **Piel del barril 3**
+    - `HAB.STR.B4` **Barril presurizado 4** (2) — 2,03×4,20×4,20 m
+      - `HAB.STR.B4.ISO` **Isogrid interno del barril 4**
+      - `HAB.STR.B4.SKN` **Piel del barril 4**
+    - `HAB.STR.CON` **Cono adaptador HAB–nodo** — 1,10×4,20×4,20 m
+    - `HAB.STR.DOM` **Mamparo de popa elipsoidal** — 0,62×4,20×4,20 m
+    - `HAB.STR.FRM1` **Marco anular 1 (X=0.60)** — 0,06×4,22×4,22 m
+    - `HAB.STR.FRM2` **Marco anular 2 (X=2.65)** — 0,06×4,22×4,22 m
+    - `HAB.STR.FRM3` **Marco anular 3 (X=4.70)** — 0,06×4,22×4,22 m
+    - `HAB.STR.FRM4` **Marco anular 4 (X=6.75)** — 0,06×4,22×4,22 m
+    - `HAB.STR.FRM5` **Marco anular 5 (X=8.80)** — 0,06×4,22×4,22 m
+    - `HAB.STR.IFR` **Anillo de interfaz HAB/servicio** — 0,09×4,32×4,32 m
+  - `HAB.UTL` **Utilidades distribuidas** (17) — 8,06×3,17×3,13 m
+    - `HAB.UTL.C1` **Esquina de utilidades superior babor** (3) — 8,06×0,43×0,35 m
+      - `HAB.UTL.C1.DCT` **Conducto de impulsión de aire**
+      - `HAB.UTL.C1.H2O` **Líneas del lazo de agua de refrigeración**
+      - `HAB.UTL.C1.TRY` **Bandeja y mazos de cables**
+    - `HAB.UTL.C2` **Esquina de utilidades superior estribor** (3) — 8,06×0,43×0,35 m
+      - `HAB.UTL.C2.DCT` **Conducto de impulsión de aire**
+      - `HAB.UTL.C2.H2O` **Líneas del lazo de agua de refrigeración**
+      - `HAB.UTL.C2.TRY` **Bandeja y mazos de cables**
+    - `HAB.UTL.C3` **Esquina de utilidades inferior babor** (3) — 8,06×0,43×0,39 m
+      - `HAB.UTL.C3.DCT` **Conducto de retorno de aire**
+      - `HAB.UTL.C3.H2O` **Líneas del lazo de agua de refrigeración**
+      - `HAB.UTL.C3.TRY` **Bandeja y mazos de cables**
+    - `HAB.UTL.C4` **Esquina de utilidades inferior estribor** (3) — 8,06×0,43×0,39 m
+      - `HAB.UTL.C4.DCT` **Conducto de retorno de aire**
+      - `HAB.UTL.C4.H2O` **Líneas del lazo de agua de refrigeración**
+      - `HAB.UTL.C4.TRY` **Bandeja y mazos de cables**
+    - `HAB.UTL.STK` **Carriles de fijación (seat track)** — 8,06×2,27×2,27 m
+
+### `PRP` Bahía de Propulsión (40) — 2,19×5,73×4,32 m
+
+> Placa de empuje, faldón de popa, 4 motores bipropelentes y 2 conjuntos orientables de propulsores Hall.
+
+  - `PRP.ENG` **Motores bipropelentes principales** (24) — 2,19×2,86×2,86 m
+    - `PRP.ENG.E1` **Motor bipropelente principal 1** (5) — 2,19×1,03×1,03 m
+      - `PRP.ENG.E1.CHB` **Cámara de combustión**
+      - `PRP.ENG.E1.INJ` **Cabeza de inyección**
+      - `PRP.ENG.E1.MNT` **Montante trípode y barrera térmica**
+      - `PRP.ENG.E1.NOZ` **Tobera de expansión (C-103)**
+      - `PRP.ENG.E1.VLV` **Bloque de válvulas bipropelentes**
+    - `PRP.ENG.E2` **Motor bipropelente principal 2** (5) — 2,19×1,03×1,03 m
+      - `PRP.ENG.E2.CHB` **Cámara de combustión**
+      - `PRP.ENG.E2.INJ` **Cabeza de inyección**
+      - `PRP.ENG.E2.MNT` **Montante trípode y barrera térmica**
+      - `PRP.ENG.E2.NOZ` **Tobera de expansión (C-103)**
+      - `PRP.ENG.E2.VLV` **Bloque de válvulas bipropelentes**
+    - `PRP.ENG.E3` **Motor bipropelente principal 3** (5) — 2,19×1,03×1,03 m
+      - `PRP.ENG.E3.CHB` **Cámara de combustión**
+      - `PRP.ENG.E3.INJ` **Cabeza de inyección**
+      - `PRP.ENG.E3.MNT` **Montante trípode y barrera térmica**
+      - `PRP.ENG.E3.NOZ` **Tobera de expansión (C-103)**
+      - `PRP.ENG.E3.VLV` **Bloque de válvulas bipropelentes**
+    - `PRP.ENG.E4` **Motor bipropelente principal 4** (5) — 2,19×1,03×1,03 m
+      - `PRP.ENG.E4.CHB` **Cámara de combustión**
+      - `PRP.ENG.E4.INJ` **Cabeza de inyección**
+      - `PRP.ENG.E4.MNT` **Montante trípode y barrera térmica**
+      - `PRP.ENG.E4.NOZ` **Tobera de expansión (C-103)**
+      - `PRP.ENG.E4.VLV` **Bloque de válvulas bipropelentes**
+  - `PRP.SEP` **Propulsión eléctrica solar (SEP)** (10) — 0,93×5,73×0,82 m
+    - `PRP.SEP.A1` **Brazo orientable de propulsores Hall (babor)** (4) — 0,93×0,96×0,82 m
+      - `PRP.SEP.A1.BOM` **Brazo de CFRP y placa portadora**
+      - `PRP.SEP.A1.GMB` **Actuador de orientación de 2 ejes**
+      - `PRP.SEP.A1.T1` **Propulsor Hall 1**
+      - `PRP.SEP.A1.T2` **Propulsor Hall 2**
+    - `PRP.SEP.A2` **Brazo orientable de propulsores Hall (estribor)** (4) — 0,93×0,89×0,82 m
+      - `PRP.SEP.A2.BOM` **Brazo de CFRP y placa portadora**
+      - `PRP.SEP.A2.GMB` **Actuador de orientación de 2 ejes**
+      - `PRP.SEP.A2.T1` **Propulsor Hall 3**
+      - `PRP.SEP.A2.T2` **Propulsor Hall 4**
+  - `PRP.STR` **Estructura de empuje** (3) — 0,83×4,32×4,32 m
+    - `PRP.STR.PLT` **Placa de empuje** — 0,05×4,28×4,28 m
+    - `PRP.STR.PSH` **Escudo térmico de popa** — 0,03×3,70×3,70 m
+    - `PRP.STR.SKT` **Faldón de popa con MLI de alta temperatura** — 0,75×4,32×4,32 m
+
+### `PWR` Sistema de Potencia Solar (44) — 4,70×39,42×0,52 m
+
+> Dos alas solares enrollables (tipo ROSA) de 4,4 × 16 m con células de triple unión, montadas en mecanismos de orientación SADA.
+
+  - `PWR.W1` **Ala solar de babor** (21) — 4,70×17,53×0,52 m
+    - `PWR.W1.BLK` **Manto fotovoltaico** (12) — 4,20×15,97×0,01 m
+      - `PWR.W1.BLK.S01` **Módulo fotovoltaico 01**
+      - `PWR.W1.BLK.S02` **Módulo fotovoltaico 02**
+      - `PWR.W1.BLK.S03` **Módulo fotovoltaico 03**
+      - `PWR.W1.BLK.S04` **Módulo fotovoltaico 04**
+      - `PWR.W1.BLK.S05` **Módulo fotovoltaico 05**
+      - `PWR.W1.BLK.S06` **Módulo fotovoltaico 06**
+      - `PWR.W1.BLK.S07` **Módulo fotovoltaico 07**
+      - `PWR.W1.BLK.S08` **Módulo fotovoltaico 08**
+      - `PWR.W1.BLK.S09` **Módulo fotovoltaico 09**
+      - `PWR.W1.BLK.S10` **Módulo fotovoltaico 10**
+      - `PWR.W1.BLK.S11` **Módulo fotovoltaico 11**
+      - `PWR.W1.BLK.S12` **Módulo fotovoltaico 12**
+    - `PWR.W1.BMS` **Mástiles enrollables de compuesto** (2) — 4,51×16,00×0,11 m
+      - `PWR.W1.BMS.B1` **Mástil de tubo ranurado 1**
+      - `PWR.W1.BMS.B2` **Mástil de tubo ranurado 2**
+    - `PWR.W1.ROT` **Estructura de raíz y tambor de manto** — 4,70×0,25×0,31 m
+    - `PWR.W1.SADA` **Mecanismo de orientación del ala (SADA)** — 0,52×0,33×0,52 m
+    - `PWR.W1.TEN` **Cables tensores del manto** — 4,12×16,00×0,01 m
+    - `PWR.W1.TIP` **Mandril de punta** — 4,60×0,32×0,32 m
+    - `PWR.W1.YKE` **Mástil y bisagra de despliegue** — 0,35×0,92×0,18 m
+  - `PWR.W2` **Ala solar de estribor** (21) — 4,70×17,53×0,52 m
+    - `PWR.W2.BLK` **Manto fotovoltaico** (12) — 4,20×15,97×0,01 m
+      - `PWR.W2.BLK.S01` **Módulo fotovoltaico 01**
+      - `PWR.W2.BLK.S02` **Módulo fotovoltaico 02**
+      - `PWR.W2.BLK.S03` **Módulo fotovoltaico 03**
+      - `PWR.W2.BLK.S04` **Módulo fotovoltaico 04**
+      - `PWR.W2.BLK.S05` **Módulo fotovoltaico 05**
+      - `PWR.W2.BLK.S06` **Módulo fotovoltaico 06**
+      - `PWR.W2.BLK.S07` **Módulo fotovoltaico 07**
+      - `PWR.W2.BLK.S08` **Módulo fotovoltaico 08**
+      - `PWR.W2.BLK.S09` **Módulo fotovoltaico 09**
+      - `PWR.W2.BLK.S10` **Módulo fotovoltaico 10**
+      - `PWR.W2.BLK.S11` **Módulo fotovoltaico 11**
+      - `PWR.W2.BLK.S12` **Módulo fotovoltaico 12**
+    - `PWR.W2.BMS` **Mástiles enrollables de compuesto** (2) — 4,51×16,00×0,11 m
+      - `PWR.W2.BMS.B1` **Mástil de tubo ranurado 1**
+      - `PWR.W2.BMS.B2` **Mástil de tubo ranurado 2**
+    - `PWR.W2.ROT` **Estructura de raíz y tambor de manto** — 4,70×0,25×0,31 m
+    - `PWR.W2.SADA` **Mecanismo de orientación del ala (SADA)** — 0,52×0,33×0,52 m
+    - `PWR.W2.TEN` **Cables tensores del manto** — 4,12×16,00×0,01 m
+    - `PWR.W2.TIP` **Mandril de punta** — 4,60×0,32×0,32 m
+    - `PWR.W2.YKE` **Mástil y bisagra de despliegue** — 0,35×0,92×0,18 m
+
+### `RBT` Brazo Robótico de Servicio (17) — 4,51×0,40×1,08 m
+
+> Brazo de 7 grados de libertad y ~8 m de alcance, reubicable entre accesorios de agarre. Mostrado en configuración de estiba.
+
+  - `RBT.BMS` **Segmentos del brazo** (2) — 3,53×0,22×0,59 m
+    - `RBT.BMS.B1` **Segmento superior (CFRP)** — 3,53×0,22×0,27 m
+    - `RBT.BMS.B2` **Segmento inferior (CFRP)** — 3,20×0,21×0,25 m
+  - `RBT.CAM` **Cámaras y focos del brazo** (2) — 4,07×0,17×0,18 m
+    - `RBT.CAM.C1` **Cámara del brazo 1** — 0,22×0,17×0,13 m
+    - `RBT.CAM.C2` **Cámara del brazo 2** — 0,22×0,17×0,13 m
+  - `RBT.EE` **Efector terminal de captura** — 0,32×0,30×0,30 m
+  - `RBT.JNT` **Articulaciones** (8) — 4,45×0,36×0,90 m
+    - `RBT.J1` **Articulación de rodillo de hombro** — 0,34×0,34×0,20 m
+    - `RBT.J2` **Articulación de guiñada de hombro** — 0,32×0,30×0,32 m
+    - `RBT.J3` **Articulación de cabeceo de hombro** — 0,32×0,24×0,32 m
+    - `RBT.J4` **Articulación de codo** — 0,34×0,34×0,34 m
+    - `RBT.J5` **Articulación de cabeceo de muñeca** — 0,27×0,22×0,27 m
+    - `RBT.J6` **Articulación de guiñada de muñeca** — 0,25×0,25×0,20 m
+    - `RBT.J7` **Articulación de rodillo de muñeca** — 0,18×0,25×0,25 m
+    - `RBT.LEE` **Efector de base (LEE)** — 0,36×0,36×0,26 m
+  - `RBT.RST` **Retenciones de lanzamiento** — 1,60×0,38×0,74 m
+
+### `SVC` Módulo de Servicio (117) — 5,42×4,48×4,48 m
+
+> Módulo no presurizado octogonal que integra propulsante, aviónica, potencia, control térmico activo y sensores de navegación. Estructura de longerones y marcos de aluminio 7075 con paneles sándwich de nido de abeja.
+
+  - `SVC.AVX` **Aviónica, potencia y guiado** (16) — 4,47×3,18×4,29 m
+    - `SVC.AVX.BAT1` **Batería Li-ion 1** — 0,59×0,46×0,27 m
+    - `SVC.AVX.BAT2` **Batería Li-ion 2** — 0,59×0,46×0,27 m
+    - `SVC.AVX.FCC1` **Ordenador de vuelo A** — 0,49×0,36×0,26 m
+    - `SVC.AVX.FCC2` **Ordenador de vuelo B** — 0,49×0,36×0,26 m
+    - `SVC.AVX.FCC3` **Ordenador de vuelo C** — 0,49×0,36×0,26 m
+    - `SVC.AVX.HRN` **Mazos de cables troncales** — 4,00×0,40×4,27 m
+    - `SVC.AVX.IMU` **Unidad inercial (IMU)** — 0,33×0,32×0,23 m
+    - `SVC.AVX.PCDU` **Unidad de control y distribución de potencia (PCDU)** — 0,84×0,54×0,32 m
+    - `SVC.AVX.PPU1` **Unidad de procesado de potencia SEP 1** — 0,74×0,54×0,29 m
+    - `SVC.AVX.PPU2` **Unidad de procesado de potencia SEP 2** — 0,74×0,54×0,29 m
+    - `SVC.AVX.RWA` **Conjunto de 4 ruedas de reacción** (4) — 0,38×3,18×3,18 m
+      - `SVC.AVX.RWA.W1` **Rueda de reacción 1**
+      - `SVC.AVX.RWA.W2` **Rueda de reacción 2**
+      - `SVC.AVX.RWA.W3` **Rueda de reacción 3**
+      - `SVC.AVX.RWA.W4` **Rueda de reacción 4**
+    - `SVC.AVX.TRX` **Transpondedor de espacio profundo** — 0,44×0,34×0,22 m
+  - `SVC.EXT` **Sensores y equipos exteriores del servicio** (17) — 4,56×4,48×4,48 m
+    - `SVC.EXT.HR1` **Pasamanos EVA de servicio 1** — 1,64×0,09×0,09 m
+    - `SVC.EXT.HR2` **Pasamanos EVA de servicio 2** — 1,64×0,09×0,09 m
+    - `SVC.EXT.HR3` **Pasamanos EVA de servicio 3** — 1,64×0,09×0,09 m
+    - `SVC.EXT.HR4` **Pasamanos EVA de servicio 4** — 1,64×0,09×0,09 m
+    - `SVC.EXT.OPT` **Terminal de comunicaciones ópticas** — 0,36×0,58×0,58 m
+    - `SVC.EXT.RCS` **RCS de popa (4 cuadretes)** (4) — 0,58×3,92×3,92 m
+      - `SVC.EXT.RCS.Q1` **Cuadrete RCS de popa 1**
+      - `SVC.EXT.RCS.Q2` **Cuadrete RCS de popa 2**
+      - `SVC.EXT.RCS.Q3` **Cuadrete RCS de popa 3**
+      - `SVC.EXT.RCS.Q4` **Cuadrete RCS de popa 4**
+    - `SVC.EXT.STR` **Rastreadores estelares** (2) — 1,18×0,53×0,53 m
+      - `SVC.EXT.STR.ST1` **Rastreador estelar 1**
+      - `SVC.EXT.STR.ST2` **Rastreador estelar 2**
+    - `SVC.EXT.SUN1` **Sensor solar grueso 1** — 0,08×0,03×0,08 m
+    - `SVC.EXT.SUN2` **Sensor solar grueso 2** — 0,08×0,08×0,03 m
+    - `SVC.EXT.SUN3` **Sensor solar grueso 3** — 0,08×0,03×0,08 m
+    - `SVC.EXT.SUN4` **Sensor solar grueso 4** — 0,08×0,08×0,03 m
+  - `SVC.PRP` **Almacenamiento y distribución de propulsante** (27) — 4,35×4,12×4,12 m
+    - `SVC.PRP.BIP` **Depósitos de bipropelente** (16) — 1,23×4,12×4,12 m
+      - `SVC.PRP.BIP.T1` **Depósito MMH 1** (3)
+        - `SVC.PRP.BIP.T1.MLI` **Manta MLI del depósito**
+        - `SVC.PRP.BIP.T1.SHL` **Envolvente esférica de titanio**
+        - `SVC.PRP.BIP.T1.STR` **Puntales de soporte del depósito**
+      - `SVC.PRP.BIP.T2` **Depósito MON-3 1** (3)
+        - `SVC.PRP.BIP.T2.MLI` **Manta MLI del depósito**
+        - `SVC.PRP.BIP.T2.SHL` **Envolvente esférica de titanio**
+        - `SVC.PRP.BIP.T2.STR` **Puntales de soporte del depósito**
+      - `SVC.PRP.BIP.T3` **Depósito MMH 2** (3)
+        - `SVC.PRP.BIP.T3.MLI` **Manta MLI del depósito**
+        - `SVC.PRP.BIP.T3.SHL` **Envolvente esférica de titanio**
+        - `SVC.PRP.BIP.T3.STR` **Puntales de soporte del depósito**
+      - `SVC.PRP.BIP.T4` **Depósito MON-3 2** (3)
+        - `SVC.PRP.BIP.T4.MLI` **Manta MLI del depósito**
+        - `SVC.PRP.BIP.T4.SHL` **Envolvente esférica de titanio**
+        - `SVC.PRP.BIP.T4.STR` **Puntales de soporte del depósito**
+    - `SVC.PRP.FCA` **Conjunto de control de fluidos (FCA)** — 0,90×0,45×0,45 m
+    - `SVC.PRP.HE1` **Depósito de helio presurizante 1** — 0,66×0,65×0,65 m
+    - `SVC.PRP.HE2` **Depósito de helio presurizante 2** — 0,66×0,65×0,65 m
+    - `SVC.PRP.LIN` **Líneas de propulsante** (5) — 1,35×3,81×1,88 m
+      - `SVC.PRP.LIN.L1` **Línea de alimentación 1**
+      - `SVC.PRP.LIN.L2` **Línea de alimentación 2**
+      - `SVC.PRP.LIN.L3` **Línea de alimentación 3**
+      - `SVC.PRP.LIN.L4` **Línea de alimentación 4**
+      - `SVC.PRP.LIN.XE` **Líneas de xenón a los propulsores Hall**
+    - `SVC.PRP.XE` **Depósito COPV de xenón** — 3,10×0,95×0,95 m
+  - `SVC.SKN` **Paneles de cierre del módulo de servicio** (18) — 4,97×4,41×4,38 m
+    - `SVC.SKN.R1` **Fila de paneles 1** (8) — 2,47×4,41×4,38 m
+      - `SVC.SKN.R1.P1` **Panel de cierre R1-F1 (MLI ámbar)**
+      - `SVC.SKN.R1.P2` **Panel de cierre R1-F2 (MLI plata)**
+      - `SVC.SKN.R1.P3` **Panel de cierre R1-F3 (radiador corporal)**
+      - `SVC.SKN.R1.P4` **Panel de cierre R1-F4 (MLI ámbar)**
+      - `SVC.SKN.R1.P5` **Panel de cierre R1-F5 (MLI ámbar)**
+      - `SVC.SKN.R1.P6` **Panel de cierre R1-F6 (MLI plata)**
+      - `SVC.SKN.R1.P7` **Panel de cierre R1-F7 (radiador corporal)**
+      - `SVC.SKN.R1.P8` **Panel de cierre R1-F8 (MLI ámbar)**
+    - `SVC.SKN.R2` **Fila de paneles 2** (8) — 2,47×4,41×4,38 m
+      - `SVC.SKN.R2.P1` **Panel de cierre R2-F1 (MLI ámbar)**
+      - `SVC.SKN.R2.P2` **Panel de cierre R2-F2 (MLI plata)**
+      - `SVC.SKN.R2.P3` **Panel de cierre R2-F3 (radiador corporal)**
+      - `SVC.SKN.R2.P4` **Panel de cierre R2-F4 (MLI ámbar)**
+      - `SVC.SKN.R2.P5` **Panel de cierre R2-F5 (MLI ámbar)**
+      - `SVC.SKN.R2.P6` **Panel de cierre R2-F6 (MLI plata)**
+      - `SVC.SKN.R2.P7` **Panel de cierre R2-F7 (radiador corporal)**
+      - `SVC.SKN.R2.P8` **Panel de cierre R2-F8 (MLI ámbar)**
+  - `SVC.STR` **Estructura primaria del módulo de servicio** (30) — 5,04×4,35×4,35 m
+    - `SVC.STR.CON` **Cono de empuje central (CFRP)** — 0,90×3,32×3,32 m
+    - `SVC.STR.DIA` **Diagonales de cizalladura** (16) — 4,95×4,17×4,17 m
+      - `SVC.STR.DIA.D01` **Diagonal CFRP 01**
+      - `SVC.STR.DIA.D02` **Diagonal CFRP 02**
+      - `SVC.STR.DIA.D03` **Diagonal CFRP 03**
+      - `SVC.STR.DIA.D04` **Diagonal CFRP 04**
+      - `SVC.STR.DIA.D05` **Diagonal CFRP 05**
+      - `SVC.STR.DIA.D06` **Diagonal CFRP 06**
+      - `SVC.STR.DIA.D07` **Diagonal CFRP 07**
+      - `SVC.STR.DIA.D08` **Diagonal CFRP 08**
+      - `SVC.STR.DIA.D09` **Diagonal CFRP 09**
+      - `SVC.STR.DIA.D10` **Diagonal CFRP 10**
+      - `SVC.STR.DIA.D11` **Diagonal CFRP 11**
+      - `SVC.STR.DIA.D12` **Diagonal CFRP 12**
+      - `SVC.STR.DIA.D13` **Diagonal CFRP 13**
+      - `SVC.STR.DIA.D14` **Diagonal CFRP 14**
+      - `SVC.STR.DIA.D15` **Diagonal CFRP 15**
+      - `SVC.STR.DIA.D16` **Diagonal CFRP 16**
+    - `SVC.STR.FRM1` **Marco octogonal 1 (X=0.56)** — 0,12×4,35×4,35 m
+    - `SVC.STR.FRM2` **Marco octogonal 2 (X=-1.90)** — 0,12×4,35×4,35 m
+    - `SVC.STR.FRM3` **Marco octogonal 3 (X=-4.36)** — 0,12×4,35×4,35 m
+    - `SVC.STR.LNG` **Longerones** (8) — 4,92×4,29×4,29 m
+      - `SVC.STR.LNG.L1` **Longerón 1**
+      - `SVC.STR.LNG.L2` **Longerón 2**
+      - `SVC.STR.LNG.L3` **Longerón 3**
+      - `SVC.STR.LNG.L4` **Longerón 4**
+      - `SVC.STR.LNG.L5` **Longerón 5**
+      - `SVC.STR.LNG.L6` **Longerón 6**
+      - `SVC.STR.LNG.L7` **Longerón 7**
+      - `SVC.STR.LNG.L8` **Longerón 8**
+  - `SVC.THM` **Control térmico activo (circuito externo)** (3) — 2,25×1,75×4,40 m
+    - `SVC.THM.FED` **Líneas de amoníaco hacia los radiadores** — 1,83×0,27×4,40 m
+    - `SVC.THM.IHX` **Intercambiador de calor interfaz agua/amoníaco** — 0,57×0,90×0,50 m
+    - `SVC.THM.PMP` **Módulo de bombeo de amoníaco** — 0,84×0,54×0,61 m
+
+### `THR` Radiadores Desplegables (16) — 3,24×0,30×15,50 m
+
+> Dos alas de radiador de 3 paneles en el plano XZ, de canto al Sol cuando las alas solares lo siguen (rotación en Y).
+
+  - `THR.R1` **Ala de radiador cenital** (7) — 3,24×0,30×5,57 m
+    - `THR.R1.BAS` **Base, bisagra raíz y junta rotativa de fluido** — 1,92×0,30×0,15 m
+    - `THR.R1.HNG1` **Bisagras y latiguillos flexibles 1** — 3,02×0,15×0,26 m
+    - `THR.R1.HNG2` **Bisagras y latiguillos flexibles 2** — 3,02×0,15×0,26 m
+    - `THR.R1.PNL` **Paneles radiadores** (3) — 3,24×0,07×5,41 m
+      - `THR.R1.PNL.P1` **Panel radiador 1**
+      - `THR.R1.PNL.P2` **Panel radiador 2**
+      - `THR.R1.PNL.P3` **Panel radiador 3**
+  - `THR.R2` **Ala de radiador nadiral** (7) — 3,24×0,30×5,57 m
+    - `THR.R2.BAS` **Base, bisagra raíz y junta rotativa de fluido** — 1,92×0,30×0,15 m
+    - `THR.R2.HNG1` **Bisagras y latiguillos flexibles 1** — 3,02×0,15×0,26 m
+    - `THR.R2.HNG2` **Bisagras y latiguillos flexibles 2** — 3,02×0,15×0,26 m
+    - `THR.R2.PNL` **Paneles radiadores** (3) — 3,24×0,07×5,41 m
+      - `THR.R2.PNL.P1` **Panel radiador 1**
+      - `THR.R2.PNL.P2` **Panel radiador 2**
+      - `THR.R2.PNL.P3` **Panel radiador 3**

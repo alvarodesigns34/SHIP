@@ -105,7 +105,7 @@ def _svc_panel_mesh(name, length, cover):
         x = -length / 2 + 0.05 + (length - 0.1) * k / n
         pns += [((x, y + t / 2, w / 2 - 0.015), (0, 1, 0)), ((x, y + t / 2, -w / 2 + 0.015), (0, 1, 0))]
     mb.bolts("M_Bolt", pns, 0.008, 0.006)
-    return mb.mesh(smooth=None)
+    return mb.mesh(smooth=None, bevel=0.004)
 
 
 SVC_COVER = {0: "gold", 1: "silver", 2: "rad", 3: "gold", 4: "gold", 5: "silver", 6: "rad", 7: "gold"}
@@ -652,7 +652,7 @@ def _radiator(rg, code, sgn):
         # colectores
         for sz in (-1, 1):
             mb.cyl("M_Steel", 0.016, 0.016, L - 0.04, 12, center=(0, 0.035, sz * (H / 2 - 0.05)), axis='X')
-        part(f"{code}.PNL.P{k+1}", f"Panel radiador {k+1}", mb.mesh(smooth=None), pg, loc=(xm, 0, zc),
+        part(f"{code}.PNL.P{k+1}", f"Panel radiador {k+1}", mb.mesh(smooth=None, bevel=0.005), pg, loc=(xm, 0, zc),
              explode=(0, 0, sgn * 0.55 * k + sgn * 0.2),
              desc="Panel sándwich de aluminio con 16 tubos de flujo de amoníaco embebidos y cinta OSR de teflón plateado en ambas caras.")
         if k < S.RAD_PANELS - 1:

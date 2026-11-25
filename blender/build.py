@@ -169,6 +169,7 @@ for ob in bpy.data.objects:
 # Estadísticas e inventario
 # ---------------------------------------------------------------------------
 n_parts = sum(1 for o in bpy.data.objects if o.type == 'MESH')
+lib.STATS["bolts"] = sum(int(o.data.get("bolts", 0)) for o in bpy.data.objects if o.type == 'MESH')
 n_groups = sum(1 for o in bpy.data.objects if o.type == 'EMPTY')
 tris = 0
 verts = 0
@@ -177,7 +178,7 @@ for me in bpy.data.meshes:
     me.calc_loop_triangles()
     tris += len(me.loop_triangles) * max(1, users)
     verts += len(me.vertices) * max(1, users)
-print(f"[build] piezas={n_parts} grupos={n_groups} triángulos≈{tris:,} vértices≈{verts:,}")
+print(f"[build] tornillos={lib.STATS['bolts']} piezas={n_parts} grupos={n_groups} triángulos≈{tris:,} vértices≈{verts:,}")
 
 
 def node_json(ob):
@@ -227,8 +228,9 @@ with open(os.path.join(ROOT, "docs", "inventario.csv"), "w", encoding="utf-8", n
     w.writerow(["nivel", "codigo", "denominacion", "tipo", "materiales", "dimensiones_m", "triangulos", "descripcion"])
     w.writerows(rows)
 
-stats = {"parts": n_parts, "groups": n_groups, "triangles": tris, "vertices": verts,
-         "length_m": round(S.LENGTH_OVERALL, 2), "span_m": round(S.SPAN_OVERALL, 2),
+stats = {"bolts_modelled": lib.STATS["bolts"], "materials": len([m for m in bpy.data.materials if m.users]), "parts": n_parts, "groups": n_groups, "triangles": tris, "vertices": verts,
+         "length_m": round(BB["ALCION"][1].x - BB["ALCION"][0].x, 3), "span_m": round(BB["ALCION"][1].y - BB["ALCION"][0].y, 3),
+         "height_m": round(BB["ALCION"][1].z - BB["ALCION"][0].z, 3),
          "bbox": [[round(v, 3) for v in BB["ALCION"][0]], [round(v, 3) for v in BB["ALCION"][1]]]}
 with open(os.path.join(ROOT, "docs", "stats.json"), "w") as f:
     json.dump(stats, f, indent=1)

@@ -300,7 +300,7 @@ def _docking(fwd):
 
 
 def _cupola(fwd):
-    g = group("FWD.CUP", "Cúpola de observación", fwd, explode=(0, 0, 1.4),
+    g = group("FWD.CUP", "Cúpula de observación", fwd, explode=(0, 0, 1.4),
               desc="Cúpula hexagonal de 7 ventanas para observación directa durante operaciones de proximidad y robótica.",
               func="Visibilidad directa de 360° del hemisferio cenital")
     xc, z0 = S.X_CUPOLA, 1.36
@@ -578,7 +578,7 @@ def _shield_panel_mesh(name, length, variant="std"):
     if variant == "graphite":
         mb.box("M_Graphite", 0.42, 0.0012, w - 0.002, center=(-length / 2 + 0.3, S.R_S + 0.0006, 0))
         mb.box("M_Accent", 0.03, 0.0012, w - 0.002, center=(-length / 2 + 0.55, S.R_S + 0.0006, 0))
-    return mb.mesh(smooth=None)
+    return mb.mesh(smooth=None, bevel=0.004)
 
 
 def _standoffs_mesh(name, x0, x1):

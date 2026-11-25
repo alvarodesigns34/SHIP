@@ -221,7 +221,7 @@ export default function App() {
         </>
       )}
 
-      {mode === 'story' && v && <Story viewer={v} onExplode={setExplodeSilently} />}
+      {mode === 'story' && v && <Story viewer={v} onExplode={(x) => { setExplodeSilently(x); if (x === 0) setExplode(0); }} />}
       {mode === 'plans' && <Plans />}
       {mode === 'spec' && <SpecSheet />}
       {present && <div className="present-hint">Pulsa <kbd>Esc</kbd> para salir del modo presentación</div>}
@@ -513,7 +513,13 @@ function Story({ viewer, onExplode }: { viewer: Viewer; onExplode: (x: number) =
   useEffect(() => {
     viewer.setSection(false);
     apply();
-    return () => { viewer.setXray(false); viewer.select(null); };
+    return () => {
+      viewer.setXray(false);
+      viewer.select(null);
+      viewer.setExplode(0);
+      onExplode(0);
+      viewer.flyTo(new THREE.Vector3(27, 10, 31), new THREE.Vector3(2.5, -0.6, 0), 900);
+    };
   }, []);
   return (
     <div className="story" ref={ref} onScroll={apply}>

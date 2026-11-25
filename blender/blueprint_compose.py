@@ -165,7 +165,7 @@ def sheet_side():
     P = m["points"]
     f, fs = font(26, mono=True), font(22)
     yb = img.size[1] - 470
-    dim_h(d, P["stern"][0], P["bow"][0], yb + 60, P["stern"][1], P["bow"][1], f"{fmt(13.23 - S.ENGINE_EXIT_X)} m  longitud total", f)
+    dim_h(d, P["stern"][0], P["bow"][0], yb + 60, P["stern"][1], P["bow"][1], f"{fmt(LEN)} m  longitud total", f)
     # estaciones
     for k, lab in (("xEng", "X −6,35"), ("xSvc1", "X −4,40"), ("x0", "X 0,00"), ("frame0", "X 0,60"), ("frame1", "X 2,65"), ("frame2", "X 4,70"),
                    ("frame3", "X 6,75"), ("frame4", "X 8,80"), ("xNodeA", "X 9,90"), ("xNodeF", "X 12,20")):
@@ -173,7 +173,7 @@ def sheet_side():
         d.line([(x, P[k][1] + 10), (x, yb - 10)], fill=(110, 150, 190), width=1)
         d.text((x - 34, yb - 6), lab, font=font(17, mono=True), fill=DIM)
     xr = min(img.size[0] - 90, max(P["bow"][0], P["stern"][0]) + 140)
-    tmp, pos = dim_v(d, P["radTop"][1], P["radBot"][1], xr, P["radTop"][0], P["radBot"][0], f"{fmt(2*(S.RAD_ROOT_Z + 0.06 + 3*(S.RAD_PANEL_H+0.06)))} m  radiadores desplegados", f)
+    tmp, pos = dim_v(d, P["radTop"][1], P["radBot"][1], xr, P["radTop"][0], P["radBot"][0], f"{fmt(HZ)} m  radiadores desplegados", f)
     img.paste(tmp, pos, tmp)
     xr2 = P["frame3"][0]
     tmp, pos = dim_v(d, P["habTop"][1], P["habBot"][1], xr2, P["habTop"][0], P["habBot"][0], f"Ø {fmt(2*S.R_S)} m (entre caras)", font(22, mono=True))
@@ -379,11 +379,13 @@ def save(img, name):
     print("[compose]", p, os.path.getsize(p) // 1024, "KiB")
 
 
-SPAN = 2 * (S.WING_ROOT_Y + S.WING_L)
-HZ = 2 * (S.RAD_ROOT_Z + 0.06 + 3 * (S.RAD_PANEL_H + 0.06))
+# cotas globales medidas sobre la caja envolvente real del modelo (build.py → stats.json)
+_ST = json.load(open(os.path.join(ROOT, "docs", "stats.json")))
+SPAN = _ST["span_m"]
+HZ = _ST["height_m"]
+LEN = _ST["length_m"]
 save(sheet_generic("front", "VISTA FRONTAL", "BP-01", "Alzado desde proa (+X)", [("h", "tipS", "tipP", 260, f"{fmt(SPAN)} m  envergadura"), ("v", "radTop", "radBot", 300, f"{fmt(HZ)} m")]), "front")
 save(sheet_side(), "side")
-LEN = 13.23 - S.ENGINE_EXIT_X
 save(sheet_generic("top", "VISTA SUPERIOR", "BP-03", "Planta desde +Z (proa arriba)", [("h", "tipS", "tipP", 200, f"{fmt(SPAN)} m  envergadura"), ("v", "bow", "stern", 520, f"{fmt(LEN)} m")]), "top")
 save(sheet_generic("bottom", "VISTA INFERIOR", "BP-04", "Planta desde −Z (proa arriba)", [("h", "tipS", "tipP", 200, f"{fmt(SPAN)} m  envergadura"), ("v", "bow", "stern", 520, f"{fmt(LEN)} m")]), "bottom")
 save(sheet_generic("rear", "VISTA POSTERIOR", "BP-05", "Alzado desde popa (−X)", [("h", "tipP", "tipS", 260, f"{fmt(SPAN)} m  envergadura")]), "rear")
