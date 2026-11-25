@@ -174,18 +174,18 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.A.CL2,Bastidor de estiba cenital A,group,,0.99x2.21x0.892,,Estiba de procedimientos y equipos de fotografía.
 5,HAB.INT.A.CL2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.A.CL2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.CL2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.CL2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
 4,HAB.INT.A.CNS,Consolas de pilotaje,group,,0.522x2.104x1.253,,Dos consolas independientes (comandante y piloto) con 3 pantallas cada una; el pasillo central queda libre hacia la escotilla del nodo.
 5,HAB.INT.A.CNS.C1,Consola del comandante,group,,0.522x0.864x1.253,,
 6,HAB.INT.A.CNS.C1.D1,Pantalla de vuelo 1,part,M_Screen_PFD,0.178x0.25x0.29,2,"Pantalla táctil de 13"" de alto brillo con unidad de visualización redundante."
@@ -200,48 +200,48 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.A.DK1,Bastidor de estiba de suelo A1,group,,0.99x2.21x0.892,,Estiba de repuestos de aviónica y kits de emergencia.
 5,HAB.INT.A.DK1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.A.DK1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.DK1.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK1.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
 4,HAB.INT.A.DK2,Bastidor de estiba de suelo A2,group,,0.99x2.21x0.892,,Estiba de trajes de presión IVA (4 unidades).
 5,HAB.INT.A.DK2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.A.DK2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.DK2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.DK2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
 4,HAB.INT.A.P2,Bastidor de estiba A (babor),group,,0.99x0.892x2.21,,Estiba de uso diario.
 5,HAB.INT.A.P2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.A.P2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.P2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.P2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
 4,HAB.INT.A.PW,Estación de vuelo lateral (babor),group,,0.99x0.892x2.21,,Bastidor de aviónica de cabina con pantalla multifunción auxiliar.
 5,HAB.INT.A.PW.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.A.PW.FRT,Panel frontal de aviónica,part,M_InteriorGrey;M_InteriorDark;M_InteriorPanel;M_AlAnodBlack,0.94x0.045x2.16,240,Panel con rejilla de ventilación forzada y teclado de función.
@@ -250,18 +250,18 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.A.S2,Bastidor de estiba A (estribor),group,,0.99x0.892x2.21,,Estiba de uso diario.
 5,HAB.INT.A.S2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.A.S2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.S2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.A.S2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.348,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
 4,HAB.INT.A.SEAT,Asientos de tripulación,group,,1.704x1.895x1.373,,"4 asientos con arnés de 5 puntos para fases dinámicas (encendidos de motor, atraque)."
 5,HAB.INT.A.SEAT.S1,Asiento Comandante,group,,1.124x0.655x1.253,,"Asiento de CFRP/aluminio con amortiguación, regulable en altura, con controladores manuales de traslación y rotación."
 6,HAB.INT.A.SEAT.S1.ARM,Apoyabrazos y controladores,part,M_InteriorGrey;M_AlBare;M_AlAnodBlack;M_InteriorDark;M_LEDRed,0.36x0.655x0.377,416,"Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.)."
@@ -303,33 +303,33 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.B.CL1,Bastidor de estiba cenital B1,group,,0.99x2.21x0.892,,Consumibles científicos.
 5,HAB.INT.B.CL1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.B.CL1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.B.CL1.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL1.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
 4,HAB.INT.B.CL2,Bastidor de estiba cenital B2,group,,0.99x2.21x0.892,,Consumibles científicos.
 5,HAB.INT.B.CL2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.B.CL2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.B.CL2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.B.CL2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
 4,HAB.INT.B.NAD,Estación de observación de nadir,group,,1.96x2.12x1.13,,"Pozos de ventana con cámaras científicas, cubiertas internas de protección y asideros."
 5,HAB.INT.B.NAD.CAM,Cámara científica de nadir,part,M_AlAnodBlack;M_Lens;M_AlBare,0.375x0.12x0.323,176,Cámara multiespectral montada sobre brazo de bloqueo.
 5,HAB.INT.B.NAD.CLS1,Paneles de cierre de suelo 1,part,M_InteriorPanel;M_InteriorDark;M_Handrail,0.94x2.12x0.076,424,Paneles de suelo alrededor de los pozos con asideros para fijación de los pies.
@@ -397,18 +397,18 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.D.CL2,Bastidor de control de contaminantes y estiba,group,,0.99x2.21x0.892,,"Filtros de carbón activo, catalizador de trazas y estiba de filtros de repuesto."
 5,HAB.INT.D.CL2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.D.CL2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.D.CL2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.348x0.034,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.CL2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.348x0.034,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
 4,HAB.INT.D.DK1,Recuperación de agua (WRS),group,,0.99x2.21x0.895,,Destilación por compresión de vapor de orina y procesado de condensado por filtración multicapa y oxidación catalítica.
 5,HAB.INT.D.DK1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.D.DK1.EQP,Destilador y lechos de filtración,part,M_InteriorPanel;M_Steel;M_AlChromate;M_InteriorGrey;M_ScreenAmber;M_GoldPlate;M_InteriorDark,0.94x2.16x0.6,800,
@@ -425,22 +425,22 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.D.PS,Estiba de alimentos,group,,0.99x0.892x2.21,,"Despensa para 45 días × 4 tripulantes (~1,8 kg/persona/día)."
 5,HAB.INT.D.PS.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.D.PS.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.D.PS.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L17,Taquilla 1-7,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L18,Taquilla 1-8,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L27,Taquilla 2-7,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L28,Taquilla 2-8,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.258,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L17,Taquilla 1-7,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L18,Taquilla 1-8,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L27,Taquilla 2-7,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
+5,HAB.INT.D.PS.L28,Taquilla 2-8,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_Label,0.458x0.034x0.258,372,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
 4,HAB.INT.D.SH,Compartimento de higiene,group,,0.99x0.9x2.21,,"Inodoro de separación por flujo de aire, puesto de aseo con toallitas y cortina de privacidad."
 5,HAB.INT.D.SH.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.D.SH.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
@@ -458,6 +458,56 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.LGT.L6,Luminaria LED 6,part,M_InteriorGrey;M_LED,1.6x0.112x0.112,24,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
 4,HAB.INT.LGT.L7,Luminaria LED 7,part,M_InteriorGrey;M_LED,1.6x0.112x0.112,24,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
 4,HAB.INT.LGT.L8,Luminaria LED 8,part,M_InteriorGrey;M_LED,1.6x0.112x0.112,24,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
+2,HAB.INT.DEN,"Señalización, carga y cableado visible",group,,7.918x2.332x2.332,,"Etiquetado legible, señalización de seguridad, bolsas de transferencia de carga sujetas con cintas y mazos de cables en las esquinas del pasillo."
+3,HAB.INT.DEN.CBL,Mazos de cables y tubos visibles,group,,7.918x2.332x2.332,,
+4,HAB.INT.DEN.CBL.R1,Mazo de cables y tubos de la esquina,part,M_Cable;M_CableOrange;M_CableWhite;M_DuctFlex;M_AlBare,7.918x0.1x0.1,5228,"Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m."
+4,HAB.INT.DEN.CBL.R2,Mazo de cables y tubos de la esquina,part,M_Cable;M_CableOrange;M_CableWhite;M_DuctFlex;M_AlBare,7.918x0.1x0.1,5228,"Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m."
+4,HAB.INT.DEN.CBL.R3,Mazo de cables y tubos de la esquina,part,M_Cable;M_CableOrange;M_CableWhite;M_DuctFlex;M_AlBare,7.918x0.1x0.1,5228,"Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m."
+4,HAB.INT.DEN.CBL.R4,Mazo de cables y tubos de la esquina,part,M_Cable;M_CableOrange;M_CableWhite;M_DuctFlex;M_AlBare,7.918x0.1x0.1,5228,"Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m."
+3,HAB.INT.DEN.CTB,Bolsas de transferencia de carga,group,,7.07x1.887x2.241,,
+4,HAB.INT.DEN.CTB.B01,Bolsa de transferencia de carga,part,M_Fabric;M_FabricBlue;M_InteriorDark;M_GlassInner,0.559x0.489x0.291,1320,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
+4,HAB.INT.DEN.CTB.B01.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.199x0.024x0.05,12,
+4,HAB.INT.DEN.CTB.B01.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.548x0.076x0.262,44,
+4,HAB.INT.DEN.CTB.B02,Bolsa de transferencia de carga,part,M_Fabric;M_InteriorDark;M_GlassInner,0.263x0.433x0.281,1320,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
+4,HAB.INT.DEN.CTB.B02.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.15x0.001x0.037,12,
+4,HAB.INT.DEN.CTB.B02.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.3x0.013x0.252,44,
+4,HAB.INT.DEN.CTB.B03,Bolsa de transferencia de carga,part,M_Fabric;M_InteriorDark;M_GlassInner,0.541x0.467x0.291,1320,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
+4,HAB.INT.DEN.CTB.B03.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.2x0.015x0.05,12,
+4,HAB.INT.DEN.CTB.B03.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.55x0.05x0.262,44,
+4,HAB.INT.DEN.CTB.B04,Bolsa de transferencia de carga,part,M_Fabric;M_FabricBlue;M_InteriorDark;M_GlassInner,0.527x0.45x0.291,1320,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
+4,HAB.INT.DEN.CTB.B04.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.2x0.008x0.05,12,
+4,HAB.INT.DEN.CTB.B04.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.55x0.032x0.262,44,
+4,HAB.INT.DEN.CTB.B05,Bolsa de transferencia de carga,part,M_Fabric;M_InteriorDark;M_GlassInner,0.542x0.468x0.291,1320,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
+4,HAB.INT.DEN.CTB.B05.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.2x0.016x0.05,12,
+4,HAB.INT.DEN.CTB.B05.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.55x0.052x0.262,44,
+4,HAB.INT.DEN.CTB.B06,Bolsa de transferencia de carga,part,M_Fabric;M_InteriorDark;M_GlassInner,0.263x0.433x0.281,1320,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
+4,HAB.INT.DEN.CTB.B06.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.15x0.001x0.037,12,
+4,HAB.INT.DEN.CTB.B06.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.3x0.013x0.252,44,
+4,HAB.INT.DEN.CTB.B07,Bolsa de transferencia de carga,part,M_Fabric;M_FabricBlue;M_InteriorDark;M_GlassInner,0.445x0.285x0.281,1320,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
+4,HAB.INT.DEN.CTB.B07.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.2x0.012x0.05,12,
+4,HAB.INT.DEN.CTB.B07.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.47x0.037x0.252,44,
+4,HAB.INT.DEN.CTB.B08,Bolsa de transferencia de carga,part,M_Fabric;M_InteriorDark;M_GlassInner,0.436x0.268x0.281,1320,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
+4,HAB.INT.DEN.CTB.B08.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.2x0.004x0.05,12,
+4,HAB.INT.DEN.CTB.B08.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.47x0.018x0.252,44,
+3,HAB.INT.DEN.SGN,Señalización,group,,7.352x2.196x2.196,,
+4,HAB.INT.DEN.SGN.S01,Señal: bay a,part,M_InteriorGrey;M_Label,0.433x0.121x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S02,Señal: bay b,part,M_InteriorGrey;M_Label,0.432x0.117x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S03,Señal: bay c,part,M_InteriorGrey;M_Label,0.432x0.117x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S04,Señal: bay d,part,M_InteriorGrey;M_Label,0.433x0.121x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S05,Señal: extintor,part,M_InteriorGrey;M_Label,0.273x0.004x0.08,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S06,Señal: extintor,part,M_InteriorGrey;M_Label,0.273x0.004x0.079,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S07,Señal: pba,part,M_InteriorGrey;M_Label,0.272x0.004x0.078,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S08,Señal: pba,part,M_InteriorGrey;M_Label,0.272x0.004x0.077,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S09,Señal: auxilios,part,M_InteriorGrey;M_Label,0.273x0.004x0.079,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S10,Señal: salida nodo,part,M_InteriorGrey;M_Label,0.312x0.004x0.087,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S11,Señal: proa,part,M_InteriorGrey;M_Label,0.252x0.004x0.073,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S12,Señal: popa,part,M_InteriorGrey;M_Label,0.252x0.004x0.074,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S13,Señal: agua,part,M_InteriorGrey;M_Label,0.252x0.004x0.074,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S14,Señal: agua gris,part,M_InteriorGrey;M_Label,0.252x0.004x0.073,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S15,Señal: tension,part,M_InteriorGrey;M_Label,0.272x0.004x0.079,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S16,Señal: no pisar,part,M_InteriorGrey;M_Label,0.272x0.078x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S17,Señal: vent,part,M_InteriorGrey;M_Label,0.273x0.08x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
+4,HAB.INT.DEN.SGN.S18,Señal: co2,part,M_InteriorGrey;M_Label,0.233x0.069x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
 2,HAB.INT.LIV,Vida a bordo: objetos cotidianos,group,,6.673x2.239x2.331,,Objetos personales y de trabajo sujetos con velcro y cintas elásticas: indican que cuatro personas viven y trabajan aquí.
 3,HAB.INT.LIV.A,Objetos de la bahía A,group,,0.303x2.23x2.328,,
 4,HAB.INT.LIV.A.O01,Lista de comprobación de vuelo,part,M_InteriorGrey;M_ShieldWhite;M_Decal;M_AlBare,0.251x0.015x0.333,144,Procedimientos impresos de respaldo.

@@ -123,21 +123,24 @@ export class Cockpit {
   private buildLights() {
     const xs = [0.6, 2.65, 4.7, 6.75, 8.8];
     const bays: ('D' | 'C' | 'B' | 'A')[] = ['D', 'C', 'B', 'A'];
+    // temperatura de color por bahía: servicios neutro-cálido, habitáculos cálido,
+    // laboratorio neutro-frío (trabajo de precisión), cabina fría (lectura de pantallas)
+    const tint = { D: 0xffeedd, C: 0xffe0c0, B: 0xf4f6ff, A: 0xe8f0ff } as const;
     for (let i = 0; i < 4; i++) {
       const xc = (xs[i] + xs[i + 1]) / 2;
       for (const sy of [1, -1]) {
-        const r = new THREE.RectAreaLight(0xfff1e0, 0, 1.5, 0.1);
+        const r = new THREE.RectAreaLight(tint[bays[i]], 0, 1.5, 0.1);
         r.position.copy(b2t(xc, sy * 1.03, 1.03));
         r.lookAt(b2t(xc, sy * 0.2, 0.2));
         this.lights.add(r);
-        this.bayLights.push({ bay: bays[i], rect: r, base: 8, pos: r.position.clone() });
+        this.bayLights.push({ bay: bays[i], rect: r, base: 6.5, pos: r.position.clone() });
       }
-      const sp = new THREE.SpotLight(0xfff1e0, 0, 6, 1.25, 0.65, 1.6);
+      const sp = new THREE.SpotLight(tint[bays[i]], 0, 6, 1.1, 0.75, 1.8);
       sp.position.copy(b2t(xc, 0, 1.08));
       sp.target.position.copy(b2t(xc, 0, -1.1));
       sp.shadow.mapSize.set(512, 512); sp.shadow.bias = -0.0008; sp.shadow.normalBias = 0.02; sp.shadow.camera.near = 0.05; sp.shadow.camera.far = 6;
       this.lights.add(sp, sp.target);
-      this.bayLights.push({ bay: bays[i], spot: sp, base: 9, pos: sp.position.clone() });
+      this.bayLights.push({ bay: bays[i], spot: sp, base: 12, pos: sp.position.clone() });
     }
     for (const x of [10.5, 11.6]) {
       const p = new THREE.PointLight(0xfff1e0, 0, 4, 2);

@@ -29,6 +29,7 @@ import alcion.exterior as ext
 import alcion.systems as sysm
 import alcion.interior as inter
 import alcion.expansion as expn
+import alcion.density as dens
 for m in (lib, mats, S, ext, sysm, inter, expn):
     importlib.reload(m)
 
@@ -51,6 +52,7 @@ hab = lib.group("HAB", "Módulo Habitable Presurizado", root, explode=(0, 0, 0),
 ext.build_hab_exterior(hab)
 inter.build_interior(hab)
 expn.build_lived_in(hab)
+dens.build_density(hab)
 sysm.build_service(root)
 sysm.build_propulsion(root)
 sysm.build_power(root)
@@ -256,7 +258,7 @@ if DO_EXPORT:
     bpy.ops.export_scene.gltf(filepath=glb, **common)
     print("[build] exportado", glb, os.path.getsize(glb) // 1024, "KiB")
     # división para carga progresiva: exterior (inmediato) + interior (diferido)
-    INTERIOR_ROOTS = {"HAB.INT", "HAB.UTL", "FWD.INT", "HAB.INT.LIV"}
+    INTERIOR_ROOTS = {"HAB.INT", "HAB.UTL", "FWD.INT", "HAB.INT.LIV", "HAB.INT.DEN"}
 
     def under_interior(o):
         p = o

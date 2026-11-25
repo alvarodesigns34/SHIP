@@ -208,3 +208,22 @@ export const grimeMap = () => cached('grime', () => {
   const h = fbm(S, [3, 6, 12, 24, 96], 33);
   return toTexture(S, (x, y) => { const v = 165 + (h[y * S + x] - 0.5) * 38 + ((x * 13 + y * 7) % 29 === 0 ? 10 : 0); return [v, v, v]; });
 });
+
+// ---------------------------------------------------------------------------
+// Texturas fotográficas CC0 (ambientCG, ver blender/textures/nasa/SOURCES.md)
+// ---------------------------------------------------------------------------
+const photoCache = new Map<string, THREE.Texture>();
+const photoLoader = new THREE.TextureLoader();
+/** Textura PBR fotográfica de `textures/pbr/<name>_<kind>.jpg` (n = normal GL, r = rugosidad, c = color). */
+export function photo(name: 'mli' | 'brushed' | 'fabric' | 'leather' | 'polymer' | 'carbon' | 'rubber', kind: 'n' | 'r' | 'c') {
+  const key = name + '_' + kind;
+  let t = photoCache.get(key);
+  if (!t) {
+    t = photoLoader.load(`textures/pbr/${key}.jpg`);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.anisotropy = 8;
+    t.colorSpace = kind === 'c' ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+    photoCache.set(key, t);
+  }
+  return t;
+}

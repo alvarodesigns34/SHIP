@@ -6,7 +6,7 @@
  * materiales físicos donde aportan (capa transparente, anisotropía).
  */
 import * as THREE from 'three';
-import { mliNormal, roughNoise, paintNormal, weaveNormal, solarColor, radiatorRough, cfrpNormal, brushedNormal, grimeMap } from './texturesLib';
+import { roughNoise, solarColor, radiatorRough, grimeMap, paintNormal, photo } from './texturesLib';
 
 const cache = new Map<THREE.Material, THREE.Material>();
 export let TEX_RES = 1;
@@ -34,8 +34,9 @@ export function enhanceMaterial(src: THREE.Material): THREE.Material {
   const has = (p: string) => n.startsWith(p);
   m.envMapIntensity = 1.0;
   if (has('M_MLI')) {
-    m.normalMap = tile(mliNormal(), 1.1);
-    m.normalScale = new THREE.Vector2(0.35, 0.35);
+    // lámina metalizada real (Foil002): arrugas suaves de una manta flexible multicapa
+    m.normalMap = tile(photo('mli', 'n'), 0.9);
+    m.normalScale = new THREE.Vector2(0.55, 0.55);
     m.roughnessMap = tile(roughNoise(3), 1.3);
     m.roughness = n.includes('Black') ? 0.55 : 0.36;
     m.metalness = n.includes('Black') ? 0.3 : 1.0;
@@ -48,14 +49,20 @@ export function enhanceMaterial(src: THREE.Material): THREE.Material {
     p.clearcoat = 0.05; p.clearcoatRoughness = 0.6;
     m = p as unknown as THREE.MeshStandardMaterial;
   } else if (has('M_Interior')) {
-    m.normalMap = tile(paintNormal(), 0.5);
-    m.normalScale = new THREE.Vector2(0.15, 0.15);
+    // polímero/pintura texturizada de paneles interiores (Plastic010) + suciedad de uso a gran escala
+    m.normalMap = tile(photo('polymer', 'n'), 0.45);
+    m.normalScale = new THREE.Vector2(0.5, 0.5);
     m.roughnessMap = tile(grimeMap(), 1.6);
+    m.roughness = Math.max(m.roughness, 0.55);
+    // albedo realista de paneles blanquecinos (~0,6–0,7): el blanco puro satura y aplana la imagen
+    if (m.color.getHSL({ h: 0, s: 0, l: 0 }).l > 0.7) m.color.multiplyScalar(0.8);
   } else if (has('M_AlBare') || has('M_AlLi') || has('M_AlChromate') || has('M_Steel') || has('M_Titanium') || has('M_TankTi')) {
     const p = toPhysical(m);
-    p.normalMap = tile(brushedNormal(), 0.35);
-    p.normalScale = new THREE.Vector2(0.18, 0.18);
-    p.roughnessMap = tile(roughNoise(7), 0.6);
+    // metal mecanizado/cepillado real (Metal009)
+    p.normalMap = tile(photo('brushed', 'n'), 0.3);
+    p.normalScale = new THREE.Vector2(0.3, 0.3);
+    p.roughnessMap = tile(photo('brushed', 'r'), 0.3);
+    p.roughness = Math.min(1, (m.roughness || 0.35) / 0.47);
     // sin anisotropía: con tangentes por derivadas producía NaN en UV degeneradas
     // (medido: píxeles NaN que bloom/AO propagaban a toda la imagen)
     p.envMapIntensity = 0.8;
@@ -64,14 +71,24 @@ export function enhanceMaterial(src: THREE.Material): THREE.Material {
     m.roughnessMap = tile(roughNoise(11), 0.4);
     m.normalMap = tile(paintNormal(), 0.3);
     m.normalScale = new THREE.Vector2(0.1, 0.1);
-  } else if (has('M_BetaCloth') || has('M_Fabric') || has('M_Kevlar') || has('M_Nextel') || has('M_SeatCushion')) {
-    m.normalMap = tile(weaveNormal(), 0.05);
-    m.normalScale = new THREE.Vector2(0.4, 0.4);
-    m.roughnessMap = tile(roughNoise(9), 0.8);
+  } else if (has('M_SeatCushion')) {
+    // tapizado (Leather025) teñido por el color base del material
+    m.normalMap = tile(photo('leather', 'n'), 0.35);
+    m.normalScale = new THREE.Vector2(0.7, 0.7);
+    m.roughnessMap = tile(photo('leather', 'r'), 0.35);
+    m.roughness = 1.4;
+  } else if (has('M_BetaCloth') || has('M_Fabric') || has('M_Kevlar') || has('M_Nextel')) {
+    // tejido real (Fabric030)
+    m.normalMap = tile(photo('fabric', 'n'), 0.12);
+    m.normalScale = new THREE.Vector2(0.8, 0.8);
+    m.roughnessMap = tile(photo('fabric', 'r'), 0.12);
+    m.roughness = 1.15; m.metalness = 0;
   } else if (has('M_CFRP') || has('M_COPV')) {
     const p = toPhysical(m);
-    p.normalMap = tile(cfrpNormal(), 0.06);
-    p.normalScale = new THREE.Vector2(0.3, 0.3);
+    // tejido de carbono real (Fabric004) bajo resina con capa transparente
+    p.map = tile(photo('carbon', 'c'), 0.12); p.color.set(0xffffff);
+    p.normalMap = tile(photo('carbon', 'n'), 0.12);
+    p.normalScale = new THREE.Vector2(0.45, 0.45);
     p.roughness = 0.4; p.clearcoat = 0.7; p.clearcoatRoughness = 0.2;
     m = p as unknown as THREE.MeshStandardMaterial;
   } else if (has('M_SolarCell')) {
@@ -92,6 +109,11 @@ export function enhanceMaterial(src: THREE.Material): THREE.Material {
     m.emissiveIntensity = 1.4;
   } else if (has('M_LED') || has('M_NavLight')) {
     m.emissiveIntensity = 2.2;
+  } else if (has('M_Rubber') || has('M_Handrail')) {
+    m.normalMap = tile(photo('rubber', 'n'), 0.25);
+    m.normalScale = new THREE.Vector2(0.5, 0.5);
+    m.roughnessMap = tile(photo('rubber', 'r'), 0.25);
+    m.roughness = has('M_Handrail') ? 0.9 : 1.3;
   } else if (has('M_Water')) {
     m.roughness = 0.32;
   } else if (has('M_Leaf')) {

@@ -151,11 +151,15 @@ def rack(parent, code, label, wall, x, desc="", lockers=True, grid=(2, 6), func=
         nx, ny = grid
         lw = (RACK_W - 0.04) / nx
         lh = 2.16 / ny
-        lm = shared(f"locker_{nx}_{ny}", lambda: locker_mesh(lw, lh))
+        from .density import labeled_locker_mesh, cell_for
         for i in range(nx):
             for j in range(ny):
                 xx = -RACK_W / 2 + 0.02 + lw * (i + 0.5)
                 yy = -1.08 + lh * (j + 0.5)
+                # cada taquilla lleva su etiqueta de inventario legible (celda del atlas por código)
+                cell = cell_for(f"{code}.L{i+1}{j+1}")
+                fl = wall in ("stbd", "ceil")
+                lm = shared(f"locker_{nx}_{ny}_{cell}_{fl}", lambda: labeled_locker_mesh(lw, lh, cell, fl))
                 lk = place(f"{code}.L{i+1}{j+1}", f"Taquilla {i+1}-{j+1}", lm, g, W, L(xx, yy, 0.0),
                            explode=tuple(n_world * 0.25), desc="Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.")
                 from .expansion import mech, ctl

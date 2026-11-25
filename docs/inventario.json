@@ -1,8 +1,8 @@
 {
  "vehicle": "ALCIÓN HX-4",
- "parts": 732,
- "groups": 140,
- "triangles": 590312,
+ "parts": 778,
+ "groups": 144,
+ "triangles": 621320,
  "tree": {
   "code": "ALCION",
   "label": "ALCIÓN HX-4",
@@ -5410,15 +5410,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -5452,15 +5448,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -5494,15 +5486,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -5536,15 +5524,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -5578,15 +5562,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -5620,15 +5600,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -5662,15 +5638,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -5704,15 +5676,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -5746,15 +5714,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -5788,15 +5752,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -5830,15 +5790,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -5872,15 +5828,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6286,15 +6238,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6328,15 +6276,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6370,15 +6314,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6412,15 +6352,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6454,15 +6390,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6496,15 +6428,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6538,15 +6466,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6580,15 +6504,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6622,15 +6542,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6664,15 +6580,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6706,15 +6618,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6748,15 +6656,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6875,15 +6779,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6917,15 +6817,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -6959,15 +6855,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -7001,15 +6893,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -7043,15 +6931,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -7085,15 +6969,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -7127,15 +7007,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -7169,15 +7045,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -7211,15 +7083,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -7253,15 +7121,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -7295,15 +7159,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -7337,15 +7197,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -7464,15 +7320,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -7506,15 +7358,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -7548,15 +7396,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -7590,15 +7434,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -7632,15 +7472,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -7674,15 +7510,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -7716,15 +7548,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -7758,15 +7586,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -7800,15 +7624,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -7842,15 +7662,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -7884,15 +7700,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -7926,15 +7738,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8202,15 +8010,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8244,15 +8048,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8286,15 +8086,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8328,15 +8124,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8370,15 +8162,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8412,15 +8200,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8454,15 +8238,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8496,15 +8276,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8538,15 +8314,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8580,15 +8352,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8622,15 +8390,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -8664,15 +8428,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -9899,15 +9659,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -9941,15 +9697,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -9983,15 +9735,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10025,15 +9773,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10067,15 +9811,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10109,15 +9849,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10151,15 +9887,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10193,15 +9925,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10235,15 +9963,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10277,15 +10001,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10319,15 +10039,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10361,15 +10077,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10488,15 +10200,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10530,15 +10238,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10572,15 +10276,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10614,15 +10314,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10656,15 +10352,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10698,15 +10390,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10740,15 +10428,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10782,15 +10466,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10824,15 +10504,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10866,15 +10542,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10908,15 +10580,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -10950,15 +10618,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13105,15 +12769,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13147,15 +12807,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13189,15 +12845,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13231,15 +12883,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13273,15 +12921,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13315,15 +12959,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13357,15 +12997,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13399,15 +13035,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13441,15 +13073,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13483,15 +13111,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13525,15 +13149,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -13567,15 +13187,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.348,
@@ -14129,15 +13745,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14171,15 +13783,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14213,15 +13821,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14255,15 +13859,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14297,15 +13897,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14339,15 +13935,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14381,15 +13973,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14423,15 +14011,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14465,15 +14049,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14507,15 +14087,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14549,15 +14125,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14591,15 +14163,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14633,15 +14201,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14675,15 +14239,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14717,15 +14277,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -14759,15 +14315,11 @@
               "desc": "Acero inoxidable A286"
              },
              {
-              "id": "M_ShieldWhite",
-              "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-             },
-             {
-              "id": "M_Decal",
-              "desc": "Marcado serigrafiado (negro)"
+              "id": "M_Label",
+              "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
              }
             ],
-            "tris": 384,
+            "tris": 372,
             "dims_m": [
              0.458,
              0.034,
@@ -15335,6 +14887,1498 @@
        }
       ],
       "count": 318
+     },
+     {
+      "code": "HAB.INT.DEN",
+      "label": "Señalización, carga y cableado visible",
+      "kind": "group",
+      "desc": "Etiquetado legible, señalización de seguridad, bolsas de transferencia de carga sujetas con cintas y mazos de cables en las esquinas del pasillo.",
+      "func": "Habitabilidad, orientación y seguridad",
+      "depth": 2,
+      "dims_m": [
+       7.918,
+       2.332,
+       2.332
+      ],
+      "center_m": [
+       4.7,
+       0.0,
+       -0.0
+      ],
+      "children": [
+       {
+        "code": "HAB.INT.DEN.CBL",
+        "label": "Mazos de cables y tubos visibles",
+        "kind": "group",
+        "desc": "",
+        "func": "",
+        "depth": 3,
+        "dims_m": [
+         7.918,
+         2.332,
+         2.332
+        ],
+        "center_m": [
+         4.7,
+         0.0,
+         -0.0
+        ],
+        "children": [
+         {
+          "code": "HAB.INT.DEN.CBL.R1",
+          "label": "Mazo de cables y tubos de la esquina",
+          "kind": "part",
+          "desc": "Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Cable",
+            "desc": "Mazo de cables con funda"
+           },
+           {
+            "id": "M_CableOrange",
+            "desc": "Cable de alta tensión (funda naranja)"
+           },
+           {
+            "id": "M_CableWhite",
+            "desc": "Cable de datos (funda blanca)"
+           },
+           {
+            "id": "M_DuctFlex",
+            "desc": "Conducto flexible de aire"
+           },
+           {
+            "id": "M_AlBare",
+            "desc": "Aluminio mecanizado"
+           }
+          ],
+          "tris": 5228,
+          "dims_m": [
+           7.918,
+           0.1,
+           0.1
+          ],
+          "center_m": [
+           4.7,
+           1.116,
+           1.116
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CBL.R2",
+          "label": "Mazo de cables y tubos de la esquina",
+          "kind": "part",
+          "desc": "Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Cable",
+            "desc": "Mazo de cables con funda"
+           },
+           {
+            "id": "M_CableOrange",
+            "desc": "Cable de alta tensión (funda naranja)"
+           },
+           {
+            "id": "M_CableWhite",
+            "desc": "Cable de datos (funda blanca)"
+           },
+           {
+            "id": "M_DuctFlex",
+            "desc": "Conducto flexible de aire"
+           },
+           {
+            "id": "M_AlBare",
+            "desc": "Aluminio mecanizado"
+           }
+          ],
+          "tris": 5228,
+          "dims_m": [
+           7.918,
+           0.1,
+           0.1
+          ],
+          "center_m": [
+           4.7,
+           1.116,
+           -1.116
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CBL.R3",
+          "label": "Mazo de cables y tubos de la esquina",
+          "kind": "part",
+          "desc": "Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Cable",
+            "desc": "Mazo de cables con funda"
+           },
+           {
+            "id": "M_CableOrange",
+            "desc": "Cable de alta tensión (funda naranja)"
+           },
+           {
+            "id": "M_CableWhite",
+            "desc": "Cable de datos (funda blanca)"
+           },
+           {
+            "id": "M_DuctFlex",
+            "desc": "Conducto flexible de aire"
+           },
+           {
+            "id": "M_AlBare",
+            "desc": "Aluminio mecanizado"
+           }
+          ],
+          "tris": 5228,
+          "dims_m": [
+           7.918,
+           0.1,
+           0.1
+          ],
+          "center_m": [
+           4.7,
+           -1.116,
+           1.116
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CBL.R4",
+          "label": "Mazo de cables y tubos de la esquina",
+          "kind": "part",
+          "desc": "Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Cable",
+            "desc": "Mazo de cables con funda"
+           },
+           {
+            "id": "M_CableOrange",
+            "desc": "Cable de alta tensión (funda naranja)"
+           },
+           {
+            "id": "M_CableWhite",
+            "desc": "Cable de datos (funda blanca)"
+           },
+           {
+            "id": "M_DuctFlex",
+            "desc": "Conducto flexible de aire"
+           },
+           {
+            "id": "M_AlBare",
+            "desc": "Aluminio mecanizado"
+           }
+          ],
+          "tris": 5228,
+          "dims_m": [
+           7.918,
+           0.1,
+           0.1
+          ],
+          "center_m": [
+           4.7,
+           -1.116,
+           -1.116
+          ],
+          "count": 1
+         }
+        ],
+        "count": 5
+       },
+       {
+        "code": "HAB.INT.DEN.CTB",
+        "label": "Bolsas de transferencia de carga",
+        "kind": "group",
+        "desc": "",
+        "func": "",
+        "depth": 3,
+        "dims_m": [
+         7.07,
+         1.887,
+         2.241
+        ],
+        "center_m": [
+         4.575,
+         0.01,
+         0.0
+        ],
+        "children": [
+         {
+          "code": "HAB.INT.DEN.CTB.B01",
+          "label": "Bolsa de transferencia de carga",
+          "kind": "part",
+          "desc": "Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Fabric",
+            "desc": "Tejido Nomex de bolsa de estiba"
+           },
+           {
+            "id": "M_FabricBlue",
+            "desc": "Tejido técnico azul (literas, sujeciones)"
+           },
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           },
+           {
+            "id": "M_GlassInner",
+            "desc": "Panel interior de policarbonato antirayado"
+           }
+          ],
+          "tris": 1320,
+          "dims_m": [
+           0.559,
+           0.489,
+           0.291
+          ],
+          "center_m": [
+           7.475,
+           0.55,
+           0.974
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B01.LBL",
+          "label": "Etiqueta de inventario de la bolsa",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 12,
+          "dims_m": [
+           0.199,
+           0.024,
+           0.05
+          ],
+          "center_m": [
+           7.5,
+           0.339,
+           0.982
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B01.STR",
+          "label": "Cinta elástica de sujeción",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           }
+          ],
+          "tris": 44,
+          "dims_m": [
+           0.548,
+           0.076,
+           0.262
+          ],
+          "center_m": [
+           7.475,
+           0.55,
+           0.989
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B02",
+          "label": "Bolsa de transferencia de carga",
+          "kind": "part",
+          "desc": "Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Fabric",
+            "desc": "Tejido Nomex de bolsa de estiba"
+           },
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           },
+           {
+            "id": "M_GlassInner",
+            "desc": "Panel interior de policarbonato antirayado"
+           }
+          ],
+          "tris": 1320,
+          "dims_m": [
+           0.263,
+           0.433,
+           0.281
+          ],
+          "center_m": [
+           5.975,
+           0.55,
+           0.979
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B02.LBL",
+          "label": "Etiqueta de inventario de la bolsa",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 12,
+          "dims_m": [
+           0.15,
+           0.001,
+           0.037
+          ],
+          "center_m": [
+           5.975,
+           0.338,
+           0.988
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B02.STR",
+          "label": "Cinta elástica de sujeción",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           }
+          ],
+          "tris": 44,
+          "dims_m": [
+           0.3,
+           0.013,
+           0.252
+          ],
+          "center_m": [
+           5.975,
+           0.55,
+           0.994
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B03",
+          "label": "Bolsa de transferencia de carga",
+          "kind": "part",
+          "desc": "Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Fabric",
+            "desc": "Tejido Nomex de bolsa de estiba"
+           },
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           },
+           {
+            "id": "M_GlassInner",
+            "desc": "Panel interior de policarbonato antirayado"
+           }
+          ],
+          "tris": 1320,
+          "dims_m": [
+           0.541,
+           0.467,
+           0.291
+          ],
+          "center_m": [
+           5.375,
+           -0.7,
+           -0.974
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B03.LBL",
+          "label": "Etiqueta de inventario de la bolsa",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 12,
+          "dims_m": [
+           0.2,
+           0.015,
+           0.05
+          ],
+          "center_m": [
+           5.39,
+           -0.489,
+           -0.983
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B03.STR",
+          "label": "Cinta elástica de sujeción",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           }
+          ],
+          "tris": 44,
+          "dims_m": [
+           0.55,
+           0.05,
+           0.262
+          ],
+          "center_m": [
+           5.375,
+           -0.7,
+           -0.989
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B04",
+          "label": "Bolsa de transferencia de carga",
+          "kind": "part",
+          "desc": "Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Fabric",
+            "desc": "Tejido Nomex de bolsa de estiba"
+           },
+           {
+            "id": "M_FabricBlue",
+            "desc": "Tejido técnico azul (literas, sujeciones)"
+           },
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           },
+           {
+            "id": "M_GlassInner",
+            "desc": "Panel interior de policarbonato antirayado"
+           }
+          ],
+          "tris": 1320,
+          "dims_m": [
+           0.527,
+           0.45,
+           0.291
+          ],
+          "center_m": [
+           3.425,
+           -0.5,
+           0.974
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B04.LBL",
+          "label": "Etiqueta de inventario de la bolsa",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 12,
+          "dims_m": [
+           0.2,
+           0.008,
+           0.05
+          ],
+          "center_m": [
+           3.433,
+           -0.712,
+           0.983
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B04.STR",
+          "label": "Cinta elástica de sujeción",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           }
+          ],
+          "tris": 44,
+          "dims_m": [
+           0.55,
+           0.032,
+           0.262
+          ],
+          "center_m": [
+           3.425,
+           -0.5,
+           0.989
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B05",
+          "label": "Bolsa de transferencia de carga",
+          "kind": "part",
+          "desc": "Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Fabric",
+            "desc": "Tejido Nomex de bolsa de estiba"
+           },
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           },
+           {
+            "id": "M_GlassInner",
+            "desc": "Panel interior de policarbonato antirayado"
+           }
+          ],
+          "tris": 1320,
+          "dims_m": [
+           0.542,
+           0.468,
+           0.291
+          ],
+          "center_m": [
+           3.975,
+           0.72,
+           -0.974
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B05.LBL",
+          "label": "Etiqueta de inventario de la bolsa",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 12,
+          "dims_m": [
+           0.2,
+           0.016,
+           0.05
+          ],
+          "center_m": [
+           3.959,
+           0.931,
+           -0.983
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B05.STR",
+          "label": "Cinta elástica de sujeción",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           }
+          ],
+          "tris": 44,
+          "dims_m": [
+           0.55,
+           0.052,
+           0.262
+          ],
+          "center_m": [
+           3.975,
+           0.72,
+           -0.989
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B06",
+          "label": "Bolsa de transferencia de carga",
+          "kind": "part",
+          "desc": "Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Fabric",
+            "desc": "Tejido Nomex de bolsa de estiba"
+           },
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           },
+           {
+            "id": "M_GlassInner",
+            "desc": "Panel interior de policarbonato antirayado"
+           }
+          ],
+          "tris": 1320,
+          "dims_m": [
+           0.263,
+           0.433,
+           0.281
+          ],
+          "center_m": [
+           1.925,
+           0.55,
+           0.979
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B06.LBL",
+          "label": "Etiqueta de inventario de la bolsa",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 12,
+          "dims_m": [
+           0.15,
+           0.001,
+           0.037
+          ],
+          "center_m": [
+           1.924,
+           0.338,
+           0.988
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B06.STR",
+          "label": "Cinta elástica de sujeción",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           }
+          ],
+          "tris": 44,
+          "dims_m": [
+           0.3,
+           0.013,
+           0.252
+          ],
+          "center_m": [
+           1.925,
+           0.55,
+           0.994
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B07",
+          "label": "Bolsa de transferencia de carga",
+          "kind": "part",
+          "desc": "Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Fabric",
+            "desc": "Tejido Nomex de bolsa de estiba"
+           },
+           {
+            "id": "M_FabricBlue",
+            "desc": "Tejido técnico azul (literas, sujeciones)"
+           },
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           },
+           {
+            "id": "M_GlassInner",
+            "desc": "Panel interior de policarbonato antirayado"
+           }
+          ],
+          "tris": 1320,
+          "dims_m": [
+           0.445,
+           0.285,
+           0.281
+          ],
+          "center_m": [
+           1.275,
+           -0.55,
+           0.979
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B07.LBL",
+          "label": "Etiqueta de inventario de la bolsa",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 12,
+          "dims_m": [
+           0.2,
+           0.012,
+           0.05
+          ],
+          "center_m": [
+           1.268,
+           -0.677,
+           0.988
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B07.STR",
+          "label": "Cinta elástica de sujeción",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           }
+          ],
+          "tris": 44,
+          "dims_m": [
+           0.47,
+           0.037,
+           0.252
+          ],
+          "center_m": [
+           1.275,
+           -0.55,
+           0.994
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B08",
+          "label": "Bolsa de transferencia de carga",
+          "kind": "part",
+          "desc": "Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Fabric",
+            "desc": "Tejido Nomex de bolsa de estiba"
+           },
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           },
+           {
+            "id": "M_GlassInner",
+            "desc": "Panel interior de policarbonato antirayado"
+           }
+          ],
+          "tris": 1320,
+          "dims_m": [
+           0.436,
+           0.268,
+           0.281
+          ],
+          "center_m": [
+           7.875,
+           0.72,
+           -0.979
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B08.LBL",
+          "label": "Etiqueta de inventario de la bolsa",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 12,
+          "dims_m": [
+           0.2,
+           0.004,
+           0.05
+          ],
+          "center_m": [
+           7.873,
+           0.847,
+           -0.988
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.CTB.B08.STR",
+          "label": "Cinta elástica de sujeción",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorDark",
+            "desc": "Bastidor interior oscuro"
+           }
+          ],
+          "tris": 44,
+          "dims_m": [
+           0.47,
+           0.018,
+           0.252
+          ],
+          "center_m": [
+           7.875,
+           0.72,
+           -0.994
+          ],
+          "count": 1
+         }
+        ],
+        "count": 25
+       },
+       {
+        "code": "HAB.INT.DEN.SGN",
+        "label": "Señalización",
+        "kind": "group",
+        "desc": "",
+        "func": "",
+        "depth": 3,
+        "dims_m": [
+         7.352,
+         2.196,
+         2.196
+        ],
+        "center_m": [
+         4.715,
+         0.0,
+         0.0
+        ],
+        "children": [
+         {
+          "code": "HAB.INT.DEN.SGN.S01",
+          "label": "Señal: bay a",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.433,
+           0.121,
+           0.004
+          ],
+          "center_m": [
+           7.775,
+           -0.0,
+           1.096
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S02",
+          "label": "Señal: bay b",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.432,
+           0.117,
+           0.004
+          ],
+          "center_m": [
+           5.725,
+           -0.0,
+           1.096
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S03",
+          "label": "Señal: bay c",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.432,
+           0.117,
+           0.004
+          ],
+          "center_m": [
+           3.675,
+           -0.0,
+           1.096
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S04",
+          "label": "Señal: bay d",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.433,
+           0.121,
+           0.004
+          ],
+          "center_m": [
+           1.625,
+           -0.0,
+           1.096
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S05",
+          "label": "Señal: extintor",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.273,
+           0.004,
+           0.08
+          ],
+          "center_m": [
+           7.315,
+           1.096,
+           0.92
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S06",
+          "label": "Señal: extintor",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.273,
+           0.004,
+           0.079
+          ],
+          "center_m": [
+           2.085,
+           -1.096,
+           -0.92
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S07",
+          "label": "Señal: pba",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.272,
+           0.004,
+           0.078
+          ],
+          "center_m": [
+           7.315,
+           -1.096,
+           -0.92
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S08",
+          "label": "Señal: pba",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.272,
+           0.004,
+           0.077
+          ],
+          "center_m": [
+           4.135,
+           1.096,
+           0.92
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S09",
+          "label": "Señal: auxilios",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.273,
+           0.004,
+           0.079
+          ],
+          "center_m": [
+           3.215,
+           -1.096,
+           -0.92
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S10",
+          "label": "Señal: salida nodo",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.312,
+           0.004,
+           0.087
+          ],
+          "center_m": [
+           8.235,
+           1.096,
+           -0.95
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S11",
+          "label": "Señal: proa",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.252,
+           0.004,
+           0.073
+          ],
+          "center_m": [
+           5.725,
+           1.096,
+           -0.95
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S12",
+          "label": "Señal: popa",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.252,
+           0.004,
+           0.074
+          ],
+          "center_m": [
+           3.675,
+           -1.096,
+           0.95
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S13",
+          "label": "Señal: agua",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.252,
+           0.004,
+           0.074
+          ],
+          "center_m": [
+           1.165,
+           1.096,
+           -0.95
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S14",
+          "label": "Señal: agua gris",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.252,
+           0.004,
+           0.073
+          ],
+          "center_m": [
+           1.165,
+           1.096,
+           -0.8
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S15",
+          "label": "Señal: tension",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.272,
+           0.004,
+           0.079
+          ],
+          "center_m": [
+           5.265,
+           -1.096,
+           -0.92
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S16",
+          "label": "Señal: no pisar",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.272,
+           0.078,
+           0.004
+          ],
+          "center_m": [
+           2.085,
+           0.85,
+           -1.096
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S17",
+          "label": "Señal: vent",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.273,
+           0.08,
+           0.004
+          ],
+          "center_m": [
+           5.265,
+           -0.85,
+           1.096
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.DEN.SGN.S18",
+          "label": "Señal: co2",
+          "kind": "part",
+          "desc": "Señal de poliéster laminado con adhesivo; texto legible.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_InteriorGrey",
+            "desc": "Panel interior gris grafito"
+           },
+           {
+            "id": "M_Label",
+            "desc": "Etiquetas impresas de poliéster laminado (atlas legible)"
+           }
+          ],
+          "tris": 24,
+          "dims_m": [
+           0.233,
+           0.069,
+           0.004
+          ],
+          "center_m": [
+           4.135,
+           0.85,
+           1.096
+          ],
+          "count": 1
+         }
+        ],
+        "count": 19
+       }
+      ],
+      "count": 50
      },
      {
       "code": "HAB.INT.LIV",
@@ -21242,7 +22286,7 @@
       "count": 18
      }
     ],
-    "count": 518
+    "count": 568
    },
    {
     "code": "PRP",
@@ -28549,6 +29593,6 @@
     "count": 17
    }
   ],
-  "count": 872
+  "count": 922
  }
 }

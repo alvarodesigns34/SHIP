@@ -975,10 +975,14 @@ export class Engine {
     // marcador del panel dañado (EVA)
     this.updateMarkers();
     // exposición adaptativa (no instantánea)
-    const target = (this.mode === 'INTERIOR' || (this.seated && this.flightCam === 'cockpit')) ? 1.55 : ecl > 0.5 ? 2.6 : 1.0;
+    const indoor = this.mode === 'INTERIOR' || (this.seated && this.flightCam === 'cockpit');
+    const target = indoor ? 1.4 : ecl > 0.5 ? 2.6 : 1.0;
     this.exposure = damp(this.exposure, target, this.reducedMotion ? 20 : 1.6, dt);
     this.exposureFx.value = this.exposure;
-    (this.near as any).environmentIntensity = damp((this.near as any).environmentIntensity ?? 0.8, target > 1.2 && target < 2 ? 0.28 : 0.8, 3, dt);
+    (this.near as any).environmentIntensity = damp((this.near as any).environmentIntensity ?? 0.8, indoor ? 0.14 : 0.8, 3, dt);
+    // AO de contacto más marcado en interiores (espacios estrechos, juntas y huecos de bastidor)
+    this.n8ao.configuration.aoRadius = indoor ? 0.9 : 0.6;
+    this.n8ao.configuration.intensity = indoor ? 3.2 : 2.0;
     // escena lejana
     const camKm = this.shipKm().add(this.camera.position.clone().divideScalar(1000));
     this.astro.update(dt, camKm, this.camera.getWorldQuaternion(new THREE.Quaternion()), this.camera.fov, this.camera.aspect, 1, this.renderer.getPixelRatio());
