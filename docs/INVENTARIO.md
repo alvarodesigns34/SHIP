@@ -2,14 +2,14 @@
 
 Generado automáticamente desde el modelo maestro (`blender/build.py` → `docs/inventario.json`). Cada línea es un nodo real del modelo 3D y de la aplicación web; el código es su identificador único.
 
-- Piezas (mallas individuales): **665**
-- Grupos de ensamblaje: **126**
+- Piezas (mallas individuales): **681**
+- Grupos de ensamblaje: **130**
 - Elementos de tornillería modelados (por instancia): **1787**
-- Triángulos (con instancias): **540.764**
+- Triángulos (con instancias): **543.620**
 
 Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre paréntesis indican las piezas contenidas.
 
-## ALCIÓN HX-4 (790)
+## ALCIÓN HX-4 (810)
 
 
 ### `COM` Comunicaciones de Alta Ganancia (6) — 1,42×1,93×1,93 m
@@ -120,7 +120,7 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
     - `FWD.STR.FRM2` **Marco anular del nodo 2** — 0,05×2,64×2,64 m
     - `FWD.STR.FRM3` **Marco anular del nodo 3** — 0,05×2,64×2,64 m
 
-### `HAB` Módulo Habitable Presurizado (450) — 9,93×4,54×4,88 m
+### `HAB` Módulo Habitable Presurizado (470) — 9,93×4,54×4,88 m
 
 > Módulo presurizado principal de Ø4,20 m y 8,2 m de barril cilíndrico; volumen presurizado total del vehículo ≈ 150 m³.
 
@@ -149,8 +149,8 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
     - `HAB.EXT.WIN` **Ventanas científicas de nadir** (2) — 1,53×0,54×0,48 m
       - `HAB.EXT.WIN.W1` **Ventana científica de nadir 1**
       - `HAB.EXT.WIN.W2` **Ventana científica de nadir 2**
-  - `HAB.INT` **Equipamiento interior presurizado** (273) — 8,60×3,94×4,02 m
-    - `HAB.INT.A` **Bahía A — Cabina de vuelo** (106) — 2,06×3,94×3,94 m
+  - `HAB.INT` **Equipamiento interior presurizado** (293) — 8,60×3,94×4,02 m
+    - `HAB.INT.A` **Bahía A — Cabina de vuelo** (126) — 2,06×3,94×3,94 m
       - `HAB.INT.A.CL1` **Panel de mando cenital** (4)
         - `HAB.INT.A.CL1.BDY` **Estructura del bastidor**
         - `HAB.INT.A.CL1.HR` **Pasamanos interior**
@@ -247,11 +247,31 @@ Niveles: 1 módulo · 2 sistema · 3 conjunto · 4+ pieza. Los números entre pa
         - `HAB.INT.A.S2.L24` **Taquilla 2-4**
         - `HAB.INT.A.S2.L25` **Taquilla 2-5**
         - `HAB.INT.A.S2.L26` **Taquilla 2-6**
-      - `HAB.INT.A.SEAT` **Asientos de tripulación** (4)
-        - `HAB.INT.A.SEAT.S1` **Asiento Comandante**
-        - `HAB.INT.A.SEAT.S2` **Asiento Piloto**
-        - `HAB.INT.A.SEAT.S3` **Asiento Especialista 1**
-        - `HAB.INT.A.SEAT.S4` **Asiento Especialista 2**
+      - `HAB.INT.A.SEAT` **Asientos de tripulación** (24)
+        - `HAB.INT.A.SEAT.S1` **Asiento Comandante** (5)
+          - `HAB.INT.A.SEAT.S1.ARM` **Apoyabrazos y controladores**
+          - `HAB.INT.A.SEAT.S1.CSH` **Asiento, respaldo y reposacabezas**
+          - `HAB.INT.A.SEAT.S1.FRM` **Bastidor tubular y anclajes**
+          - `HAB.INT.A.SEAT.S1.FTR` **Reposapiés**
+          - `HAB.INT.A.SEAT.S1.HRN` **Arnés de 5 puntos**
+        - `HAB.INT.A.SEAT.S2` **Asiento Piloto** (5)
+          - `HAB.INT.A.SEAT.S2.ARM` **Apoyabrazos y controladores**
+          - `HAB.INT.A.SEAT.S2.CSH` **Asiento, respaldo y reposacabezas**
+          - `HAB.INT.A.SEAT.S2.FRM` **Bastidor tubular y anclajes**
+          - `HAB.INT.A.SEAT.S2.FTR` **Reposapiés**
+          - `HAB.INT.A.SEAT.S2.HRN` **Arnés de 5 puntos**
+        - `HAB.INT.A.SEAT.S3` **Asiento Especialista 1** (5)
+          - `HAB.INT.A.SEAT.S3.ARM` **Apoyabrazos y controladores**
+          - `HAB.INT.A.SEAT.S3.CSH` **Asiento, respaldo y reposacabezas**
+          - `HAB.INT.A.SEAT.S3.FRM` **Bastidor tubular y anclajes**
+          - `HAB.INT.A.SEAT.S3.FTR` **Reposapiés**
+          - `HAB.INT.A.SEAT.S3.HRN` **Arnés de 5 puntos**
+        - `HAB.INT.A.SEAT.S4` **Asiento Especialista 2** (5)
+          - `HAB.INT.A.SEAT.S4.ARM` **Apoyabrazos y controladores**
+          - `HAB.INT.A.SEAT.S4.CSH` **Asiento, respaldo y reposacabezas**
+          - `HAB.INT.A.SEAT.S4.FRM` **Bastidor tubular y anclajes**
+          - `HAB.INT.A.SEAT.S4.FTR` **Reposapiés**
+          - `HAB.INT.A.SEAT.S4.HRN` **Arnés de 5 puntos**
       - `HAB.INT.A.SW` **Estación de vuelo lateral (estribor)** (4)
         - `HAB.INT.A.SW.BDY` **Estructura del bastidor**
         - `HAB.INT.A.SW.FRT` **Panel frontal de aviónica**

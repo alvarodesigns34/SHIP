@@ -442,6 +442,7 @@ def curved_panel(name, r_in, r_out, a0, a1, x0, x1, seg=6, axis='X', mats=None, 
     A, B = rows[0], rows[-1]
     bm.faces.new([A[0], A[1], A[3], A[2]])
     bm.faces.new([B[0], B[2], B[3], B[1]])
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
     return _finish(bm, name, smooth, mats)
 
 

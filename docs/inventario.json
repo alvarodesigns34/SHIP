@@ -1,8 +1,8 @@
 {
  "vehicle": "ALCIÓN HX-4",
- "parts": 665,
- "groups": 126,
- "triangles": 540764,
+ "parts": 681,
+ "groups": 130,
+ "triangles": 543620,
  "tree": {
   "code": "ALCION",
   "label": "ALCIÓN HX-4",
@@ -4001,12 +4001,12 @@
         "func": "",
         "depth": 3,
         "dims_m": [
-         2.065,
+         2.064,
          3.94,
          3.94
         ],
         "center_m": [
-         7.747,
+         7.748,
          0.0,
          0.0
         ],
@@ -7557,202 +7557,710 @@
           "func": "",
           "depth": 4,
           "dims_m": [
-           1.705,
+           1.704,
            1.895,
-           1.364
+           1.373
           ],
           "center_m": [
-           7.567,
+           7.568,
            0.002,
-           -0.307
+           -0.313
           ],
           "children": [
            {
             "code": "HAB.INT.A.SEAT.S1",
             "label": "Asiento Comandante",
-            "kind": "part",
-            "desc": "Asiento de CFRP/aluminio con amortiguación, regulable en altura con controladores manuales de traslación y rotación.",
+            "kind": "group",
+            "desc": "Asiento de CFRP/aluminio con amortiguación, regulable en altura, con controladores manuales de traslación y rotación.",
             "func": "",
             "depth": 5,
-            "materials": [
-             {
-              "id": "M_AlBare",
-              "desc": "Aluminio mecanizado"
-             },
-             {
-              "id": "M_InteriorGrey",
-              "desc": "Panel interior gris grafito"
-             },
-             {
-              "id": "M_SeatCushion",
-              "desc": "Acolchado de asiento (espuma viscoelástica + tejido)"
-             },
-             {
-              "id": "M_FabricBlue",
-              "desc": "Tejido técnico azul (literas, sujeciones)"
-             },
-             {
-              "id": "M_AlAnodBlack",
-              "desc": "Aluminio anodizado negro"
-             },
-             {
-              "id": "M_InteriorDark",
-              "desc": "Bastidor interior oscuro"
-             },
-             {
-              "id": "M_Rubber",
-              "desc": "Elastómero / sellos de silicona"
-             }
-            ],
-            "tris": 1464,
             "dims_m": [
-             1.125,
+             1.124,
              0.655,
-             1.244
+             1.253
             ],
             "center_m": [
-             7.857,
+             7.858,
              0.623,
-             -0.367
+             -0.373
             ],
-            "count": 1
+            "children": [
+             {
+              "code": "HAB.INT.A.SEAT.S1.ARM",
+              "label": "Apoyabrazos y controladores",
+              "kind": "part",
+              "desc": "Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.).",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_InteriorGrey",
+                "desc": "Panel interior gris grafito"
+               },
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               },
+               {
+                "id": "M_AlAnodBlack",
+                "desc": "Aluminio anodizado negro"
+               },
+               {
+                "id": "M_InteriorDark",
+                "desc": "Bastidor interior oscuro"
+               },
+               {
+                "id": "M_LEDRed",
+                "desc": "Indicador LED rojo"
+               }
+              ],
+              "tris": 416,
+              "dims_m": [
+               0.36,
+               0.655,
+               0.377
+              ],
+              "center_m": [
+               7.63,
+               0.623,
+               -0.391
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S1.CSH",
+              "label": "Asiento, respaldo y reposacabezas",
+              "kind": "part",
+              "desc": "Carcasa de CFRP con acolchado viscoelástico.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_InteriorGrey",
+                "desc": "Panel interior gris grafito"
+               },
+               {
+                "id": "M_SeatCushion",
+                "desc": "Acolchado de asiento (espuma viscoelástica + tejido)"
+               }
+              ],
+              "tris": 756,
+              "dims_m": [
+               0.624,
+               0.5,
+               0.869
+              ],
+              "center_m": [
+               7.608,
+               0.62,
+               -0.181
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S1.FRM",
+              "label": "Bastidor tubular y anclajes",
+              "kind": "part",
+              "desc": "Bastidor de aluminio 7075 con anclajes a carril de suelo.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               }
+              ],
+              "tris": 640,
+              "dims_m": [
+               0.773,
+               0.54,
+               1.033
+              ],
+              "center_m": [
+               7.7,
+               0.62,
+               -0.483
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S1.FTR",
+              "label": "Reposapiés",
+              "kind": "part",
+              "desc": "Barra reposapiés con almohadilla antideslizante.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               },
+               {
+                "id": "M_Rubber",
+                "desc": "Elastómero / sellos de silicona"
+               }
+              ],
+              "tris": 248,
+              "dims_m": [
+               0.36,
+               0.512,
+               0.282
+              ],
+              "center_m": [
+               8.24,
+               0.62,
+               -0.599
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S1.HRN",
+              "label": "Arnés de 5 puntos",
+              "kind": "part",
+              "desc": "Cinchas de Nomex con hebilla rotativa de liberación rápida.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_FabricBlue",
+                "desc": "Tejido técnico azul (literas, sujeciones)"
+               },
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               }
+              ],
+              "tris": 124,
+              "dims_m": [
+               0.437,
+               0.42,
+               0.522
+              ],
+              "center_m": [
+               7.631,
+               0.62,
+               -0.274
+              ],
+              "count": 1
+             }
+            ],
+            "count": 6
            },
            {
             "code": "HAB.INT.A.SEAT.S2",
             "label": "Asiento Piloto",
-            "kind": "part",
-            "desc": "Asiento de CFRP/aluminio con amortiguación, regulable en altura con controladores manuales de traslación y rotación.",
+            "kind": "group",
+            "desc": "Asiento de CFRP/aluminio con amortiguación, regulable en altura, con controladores manuales de traslación y rotación.",
             "func": "",
             "depth": 5,
-            "materials": [
-             {
-              "id": "M_AlBare",
-              "desc": "Aluminio mecanizado"
-             },
-             {
-              "id": "M_InteriorGrey",
-              "desc": "Panel interior gris grafito"
-             },
-             {
-              "id": "M_SeatCushion",
-              "desc": "Acolchado de asiento (espuma viscoelástica + tejido)"
-             },
-             {
-              "id": "M_FabricBlue",
-              "desc": "Tejido técnico azul (literas, sujeciones)"
-             },
-             {
-              "id": "M_AlAnodBlack",
-              "desc": "Aluminio anodizado negro"
-             },
-             {
-              "id": "M_InteriorDark",
-              "desc": "Bastidor interior oscuro"
-             },
-             {
-              "id": "M_Rubber",
-              "desc": "Elastómero / sellos de silicona"
-             }
-            ],
-            "tris": 1464,
             "dims_m": [
-             1.125,
+             1.124,
              0.655,
-             1.244
+             1.253
             ],
             "center_m": [
-             7.857,
+             7.858,
              -0.618,
-             -0.367
+             -0.373
             ],
-            "count": 1
+            "children": [
+             {
+              "code": "HAB.INT.A.SEAT.S2.ARM",
+              "label": "Apoyabrazos y controladores",
+              "kind": "part",
+              "desc": "Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.).",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_InteriorGrey",
+                "desc": "Panel interior gris grafito"
+               },
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               },
+               {
+                "id": "M_AlAnodBlack",
+                "desc": "Aluminio anodizado negro"
+               },
+               {
+                "id": "M_InteriorDark",
+                "desc": "Bastidor interior oscuro"
+               },
+               {
+                "id": "M_LEDRed",
+                "desc": "Indicador LED rojo"
+               }
+              ],
+              "tris": 416,
+              "dims_m": [
+               0.36,
+               0.655,
+               0.377
+              ],
+              "center_m": [
+               7.63,
+               -0.618,
+               -0.391
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S2.CSH",
+              "label": "Asiento, respaldo y reposacabezas",
+              "kind": "part",
+              "desc": "Carcasa de CFRP con acolchado viscoelástico.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_InteriorGrey",
+                "desc": "Panel interior gris grafito"
+               },
+               {
+                "id": "M_SeatCushion",
+                "desc": "Acolchado de asiento (espuma viscoelástica + tejido)"
+               }
+              ],
+              "tris": 756,
+              "dims_m": [
+               0.624,
+               0.5,
+               0.869
+              ],
+              "center_m": [
+               7.608,
+               -0.62,
+               -0.181
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S2.FRM",
+              "label": "Bastidor tubular y anclajes",
+              "kind": "part",
+              "desc": "Bastidor de aluminio 7075 con anclajes a carril de suelo.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               }
+              ],
+              "tris": 640,
+              "dims_m": [
+               0.773,
+               0.54,
+               1.033
+              ],
+              "center_m": [
+               7.7,
+               -0.62,
+               -0.483
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S2.FTR",
+              "label": "Reposapiés",
+              "kind": "part",
+              "desc": "Barra reposapiés con almohadilla antideslizante.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               },
+               {
+                "id": "M_Rubber",
+                "desc": "Elastómero / sellos de silicona"
+               }
+              ],
+              "tris": 248,
+              "dims_m": [
+               0.36,
+               0.512,
+               0.282
+              ],
+              "center_m": [
+               8.24,
+               -0.62,
+               -0.599
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S2.HRN",
+              "label": "Arnés de 5 puntos",
+              "kind": "part",
+              "desc": "Cinchas de Nomex con hebilla rotativa de liberación rápida.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_FabricBlue",
+                "desc": "Tejido técnico azul (literas, sujeciones)"
+               },
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               }
+              ],
+              "tris": 124,
+              "dims_m": [
+               0.437,
+               0.42,
+               0.522
+              ],
+              "center_m": [
+               7.631,
+               -0.62,
+               -0.274
+              ],
+              "count": 1
+             }
+            ],
+            "count": 6
            },
            {
             "code": "HAB.INT.A.SEAT.S3",
             "label": "Asiento Especialista 1",
-            "kind": "part",
+            "kind": "group",
             "desc": "Asiento de CFRP/aluminio con amortiguación, regulable en altura.",
             "func": "",
             "depth": 5,
-            "materials": [
-             {
-              "id": "M_AlBare",
-              "desc": "Aluminio mecanizado"
-             },
-             {
-              "id": "M_InteriorGrey",
-              "desc": "Panel interior gris grafito"
-             },
-             {
-              "id": "M_SeatCushion",
-              "desc": "Acolchado de asiento (espuma viscoelástica + tejido)"
-             },
-             {
-              "id": "M_FabricBlue",
-              "desc": "Tejido técnico azul (literas, sujeciones)"
-             },
-             {
-              "id": "M_Rubber",
-              "desc": "Elastómero / sellos de silicona"
-             }
-            ],
-            "tris": 1108,
             "dims_m": [
-             1.125,
+             1.124,
              0.65,
-             1.244
+             1.253
             ],
             "center_m": [
-             7.277,
+             7.278,
              0.62,
-             -0.247
+             -0.253
             ],
-            "count": 1
+            "children": [
+             {
+              "code": "HAB.INT.A.SEAT.S3.ARM",
+              "label": "Apoyabrazos y controladores",
+              "kind": "part",
+              "desc": "Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.).",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_InteriorGrey",
+                "desc": "Panel interior gris grafito"
+               },
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               }
+              ],
+              "tris": 48,
+              "dims_m": [
+               0.36,
+               0.65,
+               0.2
+              ],
+              "center_m": [
+               7.05,
+               0.62,
+               -0.36
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S3.CSH",
+              "label": "Asiento, respaldo y reposacabezas",
+              "kind": "part",
+              "desc": "Carcasa de CFRP con acolchado viscoelástico.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_InteriorGrey",
+                "desc": "Panel interior gris grafito"
+               },
+               {
+                "id": "M_SeatCushion",
+                "desc": "Acolchado de asiento (espuma viscoelástica + tejido)"
+               }
+              ],
+              "tris": 756,
+              "dims_m": [
+               0.624,
+               0.5,
+               0.869
+              ],
+              "center_m": [
+               7.028,
+               0.62,
+               -0.061
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S3.FRM",
+              "label": "Bastidor tubular y anclajes",
+              "kind": "part",
+              "desc": "Bastidor de aluminio 7075 con anclajes a carril de suelo.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               }
+              ],
+              "tris": 640,
+              "dims_m": [
+               0.773,
+               0.54,
+               1.033
+              ],
+              "center_m": [
+               7.12,
+               0.62,
+               -0.363
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S3.FTR",
+              "label": "Reposapiés",
+              "kind": "part",
+              "desc": "Barra reposapiés con almohadilla antideslizante.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               },
+               {
+                "id": "M_Rubber",
+                "desc": "Elastómero / sellos de silicona"
+               }
+              ],
+              "tris": 248,
+              "dims_m": [
+               0.36,
+               0.512,
+               0.282
+              ],
+              "center_m": [
+               7.66,
+               0.62,
+               -0.479
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S3.HRN",
+              "label": "Arnés de 5 puntos",
+              "kind": "part",
+              "desc": "Cinchas de Nomex con hebilla rotativa de liberación rápida.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_FabricBlue",
+                "desc": "Tejido técnico azul (literas, sujeciones)"
+               },
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               }
+              ],
+              "tris": 124,
+              "dims_m": [
+               0.437,
+               0.42,
+               0.522
+              ],
+              "center_m": [
+               7.051,
+               0.62,
+               -0.154
+              ],
+              "count": 1
+             }
+            ],
+            "count": 6
            },
            {
             "code": "HAB.INT.A.SEAT.S4",
             "label": "Asiento Especialista 2",
-            "kind": "part",
+            "kind": "group",
             "desc": "Asiento de CFRP/aluminio con amortiguación, regulable en altura.",
             "func": "",
             "depth": 5,
-            "materials": [
-             {
-              "id": "M_AlBare",
-              "desc": "Aluminio mecanizado"
-             },
-             {
-              "id": "M_InteriorGrey",
-              "desc": "Panel interior gris grafito"
-             },
-             {
-              "id": "M_SeatCushion",
-              "desc": "Acolchado de asiento (espuma viscoelástica + tejido)"
-             },
-             {
-              "id": "M_FabricBlue",
-              "desc": "Tejido técnico azul (literas, sujeciones)"
-             },
-             {
-              "id": "M_Rubber",
-              "desc": "Elastómero / sellos de silicona"
-             }
-            ],
-            "tris": 1108,
             "dims_m": [
-             1.125,
+             1.124,
              0.65,
-             1.244
+             1.253
             ],
             "center_m": [
-             7.277,
+             7.278,
              -0.62,
-             -0.247
+             -0.253
             ],
-            "count": 1
+            "children": [
+             {
+              "code": "HAB.INT.A.SEAT.S4.ARM",
+              "label": "Apoyabrazos y controladores",
+              "kind": "part",
+              "desc": "Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.).",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_InteriorGrey",
+                "desc": "Panel interior gris grafito"
+               },
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               }
+              ],
+              "tris": 48,
+              "dims_m": [
+               0.36,
+               0.65,
+               0.2
+              ],
+              "center_m": [
+               7.05,
+               -0.62,
+               -0.36
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S4.CSH",
+              "label": "Asiento, respaldo y reposacabezas",
+              "kind": "part",
+              "desc": "Carcasa de CFRP con acolchado viscoelástico.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_InteriorGrey",
+                "desc": "Panel interior gris grafito"
+               },
+               {
+                "id": "M_SeatCushion",
+                "desc": "Acolchado de asiento (espuma viscoelástica + tejido)"
+               }
+              ],
+              "tris": 756,
+              "dims_m": [
+               0.624,
+               0.5,
+               0.869
+              ],
+              "center_m": [
+               7.028,
+               -0.62,
+               -0.061
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S4.FRM",
+              "label": "Bastidor tubular y anclajes",
+              "kind": "part",
+              "desc": "Bastidor de aluminio 7075 con anclajes a carril de suelo.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               }
+              ],
+              "tris": 640,
+              "dims_m": [
+               0.773,
+               0.54,
+               1.033
+              ],
+              "center_m": [
+               7.12,
+               -0.62,
+               -0.363
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S4.FTR",
+              "label": "Reposapiés",
+              "kind": "part",
+              "desc": "Barra reposapiés con almohadilla antideslizante.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               },
+               {
+                "id": "M_Rubber",
+                "desc": "Elastómero / sellos de silicona"
+               }
+              ],
+              "tris": 248,
+              "dims_m": [
+               0.36,
+               0.512,
+               0.282
+              ],
+              "center_m": [
+               7.66,
+               -0.62,
+               -0.479
+              ],
+              "count": 1
+             },
+             {
+              "code": "HAB.INT.A.SEAT.S4.HRN",
+              "label": "Arnés de 5 puntos",
+              "kind": "part",
+              "desc": "Cinchas de Nomex con hebilla rotativa de liberación rápida.",
+              "func": "",
+              "depth": 6,
+              "materials": [
+               {
+                "id": "M_FabricBlue",
+                "desc": "Tejido técnico azul (literas, sujeciones)"
+               },
+               {
+                "id": "M_AlBare",
+                "desc": "Aluminio mecanizado"
+               }
+              ],
+              "tris": 124,
+              "dims_m": [
+               0.437,
+               0.42,
+               0.522
+              ],
+              "center_m": [
+               7.051,
+               -0.62,
+               -0.154
+              ],
+              "count": 1
+             }
+            ],
+            "count": 6
            }
           ],
-          "count": 5
+          "count": 25
          },
          {
           "code": "HAB.INT.A.SW",
@@ -7904,7 +8412,7 @@
           "count": 5
          }
         ],
-        "count": 107
+        "count": 127
        },
        {
         "code": "HAB.INT.AFT",
@@ -13687,7 +14195,7 @@
         "count": 9
        }
       ],
-      "count": 274
+      "count": 294
      },
      {
       "code": "HAB.MLI",
@@ -18874,7 +19382,7 @@
       "count": 18
      }
     ],
-    "count": 451
+    "count": 471
    },
    {
     "code": "PRP",
@@ -26181,6 +26689,6 @@
     "count": 17
    }
   ],
-  "count": 791
+  "count": 811
  }
 }

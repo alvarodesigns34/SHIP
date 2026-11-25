@@ -150,6 +150,24 @@ export default function App() {
 
   const onSlider = (x: number) => { setExplodeUI(x); setExplode(x); };
 
+  // atajos de teclado (inspector)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement;
+      if (!v || mode !== 'inspect' || walk || t?.tagName === 'INPUT' || t?.tagName === 'SELECT' || e.metaKey || e.ctrlKey) return;
+      const k = e.key.toLowerCase();
+      if (k === 'escape') { v.select(null); v.setIsolate(null); rerender(); }
+      else if (k === 'f' && sel) v.focus(sel);
+      else if (k === 'i' && sel) { v.setIsolate(v.isolate === sel ? null : sel); rerender(); }
+      else if (k === 'h' && sel) { v.setHidden(sel, true); v.select(null); rerender(); }
+      else if (k === 'x') setXray((x) => !x);
+      else if (k === 'e') animateExplode(explodeUI < 0.5 ? 1 : 0);
+      else if (k === 'u' && sel?.parent) v.select(sel.parent);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [v, mode, walk, sel, explodeUI]);
+
   return (
     <div className={`app mode-${mode} ${present ? 'presenting' : ''} ${intro ? 'in-intro' : ''}`}>
       <div className="viewport" ref={host} />
@@ -604,6 +622,16 @@ function SpecSheet() {
           <div className="phil-grid">
             {PHILOSOPHY.map((p, i) => <div key={p.h} className={i === 0 ? 'wide' : ''}><h4>{p.h}</h4><p>{p.d}</p></div>)}
           </div>
+        </section>
+        <section className="downloads">
+          <h3 className="h2">Descargas</h3>
+          <ul>
+            <li><a href="models/alcion_hx4_exterior.glb" download>Modelo GLB · exterior (meshopt)</a></li>
+            <li><a href="models/alcion_hx4_interior.glb" download>Modelo GLB · interior (meshopt)</a></li>
+            <li><a href="data/inventario.csv" download>Inventario jerárquico (CSV)</a></li>
+            <li><a href="data/inventario.json" download>Inventario jerárquico (JSON)</a></li>
+          </ul>
+          <p className="small muted">Atajos del inspector: <kbd>F</kbd> enfocar · <kbd>I</kbd> aislar · <kbd>H</kbd> ocultar · <kbd>U</kbd> subir nivel · <kbd>X</kbd> rayos X · <kbd>E</kbd> explosionar/ensamblar · <kbd>Esc</kbd> deseleccionar.</p>
         </section>
         <section className="sources">
           <h3 className="h2">Fuentes consultadas</h3>

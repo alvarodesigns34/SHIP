@@ -232,7 +232,10 @@ kbd { font-family: var(--mono); border: 1px solid var(--hairline-strong); border
 .tag { grid-column: 2; justify-self: end; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); }
 .tag.hipótesis { color: #c9a25c; }
 .tag.estándar { color: var(--ok); }
-.profile, .philosophy, .sources { margin-top: 96px; }
+.profile, .philosophy, .sources, .downloads { margin-top: 96px; }
+.downloads ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 16px; }
+.downloads a { display: inline-block; padding: 8px 12px; border: 1px solid var(--hairline-strong); border-radius: var(--r-sm); color: var(--ink); text-decoration: none; font-size: 0.875rem; }
+.downloads a:hover { border-color: var(--accent); }
 .profile ol { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
 .profile li { display: flex; flex-direction: column; gap: 8px; border-top: 2px solid var(--hairline-strong); padding-top: 12px; }
 .profile li:first-child { border-top-color: var(--accent); }

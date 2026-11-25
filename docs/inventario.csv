@@ -127,7 +127,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.EXT.WIN.W1,Ventana científica de nadir 1,part,M_AlBare;M_Glass;M_ShieldWhite;M_Steel;M_Bolt,0.583x0.54x0.476,1384,Marco con paneles de presión redundantes y contraventana MMOD (abierta).
 4,HAB.EXT.WIN.W2,Ventana científica de nadir 2,part,M_AlBare;M_Glass;M_ShieldWhite;M_Steel;M_Bolt,0.583x0.54x0.476,1384,Marco con paneles de presión redundantes y contraventana MMOD (abierta).
 2,HAB.INT,Equipamiento interior presurizado,group,,8.601x3.94x4.02,,"Interior organizado en 4 bahías de 2,05 m (cabina de vuelo, laboratorio, refugio/habitáculos, servicios) más el mamparo de popa."
-3,HAB.INT.A,Bahía A — Cabina de vuelo,group,,2.065x3.94x3.94,,"Puesto de pilotaje con 4 asientos, 2 consolas de 3 pantallas y paneles de mando cenitales."
+3,HAB.INT.A,Bahía A — Cabina de vuelo,group,,2.064x3.94x3.94,,"Puesto de pilotaje con 4 asientos, 2 consolas de 3 pantallas y paneles de mando cenitales."
 4,HAB.INT.A.CL1,Panel de mando cenital,group,,0.99x2.21x0.91,,"Paneles de interruptores de los buses de potencia, armado de RCS y pirotecnia."
 5,HAB.INT.A.CL1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.A.CL1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
@@ -224,11 +224,31 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 5,HAB.INT.A.S2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
 5,HAB.INT.A.S2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
 5,HAB.INT.A.S2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.458x0.034x0.348,384,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-4,HAB.INT.A.SEAT,Asientos de tripulación,group,,1.705x1.895x1.364,,"4 asientos con arnés de 5 puntos para fases dinámicas (encendidos de motor, atraque)."
-5,HAB.INT.A.SEAT.S1,Asiento Comandante,part,M_AlBare;M_InteriorGrey;M_SeatCushion;M_FabricBlue;M_AlAnodBlack;M_InteriorDark;M_Rubber,1.125x0.655x1.244,1464,"Asiento de CFRP/aluminio con amortiguación, regulable en altura con controladores manuales de traslación y rotación."
-5,HAB.INT.A.SEAT.S2,Asiento Piloto,part,M_AlBare;M_InteriorGrey;M_SeatCushion;M_FabricBlue;M_AlAnodBlack;M_InteriorDark;M_Rubber,1.125x0.655x1.244,1464,"Asiento de CFRP/aluminio con amortiguación, regulable en altura con controladores manuales de traslación y rotación."
-5,HAB.INT.A.SEAT.S3,Asiento Especialista 1,part,M_AlBare;M_InteriorGrey;M_SeatCushion;M_FabricBlue;M_Rubber,1.125x0.65x1.244,1108,"Asiento de CFRP/aluminio con amortiguación, regulable en altura."
-5,HAB.INT.A.SEAT.S4,Asiento Especialista 2,part,M_AlBare;M_InteriorGrey;M_SeatCushion;M_FabricBlue;M_Rubber,1.125x0.65x1.244,1108,"Asiento de CFRP/aluminio con amortiguación, regulable en altura."
+4,HAB.INT.A.SEAT,Asientos de tripulación,group,,1.704x1.895x1.373,,"4 asientos con arnés de 5 puntos para fases dinámicas (encendidos de motor, atraque)."
+5,HAB.INT.A.SEAT.S1,Asiento Comandante,group,,1.124x0.655x1.253,,"Asiento de CFRP/aluminio con amortiguación, regulable en altura, con controladores manuales de traslación y rotación."
+6,HAB.INT.A.SEAT.S1.ARM,Apoyabrazos y controladores,part,M_InteriorGrey;M_AlBare;M_AlAnodBlack;M_InteriorDark;M_LEDRed,0.36x0.655x0.377,416,"Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.)."
+6,HAB.INT.A.SEAT.S1.CSH,"Asiento, respaldo y reposacabezas",part,M_InteriorGrey;M_SeatCushion,0.624x0.5x0.869,756,Carcasa de CFRP con acolchado viscoelástico.
+6,HAB.INT.A.SEAT.S1.FRM,Bastidor tubular y anclajes,part,M_AlBare,0.773x0.54x1.033,640,Bastidor de aluminio 7075 con anclajes a carril de suelo.
+6,HAB.INT.A.SEAT.S1.FTR,Reposapiés,part,M_AlBare;M_Rubber,0.36x0.512x0.282,248,Barra reposapiés con almohadilla antideslizante.
+6,HAB.INT.A.SEAT.S1.HRN,Arnés de 5 puntos,part,M_FabricBlue;M_AlBare,0.437x0.42x0.522,124,Cinchas de Nomex con hebilla rotativa de liberación rápida.
+5,HAB.INT.A.SEAT.S2,Asiento Piloto,group,,1.124x0.655x1.253,,"Asiento de CFRP/aluminio con amortiguación, regulable en altura, con controladores manuales de traslación y rotación."
+6,HAB.INT.A.SEAT.S2.ARM,Apoyabrazos y controladores,part,M_InteriorGrey;M_AlBare;M_AlAnodBlack;M_InteriorDark;M_LEDRed,0.36x0.655x0.377,416,"Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.)."
+6,HAB.INT.A.SEAT.S2.CSH,"Asiento, respaldo y reposacabezas",part,M_InteriorGrey;M_SeatCushion,0.624x0.5x0.869,756,Carcasa de CFRP con acolchado viscoelástico.
+6,HAB.INT.A.SEAT.S2.FRM,Bastidor tubular y anclajes,part,M_AlBare,0.773x0.54x1.033,640,Bastidor de aluminio 7075 con anclajes a carril de suelo.
+6,HAB.INT.A.SEAT.S2.FTR,Reposapiés,part,M_AlBare;M_Rubber,0.36x0.512x0.282,248,Barra reposapiés con almohadilla antideslizante.
+6,HAB.INT.A.SEAT.S2.HRN,Arnés de 5 puntos,part,M_FabricBlue;M_AlBare,0.437x0.42x0.522,124,Cinchas de Nomex con hebilla rotativa de liberación rápida.
+5,HAB.INT.A.SEAT.S3,Asiento Especialista 1,group,,1.124x0.65x1.253,,"Asiento de CFRP/aluminio con amortiguación, regulable en altura."
+6,HAB.INT.A.SEAT.S3.ARM,Apoyabrazos y controladores,part,M_InteriorGrey;M_AlBare,0.36x0.65x0.2,48,"Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.)."
+6,HAB.INT.A.SEAT.S3.CSH,"Asiento, respaldo y reposacabezas",part,M_InteriorGrey;M_SeatCushion,0.624x0.5x0.869,756,Carcasa de CFRP con acolchado viscoelástico.
+6,HAB.INT.A.SEAT.S3.FRM,Bastidor tubular y anclajes,part,M_AlBare,0.773x0.54x1.033,640,Bastidor de aluminio 7075 con anclajes a carril de suelo.
+6,HAB.INT.A.SEAT.S3.FTR,Reposapiés,part,M_AlBare;M_Rubber,0.36x0.512x0.282,248,Barra reposapiés con almohadilla antideslizante.
+6,HAB.INT.A.SEAT.S3.HRN,Arnés de 5 puntos,part,M_FabricBlue;M_AlBare,0.437x0.42x0.522,124,Cinchas de Nomex con hebilla rotativa de liberación rápida.
+5,HAB.INT.A.SEAT.S4,Asiento Especialista 2,group,,1.124x0.65x1.253,,"Asiento de CFRP/aluminio con amortiguación, regulable en altura."
+6,HAB.INT.A.SEAT.S4.ARM,Apoyabrazos y controladores,part,M_InteriorGrey;M_AlBare,0.36x0.65x0.2,48,"Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.)."
+6,HAB.INT.A.SEAT.S4.CSH,"Asiento, respaldo y reposacabezas",part,M_InteriorGrey;M_SeatCushion,0.624x0.5x0.869,756,Carcasa de CFRP con acolchado viscoelástico.
+6,HAB.INT.A.SEAT.S4.FRM,Bastidor tubular y anclajes,part,M_AlBare,0.773x0.54x1.033,640,Bastidor de aluminio 7075 con anclajes a carril de suelo.
+6,HAB.INT.A.SEAT.S4.FTR,Reposapiés,part,M_AlBare;M_Rubber,0.36x0.512x0.282,248,Barra reposapiés con almohadilla antideslizante.
+6,HAB.INT.A.SEAT.S4.HRN,Arnés de 5 puntos,part,M_FabricBlue;M_AlBare,0.437x0.42x0.522,124,Cinchas de Nomex con hebilla rotativa de liberación rápida.
 4,HAB.INT.A.SW,Estación de vuelo lateral (estribor),group,,0.99x0.892x2.21,,Bastidor de aviónica de cabina con pantalla multifunción auxiliar.
 5,HAB.INT.A.SW.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
 5,HAB.INT.A.SW.FRT,Panel frontal de aviónica,part,M_InteriorGrey;M_InteriorDark;M_InteriorPanel;M_AlAnodBlack,0.94x0.045x2.16,240,Panel con rejilla de ventilación forzada y teclado de función.

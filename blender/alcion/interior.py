@@ -202,43 +202,55 @@ def _x2(x0, x1):
 
 # --- Bahía A: cabina de vuelo ----------------------------------------------
 
-def seat_mesh(cmd=False):
-    mb = MB("seat_cmd" if cmd else "seat")
-    # coordenadas locales: el tripulante mira a +X, +Z "arriba" de cabina
-    # bastidor tubular
-    for y in (-0.24, 0.24):
-        mb.tube("M_AlBare", [(-0.30, y, -0.55), (-0.30, y, -0.20), (0.15, y, -0.20), (0.32, y, -0.05)], 0.018, 10, round_r=0.05)
-        mb.tube("M_AlBare", [(-0.30, y, -0.20), (-0.42, y, 0.45)], 0.018, 10)
-    mb.tube("M_AlBare", [(-0.30, -0.24, -0.55), (-0.30, 0.24, -0.55)], 0.02, 10)
-    mb.tube("M_AlBare", [(0.32, -0.24, -0.05), (0.32, 0.24, -0.05)], 0.016, 10)
-    # asiento y respaldo
-    mb.box("M_InteriorGrey", 0.46, 0.50, 0.03, center=(-0.06, 0, -0.17))
-    mb.box("M_SeatCushion", 0.44, 0.46, 0.06, center=(-0.06, 0, -0.125))
+SEAT_PARTS = [
+    ("FRM", "Bastidor tubular y anclajes", "Bastidor de aluminio 7075 con anclajes a carril de suelo."),
+    ("CSH", "Asiento, respaldo y reposacabezas", "Carcasa de CFRP con acolchado viscoelástico."),
+    ("HRN", "Arnés de 5 puntos", "Cinchas de Nomex con hebilla rotativa de liberación rápida."),
+    ("ARM", "Apoyabrazos y controladores", "Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.)."),
+    ("FTR", "Reposapiés", "Barra reposapiés con almohadilla antideslizante."),
+]
+
+
+def seat_meshes(cmd=False):
+    """Asiento dividido en subpiezas inspeccionables. El tripulante mira a +X."""
+    tag = "cmd" if cmd else "std"
     R = Matrix.Rotation(-0.18, 4, 'Y')
-    mb.box("M_InteriorGrey", 0.03, 0.50, 0.66, center=(-0.37, 0, 0.13), rot=R)
-    mb.box("M_SeatCushion", 0.06, 0.46, 0.62, center=(-0.33, 0, 0.13), rot=R)
-    mb.box("M_SeatCushion", 0.08, 0.28, 0.18, center=(-0.40, 0, 0.56), rot=R)
+    frm = MB(f"seat_{tag}_frame")
+    for y in (-0.24, 0.24):
+        frm.tube("M_AlBare", [(-0.30, y, -0.55), (-0.30, y, -0.20), (0.15, y, -0.20), (0.32, y, -0.05)], 0.018, 10, round_r=0.05)
+        frm.tube("M_AlBare", [(-0.30, y, -0.20), (-0.42, y, 0.45)], 0.018, 10)
+        frm.box("M_AlBare", 0.10, 0.06, 0.03, center=(-0.30, y, -0.565))
+    frm.tube("M_AlBare", [(-0.30, -0.24, -0.55), (-0.30, 0.24, -0.55)], 0.02, 10)
+    frm.tube("M_AlBare", [(0.32, -0.24, -0.05), (0.32, 0.24, -0.05)], 0.016, 10)
+    csh = MB(f"seat_{tag}_cushion")
+    csh.box("M_InteriorGrey", 0.46, 0.50, 0.03, center=(-0.06, 0, -0.17))
+    csh.box("M_SeatCushion", 0.44, 0.46, 0.06, center=(-0.06, 0, -0.125))
+    csh.box("M_InteriorGrey", 0.03, 0.50, 0.66, center=(-0.37, 0, 0.13), rot=R)
+    csh.box("M_SeatCushion", 0.06, 0.46, 0.62, center=(-0.33, 0, 0.13), rot=R)
+    csh.box("M_SeatCushion", 0.08, 0.28, 0.18, center=(-0.40, 0, 0.56), rot=R)
     for y in (-0.17, 0.17):
-        mb.box("M_SeatCushion", 0.07, 0.07, 0.22, center=(-0.35, y, 0.56), rot=R)
-    # arnés de 5 puntos
+        csh.box("M_SeatCushion", 0.07, 0.07, 0.22, center=(-0.35, y, 0.56), rot=R)
+    hrn = MB(f"seat_{tag}_harness")
     for y in (-0.12, 0.12):
-        mb.box("M_FabricBlue", 0.012, 0.045, 0.52, center=(-0.285, y, 0.15), rot=R)
-    mb.box("M_FabricBlue", 0.012, 0.42, 0.045, center=(-0.11, 0, -0.085))
-    mb.cyl("M_AlBare", 0.045, 0.045, 0.02, 20, center=(-0.12, 0, -0.07), axis='X')
-    # apoyabrazos
+        hrn.box("M_FabricBlue", 0.012, 0.045, 0.52, center=(-0.285, y, 0.15), rot=R)
+    hrn.box("M_FabricBlue", 0.012, 0.42, 0.045, center=(-0.11, 0, -0.085))
+    hrn.box("M_FabricBlue", 0.30, 0.045, 0.012, center=(-0.05, 0, -0.088))
+    hrn.cyl("M_AlBare", 0.045, 0.045, 0.02, 20, center=(-0.12, 0, -0.07), axis='X')
+    arm = MB(f"seat_{tag}_arms")
     for y in (-0.29, 0.29):
-        mb.box("M_InteriorGrey", 0.36, 0.07, 0.04, center=(-0.12, y, 0.02))
-        mb.box("M_AlBare", 0.03, 0.03, 0.18, center=(-0.24, y, -0.07))
+        arm.box("M_InteriorGrey", 0.36, 0.07, 0.04, center=(-0.12, y, 0.02))
+        arm.box("M_AlBare", 0.03, 0.03, 0.18, center=(-0.24, y, -0.07))
     if cmd:
-        # controladores manuales de traslación (izq.) y rotación (dcha.)
-        mb.cyl("M_AlAnodBlack", 0.035, 0.035, 0.07, 16, center=(0.02, 0.29, 0.08), axis='Z')
-        mb.sphere("M_InteriorDark", 0.04, 16, 8, center=(0.02, 0.29, 0.14), scale=(1, 1, 1.4))
-        mb.box("M_AlAnodBlack", 0.07, 0.07, 0.06, center=(0.02, -0.29, 0.07))
-        mb.cyl("M_InteriorDark", 0.02, 0.03, 0.12, 16, center=(0.02, -0.29, 0.15), axis='Z')
-    # reposapiés
-    mb.tube("M_AlBare", [(0.32, -0.24, -0.05), (0.62, -0.20, -0.30), (0.62, 0.20, -0.30), (0.32, 0.24, -0.05)], 0.016, 10, round_r=0.06)
-    mb.box("M_Rubber", 0.10, 0.40, 0.02, center=(0.62, 0, -0.31))
-    return mb.mesh(smooth=40)
+        arm.cyl("M_AlAnodBlack", 0.035, 0.035, 0.07, 16, center=(0.02, 0.29, 0.08), axis='Z')
+        arm.sphere("M_InteriorDark", 0.04, 16, 8, center=(0.02, 0.29, 0.14), scale=(1, 1, 1.4))
+        arm.box("M_AlAnodBlack", 0.07, 0.07, 0.06, center=(0.02, -0.29, 0.07))
+        arm.cyl("M_InteriorDark", 0.02, 0.03, 0.12, 16, center=(0.02, -0.29, 0.15), axis='Z')
+        arm.box("M_LEDRed", 0.012, 0.012, 0.004, center=(0.03, -0.29, 0.215))
+    ftr = MB(f"seat_{tag}_foot")
+    ftr.tube("M_AlBare", [(0.32, -0.24, -0.05), (0.62, -0.20, -0.30), (0.62, 0.20, -0.30), (0.32, 0.24, -0.05)], 0.016, 10, round_r=0.06)
+    ftr.box("M_Rubber", 0.10, 0.40, 0.02, center=(0.62, 0, -0.31))
+    return {"FRM": frm.mesh(smooth=40), "CSH": csh.mesh(smooth=40, bevel=0.008), "HRN": hrn.mesh(smooth=40),
+            "ARM": arm.mesh(smooth=40), "FTR": ftr.mesh(smooth=40)}
 
 
 def console_mesh(side):
@@ -319,8 +331,12 @@ def _bay_A(g, x0, x1):
     for i, (x, y, cmd, lbl) in enumerate([(x1 - 1.05, 0.62, True, "Comandante"), (x1 - 1.05, -0.62, True, "Piloto"),
                                            (x0 + 0.42, 0.62, False, "Especialista 1"), (x0 + 0.42, -0.62, False, "Especialista 2")]):
         z = -0.42 if cmd else -0.30
-        p = part(f"HAB.INT.A.SEAT.S{i+1}", f"Asiento {lbl}", shared(f"seat_{cmd}", lambda: seat_mesh(cmd)), sg,
-                 loc=(x, y, z), explode=("auto", 0.5), desc="Asiento de CFRP/aluminio con amortiguación, regulable en altura" + (" con controladores manuales de traslación y rotación." if cmd else "."))
+        meshes = shared(f"seat_{cmd}", lambda: seat_meshes(cmd))
+        g2 = group(f"HAB.INT.A.SEAT.S{i+1}", f"Asiento {lbl}", sg, explode=("auto", 0.5),
+                   desc="Asiento de CFRP/aluminio con amortiguación, regulable en altura" + (", con controladores manuales de traslación y rotación." if cmd else "."))
+        offs = {"FRM": (0, 0, -0.25), "CSH": (0, 0, 0.12), "HRN": (0.22, 0, 0.05), "ARM": (0, 0.22 if y > 0 else -0.22, 0.05), "FTR": (0.25, 0, -0.1)}
+        for key, plbl, pdesc in SEAT_PARTS:
+            part(f"HAB.INT.A.SEAT.S{i+1}.{key}", plbl, meshes[key], g2, loc=(x, y, z), explode=offs[key], desc=pdesc)
 
 
 # --- Bahía B: laboratorio ---------------------------------------------------
