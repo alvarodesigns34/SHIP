@@ -16,7 +16,7 @@ Proyecto de ingeniería conceptual y modelado 3D de una nave espacial **original
 | Presurizado | ≈ 139 m³ (nodo con cúpula + módulo habitable de 4 bahías) |
 | Propulsión | 4 Hall de clase 6 kW (SEP) + 4 bipropelentes de 400–500 N + 40 propulsores RCS |
 | Potencia | 2 alas enrollables de 4,4 × 16 m (≈ 48 kW al inicio de vida) |
-| Modelo | **665 piezas** en **126 grupos** (5 niveles), **1.787 tornillos** por instancia, ≈ 541 k triángulos, 61 materiales PBR |
+| Modelo | **681 piezas** en **130 grupos** (5 niveles), **1.787 tornillos** por instancia, ≈ 544 k triángulos, 61 materiales PBR |
 
 ## Entregables
 
@@ -74,7 +74,7 @@ npx vite preview   # servir la build
 
 ## Aplicación web
 
-- **Inspector:** árbol jerárquico de 791 nodos con búsqueda, ocultación por rama, ficha de cada pieza (descripción, función, materiales, envolvente, triángulos), enfocar, aislar y subir de nivel.
+- **Inspector:** árbol jerárquico de 811 nodos con búsqueda, ocultación por rama, ficha de cada pieza (descripción, función, materiales, envolvente, triángulos), enfocar, aislar y subir de nivel.
 - **Vista explosionada:** deslizador continuo de 0 a 100 % con etapas *Módulos → Sistemas → Conjuntos → Piezas*, animación reversible, guías de trayectoria y etiquetas.
 - **Sección:** plano de corte transversal, longitudinal u horizontal con posición continua.
 - **Rayos X:** transparencia de Fresnel; la selección se mantiene opaca.

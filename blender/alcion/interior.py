@@ -323,7 +323,7 @@ def _bay_A(g, x0, x1):
         keys = ("PFD", "TRAJ", "CAMERA") if i == 0 else ("CAMERA", "PFD", "ECLSS")
         for k, key in enumerate(keys):
             yy = (-0.27 + 0.27 * k)
-            Rp = Matrix.Translation((-0.105, yy, -0.18)) @ Matrix.Rotation(-0.55, 4, 'Y') @ Matrix.Rotation(-PI / 2, 4, 'Y') @ Matrix.Rotation(PI / 2, 4, 'Z')
+            Rp = Matrix.Translation((-0.125, yy, -0.185)) @ Matrix.Rotation(-0.55, 4, 'Y') @ Matrix.Rotation(-PI / 2, 4, 'Y') @ Matrix.Rotation(PI / 2, 4, 'Z')
             place(f"HAB.INT.A.CNS.C{i+1}.D{k+1}", f"Pantalla de vuelo {k+1}", screen_mesh(f"scr_{i}_{k}", 0.25, 0.34, key), sub, Wc @ Rp,
                   explode=(-0.25, 0, 0.12), desc="Pantalla táctil de 13\" de alto brillo con unidad de visualización redundante.")
     sg = group("HAB.INT.A.SEAT", "Asientos de tripulación", g, explode=(-0.6, 0, 0.5),

@@ -227,16 +227,16 @@ def sheet_cross():
     d = ImageDraw.Draw(img)
     items = [("N", "N-N", 11.05, "Nodo de proa y cúpula"), ("A", "A-A", 7.75, "Bahía A · cabina de vuelo"), ("B", "B-B", 5.72, "Bahía B · laboratorio"),
              ("C", "C-C", 3.67, "Bahía C · habitáculos y refugio"), ("D", "D-D", 1.62, "Bahía D · servicios"), ("S", "S-S", -2.9, "Módulo de servicio · depósitos")]
-    cw, ch = 900, 900
+    cw, ch = 800, 800
     for i, (k, tag, x, t) in enumerate(items):
         sub = blueprintify(os.path.join(RAW, f"xsec_{k}.png"), gain=3.0).resize((cw, ch), Image.LANCZOS)
-        gx, gy = 120 + (i % 3) * (cw + 80), 90 + (i // 3) * (ch + 0) - (0 if i < 3 else 60)
+        gx, gy = 170 + (i % 3) * (cw + 150), 110 + (i // 3) * (ch + 40)
         img.paste(sub, (gx, gy))
         d.rectangle([gx, gy, gx + cw, gy + ch], outline=(120, 160, 200), width=1)
         d.text((gx + 16, gy + 14), f"SECCIÓN {tag}", font=font(28, mono=True, bold=True), fill=ACC)
         d.text((gx + 16, gy + 52), f"X = {fmt(x)} m · {t}", font=font(22), fill=INK)
         if k in "ABCD":
-            ppm = 900 / 5.4
+            ppm = 800 / 5.4
             s = S.AISLE * ppm
             cx, cy = gx + cw / 2, gy + ch / 2 - 0.15 * ppm
             d.text((gx + 16, gy + ch - 44), f"Pasillo {fmt(S.AISLE)} × {fmt(S.AISLE)} m · casco Ø {fmt(2*S.R_P)} m", font=font(20, mono=True), fill=DIM)

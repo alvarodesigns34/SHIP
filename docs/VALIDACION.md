@@ -7,8 +7,8 @@ Este informe dice **qué se ha comprobado de verdad**, cómo se ha comprobado y 
 ### 1.1 Modelo maestro (Blender 4.2.3, `blender/build.py`)
 | Comprobación | Método | Resultado |
 |---|---|---|
-| El modelo se construye de forma determinista | Ejecución repetida de `build.py` en modo headless | 665 piezas, 126 grupos, 1.787 tornillos (por instancia) y ≈ 541 k triángulos en ≈ 9 s |
-| Jerarquía coherente | Volcado a `docs/inventario.json` y poda automática de grupos vacíos | 5 niveles (nave → módulo → sistema → conjunto → pieza), 791 nodos |
+| El modelo se construye de forma determinista | Ejecución repetida de `build.py` en modo headless | 681 piezas, 130 grupos, 1.787 tornillos (por instancia) y ≈ 544 k triángulos en ≈ 10 s |
+| Jerarquía coherente | Volcado a `docs/inventario.json` y poda automática de grupos vacíos | 5 niveles (nave → módulo → sistema → conjunto → pieza), 811 nodos |
 | Interior compatible con el casco | Trasera poligonal de los bastidores comparada con el radio libre de 2,035 m; inspección en secciones | Esquinas a ≤ 2,03 m; ningún bastidor atraviesa el isogrid en las secciones BP-06 y BP-07 |
 | Aberturas reales | Booleanas exactas: cúpula en el barril y las mantas del nodo; ventanas de nadir en piel, isogrid, MLI y panel MMOD | Visibles en las secciones y en los renders interiores |
 | Coherencia de capacidades | Volumen de los depósitos modelados → masa de propulsante | Corregida una incoherencia detectada en una iteración (4,6 → 2,4 t de bipropelente) |
@@ -42,7 +42,7 @@ Este informe dice **qué se ha comprobado de verdad**, cómo se ha comprobado y 
 10. Llamadas de grupos simétricos (alas, radiadores) apuntando al eje → dirigidas a un ala concreta.
 11. Tras salir de la Presentación, la explosión quedaba aplicada sin reflejarse en la interfaz → estado sincronizado al desmontar.
 12. En móvil, el árbol se pintaba aunque estuviera cerrado y las pestañas se desbordaban → reglas CSS específicas.
-13. Biselado que duplicaba los triángulos al biselar también la tornillería → limitado a piezas estructurales (925 k → 541 k triángulos).
+13. Biselado que duplicaba los triángulos al biselar también la tornillería → limitado a piezas estructurales (925 k → 541 k triángulos; 544 k tras dividir los asientos en subpiezas).
 14. Errata «Cúpola» → «Cúpula».
 
 ## 3. Limitaciones conocidas
