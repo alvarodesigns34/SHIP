@@ -25,6 +25,19 @@ def cutter(r, depth, center, axis='Z', seg=48):
 LAB_WINDOWS_X = (5.25, 6.20)
 
 
+def _delete_within(me, centers_xy, r, zmax=0.0):
+    """Borra las caras cuyo centro cae a menos de r (en planta X–Y) de algún centro y con z < zmax."""
+    import bmesh
+    bm = bmesh.new()
+    bm.from_mesh(me)
+    kill = [f for f in bm.faces
+            if f.calc_center_median().z < zmax and any(math.hypot(f.calc_center_median().x - cx, f.calc_center_median().y - cy) < r for cx, cy in centers_xy)]
+    bmesh.ops.delete(bm, geom=kill, context='FACES')
+    bm.to_mesh(me)
+    bm.free()
+    return me
+
+
 def shell_profile(r_in, r_out, x0, x1):
     """Perfil (r, z) de tubo de pared delgada para lathe sobre eje X."""
     return [(r_in, x0), (r_out, x0), (r_out, x1), (r_in, x1), (r_in, x0)]
@@ -489,7 +502,9 @@ def _hab_structure(hab):
         if i == 2:
             cuts = lambda: [cutter(0.205, 0.6, (x, 0, -S.R_P)) for x in LAB_WINDOWS_X]
             me = boolean_cut(me, cuts())
-            iso = boolean_cut(iso, cuts())
+            # la retícula isogrid no es una malla cerrada: la booleana exacta dejaba tapas
+            # espurias sobre la ventana; se eliminan las caras dentro del radio del hueco
+            iso = _delete_within(iso, [(x, 0.0) for x in LAB_WINDOWS_X], 0.215, zmax=0.0)
         part(f"HAB.STR.B{i+1}.SKN", f"Piel del barril {i+1}", me, bg, explode=("auto", 0.0),
              desc="Piel de 6 mm (zona de membrana) con tres soldaduras longitudinales FSW.")
         part(f"HAB.STR.B{i+1}.ISO", f"Isogrid interno del barril {i+1}", iso,
@@ -698,10 +713,12 @@ def _hab_exterior_eq(hab, panels):
     for i, x in enumerate(LAB_WINDOWS_X):
         mb = MB(f"lab_window_{i}")
         a = -PI / 2
-        mb.cyl("M_AlBare", 0.27, 0.27, 0.15, 40, center=(0, 0, 0.075), axis='Z')
-        mb.cyl("M_Glass", 0.20, 0.20, 0.03, 40, center=(0, 0, 0.16), axis='Z')
-        mb.box("M_ShieldWhite", 0.48, 0.48, 0.012, center=(-0.22, 0, 0.25), rot=Matrix.Rotation(-1.2, 4, 'Y'))
-        mb.cyl("M_Steel", 0.012, 0.012, 0.46, 10, center=(0.0, 0, 0.22), axis='Y')
+        # marco anular (antes un cilindro macizo que tapaba la vista desde el pozo)
+        mb.lathe("M_AlBare", [(0.205, 0.0), (0.27, 0.0), (0.27, 0.15), (0.205, 0.15), (0.205, 0.0)], 40, axis='Z')
+        mb.cyl("M_Glass", 0.205, 0.205, 0.03, 40, center=(0, 0, 0.16), axis='Z')
+        # contraventana MMOD abatida 90° fuera del campo de visión de la ventana
+        mb.box("M_ShieldWhite", 0.48, 0.48, 0.012, center=(-0.285, 0, 0.40), rot=Matrix.Rotation(-PI / 2, 4, 'Y'))
+        mb.cyl("M_Steel", 0.012, 0.012, 0.46, 10, center=(-0.285, 0, 0.16), axis='Y')
         mb.bolts("M_Bolt", bolt_circle((0, 0, 0.151), (0, 0, 1), 0.24, 16), 0.008, 0.006)
         p = part(f"HAB.EXT.WIN.W{i+1}", f"Ventana científica de nadir {i+1}", mb.mesh(), wg, explode=(0, 0, -0.4),
                  desc="Marco con paneles de presión redundantes y contraventana MMOD (abierta).")

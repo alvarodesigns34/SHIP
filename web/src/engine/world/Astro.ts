@@ -162,7 +162,9 @@ export class Astro {
     sg.setAttribute('mag', new THREE.BufferAttribute(mag, 1));
     sg.setAttribute('tint', new THREE.BufferAttribute(tint, 3));
     this.starMat = new THREE.ShaderMaterial({ uniforms: { gain: { value: 0.35 }, pr: { value: 1 } }, vertexShader: starVert, fragmentShader: starFrag,
-      transparent: true, blending: THREE.AdditiveBlending, depthTest: false, depthWrite: false });
+      // opaco (aditivo) para que entre en la lista opaca y se dibuje ANTES que Tierra y Luna:
+      // como transparente se pintaba encima del disco terrestre
+      transparent: false, blending: THREE.AdditiveBlending, depthTest: false, depthWrite: false });
     this.stars = new THREE.Points(sg, this.starMat);
     this.stars.frustumCulled = false;
     this.stars.renderOrder = -100;

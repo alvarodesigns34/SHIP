@@ -135,6 +135,7 @@ export class Engine {
   private holdT = 0;
   private hoverCtl: { node: PartNode; ctl: string } | null = null;
   crew = new Crew();
+  private ac = new AbortController();
   /** manos y antebrazos en primera persona */
   hands = new Hands();
   /** actividad en curso (bloquea el movimiento mientras dura) */
@@ -196,7 +197,7 @@ export class Engine {
     this.applyQuality(this.loadSettings()?.quality ?? (matchMedia('(max-width: 860px)').matches ? 'baja' : 'alta'));
     const loco = this.loadSettings()?.locomotion; if (loco === 'walk' || loco === 'float') this.player.locomotion = loco;
     this.player.onStep = (k) => this.audio.footstep(k);
-    window.addEventListener('resize', this.resize);
+    window.addEventListener('resize', this.resize, { signal: this.ac.signal });
     this.bindPointer();
     this.systems.listeners.push((a) => { this.audio.beep(a.level === 'alarm' ? 'alarm' : a.level === 'warn' ? 'warn' : 'info'); });
     this.resize();
@@ -498,7 +499,7 @@ export class Engine {
       down = { x: e.clientX, y: e.clientY, t: performance.now() };
       if (this.camAnim && this.mode === 'ENGINEERING') this.camAnim = null;
       if ((this.mode === 'INTERIOR' || this.mode === 'EVA' || (this.mode !== 'ENGINEERING' && this.mode !== 'CINEMATIC' && (this.flightCam === 'free' || this.flightCam === 'cockpit'))) && e.pointerType === 'mouse') this.input.lock();
-    });
+    }, { signal: this.ac.signal });
     el.addEventListener('pointerup', (e) => {
       if (!down) return;
       const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
@@ -514,14 +515,14 @@ export class Engine {
         if (!this.input.locked || e.pointerType !== 'mouse') this.tryInteract(e.clientX, e.clientY);
         else this.tryInteract();
       }
-    });
+    }, { signal: this.ac.signal });
     el.addEventListener('mousemove', (e) => {
       if (this.mode !== 'ENGINEERING' || e.buttons) return;
       const hit = this.pickAt(e.clientX, e.clientY);
       el.style.cursor = hit ? 'pointer' : 'grab';
       this.hoverNode = hit?.node ?? null;
       this.hoverXY = [e.clientX, e.clientY];
-    });
+    }, { signal: this.ac.signal });
   }
   hoverNode: PartNode | null = null;
   hoverXY: [number, number] = [0, 0];
@@ -1304,7 +1305,27 @@ export class Engine {
     try { localStorage.setItem('alcion-bo-settings', JSON.stringify({ quality: this.quality, bindings: this.input.bindings, invertY: this.input.invertY, sens: this.input.sensitivity, volume: this.audio.volume, sound: this.audio.mode, reduced: this.reducedMotion, dynamicRes: this.dynamicRes, locomotion: this.player.locomotion, ...extra })); } catch { /* */ }
   }
 
-  dispose() { cancelAnimationFrame(this.raf); window.removeEventListener('resize', this.resize); this.renderer.dispose(); }
+  /** Libera listeners, bucle, audio y memoria de GPU (geometrías, materiales, texturas, render targets). */
+  dispose() {
+    cancelAnimationFrame(this.raf);
+    this.ac.abort();
+    this.input.dispose();
+    this.hands.dispose();
+    this.listeners.clear();
+    try { (this.audio as any).ctx?.close?.(); } catch { /* */ }
+    const seen = new Set<unknown>();
+    const free = (o: any) => { if (!o || seen.has(o)) return; seen.add(o); o.dispose?.(); };
+    for (const sc of [this.near, this.astro.scene]) sc?.traverse((o: any) => {
+      free(o.geometry);
+      for (const m of Array.isArray(o.material) ? o.material : [o.material]) {
+        if (!m) continue;
+        for (const v of Object.values(m)) if ((v as any)?.isTexture) free(v);
+        free(m);
+      }
+    });
+    this.composer?.dispose();
+    this.renderer.dispose();
+  }
 }
 
 export { stageOf };

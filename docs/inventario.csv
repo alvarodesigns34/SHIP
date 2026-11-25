@@ -114,8 +114,8 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,FWD.STR.FRM1,Marco anular del nodo 1,part,M_AlLi,0.05x2.64x2.64,512,Marco de rigidización circunferencial (sección en T).
 3,FWD.STR.FRM2,Marco anular del nodo 2,part,M_AlLi,0.05x2.64x2.64,512,Marco de rigidización circunferencial (sección en T).
 3,FWD.STR.FRM3,Marco anular del nodo 3,part,M_AlLi,0.05x2.64x2.64,512,Marco de rigidización circunferencial (sección en T).
-1,HAB,Módulo Habitable Presurizado,group,,9.93x4.545x4.878,,"Módulo presurizado principal de Ø4,20 m y 8,2 m de barril cilíndrico; volumen presurizado total del vehículo ≈ 150 m³."
-2,HAB.EXT,Equipos exteriores del casco,group,,7.968x3.168x4.808,,"Pasamanos EVA, accesorio de agarre robótico, iluminación, ventanas de laboratorio y marcas de identidad."
+1,HAB,Módulo Habitable Presurizado,group,,9.93x4.545x5.012,,"Módulo presurizado principal de Ø4,20 m y 8,2 m de barril cilíndrico; volumen presurizado total del vehículo ≈ 150 m³."
+2,HAB.EXT,Equipos exteriores del casco,group,,7.968x3.168x4.943,,"Pasamanos EVA, accesorio de agarre robótico, iluminación, ventanas de laboratorio y marcas de identidad."
 3,HAB.EXT.GF1,Accesorio de agarre robótico (PDGF-like),part,M_AlBare;M_AlAnodBlack;M_Decal;M_Bolt;M_EVAYellow,0.36x0.36x0.345,596,Base de agarre con interfaz de potencia y datos que permite reubicar el brazo robótico.
 3,HAB.EXT.HR,Pasamanos EVA del casco,group,,7.892x1.834x4.345,,
 4,HAB.EXT.HR.H01,Pasamanos EVA 01,part,M_EVAYellow;M_Bolt,1.742x0.072x0.093,292,"Pasamanos de aluminio anodizado amarillo, carga de diseño 900 N."
@@ -137,9 +137,9 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,HAB.EXT.LGT1,Foco exterior 1,part,M_AlAnodBlack;M_NavLight,0.168x0.141x0.166,164,Foco LED orientable para EVA y operaciones robóticas.
 3,HAB.EXT.LGT2,Foco exterior 2,part,M_AlAnodBlack;M_NavLight,0.168x0.141x0.166,164,Foco LED orientable para EVA y operaciones robóticas.
 3,HAB.EXT.LGT3,Foco exterior 3,part,M_AlAnodBlack;M_NavLight,0.168x0.166x0.141,164,Foco LED orientable para EVA y operaciones robóticas.
-3,HAB.EXT.WIN,Ventanas científicas de nadir,group,,1.533x0.54x0.476,,"Dos ventanas de calidad óptica (Ø0,40 m) para observación terrestre/lunar e instrumentos."
-4,HAB.EXT.WIN.W1,Ventana científica de nadir 1,part,M_AlBare;M_Glass;M_ShieldWhite;M_Steel;M_Bolt,0.583x0.54x0.476,1384,Marco con paneles de presión redundantes y contraventana MMOD (abierta).
-4,HAB.EXT.WIN.W2,Ventana científica de nadir 2,part,M_AlBare;M_Glass;M_ShieldWhite;M_Steel;M_Bolt,0.583x0.54x0.476,1384,Marco con paneles de presión redundantes y contraventana MMOD (abierta).
+3,HAB.EXT.WIN,Ventanas científicas de nadir,group,,1.516x0.54x0.64,,"Dos ventanas de calidad óptica (Ø0,40 m) para observación terrestre/lunar e instrumentos."
+4,HAB.EXT.WIN.W1,Ventana científica de nadir 1,part,M_AlBare;M_Glass;M_ShieldWhite;M_Steel;M_Bolt,0.566x0.54x0.64,1548,Marco con paneles de presión redundantes y contraventana MMOD (abierta).
+4,HAB.EXT.WIN.W2,Ventana científica de nadir 2,part,M_AlBare;M_Glass;M_ShieldWhite;M_Steel;M_Bolt,0.566x0.54x0.64,1548,Marco con paneles de presión redundantes y contraventana MMOD (abierta).
 2,HAB.INT,Equipamiento interior presurizado,group,,8.601x3.94x4.02,,"Interior organizado en 4 bahías de 2,05 m (cabina de vuelo, laboratorio, refugio/habitáculos, servicios) más el mamparo de popa."
 3,HAB.INT.A,Bahía A — Cabina de vuelo,group,,2.064x3.94x3.94,,"Puesto de pilotaje con 4 asientos, 2 consolas de 3 pantallas y paneles de mando cenitales."
 4,HAB.INT.A.CL1,Panel de mando cenital,group,,0.99x2.21x0.93,,"Paneles de interruptores de los buses de potencia, armado de RCS y pirotecnia."
@@ -643,15 +643,15 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,HAB.RCS.Q2,Cuadrete RCS de proa 2,part,M_MLI_Gold;M_AlBare;M_BetaCloth;M_Steel;M_Nozzle,0.584x0.598x0.598,1336,Carcasa con 5 propulsores bipropelentes de clase 100–200 N y válvulas de doble asiento.
 3,HAB.RCS.Q3,Cuadrete RCS de proa 3,part,M_MLI_Gold;M_AlBare;M_BetaCloth;M_Steel;M_Nozzle,0.584x0.598x0.598,1336,Carcasa con 5 propulsores bipropelentes de clase 100–200 N y válvulas de doble asiento.
 3,HAB.RCS.Q4,Cuadrete RCS de proa 4,part,M_MLI_Gold;M_AlBare;M_BetaCloth;M_Steel;M_Nozzle,0.584x0.598x0.598,1336,Carcasa con 5 propulsores bipropelentes de clase 100–200 N y válvulas de doble asiento.
-2,HAB.STR,Estructura primaria presurizada,group,,9.92x4.32x4.56,,"Casco presurizado de Al-Li 2195: 4 barriles con isogrid mecanizado interno, cono adaptador, mamparo de popa elipsoidal y 5 marcos anulares."
+2,HAB.STR,Estructura primaria presurizada,group,,9.92x4.32x4.32,,"Casco presurizado de Al-Li 2195: 4 barriles con isogrid mecanizado interno, cono adaptador, mamparo de popa elipsoidal y 5 marcos anulares."
 3,HAB.STR.B1,Barril presurizado 1,group,,2.03x4.2x4.2,,Barril de 2.05 m entre X=0.60 y X=2.65 m.
 4,HAB.STR.B1.ISO,Isogrid interno del barril 1,part,M_AlLi,2.002x4.189x4.183,5568,Retícula triangular mecanizada (nervios de 12 mm × 35 mm) que proporciona rigidez frente a pandeo con mínima masa.
 4,HAB.STR.B1.SKN,Piel del barril 1,part,M_AlLi;M_AlBare,2.03x4.2x4.2,612,Piel de 6 mm (zona de membrana) con tres soldaduras longitudinales FSW.
 3,HAB.STR.B2,Barril presurizado 2,group,,2.03x4.2x4.2,,Barril de 2.05 m entre X=2.65 y X=4.70 m.
 4,HAB.STR.B2.ISO,Isogrid interno del barril 2,part,M_AlLi,2.002x4.189x4.183,5568,Retícula triangular mecanizada (nervios de 12 mm × 35 mm) que proporciona rigidez frente a pandeo con mínima masa.
 4,HAB.STR.B2.SKN,Piel del barril 2,part,M_AlLi;M_AlBare,2.03x4.2x4.2,612,Piel de 6 mm (zona de membrana) con tres soldaduras longitudinales FSW.
-3,HAB.STR.B3,Barril presurizado 3,group,,2.03x4.2x4.5,,Barril de 2.05 m entre X=4.70 y X=6.75 m.
-4,HAB.STR.B3.ISO,Isogrid interno del barril 3,part,M_AlLi,0.731x2.287x3.067,212,Retícula triangular mecanizada (nervios de 12 mm × 35 mm) que proporciona rigidez frente a pandeo con mínima masa.
+3,HAB.STR.B3,Barril presurizado 3,group,,2.03x4.2x4.2,,Barril de 2.05 m entre X=4.70 y X=6.75 m.
+4,HAB.STR.B3.ISO,Isogrid interno del barril 3,part,M_AlLi,2.002x4.189x4.183,5512,Retícula triangular mecanizada (nervios de 12 mm × 35 mm) que proporciona rigidez frente a pandeo con mínima masa.
 4,HAB.STR.B3.SKN,Piel del barril 3,part,M_AlLi;M_AlBare,2.03x4.2x4.2,1036,Piel de 6 mm (zona de membrana) con tres soldaduras longitudinales FSW.
 3,HAB.STR.B4,Barril presurizado 4,group,,2.03x4.2x4.2,,Barril de 2.05 m entre X=6.75 y X=8.80 m.
 4,HAB.STR.B4.ISO,Isogrid interno del barril 4,part,M_AlLi,2.002x4.189x4.183,5568,Retícula triangular mecanizada (nervios de 12 mm × 35 mm) que proporciona rigidez frente a pandeo con mínima masa.

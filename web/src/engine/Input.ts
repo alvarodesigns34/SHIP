@@ -40,18 +40,22 @@ export class Input {
   enabled = true;
   private el: HTMLElement;
   listening: ((code: string) => void) | null = null;
+  /** todos los listeners se registran con esta señal y se retiran juntos en dispose() */
+  private ac = new AbortController();
+  dispose() { this.ac.abort(); if (document.pointerLockElement === this.el) document.exitPointerLock(); }
 
   constructor(el: HTMLElement, saved?: Partial<Record<Action, string[]>>) {
     this.el = el;
     this.bindings = { ...DEFAULT_BINDINGS, ...(saved ?? {}) };
-    window.addEventListener('keydown', this.onKey);
-    window.addEventListener('keyup', this.onKeyUp);
-    window.addEventListener('blur', () => this.down.clear());
-    document.addEventListener('pointerlockchange', () => (this.locked = document.pointerLockElement === this.el));
+    const signal = this.ac.signal;
+    window.addEventListener('keydown', this.onKey, { signal });
+    window.addEventListener('keyup', this.onKeyUp, { signal });
+    window.addEventListener('blur', () => this.down.clear(), { signal });
+    document.addEventListener('pointerlockchange', () => (this.locked = document.pointerLockElement === this.el), { signal });
     window.addEventListener('mousemove', (e) => {
       if (this.locked) { this.mouseDX += e.movementX; this.mouseDY += e.movementY; }
-    });
-    el.addEventListener('wheel', (e) => { this.wheel += Math.sign(e.deltaY); }, { passive: true });
+    }, { signal });
+    el.addEventListener('wheel', (e) => { this.wheel += Math.sign(e.deltaY); }, { passive: true, signal });
   }
 
   private isTyping(e: KeyboardEvent) {

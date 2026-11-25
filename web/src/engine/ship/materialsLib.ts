@@ -101,8 +101,11 @@ export function enhanceMaterial(src: THREE.Material): THREE.Material {
     m.roughness = 0.5; m.metalness = 0.0;
   } else if (has('M_Glass') || has('M_Lens')) {
     const p = toPhysical(m);
+    // vidrio: sin componente difusa (sólo reflexión especular); con albedo blanco y opacidad
+    // parcial las luces interiores lo convertían en un velo gris que tapaba la Tierra
+    p.color.set(0x000000);
     p.transparent = true; p.opacity = has('M_GlassInner') ? 0.16 : 0.24;
-    p.roughness = 0.02; p.metalness = 0; p.envMapIntensity = 2.0; p.depthWrite = false; p.ior = 1.46; p.reflectivity = 0.55;
+    p.roughness = 0.02; p.metalness = 0; p.envMapIntensity = has('M_GlassInner') ? 0.6 : 2.0; p.depthWrite = false; p.ior = 1.46; p.reflectivity = 0.55;
     p.userData.glass = true;
     m = p as unknown as THREE.MeshStandardMaterial;
   } else if (has('M_Screen')) {
