@@ -23295,7 +23295,7 @@
       "label": "Almacenamiento y distribución de propulsante",
       "kind": "group",
       "desc": "Bipropelente MMH/MON-3 en 4 depósitos esféricos de titanio con PMD; xenón supercrítico en COPV central; helio presurizante en 2 COPV esféricos.",
-      "func": "Almacenar ~4,6 t de bipropelente y ~1,1 t de xenón (hipótesis de dimensionado)",
+      "func": "Almacenar ~2,4 t de bipropelente (4 esferas de 0,59 m³ al 90 %) y ~2,6 t de xenón (COPV de 1,75 m³ a ~1,5 t/m³); cifras derivadas de la geometría modelada",
       "depth": 2,
       "dims_m": [
        4.354,

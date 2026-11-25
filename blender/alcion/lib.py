@@ -122,10 +122,28 @@ def part(code, label, me, parent, mat=None, loc=(0, 0, 0), rot=(0, 0, 0),
 # Constructores de mallas (bmesh)
 # ---------------------------------------------------------------------------
 
+def box_uv(bm):
+    """UV de proyección cúbica en metros (1 unidad UV = 1 m)."""
+    uv = bm.loops.layers.uv.verify()
+    for f in bm.faces:
+        n = f.normal
+        ax = max(range(3), key=lambda i: abs(n[i]))
+        for loop in f.loops:
+            co = loop.vert.co
+            if ax == 0:
+                loop[uv].uv = (co.y, co.z)
+            elif ax == 1:
+                loop[uv].uv = (co.x, co.z)
+            else:
+                loop[uv].uv = (co.x, co.y)
+
+
 def _finish(bm, name, smooth=30, mats=None):
     me = bpy.data.meshes.new(name)
     bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-6)
     bm.normal_update()
+    if not bm.loops.layers.uv:
+        box_uv(bm)
     bm.to_mesh(me)
     bm.free()
     if smooth is not None:

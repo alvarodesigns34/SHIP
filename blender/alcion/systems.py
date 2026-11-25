@@ -142,7 +142,7 @@ def _sphere_tank_mesh(name, r, mat, ring=True):
 def _svc_tanks(svc):
     g = group("SVC.PRP", "Almacenamiento y distribución de propulsante", svc, explode=(0, 0, 0),
               desc="Bipropelente MMH/MON-3 en 4 depósitos esféricos de titanio con PMD; xenón supercrítico en COPV central; helio presurizante en 2 COPV esféricos.",
-              func="Almacenar ~4,6 t de bipropelente y ~1,1 t de xenón (hipótesis de dimensionado)")
+              func="Almacenar ~2,4 t de bipropelente (4 esferas de 0,59 m³ al 90 %) y ~2,6 t de xenón (COPV de 1,75 m³ a ~1,5 t/m³); cifras derivadas de la geometría modelada")
     tk = group("SVC.PRP.BIP", "Depósitos de bipropelente", g, explode=("radial", 0.0))
     for i, a in enumerate([PI / 4, 3 * PI / 4, 5 * PI / 4, 7 * PI / 4]):
         fuel = i % 2 == 0

@@ -243,9 +243,27 @@ print("[build] guardado", blend_path)
 
 if DO_EXPORT:
     os.makedirs(os.path.join(ROOT, "export"), exist_ok=True)
+    common = dict(export_format='GLB', export_extras=True, export_apply=True, export_yup=True,
+                  export_cameras=False, export_lights=False, export_image_format='AUTO',
+                  export_texcoords=True, export_normals=True)
     glb = os.path.join(ROOT, "export", "alcion_hx4.glb")
-    bpy.ops.export_scene.gltf(filepath=glb, export_format='GLB', export_extras=True, export_apply=True,
-                              export_yup=True, export_cameras=False, export_lights=False,
-                              export_image_format='AUTO', export_texcoords=True, export_normals=True)
+    bpy.ops.export_scene.gltf(filepath=glb, **common)
     print("[build] exportado", glb, os.path.getsize(glb) // 1024, "KiB")
+    # división para carga progresiva: exterior (inmediato) + interior (diferido)
+    INTERIOR_ROOTS = {"HAB.INT", "HAB.UTL", "FWD.INT"}
+
+    def under_interior(o):
+        p = o
+        while p is not None:
+            if p.name in INTERIOR_ROOTS:
+                return True
+            p = p.parent
+        return False
+
+    for part_name, want in (("exterior", False), ("interior", True)):
+        for o in bpy.data.objects:
+            o.select_set(under_interior(o) == want or (want and o.name in ("ALCION", "HAB", "FWD")))
+        path = os.path.join(ROOT, "export", f"alcion_hx4_{part_name}.glb")
+        bpy.ops.export_scene.gltf(filepath=path, use_selection=True, **common)
+        print("[build] exportado", path, os.path.getsize(path) // 1024, "KiB")
 print(f"[build] total {time.time()-t0:.1f}s")
