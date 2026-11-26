@@ -51,12 +51,41 @@
 | `15_exploded` | 287 | 834.016 | Explosión exterior correcta; pendiente incorporar piezas interiores en Ola 3. |
 
 ## 3. Registro de olas
-- **Ola 0 (línea base)**: completada. Capturas en `docs/ascension/before/` y métricas registradas arriba.
-- **Ola 1 ("imagen")**: *en curso* (H1 arte interior + materiales + horneado; H2 pipeline, box-projected env maps, auto-exposición GPU, GTAO/AA medido y perfiles; H3 Tierra/Luna/estrellas cinematográficas + exterior civil detallado + pantallas de cabina).
-- **Ola 2 ("sentir")**: pendiente.
+- **Ola 0 (línea base)**: completada (`5ca14b1`). Capturas en `docs/ascension/before/` y métricas registradas arriba.
+- **Ola 1 ("imagen")**: completada. Integrados H3 (entorno espacial + casco civil + pantallas MFD), H2 (pipeline auto-exposición GPU + AO ½ res + FXAA 3.11 + sondas locales + perfiles) y H1 (arte interior en las 5 estancias + atlas 160 teselas + desgaste PBR + contrato `boxProbe` + horneado Cycles+OIDN). Evidencias en `docs/ascension/after_ola1/`.
+- **Ola 2 ("sentir")**: *en curso* (H2 presencia, controlador, microgravedad con impulso, transiciones animadas y manos agarrando mandos al pilotar; H3 reloj único, misiones guiadas, atraque con retícula COAS, brazo robótico, alarmas y audio por estancia realista/cinematográfico; H1 objetos interactivos físicos con `ctl`/`pose` para actividades, corrección de normales de quads MFD y horneado definitivo 2048² estancia por estancia).
 - **Ola 3 ("producto")**: pendiente.
 - **Ola 4 (integración final y publicación)**: pendiente.
 
-## 4. Pendientes honestos y riesgos
+## 4. Resultados medidos · Ola 1 («imagen»)
+
+### Pruebas tras integración (H1 + H2 + H3)
+- `npm run build` (`web/`): **0 errores TS/Vite** (5,07 s).
+- `web/tests/rebirth.cjs`: **25/26 PASS** hasta el corte automático de 600 s por contención de SwiftShader en 2 vCPUs (faltando sólo imprimir la aserción final `Consola: sin errores en móvil`; todos los tramos de arranque, gráficos, teclado, foco, 800 pasos de colisión mín. `0,153 m`, microgravedad, interruptor `BAT`, asiento, 4 ciclos de modo, presupuestos `92` y `82` llamadas, `0` escrituras de matrices, EVA, persistencia y palanca táctil móvil pasaron sin errores).
+  - Arranque exterior listo: **5.201 ms** (antes 8.617 ms).
+  - Arranque interior listo: **19.050 ms** (antes 12.288 ms).
+- `web/tests/functional.cjs`: **20/22 PASS** (0 errores de consola/página, 0 HTTP):
+  - `02 Lightmap Cycles + UV1`: **FAIL temporal** (`sizes: [1024×5]` frente a umbral `≥ 2048`); H1 usó 1024² en Ola 1 para evitar el corte de 600 s en 2 vCPUs. Se resolverá genuinamente al cierre de Ola 2 horneando cada estancia por separado a **2048²** con `--rooms X --reuse-uv`.
+  - `11 Cabina sentada + manos`: **FAIL preexistente** desde Rebirth `6eb8d67`; se resolverá en Ola 2 al recuperar las manos agarrando los controladores.
+
+### Comparativa medida (`docs/ascension/before/` → `docs/ascension/after_ola1/`, 1280×760, perfil `alta`)
+| Toma | Antes (llamadas / tris) | Ola 1 (llamadas / tris) | Qué mejoró visualmente |
+|---|---:|---:|---|
+| `01_ext_general` | 287 / 834k | 382 / 965k | Canalizaciones umbilicales, cintas térmicas Kapton, trampillas de inspección, balizas y micro-PBR. *(Anotado para Ola 2: reducir llamadas en ingeniería exterior sin corte).* |
+| `02_ext_closeup` | 261 / 682k | 338 / 788k | MLI dorado arrugado, trampilla con cierres cuarto de vuelta, juntas y biseles en paneles MMOD, AO de contacto en cúpula y marcos. |
+| `04_cockpit_seated` | 213 / 298k | **229 / 581k** | Salto radical: 3 MFD + copiloto todas encendidas y nítidas, glareshield con avisadores luminosos y bloom suave, subpanel GNC, mamparo de proa iluminado con cajas/cables, fondo del nodo visible, reflejos `boxProbe` y Tierra nítida por ventanas. |
+| `05_cockpit_overview` | 378 / 549k | **213 / 394k (−43,7 %)** | Las 6 MFD encendidas, 2 asientos esculpidos con asidero bermellón/nervios/reposacabezas, sidestick + THC diferenciados, mamparo de proa arquitectónico. |
+| `06_lab` | 288 / 441k | **234 / 518k (−18,8 %)** | Guantera inclinada con esclusa lateral y panel iluminado, anclajes de pies bermellón, congeladores con marcos/tiradores, pantallas auxiliares activas. |
+| `07_crew_quarters` | 82 / 248k | 124 / 306k | Sacos acolchados en 9 baffles con hebillas, cortinas recogidas con anillas, consola personal empotrada, lámpara articulada, bolsillo con cuaderno/auriculares. |
+| `08_galley_services` | 66 / 189k | 94 / 202k | 12 bolsas CTB en 3 tonos con correas/cremallera/asas, mesa con reborde/vaso/tableta, calentador biselado y dispensador de agua con nicho y bolsa acoplada. |
+| `09_corridor_aft` | 170 / 558k | 253 / 672k | Cámara de cultivo con vidrio transparente y 10 plantas iluminadas, microscopio binocular, cicloergómetro rehecho al fondo, reflejos localizados en techo y AO limpio. |
+| `10_cupola` | 47 / 76k | 60 / 83k | Pasamanos perimetral con remates bermellón, manetas en contraventanas y cámara DSLR en brazo articulado. |
+| `11_node` | 71 / 180k | 102 / 217k | Consola RWS con 2 mandos y 2 pantallas activas, escotilla IDSS con volante/pestillos/mirilla, panel O₂/N₂ con 2 manómetros y conductos. |
+| `13_earth_orbit` | 161 / 482k | **86 / 530k (−46,6 %)** | Tierra 420 km con microdetalle 3D, océano GGX con oleaje realista, nubes con sombra proyectada y limbo atmosférico zafiro nítido. |
+| `14_earth_window` | 58 / 253k | 70 / 310k | Ventanas nadir despejadas con detalle terrestre mejorado. |
+
+## 5. Pendientes honestos y riesgos
 - Sin GPU dedicada en el entorno: p95 en GPU real a 1080p **no puede medirse** en este contenedor y se declarará así sin inventar cifras.
-- Con 2 vCPUs, el horneado completo en Cycles (`bake_rebirth.py`) y las suites Playwright en SwiftShader requieren planificación cuidadosa (tandas pequeñas para `compare_rebirth.cjs` y muestreo adaptativo + OIDN en `bake_rebirth.py`).
+- Con 2 vCPUs, cada estancia a `2048²` en Cycles debe hornearse en invocación separada (`--rooms X --reuse-uv`) para mantenerse con holgura bajo el límite de 600 s por comando.
+- Anotado para Ola 2 (`Engine.ts`): en modo `ENGINEERING` sin corte ni rayos X, evitar renderizar subpiezas interiores no visibles para volver a ≤ 290 llamadas en `01_ext_general` y reducir tiempo de `rebirth.cjs` en SwiftShader.
+- Anotado para Ola 3 (`App.tsx`/`styles.css`): eliminar el solape de etiquetas 3D en vista general de ingeniería (`01_ext_general`).
