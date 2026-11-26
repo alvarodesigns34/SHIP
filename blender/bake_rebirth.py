@@ -2,16 +2,17 @@
 ALCIÓN HX-4 · REBIRTH — horneado de iluminación interior por estancias y exportación
 del activo inmersivo de tiempo real.
 
-Uso: python3 blender/bake_rebirth.py [--samples 160] [--rooms A,B] [--res 1024] [--no-bake]
+Uso: python3 blender/bake_rebirth.py [--samples 96] [--rooms A,B] [--res 2048] [--no-bake]
 
 1. Abre el modelo maestro y crea las luces de área que representan las luminarias.
 2. Para cada estancia (propiedad `room` de las piezas): segundo canal UV "LM"
    (smart project + empaquetado conjunto de todas las piezas de la estancia).
 3. Hornea en Cycles la irradiancia difusa (directa + indirecta, sin albedo) de las
-   luminarias interiores. La luz solar y terrestre NO se hornea: la aporta el motor
-   en tiempo real con sombras, de modo que no hay contribuciones duplicadas.
-4. Guarda web/public/textures/lm/lm_<estancia>.png (sRGB, escala LM_SCALE) y exporta
-   export/alcion_interior_rt.glb con TEXCOORD_1 = LM.
+   luminarias interiores (aislando BVH interior y luces de estancias vecinas para máxima
+   velocidad en CPU sin pérdida física). La luz solar y terrestre NO se hornea: la aporta
+   el motor en tiempo real con sombras, de modo que no hay contribuciones duplicadas.
+4. Aplica filtro antifireflies + OIDN, guarda web/public/textures/lm/lm_<estancia>.webp
+   (sRGB, escala LM_SCALE) y exporta export/alcion_interior_rt.glb con TEXCOORD_1 = LM.
 """
 import sys, os, math, json, time
 import bpy
@@ -27,24 +28,40 @@ def arg(name, default):
     return argv[argv.index(name) + 1] if name in argv else default
 
 
-SAMPLES = int(arg('--samples', '160'))
-RES = int(arg('--res', '1024'))
+SAMPLES = int(arg('--samples', '96'))
+RES = int(arg('--res', '2048'))
 ROOMS = arg('--rooms', '')
 DO_BAKE = '--no-bake' not in argv
+DO_EXPORT = '--no-export' not in argv
+REUSE_UV = '--reuse-uv' in argv
 LM_SCALE = 4.0     # valor lineal almacenado = irradiancia / LM_SCALE (sRGB 8 bits)
 OUT_TEX = os.path.join(ROOT, 'web', 'public', 'textures', 'lm')
 os.makedirs(OUT_TEX, exist_ok=True)
 
 bpy.ops.wm.open_mainfile(filepath=os.path.join(HERE, 'ALCION_HX4_master.blend'))
 import alcion.habitat as habitat
+# Eliminar luces antiguas si el .blend ya había sido horneado parcialmente
+old_coll = bpy.data.collections.get("BAKE_LIGHTS")
+if old_coll:
+    for o in list(old_coll.objects):
+        bpy.data.objects.remove(o, do_unlink=True)
 lights = habitat.bake_lights()
+
 sc = bpy.context.scene
 sc.render.engine = 'CYCLES'
 sc.cycles.device = 'CPU'
 sc.cycles.samples = SAMPLES
+sc.cycles.use_adaptive_sampling = True
+sc.cycles.adaptive_threshold = 0.025
+sc.cycles.adaptive_min_samples = 16
 sc.cycles.use_denoising = False
-sc.cycles.max_bounces = 6
-sc.cycles.diffuse_bounces = 4
+sc.cycles.use_light_tree = True
+sc.cycles.max_bounces = 4
+sc.cycles.diffuse_bounces = 3
+sc.cycles.glossy_bounces = 0
+sc.cycles.transmission_bounces = 1
+sc.cycles.volume_bounces = 0
+sc.cycles.transparent_max_bounces = 2
 sc.cycles.sample_clamp_indirect = 4.0
 sc.cycles.sample_clamp_direct = 0.0
 sc.render.bake.margin = 12
@@ -60,8 +77,28 @@ for ob in bpy.data.objects:
     if ob.type != 'MESH' or 'room' not in ob:
         continue
     rooms.setdefault(ob['room'], []).append(ob)
-wanted = ROOMS.split(',') if ROOMS else sorted(rooms)
-NO_LM = {'R_Glass', 'R_LED', 'R_LightPanel', 'R_Screen', 'R_Indicator'}
+wanted = [r.strip() for r in ROOMS.split(',') if r.strip()] if ROOMS else sorted(rooms)
+NO_LM = {'R_Glass', 'R_LED', 'R_LightPanel', 'R_Screen', 'R_Indicator', 'R_Warning', 'R_Alarm'}
+# Desactivar MIS de 3000+ triángulos emisivos diminutos: las luces AREA de bake_lights() aportan la irradiancia limpia
+for mn in ('R_LED', 'R_LightPanel', 'R_Screen', 'R_Indicator', 'R_Warning', 'R_Alarm'):
+    mat = bpy.data.materials.get(mn)
+    if mat and hasattr(mat, 'cycles'):
+        mat.cycles.emission_sampling = 'NONE'
+ADJ = {
+    'A': {'A', 'B', 'N'},
+    'B': {'A', 'B', 'C'},
+    'C': {'B', 'C', 'D'},
+    'D': {'C', 'D'},
+    'N': {'A', 'N'},
+}
+
+# Ocultar geometría exterior lejana durante el horneado interior para reducir el BVH a la mitad
+hidden_ext = []
+for ob in bpy.data.objects:
+    if ob.type == 'MESH' and 'room' not in ob and not ob.name.startswith('FWD.CUP'):
+        if not ob.hide_render:
+            ob.hide_render = True
+            hidden_ext.append(ob)
 
 
 def lm_eligible(ob):
@@ -90,7 +127,7 @@ def ensure_lm_uv(obs):
             me.uv_layers.new(name='LM')
     bm = bmesh.new()
     spans = []
-    SKIP = {'R_Backing', 'R_LED', 'R_LightPanel', 'R_Glass', 'R_Screen'}
+    SKIP = {'R_Backing', 'R_LED', 'R_LightPanel', 'R_Glass', 'R_Screen', 'R_Warning', 'R_Alarm'}
     for ob in obs:
         n0 = len(bm.faces)
         tmp = ob.data.copy()
@@ -123,8 +160,6 @@ def ensure_lm_uv(obs):
     bpy.ops.uv.smart_project(angle_limit=math.radians(66), island_margin=0.0045, area_weight=0.0, scale_to_bounds=False)
     bpy.ops.object.mode_set(mode='OBJECT')
     src = comb.uv_layers['LM'].data
-    # copia por bucles (loops): mismo orden de caras y bucles que el bmesh combinado
-    li = 0
     loop_start = [p.loop_start for p in comb.polygons]
     for ob, f0, f1, keep in spans:
         dst = ob.data.uv_layers['LM'].data
@@ -145,12 +180,18 @@ def ensure_lm_uv(obs):
 
 
 def bake_room(key, obs, res):
+    # Activar sólo las luces de esta estancia y sus vecinas inmediatas
+    active_bays = ADJ.get(key, {key})
+    for l_ob in lights:
+        l_ob.hide_render = l_ob.get('bay', 'A') not in active_bays
     img = bpy.data.images.new(f'lm_{key}', res, res, alpha=False, float_buffer=True)
     nodes_added = []
+    seen_mats = set()
     for ob in obs:
         for m in ob.data.materials:
-            if not m or not m.use_nodes:
+            if not m or not m.use_nodes or m.name in seen_mats:
                 continue
+            seen_mats.add(m.name)
             nt = m.node_tree
             for n in nt.nodes:
                 n.select = False
@@ -162,26 +203,46 @@ def bake_room(key, obs, res):
             tex.select = True
             nt.nodes.active = tex
             nodes_added.append((nt, tex, uvn))
+    # Unir copias temporales en un solo objeto para realizar 1 sola pasada de Cycles y 1 sola dilatación de margen
+    tmp_obs = []
+    for ob in obs:
+        me_cp = ob.data.copy()
+        me_cp.transform(ob.matrix_world)
+        if 'LM' in me_cp.uv_layers:
+            me_cp.uv_layers.active = me_cp.uv_layers['LM']
+        to = bpy.data.objects.new(f'_bk_{ob.name}', me_cp)
+        bpy.context.scene.collection.objects.link(to)
+        tmp_obs.append(to)
+        ob.hide_render = True
     bpy.ops.object.select_all(action='DESELECT')
-    for ob in obs:
-        ob.select_set(True)
-    bpy.context.view_layer.objects.active = obs[0]
-    for ob in obs:
-        ob.data.uv_layers.active = ob.data.uv_layers['LM']
+    for to in tmp_obs:
+        to.select_set(True)
+    bpy.context.view_layer.objects.active = tmp_obs[0]
+    if len(tmp_obs) > 1:
+        bpy.ops.object.join()
+    joined = bpy.context.view_layer.objects.active
+    joined.data.uv_layers.active = joined.data.uv_layers['LM']
     t0 = time.time()
+    print(f'[bake] iniciando {key}: {len(obs)} piezas (unidas en 1 malla), {res}², {SAMPLES} muestras (luces {sorted(active_bays)})...', flush=True)
     bpy.ops.object.bake(type='DIFFUSE', pass_filter={'DIRECT', 'INDIRECT'}, margin=12, use_clear=True)
-    print(f'[bake] {key}: {len(obs)} piezas, {res}² en {time.time()-t0:.1f}s', flush=True)
+    dt = time.time() - t0
+    print(f'[bake] {key}: {len(obs)} piezas, {res}² en {dt:.1f}s', flush=True)
+    joined_me = joined.data
+    bpy.data.objects.remove(joined, do_unlink=True)
+    bpy.data.meshes.remove(joined_me)
     for ob in obs:
+        ob.hide_render = False
         ob.data.uv_layers.active = ob.data.uv_layers['UVMap']
     px = np.array(img.pixels[:], dtype=np.float32).reshape(res, res, 4)
     for nt, tex, uvn in nodes_added:
         nt.nodes.remove(tex)
         nt.nodes.remove(uvn)
-    return img, px
+    return img, px, dt
 
 
 def denoise(px, mask, key='x'):
     """Antifireflies (mediana 3×3) + OIDN (nodo Denoise del compositor de Blender) sobre datos HDR."""
+    t0 = time.time()
     rgb = px[..., :3].copy()
     lum = rgb.mean(-1)
     stack = np.stack([np.roll(np.roll(lum, dy, 0), dx, 1) for dy in (-1, 0, 1) for dx in (-1, 0, 1)])
@@ -216,6 +277,7 @@ def denoise(px, mask, key='x'):
     sc.compositing_node_group = None
     bpy.data.node_groups.remove(tree)
     bpy.data.images.remove(out); bpy.data.images.remove(src)
+    print(f'[bake] OIDN {key} en {time.time()-t0:.1f}s', flush=True)
     if not np.isfinite(res).all() or res.mean() <= 0:
         print('[bake] OIDN falló; se conserva el horneado filtrado', flush=True)
         return rgb
@@ -230,42 +292,60 @@ def save_png(key, px):
     im = Image.fromarray((np.flipud(srgb) * 255 + 0.5).astype(np.uint8), 'RGB')
     path = os.path.join(OUT_TEX, f'lm_{key}.webp')
     im.save(path, 'WEBP', quality=90, method=6)
-    print('[bake] guardado', path, os.path.getsize(path) // 1024, 'KiB', 'max', float(px[..., :3].max()), 'p99', float(np.percentile(px[..., :3], 99)))
+    print('[bake] guardado', path, os.path.getsize(path) // 1024, 'KiB', 'max', float(px[..., :3].max()), 'p99', float(np.percentile(px[..., :3], 99)), flush=True)
 
 
+lm_json_path = os.path.join(OUT_TEX, 'lm.json')
 report = {}
+if ROOMS and os.path.exists(lm_json_path):
+    try:
+        with open(lm_json_path) as f:
+            report = json.load(f).get('rooms', {})
+    except Exception:
+        report = {}
+
 for key in wanted:
     obs = [o for o in rooms.get(key, []) if lm_eligible(o)]
     if not obs:
         continue
-    ensure_lm_uv(obs)
+    if not (REUSE_UV and all('LM' in o.data.uv_layers for o in obs)):
+        t_uv = time.time()
+        ensure_lm_uv(obs)
+        print(f'[bake] UV LM {key}: {len(obs)} piezas en {time.time()-t_uv:.1f}s', flush=True)
     for o in obs:
         o['lm'] = key
     if DO_BAKE:
         res = RES
-        img, px = bake_room(key, obs, res)
+        img, px, dt = bake_room(key, obs, res)
         mask = (px[..., 3:4] > 0).astype(np.float32) if px[..., 3].min() < 1 else np.ones_like(px[..., :1])
         px[..., :3] = denoise(px, mask, key)
         save_png(key, px)
-        report[key] = {'objects': len(obs), 'res': res, 'max': float(px[..., :3].max())}
+        report[key] = {'objects': len(obs), 'res': res, 'samples': SAMPLES, 'bake_s': round(dt, 1), 'max': float(px[..., :3].max())}
 
-# exportación del activo inmersivo (todas las piezas con 'room')
-bpy.ops.object.select_all(action='DESELECT')
-for key, obs in rooms.items():
-    for o in obs:
-        o.select_set(True)
-        p = o.parent
-        while p is not None:
-            p.select_set(True)
-            p = p.parent
-for o in bpy.data.objects:
-    if o.name in ('ALCION', 'HAB', 'FWD'):
-        o.select_set(True)
-glb = os.path.join(ROOT, 'export', 'alcion_interior_rt.glb')
-bpy.ops.export_scene.gltf(filepath=glb, export_format='GLB', use_selection=True, export_extras=True, export_apply=True, export_yup=True,
-                          export_cameras=False, export_lights=False, export_texcoords=True, export_normals=True, export_materials='EXPORT',
-                          export_image_format='NONE')
-print('[bake] exportado', glb, os.path.getsize(glb) // 1024, 'KiB')
-bpy.ops.wm.save_as_mainfile(filepath=os.path.join(HERE, 'ALCION_HX4_master.blend'), compress=True)
-with open(os.path.join(OUT_TEX, 'lm.json'), 'w') as f:
+# Restaurar visibilidad de objetos exteriores y luces antes de guardar/exportar
+for ob in hidden_ext:
+    ob.hide_render = False
+for l_ob in lights:
+    l_ob.hide_render = False
+
+if DO_EXPORT:
+    # exportación del activo inmersivo (todas las piezas con 'room')
+    bpy.ops.object.select_all(action='DESELECT')
+    for key, obs in rooms.items():
+        for o in obs:
+            o.select_set(True)
+            p = o.parent
+            while p is not None:
+                p.select_set(True)
+                p = p.parent
+    for o in bpy.data.objects:
+        if o.name in ('ALCION', 'HAB', 'FWD'):
+            o.select_set(True)
+    glb = os.path.join(ROOT, 'export', 'alcion_interior_rt.glb')
+    bpy.ops.export_scene.gltf(filepath=glb, export_format='GLB', use_selection=True, export_extras=True, export_apply=True, export_yup=True,
+                              export_cameras=False, export_lights=False, export_texcoords=True, export_normals=True, export_materials='EXPORT',
+                              export_image_format='NONE')
+    print('[bake] exportado', glb, os.path.getsize(glb) // 1024, 'KiB', flush=True)
+    bpy.ops.wm.save_as_mainfile(filepath=os.path.join(HERE, 'ALCION_HX4_master.blend'), compress=True)
+with open(lm_json_path, 'w') as f:
     json.dump({'scale': LM_SCALE, 'rooms': report}, f, indent=1)
