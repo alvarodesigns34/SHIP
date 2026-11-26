@@ -103,9 +103,41 @@ function createMats() {
   const green = new THREE.MeshStandardMaterial({ color: 0x103010, roughness: 0.35, emissive: 0x35ff6a, emissiveIntensity: 2.8 });
   const red = new THREE.MeshStandardMaterial({ color: 0x301010, roughness: 0.35, emissive: 0xff3624, emissiveIntensity: 2.8 });
   const white_led = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.35, emissive: 0xffffff, emissiveIntensity: 3.2 });
+  const cyan_led = new THREE.MeshStandardMaterial({ color: 0x0a2230, roughness: 0.32, emissive: 0x3ad6ff, emissiveIntensity: 2.1 });
   const orange = new THREE.MeshStandardMaterial({ color: 0xc84b20, roughness: 0.42, metalness: 0.05 });
   const optics = new THREE.MeshPhysicalMaterial({ color: 0x06101e, metalness: 0.1, roughness: 0.04, clearcoat: 1.0, reflectivity: 0.9 });
-  return { white, grey, dark, gold, silver, solar, green, red, white_led, orange, optics };
+
+  // Placa trasera de alto contraste para la diana óptica COAS 3D (blanco/negro/bermellón)
+  const coasCv = document.createElement('canvas');
+  coasCv.width = 256; coasCv.height = 256;
+  const cc = coasCv.getContext('2d')!;
+  cc.fillStyle = '#0c0f14'; cc.fillRect(0, 0, 256, 256);
+  cc.strokeStyle = '#f2f5f8'; cc.lineWidth = 10; cc.strokeRect(9, 9, 238, 238);
+  // Retícula concéntrica de paralaje (2° y 5°)
+  cc.strokeStyle = '#d8e0e8'; cc.lineWidth = 3;
+  cc.beginPath(); cc.arc(128, 128, 92, 0, Math.PI * 2); cc.stroke();
+  cc.strokeStyle = '#e2572b'; cc.lineWidth = 4;
+  cc.beginPath(); cc.arc(128, 128, 46, 0, Math.PI * 2); cc.stroke();
+  // Ejes cruzados de alto contraste con zona central bermellón
+  cc.fillStyle = '#f2f5f8';
+  cc.fillRect(124, 18, 8, 220);
+  cc.fillRect(18, 124, 220, 8);
+  cc.fillStyle = '#e2572b';
+  cc.fillRect(116, 116, 24, 24);
+  cc.fillStyle = '#0c0f14';
+  cc.fillRect(123, 123, 10, 10);
+  // Triángulo superior de referencia de vertical (+Y)
+  cc.fillStyle = '#e2572b';
+  cc.beginPath(); cc.moveTo(128, 14); cc.lineTo(114, 34); cc.lineTo(142, 34); cc.closePath(); cc.fill();
+  const coasTex = new THREE.CanvasTexture(coasCv);
+  coasTex.colorSpace = THREE.SRGBColorSpace;
+  coasTex.anisotropy = 8;
+  const coasPlate = new THREE.MeshStandardMaterial({
+    map: coasTex, roughness: 0.48, metalness: 0.05,
+    emissive: 0xffffff, emissiveMap: coasTex, emissiveIntensity: 0.35,
+  });
+
+  return { white, grey, dark, gold, silver, solar, green, red, white_led, cyan_led, orange, optics, coasPlate };
 }
 
 function cyl(r: number, l: number, mat: THREE.Material, seg = 32) {
@@ -144,9 +176,19 @@ export function buildStation(): { obj: WorldObject; dockLocal: THREE.Vector3; do
     cap.position.set(5.2, 0, s * 9.45); cap.rotation.x = s > 0 ? Math.PI / 2 : -Math.PI / 2; g.add(cap);
   }
 
-  // Puerto de atraque IDSS activo (+X) con pétalos guía, diana retroreflectora y luces de alineación
+  // Puerto de atraque IDSS activo (+X) con pétalos guía, anillo luminoso, diana COAS 3D y 4 balizas LED direccionales
   const port = cyl(0.92, 1.05, mats.grey, 40); port.rotation.z = Math.PI / 2; port.position.x = 7.9; g.add(port);
   const ring = new THREE.Mesh(new THREE.TorusGeometry(0.74, 0.065, 14, 48), mats.silver); ring.rotation.y = Math.PI / 2; ring.position.x = 8.45; g.add(ring);
+  // Anillo guía luminoso sutil + 4 marcas cardinales (fusionados en un único material cyan_led)
+  const guideRing = new THREE.Mesh(new THREE.TorusGeometry(0.85, 0.018, 10, 48), mats.cyan_led);
+  guideRing.rotation.y = Math.PI / 2; guideRing.position.x = 8.47; g.add(guideRing);
+  for (let k = 0; k < 4; k++) {
+    const a = (k * Math.PI) / 2;
+    const tick = box(0.024, 0.11, 0.024, mats.cyan_led);
+    tick.position.set(8.48, Math.cos(a) * 0.90, Math.sin(a) * 0.90);
+    tick.rotation.x = a;
+    g.add(tick);
+  }
   for (let k = 0; k < 3; k++) {
     const a = (k * Math.PI * 2) / 3 + Math.PI / 2;
     const petal = box(0.24, 0.04, 0.36, mats.silver);
@@ -154,12 +196,35 @@ export function buildStation(): { obj: WorldObject; dockLocal: THREE.Vector3; do
     petal.rotation.x = a;
     g.add(petal);
   }
-  const tgt = box(0.05, 0.52, 0.52, mats.dark); tgt.position.set(8.4, 1.25, 0); g.add(tgt);
-  const cross = box(0.06, 0.04, 0.42, mats.white_led); cross.position.set(8.44, 1.25, 0); g.add(cross);
-  const cross2 = box(0.06, 0.42, 0.04, mats.white_led); cross2.position.set(8.44, 1.25, 0); g.add(cross2);
-  for (const [y, z, m] of [[0.95, 0.95, mats.green], [0.95, -0.95, mats.red], [-0.95, 0.95, mats.green], [-0.95, -0.95, mats.red]] as const) {
-    const l = new THREE.Mesh(new THREE.SphereGeometry(0.075, 12, 8), m); l.position.set(8.0, y, z); g.add(l);
+
+  // Diana óptica COAS 3D (Stand-Off Cross Target) montada sobre el puerto en +Y para juzgar paralaje de alineación
+  const coasY = 1.32;
+  const coasMount = box(0.18, 0.30, 0.08, mats.grey); coasMount.position.set(8.30, 1.02, 0); g.add(coasMount);
+  const coasBack = box(0.04, 0.60, 0.60, mats.dark); coasBack.position.set(8.38, coasY, 0); g.add(coasBack);
+  const coasFace = new THREE.Mesh(new THREE.PlaneGeometry(0.56, 0.56), mats.coasPlate);
+  coasFace.rotation.y = Math.PI / 2; coasFace.position.set(8.405, coasY, 0); g.add(coasFace);
+  // Vástago separador central (stand-off 0,26 m en +X) y cruz 3D en relieve adelantada
+  const standOff = cyl(0.014, 0.26, mats.dark, 10); standOff.rotation.z = Math.PI / 2; standOff.position.set(8.535, coasY, 0); g.add(standOff);
+  const crossH = box(0.028, 0.032, 0.34, mats.white_led); crossH.position.set(8.675, coasY, 0); g.add(crossH);
+  const crossV = box(0.028, 0.34, 0.032, mats.white_led); crossV.position.set(8.675, coasY, 0); g.add(crossV);
+  const crossCore = box(0.036, 0.056, 0.056, mats.orange); crossCore.position.set(8.682, coasY, 0); g.add(crossCore);
+
+  // 4 balizas LED de guiado direccional en las esquinas del puerto (verde = derecha/estribor al aproximarse, rojo = izquierda/babor)
+  const corners: [number, number, THREE.Material][] = [
+    [0.98, -0.98, mats.green],
+    [-0.98, -0.98, mats.green],
+    [0.98, 0.98, mats.red],
+    [-0.98, 0.98, mats.red],
+  ];
+  for (const [y, z, m] of corners) {
+    // Soporte + capuchón direccional orientado hacia el corredor +X
+    const strut = box(0.22, 0.06, 0.06, mats.grey); strut.position.set(8.22, y * 0.88, z * 0.88); g.add(strut);
+    const hood = cyl(0.095, 0.12, mats.dark, 14); hood.rotation.z = Math.PI / 2; hood.position.set(8.36, y, z); g.add(hood);
+    const led = new THREE.Mesh(new THREE.SphereGeometry(0.072, 12, 8), m); led.position.set(8.42, y, z); g.add(led);
   }
+  // Baliza blanca superior de referencia de vertical/alabeo sobre la diana COAS
+  const rollRef = new THREE.Mesh(new THREE.SphereGeometry(0.048, 10, 8), mats.white_led);
+  rollRef.position.set(8.44, coasY + 0.36, 0); g.add(rollRef);
 
   // Celosía integrada con diagonales reales y 4 pares de alas solares PBR + radiadores
   const truss = box(0.95, 0.78, 36, mats.grey); truss.position.set(-2, 0, 0); g.add(truss);

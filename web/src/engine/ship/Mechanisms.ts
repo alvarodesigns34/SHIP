@@ -9,10 +9,40 @@ import * as THREE from 'three';
 import { b2t, clamp } from '../util';
 import type { ShipModel } from './ShipModel';
 
+export type ArmPoseName = 'estiba' | 'observacion' | 'captura' | 'servicio';
+export type ArmPoseInput = ArmPoseName | 'stow' | 'deploy' | 'inspect';
+
+export const ARM_POSES: Record<ArmPoseName, number[]> = {
+  estiba: [0, 0, 0, 0, 0, 0],
+  observacion: [-1.15, -0.78, -1.95, 0.65, 0.30, 0],
+  captura: [0.32, -1.05, -2.32, 0.88, 0.0, 0],
+  servicio: [-0.45, -1.25, -2.05, 0.98, -0.32, 0.35],
+};
+
+const POSE_ALIAS: Record<ArmPoseInput, ArmPoseName> = {
+  estiba: 'estiba',
+  stow: 'estiba',
+  observacion: 'observacion',
+  inspect: 'observacion',
+  captura: 'captura',
+  deploy: 'captura',
+  servicio: 'servicio',
+};
+
+/** Estado compartido del brazo robótico para las pantallas MFD ARM y ARMCAM. */
+export const ARM_STATUS = {
+  pose: 'estiba' as ArmPoseName | 'ik' | 'manual',
+  grabbed: null as string | null,
+  powered: true,
+  busy: 0,
+  lastIkErr: null as number | null,
+};
+
 interface Joint { id: string; pivot: THREE.Vector3; axis: THREE.Vector3; min: number; max: number; angle: number; target: number; }
 
 const X_BASE = 1.30, R_S = 2.26;
 const ZT1 = R_S + 0.42, ZT2 = R_S + 0.80;
+const HULL_SAFE_R = 2.25;
 
 /** Rotación de un punto alrededor de un eje que pasa por un pivote. */
 function rotAbout(p: THREE.Vector3, axis: THREE.Vector3, a: number) {
@@ -40,6 +70,8 @@ export class Mechanisms {
   earthLocal = new THREE.Vector3(0, -1, 0);
   armBusy = 0;
   grabbed: string | null = null;
+  activePose: ArmPoseName | 'ik' | 'manual' = 'estiba';
+  lastIkErr: number | null = null;
 
   constructor(model: ShipModel) {
     this.model = model;
@@ -52,6 +84,15 @@ export class Mechanisms {
       { id: 'J6', pivot: b2t(X_BASE + 0.38, 0, ZT2), axis: Z, min: -2.2, max: 2.2, angle: 0, target: 0 },
       { id: 'J7', pivot: b2t(X_BASE + 0.14, 0, ZT2), axis: X, min: -Math.PI, max: Math.PI, angle: 0, target: 0 },
     ];
+    this.syncArmStatus();
+  }
+
+  private syncArmStatus() {
+    ARM_STATUS.pose = this.activePose;
+    ARM_STATUS.grabbed = this.grabbed;
+    ARM_STATUS.powered = this.armPowered;
+    ARM_STATUS.busy = this.armBusy;
+    ARM_STATUS.lastIkErr = this.lastIkErr;
   }
 
   /** Matriz acumulada de las articulaciones 0..k (en orden proximal → distal). */
@@ -63,10 +104,33 @@ export class Mechanisms {
 
   tip(angles?: number[]) { return this.tip0.clone().applyMatrix4(this.chain(5, angles)); }
 
-  /** IK por descenso cíclico de coordenadas (CCD) hacia un punto en espacio de nave. */
-  solveIK(target: THREE.Vector3, iters = 18) {
-    const a = this.joints.map((j) => j.target);
-    const order = [3, 2, 1, 0];
+  /**
+   * Comprueba que el codo, la muñeca y el efector terminal permanecen fuera
+   * del envolvente de seguridad del casco habitable (evita auto-colisión).
+   */
+  isSafeConfig(angles: number[]): boolean {
+    if (Math.abs(angles[1]) < 0.05 && Math.abs(angles[2]) < 0.05) return true;
+    const m1 = this.chain(1, angles);
+    const m2 = this.chain(2, angles);
+    const m5 = this.chain(5, angles);
+    const elbow = this.joints[2].pivot.clone().applyMatrix4(m1);
+    const wrist = this.joints[3].pivot.clone().applyMatrix4(m2);
+    const ee = this.tip0.clone().applyMatrix4(m5);
+    const midB1 = this.joints[1].pivot.clone().lerp(this.joints[2].pivot, 0.5).applyMatrix4(m1);
+    const midB2 = this.joints[2].pivot.clone().lerp(this.joints[3].pivot, 0.5).applyMatrix4(m2);
+    for (const p of [elbow, wrist, ee, midB1, midB2]) {
+      if (p.x > -6.0 && p.x < 12.6) {
+        const rad = Math.hypot(p.y, p.z);
+        if (rad < HULL_SAFE_R) return false;
+      }
+    }
+    return true;
+  }
+
+  /** Ejecuta una pasada CCD desde una semilla dada respetando límites seguros sin colisión con casco. */
+  private runCCD(seed: number[], target: THREE.Vector3, iters: number): { angles: number[]; err: number } {
+    const a = seed.slice();
+    const order = [4, 3, 2, 1, 0];
     for (let it = 0; it < iters; it++) {
       for (const k of order) {
         const j = this.joints[k];
@@ -77,39 +141,82 @@ export class Mechanisms {
         const v1 = tip.sub(piv); const v2 = target.clone().sub(piv);
         v1.addScaledVector(ax, -v1.dot(ax)); v2.addScaledVector(ax, -v2.dot(ax));
         if (v1.lengthSq() < 1e-6 || v2.lengthSq() < 1e-6) continue;
-        let d = Math.atan2(ax.dot(v1.clone().cross(v2)), v1.dot(v2));
-        a[k] = clamp(a[k] + d * 0.8, j.min, j.max);
+        const d = Math.atan2(ax.dot(v1.clone().cross(v2)), v1.dot(v2));
+        const prev = a[k];
+        const cand = clamp(prev + d * 0.78, j.min, j.max);
+        a[k] = cand;
+        if (!this.isSafeConfig(a)) {
+          // retroceso parcial si el paso completo roza el casco
+          a[k] = clamp(prev + d * 0.3, j.min, j.max);
+          if (!this.isSafeConfig(a)) a[k] = prev;
+        }
       }
     }
-    this.joints.forEach((j, i) => (j.target = a[i]));
-    return this.tip(a).distanceTo(target);
+    return { angles: a, err: this.tip(a).distanceTo(target) };
   }
 
-  setPose(name: 'stow' | 'deploy' | 'inspect') {
-    const poses: Record<string, number[]> = {
-      stow: [0, 0, 0, 0, 0, 0],
-      deploy: [0.35, -1.05, -2.35, 0.9, 0, 0],
-      inspect: [-1.2, -0.75, -2.0, 0.6, 0.3, 0],
-    };
-    poses[name].forEach((v, i) => (this.joints[i].target = v));
+  /** IK por descenso cíclico de coordenadas (CCD) multi-semilla hacia un punto en espacio de nave. */
+  solveIK(target: THREE.Vector3, iters = 24) {
+    const steps = Math.max(iters, 24);
+    const cur = this.joints.map((j) => j.target);
+    const yawHint = clamp(Math.atan2(-target.z, target.x - X_BASE), -Math.PI, Math.PI);
+    const seeds: number[][] = [
+      cur,
+      [yawHint, -1.05, -2.15, 0.85, 0, 0],
+      ARM_POSES.captura.slice(),
+    ];
+    let best = this.runCCD(seeds[0], target, steps);
+    for (let s = 1; s < seeds.length; s++) {
+      const r = this.runCCD(seeds[s], target, steps);
+      if (r.err < best.err && this.isSafeConfig(r.angles)) best = r;
+    }
+    this.joints.forEach((j, i) => (j.target = best.angles[i]));
+    this.activePose = 'ik';
+    this.lastIkErr = best.err;
+    this.syncArmStatus();
+    return best.err;
+  }
+
+  /** Aplica una postura nombrada (`estiba`, `observacion`, `captura`, `servicio` o alias heredados). */
+  setPose(name: ArmPoseInput) {
+    const canonical = POSE_ALIAS[name] ?? 'estiba';
+    const pose = ARM_POSES[canonical];
+    pose.forEach((v, i) => (this.joints[i].target = clamp(v, this.joints[i].min, this.joints[i].max)));
+    this.activePose = canonical;
+    this.lastIkErr = null;
+    this.syncArmStatus();
   }
 
   jogJoint(i: number, d: number) {
     const j = this.joints[i];
-    j.target = clamp(j.target + d, j.min, j.max);
+    if (!j) return;
+    const cand = this.joints.map((jj) => jj.target);
+    cand[i] = clamp(j.target + d, j.min, j.max);
+    if (!this.isSafeConfig(cand)) return;
+    j.target = cand[i];
+    this.activePose = 'manual';
+    this.syncArmStatus();
   }
 
   update(dt: number) {
     const model = this.model;
-    // --- brazo
+    // --- brazo con interpolación suave (rampa de desaceleración cerca del objetivo)
     let moving = 0;
     if (this.armPowered) {
       for (const j of this.joints) {
         const d = j.target - j.angle;
-        if (Math.abs(d) > 1e-4) { j.angle += Math.sign(d) * Math.min(Math.abs(d), 0.35 * dt); moving = 1; }
+        const ad = Math.abs(d);
+        if (ad > 1e-4) {
+          const speed = ad < 0.22 ? 0.14 + (ad / 0.22) * 0.38 : 0.52;
+          j.angle += Math.sign(d) * Math.min(ad, speed * dt);
+          moving = 1;
+        } else if (ad > 0) {
+          j.angle = j.target;
+        }
       }
     }
     this.armBusy = moving;
+    this.syncArmStatus();
     for (const [code, k] of this.armParts) model.setExtra(code, this.chain(k));
     // --- radiadores (acordeón)
     const dr = this.radiatorTarget - this.radiatorDeploy;
