@@ -86,11 +86,35 @@ def camera_mesh(name):
     return mb.mesh(smooth=35)
 
 
+def nav_light_mesh(name, led_mat="M_NavLight"):
+    """Baliza de navegación con carenado estructural, visera lateral y cúpula emisiva."""
+    mb = MB(name)
+    # base atornillada
+    mb.cyl("M_AlBare", 0.056, 0.062, 0.012, 20, center=(0, 0, 0.006), axis='Z')
+    mb.bolts("M_Bolt", bolt_circle((0, 0, 0.013), (0, 0, 1), 0.048, 4), 0.005, 0.004)
+    # cuerpo y carenado aerodinámico-técnico
+    mb.cyl("M_AlAnodBlack", 0.044, 0.038, 0.048, 20, center=(0, 0, 0.036), axis='Z')
+    mb.box("M_AlBare", 0.095, 0.046, 0.028, center=(-0.018, 0, 0.026))
+    # collarín y lente emisiva
+    mb.torus("M_AlBare", 0.034, 0.005, 20, 6, center=(0, 0, 0.060), axis='Z')
+    mb.sphere(led_mat, 0.030, 18, 10, center=(0, 0, 0.064))
+    # micro-visera protectora
+    mb.box("M_AlAnodBlack", 0.022, 0.072, 0.038, center=(-0.036, 0, 0.064))
+    return mb.mesh(smooth=40)
+
+
 def patch_antenna_mesh(name, r=0.09):
     mb = MB(name)
-    mb.cyl("M_Teflon", r, r, 0.02, 24, center=(0, 0, 0.01), axis='Z')
-    mb.cyl("M_AlBare", r * 1.15, r * 1.15, 0.008, 24, center=(0, 0, 0.004), axis='Z')
-    mb.cyl("M_Cable", 0.008, 0.008, 0.08, 8, center=(0, -r, 0.004), axis='Y')
+    # placa de masa con tornillería perimetral
+    mb.cyl("M_AlBare", r * 1.24, r * 1.28, 0.010, 24, center=(0, 0, 0.005), axis='Z')
+    mb.bolts("M_Bolt", bolt_circle((0, 0, 0.011), (0, 0, 1), r * 1.12, 6), 0.005, 0.004)
+    # radomo cerámico biselado con anillo protector
+    mb.lathe("M_Teflon", [(0.0, 0.010), (r * 1.02, 0.010), (r * 1.02, 0.024), (r * 0.88, 0.034), (0.0, 0.034)], 24, axis='Z')
+    mb.torus("M_AlAnodBlack", r * 1.02, 0.004, 24, 6, center=(0, 0, 0.012), axis='Z')
+    # conector RF dorado y pasamuros blindado
+    mb.cyl("M_GoldPlate", 0.012, 0.012, 0.024, 12, center=(0, -r * 1.05, 0.016), axis='Y')
+    mb.cyl("M_Cable", 0.008, 0.008, 0.11, 8, center=(0, -r * 1.15 - 0.05, 0.012), axis='Y')
+    mb.box("M_AlBare", 0.026, 0.018, 0.020, center=(0, -r * 1.15 - 0.08, 0.010))
     return mb.mesh(smooth=40)
 
 
@@ -437,19 +461,43 @@ def _cupola(fwd):
 
 def _node_exterior(fwd):
     g = group("FWD.EXT", "Equipos exteriores del nodo", fwd, explode=("radial", 0.0),
-              desc="Antenas de baja ganancia, balizas de navegación y pasamanos EVA del nodo.")
+              desc="Antenas de baja ganancia banda S, balizas de navegación carenadas, placas de servicio y pasamanos EVA del nodo.")
     pa = patch_antenna_mesh("lga_patch")
     for i, a in enumerate([-PI / 2 + 0.5, -PI / 2 - 0.5]):
         p = part(f"FWD.EXT.LGA{i+1}", f"Antena de baja ganancia banda S {i+1}", pa, g, explode=("radial", 0.5),
-                 desc="Antena de parche omnidireccional de banda S para enlace de emergencia.")
+                 desc="Antena de parche omnidireccional de banda S con radomo de PTFE y conector coaxial blindado.")
         p.matrix_basis = Matrix.Translation(ring_xyz(S.R_N_SHIELD, a, 11.6)) @ Matrix.Rotation(a - PI / 2, 4, 'X')
-    for i, (a, mat, lbl) in enumerate([(0.0, "M_LEDRed", "babor (roja)"), (PI, "M_LEDGreen", "estribor (verde)")]):
-        mb = MB(f"navlight_{i}")
-        mb.cyl("M_AlAnodBlack", 0.04, 0.04, 0.05, 16, center=(0, 0, 0.025), axis='Z')
-        mb.sphere(mat, 0.03, 16, 8, center=(0, 0, 0.06))
-        p = part(f"FWD.EXT.NAV{i+1}", f"Baliza de navegación {lbl}", mb.mesh(), g, explode=("radial", 0.5),
-                 desc="Baliza LED de navegación para identificación visual de orientación.")
-        p.matrix_basis = Matrix.Translation(ring_xyz(S.R_N_SHIELD, a, 12.05)) @ Matrix.Rotation(a - PI / 2, 4, 'X')
+    for i, (a, mat, lbl, xn) in enumerate([
+        (0.0, "M_LEDRed", "babor (roja)", 12.02),
+        (PI, "M_LEDGreen", "estribor (verde)", 12.02),
+        (PI / 2 - 0.35, "M_NavLight", "proa dorsal (blanca)", 12.06),
+    ]):
+        p = part(f"FWD.EXT.NAV{i+1}", f"Baliza de navegación {lbl}", nav_light_mesh(f"navlight_{i}", mat), g, explode=("radial", 0.5),
+                 desc="Baliza LED de navegación con carenado protector y visera direccional.")
+        p.matrix_basis = Matrix.Translation(ring_xyz(S.R_N_SHIELD, a, xn)) @ Matrix.Rotation(a - PI / 2, 4, 'X')
+    # Bandas térmicas de remate y placas de servicio/inspección en los flancos del nodo
+    mb = MB("node_trim")
+    for xband in (S.X_NODE_A + 0.08, S.X_NODE_F - 0.08):
+        mb.lathe("M_MLI_Gold", [(S.R_N_SHIELD + 0.001, xband - 0.032), (S.R_N_SHIELD + 0.007, xband - 0.024),
+                                (S.R_N_SHIELD + 0.007, xband + 0.024), (S.R_N_SHIELD + 0.001, xband + 0.032)], 56, axis='X')
+        mb.lathe("M_AlBare", [(S.R_N_SHIELD + 0.005, xband - 0.008), (S.R_N_SHIELD + 0.010, xband - 0.006),
+                              (S.R_N_SHIELD + 0.010, xband + 0.006), (S.R_N_SHIELD + 0.005, xband + 0.008)], 56, axis='X')
+    # Dos paneles de servicio / tomas de pruebas de presión en los flancos de babor y estribor
+    for sgn in (1, -1):
+        a = 0.22 if sgn > 0 else PI - 0.22
+        R = Matrix.Translation(ring_xyz(S.R_N_SHIELD + 0.004, a, 10.62)) @ Matrix.Rotation(a - PI / 2, 4, 'X')
+        vs = []
+        vs += mb.box("M_AlBare", 0.34, 0.24, 0.014, center=(0, 0, 0.007))
+        vs += mb.box("M_Graphite", 0.28, 0.18, 0.006, center=(0, 0, 0.016))
+        vs += mb.box("M_Accent", 0.28, 0.022, 0.003, center=(0, -0.075, 0.019))
+        for dx in (-0.07, 0.0, 0.07):
+            vs += mb.cyl("M_GoldPlate", 0.016, 0.016, 0.014, 12, center=(dx, 0.02, 0.022), axis='Z')
+        for cx in (-0.14, 0.14):
+            for cy in (-0.09, 0.09):
+                vs += mb.bolt("M_Bolt", (cx, cy, 0.015), (0, 0, 1), 0.006, 0.005)
+        mb.transform(R, vs)
+    part("FWD.EXT.TRM", "Bandas térmicas y placas de servicio del nodo", mb.mesh(smooth=40), g, explode=("radial", 0.5),
+         desc="Cintas de sellado térmico de Kapton/aluminio en los bordes del nodo y paneles de servicio de presurización.")
     hm = handrail_mesh("node_handrail", 1.6)
     for i, a in enumerate([PI / 2 + 0.75, PI / 2 - 0.75, -PI / 2 + 0.9, -PI / 2 - 0.9]):
         p = part(f"FWD.EXT.HR{i+1}", f"Pasamanos EVA del nodo {i+1}", hm, g, explode=("radial", 0.5))
@@ -593,7 +641,7 @@ def _hab_mli(hab):
 
 def _shield_panel_mesh(name, length, variant="std"):
     """Panel MMOD plano (bumper Whipple) construido en ángulo 0 (+Y).
-    Variantes: std, accent (franja bermellón), graphite (franja grafito)."""
+    Variantes: std, service (con trampilla de inspección), accent (franja bermellón), graphite (franja grafito)."""
     w = 2 * S.R_S * math.tan(PI / S.N_FACETS) - 0.035
     t = 0.016
     mb = MB(name)
@@ -602,6 +650,10 @@ def _shield_panel_mesh(name, length, variant="std"):
     # pestaña perimetral (rigidizador)
     mb.box("M_AlBare", length - 0.02, 0.006, 0.02, center=(0, S.R_S + 0.002, w / 2 - 0.01))
     mb.box("M_AlBare", length - 0.02, 0.006, 0.02, center=(0, S.R_S + 0.002, -w / 2 + 0.01))
+    # escuadras de refuerzo en las 4 esquinas del panel
+    for sx in (-1, 1):
+        for sz in (-1, 1):
+            mb.box("M_AlBare", 0.09, 0.003, 0.07, center=(sx * (length / 2 - 0.06), S.R_S + 0.0015, sz * (w / 2 - 0.05)))
     # tornillería perimetral
     nb = int(length / 0.35)
     pns = []
@@ -616,6 +668,19 @@ def _shield_panel_mesh(name, length, variant="std"):
         mb.cyl("M_AlBare", 0.02, 0.02, 0.012, 12, center=(x, S.R_S + 0.006, 0), axis='Y')
     # etiqueta de identificación de panel
     mb.box("M_Decal", 0.10, 0.001, 0.04, center=(length / 2 - 0.16, S.R_S + 0.0006, -w / 2 + 0.09))
+    if variant == "service":
+        # trampilla de inspección / acceso a mantas MLI con marco biselado, cierres y junta térmica
+        hx, hw, hl = 0.08, min(0.46, w * 0.56), 0.58
+        mb.box("M_AlBare", hl + 0.04, 0.005, hw + 0.04, center=(hx, S.R_S + 0.0025, 0))
+        mb.box("M_ShieldWhite", hl, 0.009, hw, center=(hx, S.R_S + 0.0055, 0))
+        mb.box("M_Graphite", hl + 0.012, 0.002, 0.012, center=(hx, S.R_S + 0.0052, hw / 2 + 0.005))
+        mb.box("M_Graphite", hl + 0.012, 0.002, 0.012, center=(hx, S.R_S + 0.0052, -hw / 2 - 0.005))
+        # 4 cierres de cuarto de vuelta + tirador empotrado
+        for sx in (-1, 1):
+            for sz in (-1, 1):
+                mb.box("M_AlAnodBlack", 0.032, 0.006, 0.024, center=(hx + sx * (hl / 2 - 0.05), S.R_S + 0.010, sz * (hw / 2 - 0.04)))
+        mb.box("M_Steel", 0.036, 0.010, 0.11, center=(hx - hl / 2 + 0.07, S.R_S + 0.011, 0))
+        mb.box("M_Accent", 0.018, 0.0015, hw - 0.04, center=(hx + hl / 2 - 0.03, S.R_S + 0.0105, 0))
     if variant == "accent":
         mb.box("M_Accent", 0.16, 0.0012, w - 0.002, center=(length / 2 - 0.22, S.R_S + 0.0006, 0))
         mb.box("M_Graphite", 0.035, 0.0012, w - 0.002, center=(length / 2 - 0.35, S.R_S + 0.0006, 0))
@@ -644,27 +709,45 @@ def _hab_shield(hab):
     xs = [S.X_HAB_A + S.BARREL_L * i for i in range(S.N_BARRELS + 1)]
     meshes = {
         "std": _shield_panel_mesh("shield_panel_std", S.BARREL_L, "std"),
+        "service": _shield_panel_mesh("shield_panel_service", S.BARREL_L, "service"),
         "accent": _shield_panel_mesh("shield_panel_accent", S.BARREL_L, "accent"),
         "graphite": _shield_panel_mesh("shield_panel_graphite", S.BARREL_L, "graphite"),
     }
     xc3 = (xs[2] + xs[3]) / 2
     meshes["window"] = boolean_cut(_shield_panel_mesh("shield_panel_win", S.BARREL_L, "std"),
                                    [cutter(0.25, 0.3, (x - xc3, S.R_S, 0), axis='Y') for x in LAB_WINDOWS_X], "shield_panel_window")
+    # Facetas seleccionadas con trampillas de inspección (lejos de ventanas nadir i=12 y rótulos i=0,8)
+    service_facets = {(1, 2), (1, 6), (1, 10), (1, 14), (2, 1), (2, 7), (2, 9), (2, 15)}
     panels = {}
     for r in range(S.N_BARRELS):
         rg = group(f"HAB.MMOD.R{r+1}", f"Anillo de paneles MMOD {r+1}", g, explode=("auto", 0.0),
                    desc=f"16 paneles del anillo {r+1} (X={xs[r]:.2f}–{xs[r+1]:.2f} m).")
-        variant = "graphite" if r == 0 else ("accent" if r == S.N_BARRELS - 1 else "std")
+        base_var = "graphite" if r == 0 else ("accent" if r == S.N_BARRELS - 1 else "std")
         xc = (xs[r] + xs[r + 1]) / 2
         for i in range(S.N_FACETS):
             a = S.facet_angle(i)
-            mv = meshes["window"] if (r == 2 and i == 12) else meshes[variant]
+            if r == 2 and i == 12:
+                mv = meshes["window"]
+            elif (r, i) in service_facets:
+                mv = meshes["service"]
+            else:
+                mv = meshes[base_var]
             p = part(f"HAB.MMOD.R{r+1}.P{i+1:02d}", f"Panel MMOD R{r+1}-F{i+1:02d}", mv, rg,
                      loc=(xc, 0, 0), rot=(a, 0, 0), explode=("radial", 0.9 + 0.15 * r),
                      desc="Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.")
             panels[(r, i)] = p
         part(f"HAB.MMOD.R{r+1}.STO", f"Soportes del escudo, anillo {r+1}", _standoffs_mesh(f"standoffs_{r}", xs[r], xs[r + 1]),
              rg, explode=("radial", 0.35), desc="48 soportes de titanio con base de aluminio unidos al casco.")
+    # Cintas térmicas metálicas / Kapton en las costuras entre anillos MMOD
+    mb = MB("mmod_ring_seams")
+    r_seam = S.R_S + 0.002
+    for xj in (xs[1], xs[2], xs[3], S.X_HAB_F):
+        lathe_x(mb, "M_MLI_Gold", [(r_seam - 0.006, xj - 0.022), (r_seam + 0.003, xj - 0.018),
+                                   (r_seam + 0.003, xj + 0.018), (r_seam - 0.006, xj + 0.022)], 16)
+        lathe_x(mb, "M_AlBare", [(r_seam + 0.001, xj - 0.006), (r_seam + 0.007, xj - 0.005),
+                                 (r_seam + 0.007, xj + 0.005), (r_seam + 0.001, xj + 0.006)], 16)
+    part("HAB.MMOD.SEAM", "Cintas térmicas y flejes de costura entre anillos", mb.mesh(smooth=None), g, explode=("radial", 0.4),
+         desc="Sellado térmico de Kapton aluminizado y flejes de aluminio en las juntas circunferenciales entre anillos MMOD.")
     # paneles del cono (trapezoidales)
     cg = group("HAB.MMOD.CN", "Paneles MMOD del cono", g, explode=(0.5, 0, 0),
                desc="16 paneles trapezoidales que siguen el cono adaptador.")
@@ -750,8 +833,54 @@ def _hab_exterior_eq(hab, panels):
         p = part(f"HAB.EXT.LGT{i+1}", f"Foco exterior {i+1}", lm, g, explode=("radial", 1.6),
                  desc="Foco LED orientable para EVA y operaciones robóticas.")
         p.matrix_basis = Matrix.Translation(ring_xyz(S.R_S, a, x)) @ Matrix.Rotation(a - PI / 2, 4, 'X')
+    # canalizaciones umbilicales exteriores (raceways) conectando módulo de servicio ↔ habitable ↔ proa
+    _hab_raceways(g)
     # marcas
     _hab_markings(g, panels)
+
+
+def _hab_raceways(g):
+    """Tendido exterior de conductos de fluidos, potencia y datos con abrazaderas sobre las facetas 1 y 7."""
+    rg = group("HAB.EXT.RCW", "Canalizaciones umbilicales exteriores", g, explode=("radial", 0.0),
+               desc="Dos tendidos longitudinales (babor y estribor) con bandeja protectora, líneas de fluidos en acero inoxidable, mazo de potencia 120 V y abrazaderas térmicas.")
+    x_aft, x_fwd = -0.35, 8.35
+    L = x_fwd - x_aft
+    xm = (x_aft + x_fwd) / 2
+    for idx, (facet, side_lbl) in enumerate(((1, "babor"), (7, "estribor"))):
+        a = S.facet_angle(facet)
+        mb = MB(f"hab_raceway_{idx}")
+        # Construido en local con +Y = radial exterior, X = eje de la nave
+        r0 = S.R_S + 0.004
+        # bandeja base de aluminio mecanizado
+        mb.box("M_AlBare", L, 0.012, 0.145, center=(xm, r0 + 0.006, 0))
+        # labios laterales de protección
+        for sz in (-1, 1):
+            mb.box("M_AlBare", L, 0.036, 0.010, center=(xm, r0 + 0.022, sz * 0.072))
+        # conductos longitudinales (2 líneas de fluidos de acero + mazo de potencia naranja + datos)
+        mb.cyl("M_Steel", 0.014, 0.014, L - 0.06, 12, center=(xm, r0 + 0.028, -0.042), axis='X')
+        mb.cyl("M_Steel", 0.011, 0.011, L - 0.06, 10, center=(xm, r0 + 0.026, -0.010), axis='X')
+        mb.cyl("M_CableOrange", 0.012, 0.012, L - 0.06, 10, center=(xm, r0 + 0.026, 0.022), axis='X')
+        mb.cyl("M_Cable", 0.009, 0.009, L - 0.06, 8, center=(xm, r0 + 0.024, 0.048), axis='X')
+        # abrazaderas periódicas con tornillería cada ~0,85 m
+        n_clamps = 11
+        for k in range(n_clamps):
+            xc = x_aft + 0.20 + (L - 0.40) * k / (n_clamps - 1)
+            mb.box("M_AlAnodBlack", 0.045, 0.016, 0.165, center=(xc, r0 + 0.042, 0))
+            for sz in (-1, 1):
+                mb.bolt("M_Bolt", (xc, r0 + 0.050, sz * 0.068), (0, 1, 0), 0.006, 0.005)
+        # tapas térmicas segmentadas intermedias con aislamiento MLI en las uniones de anillos
+        for xcov in (2.65, 4.70, 6.75):
+            mb.box("M_MLI_Gold", 0.24, 0.018, 0.160, center=(xcov, r0 + 0.046, 0))
+        # cajas de empalme umbilical en popa (interfaz SVC) y proa (distribución cabina/nodo)
+        for xb in (0.18, 8.15):
+            mb.box("M_AlBare", 0.28, 0.056, 0.19, center=(xb, r0 + 0.028, 0))
+            mb.box("M_Graphite", 0.22, 0.006, 0.14, center=(xb, r0 + 0.058, 0))
+            mb.box("M_Accent", 0.22, 0.003, 0.018, center=(xb, r0 + 0.061, 0.055))
+            for dz in (-0.04, 0.04):
+                mb.cyl("M_GoldPlate", 0.014, 0.014, 0.024, 10, center=(xb + 0.15, r0 + 0.030, dz), axis='X')
+        p = part(f"HAB.EXT.RCW.{idx+1}", f"Canalización umbilical exterior ({side_lbl})", mb.mesh(smooth=35), rg,
+                 rot=(a, 0, 0), explode=("radial", 1.35),
+                 desc="Tendido externo protegido de líneas térmicas, bus 120 V y datos con cajas de empalme.")
 
 
 def _hab_markings(g, panels):

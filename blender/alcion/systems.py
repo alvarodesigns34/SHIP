@@ -8,7 +8,7 @@ from .lib import (group, part, MB, bolt_circle, ring_xyz, TAU, boolean_cut)
 from .materials import M
 from . import spec as S
 from .exterior import (lathe_x, shell_profile, rcs_quad_mesh, handrail_mesh,
-                       camera_mesh, light_mesh, patch_antenna_mesh, cutter)
+                       camera_mesh, light_mesh, patch_antenna_mesh, nav_light_mesh, cutter)
 
 PI = math.pi
 HALF = PI / S.N_OCT
@@ -105,6 +105,13 @@ def _svc_panel_mesh(name, length, cover):
         x = -length / 2 + 0.05 + (length - 0.1) * k / n
         pns += [((x, y + t / 2, w / 2 - 0.015), (0, 1, 0)), ((x, y + t / 2, -w / 2 + 0.015), (0, 1, 0))]
     mb.bolts("M_Bolt", pns, 0.008, 0.006)
+    # escuadras de esquina, respiradero de despresurización en lanzamiento y orejeta de manipulación
+    y_top = y + t / 2 + (0.005 if cover == "rad" else 0.022)
+    for sx in (-1, 1):
+        for sz in (-1, 1):
+            mb.box("M_AlBare", 0.075, 0.005, 0.075, center=(sx * (length / 2 - 0.06), y_top, sz * (w / 2 - 0.055)))
+    mb.box("M_AlAnodBlack", 0.12, 0.008, 0.06, center=(0, y_top + 0.002, w / 2 - 0.14))
+    mb.cyl("M_Titanium", 0.018, 0.018, 0.022, 10, center=(length / 2 - 0.18, y_top + 0.008, 0), axis='Y')
     return mb.mesh(smooth=None, bevel=0.004)
 
 
@@ -342,21 +349,34 @@ def _svc_external(svc):
         p = part(f"SVC.EXT.RCS.Q{i+1}", f"Cuadrete RCS de popa {i+1}", me, rc, explode=("radial", 1.6),
                  desc="Cuadrete de 5 propulsores bipropelentes.")
         p.matrix_basis = Matrix.Translation(ring_xyz(S.SVC_APOTHEM + 0.045, a, -4.05)) @ Rx(a - PI / 2)
-    # rastreadores estelares
+    # rastreadores estelares con base aislante de titanio, parasol bafleado biselado y conector umbilical
     st = group("SVC.EXT.STR", "Rastreadores estelares", g, explode=("radial", 0.0))
     a = S.oct_angle(7)
     for i, (dx, tilt) in enumerate([(-2.75, 0.45), (-3.35, -0.45)]):
         mb = MB(f"star_tracker_{i}")
-        mb.box("M_AlAnodBlack", 0.16, 0.16, 0.12, center=(0, 0, 0.06))
-        mb.lathe("M_AlAnodBlack", [(0.06, 0.12), (0.085, 0.12), (0.14, 0.38), (0.13, 0.38), (0.08, 0.13), (0.06, 0.13)], 32, axis='Z')
-        for k in range(4):
-            z = 0.16 + 0.05 * k
-            r_ = 0.085 + (0.055) * (z - 0.12) / 0.26
-            mb.torus("M_AlAnodBlack", r_ - 0.004, 0.004, 32, 4, center=(0, 0, z), axis='Z')
-        mb.cyl("M_Lens", 0.05, 0.05, 0.005, 24, center=(0, 0, 0.125), axis='Z')
-        mb.box("M_MLI_Gold", 0.17, 0.17, 0.02, center=(0, 0, 0.11))
+        # brida base y 3 aisladores térmicos de titanio
+        mb.cyl("M_AlBare", 0.115, 0.125, 0.014, 24, center=(0, 0, 0.007), axis='Z')
+        for k in range(3):
+            ka = TAU * k / 3
+            mb.cyl("M_Titanium", 0.014, 0.014, 0.030, 10, center=(0.088 * math.cos(ka), 0.088 * math.sin(ka), 0.026), axis='Z')
+        # cuerpo óptico y electrónica
+        mb.box("M_AlAnodBlack", 0.16, 0.16, 0.11, center=(0, 0, 0.082))
+        mb.box("M_MLI_Gold", 0.172, 0.172, 0.032, center=(0, 0, 0.118))
+        # conector umbilical dorado y mazo blindado
+        mb.cyl("M_GoldPlate", 0.015, 0.015, 0.032, 12, center=(0.095, 0.0, 0.075), axis='X')
+        mb.tube("M_Cable", [(0.11, 0, 0.075), (0.14, 0, 0.065), (0.14, 0, 0.008)], 0.008, 8, round_r=0.02)
+        # parasol cónico con 6 bafles internos anti-reflejo y labio superior reforzado
+        mb.lathe("M_AlAnodBlack", [(0.058, 0.135), (0.086, 0.135), (0.148, 0.42), (0.136, 0.42), (0.078, 0.145), (0.058, 0.145)], 32, axis='Z')
+        mb.torus("M_AlBare", 0.142, 0.006, 32, 6, center=(0, 0, 0.42), axis='Z')
+        for k in range(6):
+            z = 0.165 + 0.042 * k
+            r_ = 0.084 + 0.056 * (z - 0.135) / 0.285
+            mb.torus("M_AlAnodBlack", r_ - 0.005, 0.0045, 32, 4, center=(0, 0, z), axis='Z')
+        # visera solar oblicua en un lado de la boca
+        mb.box("M_AlAnodBlack", 0.014, 0.22, 0.11, center=(-0.132, 0, 0.46), rot=Matrix.Rotation(-0.22, 4, 'Y'))
+        mb.cyl("M_Lens", 0.052, 0.052, 0.005, 24, center=(0, 0, 0.142), axis='Z')
         p = part(f"SVC.EXT.STR.ST{i+1}", f"Rastreador estelar {i+1}", mb.mesh(), st, explode=("radial", 0.8),
-                 desc="Cámara estelar autónoma con parasol de 4 deflectores; precisión conceptual < 5 arcsec.")
+                 desc="Cámara estelar autónoma sobre aisladores de titanio con parasol de 6 deflectores y visera solar; precisión conceptual < 5 arcsec.")
         p.matrix_basis = Matrix.Translation(ring_xyz(S.SVC_APOTHEM + 0.045, a, dx)) @ Rx(a - PI / 2) @ Matrix.Rotation(tilt, 4, 'Y')
     # sensores solares
     ss = MB("sun_sensor")
@@ -368,6 +388,13 @@ def _svc_external(svc):
         p = part(f"SVC.EXT.SUN{i+1}", f"Sensor solar grueso {i+1}", me, g, explode=("radial", 0.6),
                  desc="Sensor solar de 4 cuadrantes para adquisición de actitud segura.")
         p.matrix_basis = Matrix.Translation(ring_xyz(S.SVC_APOTHEM + 0.045, a, -4.2)) @ Rx(a - PI / 2)
+    # balizas de navegación de popa (blancas)
+    nav_aft = nav_light_mesh("svc_nav_aft", "M_NavLight")
+    for i, (face, lbl) in enumerate(((2, "cenital"), (6, "nadiral"))):
+        a = S.oct_angle(face)
+        p = part(f"SVC.EXT.NAV{i+1}", f"Baliza de navegación de popa ({lbl})", nav_aft, g, explode=("radial", 0.6),
+                 desc="Baliza estroboscópica blanca de popa con carenado anodizado.")
+        p.matrix_basis = Matrix.Translation(ring_xyz(S.SVC_APOTHEM + 0.045, a, -4.02)) @ Rx(a - PI / 2)
     # terminal óptico láser
     a = S.oct_angle(3)
     mb = MB("optical_terminal")
@@ -702,6 +729,9 @@ def build_comms(root):
     mb = MB("hga_dish")
     mb.lathe("M_Dish", prof + inner, 64, axis='Z')
     mb.torus("M_AlBare", Rr, 0.012, 64, 6, center=(0, 0, Rr * Rr / (4 * f)), axis='Z')
+    # cubo trasero de amplificador de bajo ruido (LNA) con escudo MLI y anillo estructural
+    mb.cyl("M_MLI_Gold", 0.16, 0.18, 0.08, 32, center=(0, 0, -0.055), axis='Z')
+    mb.torus("M_AlBare", 0.42, 0.010, 48, 6, center=(0, 0, 0.42 ** 2 / (4 * f) - 0.025), axis='Z')
     for k in range(8):
         aa = TAU * k / 8
         p0 = Vector((0.10 * math.cos(aa), 0.10 * math.sin(aa), -0.03))
@@ -709,17 +739,35 @@ def build_comms(root):
         mb.beam("M_CFRP", p0, p1, 0.02, 0.05, up=(0, 0, 1))
     mb.transform(Matrix.Translation(dc) @ Rd, list(mb.bm.verts))
     part("COM.DSH.REF", "Reflector parabólico de Ø1,6 m", mb.mesh(smooth=60), dg, explode=(0, 0, 0),
-         desc="Reflector de CFRP con nervios traseros; superficie pintada en blanco térmico.")
+         desc="Reflector de CFRP con nervios traseros, aro intermedio y cubo LNA aislado en MLI; superficie pintada en blanco térmico.")
     mb = MB("hga_feed")
-    mb.lathe("M_AlBare", [(0.0, 0.0), (0.06, 0.0), (0.09, 0.22), (0.07, 0.22), (0.0, 0.05)], 32, axis='Z')
-    zs = 0.50
-    mb.lathe("M_AlBare", [(0.0, zs + 0.03), (0.13, zs), (0.13, zs - 0.012), (0.0, zs + 0.018)], 32, axis='Z')
+    # bocina corrugada de doble banda X/Ka con 5 anillos de choke y collarín dorado
+    mb.lathe("M_AlBare", [(0.0, -0.02), (0.068, -0.02), (0.068, 0.04), (0.058, 0.06), (0.088, 0.21), (0.098, 0.23), (0.072, 0.23), (0.045, 0.06), (0.0, 0.05)], 32, axis='Z')
+    for k in range(5):
+        zk = 0.11 + k * 0.024
+        rk = 0.068 + k * 0.0075
+        mb.torus("M_AlBare", rk, 0.0045, 28, 6, center=(0, 0, zk), axis='Z')
+    mb.cyl("M_GoldPlate", 0.072, 0.072, 0.026, 24, center=(0, 0, 0.035), axis='Z')
+    mb.cyl("M_Teflon", 0.064, 0.064, 0.008, 24, center=(0, 0, 0.228), axis='Z')
+    # guía de ondas de cobre enrutada desde la base de la bocina
+    mb.tube("M_Copper", [(0.062, 0, 0.025), (0.11, 0, 0.025), (0.11, 0, -0.045)], 0.009, 10, round_r=0.018)
+    # subreflector hiperbólico con cúpula dieléctrica y respaldo anodizado atornillado
+    zs = 0.51
+    mb.lathe("M_AlBare", [(0.0, zs + 0.034), (0.135, zs), (0.135, zs - 0.014), (0.0, zs + 0.016)], 32, axis='Z')
+    mb.cyl("M_AlAnodBlack", 0.075, 0.055, 0.042, 24, center=(0, 0, zs + 0.042), axis='Z')
+    mb.torus("M_AlBare", 0.134, 0.005, 32, 6, center=(0, 0, zs - 0.004), axis='Z')
+    mb.bolts("M_Bolt", bolt_circle((0, 0, zs + 0.064), (0, 0, 1), 0.042, 6), 0.005, 0.004)
+    # trípode de CFRP con zapatas mecanizadas de anclaje al reflector y al subreflector
     for k in range(3):
         aa = TAU * k / 3
-        mb.tube("M_CFRP", [(0.70 * math.cos(aa), 0.70 * math.sin(aa), 0.16), (0.11 * math.cos(aa), 0.11 * math.sin(aa), zs)], 0.008, 8)
+        p_dish = Vector((0.68 * math.cos(aa), 0.68 * math.sin(aa), 0.68 ** 2 / (4 * f)))
+        p_sub = Vector((0.105 * math.cos(aa), 0.105 * math.sin(aa), zs + 0.012))
+        mb.tube("M_CFRP", [p_dish, p_sub], 0.010, 10)
+        mb.box("M_AlBare", 0.045, 0.036, 0.028, center=p_dish + Vector((0, 0, 0.010)), rot=Matrix.Rotation(aa, 4, 'Z'))
+        mb.box("M_Titanium", 0.028, 0.024, 0.024, center=p_sub, rot=Matrix.Rotation(aa, 4, 'Z'))
     mb.transform(Matrix.Translation(dc) @ Rd, list(mb.bm.verts))
     part("COM.DSH.FED", "Bocina alimentadora y subreflector", mb.mesh(), dg, explode=tuple(aim * 0.6),
-         desc="Bocina corrugada de doble banda y subreflector soportado por un trípode de CFRP.")
+         desc="Bocina corrugada de doble banda X/Ka con guía de ondas de cobre y subreflector hiperbólico sobre trípode de CFRP con zapatas de titanio.")
     return com
 
 
