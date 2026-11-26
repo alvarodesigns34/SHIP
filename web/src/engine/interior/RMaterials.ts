@@ -43,8 +43,8 @@ const lin = (r: number, g: number, b: number): [number, number, number] => [r, g
 
 /** Valores lineales iguales a los de Blender (RMAT) salvo ajustes de respuesta. */
 export const RDEF: Record<string, Def> = {
-  R_Lining: { color: lin(0.56, 0.54, 0.50), rough: 0.52, metal: 0, maps: { n: 'polymer_n', r: 'polymer_r', rep: 1.6, ns: 0.35 } },
-  R_LiningDark: { color: lin(0.085, 0.09, 0.10), rough: 0.58, metal: 0, maps: { n: 'polymer_n', r: 'polymer_r', rep: 2.2, ns: 0.4 } },
+  R_Lining: { color: lin(0.56, 0.54, 0.50), rough: 0.5, metal: 0, maps: { n: 'polymer_n', rep: 4.0, ns: 0.05 } },
+  R_LiningDark: { color: lin(0.085, 0.09, 0.10), rough: 0.55, metal: 0, maps: { n: 'polymer_n', rep: 4.0, ns: 0.08 } },
   R_Fabric: { color: lin(0.16, 0.155, 0.15), rough: 0.95, metal: 0, maps: { c: 'wool_c', n: 'wool_n', r: 'wool_r', rep: 3.2, ns: 0.9 }, sheen: 0.35 },
   R_FabricBlue: { color: lin(0.045, 0.085, 0.11), rough: 0.9, metal: 0, maps: { c: 'linen_c', n: 'linen_n', r: 'linen_r', rep: 4.0, ns: 0.7 }, sheen: 0.4 },
   R_Leather: { color: lin(0.12, 0.115, 0.11), rough: 0.5, metal: 0, maps: { c: 'leatherw_c', n: 'leatherw_n', r: 'leatherw_r', rep: 2.6, ns: 0.8 }, sheen: 0.15 },
@@ -54,7 +54,7 @@ export const RDEF: Record<string, Def> = {
   R_Floor: { color: lin(0.034, 0.036, 0.04), rough: 0.74, metal: 0, maps: { c: 'rubtile_c', n: 'rubtile_n', r: 'rubtile_r', rep: 2.0, ns: 0.8 } },
   R_Worktop: { color: lin(0.40, 0.33, 0.24), rough: 0.42, metal: 0, maps: { c: 'linen_c', n: 'linen_n', r: 'linen_r', rep: 2.2, ns: 0.25 }, clearcoat: 0.35 },
   R_Rubber: { color: lin(0.02, 0.02, 0.022), rough: 0.8, metal: 0, maps: { n: 'rubber_n', rep: 6, ns: 0.4 } },
-  R_Accent: { color: lin(0.62, 0.11, 0.03), rough: 0.4, metal: 0, maps: { n: 'polymer_n', rep: 3, ns: 0.3 } },
+  R_Accent: { color: lin(0.62, 0.11, 0.03), rough: 0.4, metal: 0 },
   R_Black: { color: lin(0.012, 0.012, 0.014), rough: 0.32, metal: 0 },
   R_Backing: { color: lin(0.006, 0.006, 0.007), rough: 0.9, metal: 0, kind: 'backing', doubleSide: true },
   R_Glass: { color: lin(0.8, 0.88, 0.95), rough: 0.03, metal: 0, kind: 'glass' },

@@ -7,7 +7,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,COM.DSH.REF,"Reflector parabólico de Ø1,6 m",part,M_Dish;M_AlBare;M_CFRP,1.422x1.278x1.278,4960,Reflector de CFRP con nervios traseros; superficie pintada en blanco térmico.
 2,COM.GMB,Cardán de elevación,part,M_AlAnodBlack;M_AlBare,0.3x0.231x0.231,104,Actuador de elevación con codificador absoluto.
 2,COM.MST,Mástil de CFRP,part,M_CFRP;M_Cable,0.137x0.735x0.735,88,Mástil tubular con guía de ondas y mazo de control.
-1,FWD,Módulo Nodo de Proa,group,,3.373x3.04x6.292,,Nodo presurizado de proa con puerto de atraque IDSS activo y cúpula de observación de 7 ventanas. Aloja la estación de trabajo robótica y la estiba de acceso rápido.
+1,FWD,Módulo Nodo de Proa,group,,3.373x3.97x6.292,,Nodo presurizado de proa con puerto de atraque IDSS activo y cúpula de observación de 7 ventanas. Aloja la estación de trabajo robótica y la estiba de acceso rápido.
 2,FWD.ALK,Esclusa EVA (nadir del nodo),group,,2.233x2.11x2.54,,"Esclusa de tripulación de Ø1,72 m y 2,2 m de altura bajo el nodo, con escotilla interior IDSS de 1,0 m y escotilla exterior de 1,0 m. Aloja 2 trajes EVA conceptuales."
 3,FWD.ALK.EXT,Equipos exteriores de la esclusa,group,,2.233x2.11x1.964,,
 4,FWD.ALK.EXT.APFR,Plataforma de sujeción de pies,part,M_AlBare;M_EVAYellow,0.487x0.3x0.347,52,Restricción de pies orientable para trabajos junto a la escotilla.
@@ -73,30 +73,18 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,FWD.EXT.LGA2,Antena de baja ganancia banda S 2,part,M_Teflon;M_AlBare;M_Cable,0.207x0.216x0.133,212,Antena de parche omnidireccional de banda S para enlace de emergencia.
 3,FWD.EXT.NAV1,Baliza de navegación babor (roja),part,M_AlAnodBlack;M_LEDRed,0.08x0.09x0.08,284,Baliza LED de navegación para identificación visual de orientación.
 3,FWD.EXT.NAV2,Baliza de navegación estribor (verde),part,M_AlAnodBlack;M_LEDGreen,0.08x0.09x0.08,284,Baliza LED de navegación para identificación visual de orientación.
-2,FWD.INT,Interior del nodo,group,,2.232x2.677x2.28,,"Escotillas, estación de trabajo robótica bajo la cúpula y estiba de acceso rápido."
-3,FWD.INT.HA,Escotilla nodo–hábitat,part,M_AlLi;M_Rubber;M_EVAYellow;M_AlAnodBlack;M_Glass;M_AlBare;M_Steel;M_Handrail,0.135x1.166x1.12,3628,"Escotilla de 1,12 m, abierta 100° y retenida contra la pared del nodo durante la operación normal."
-3,FWD.INT.HF,Escotilla de atraque IDSS,part,M_AlLi;M_Rubber;M_EVAYellow;M_AlAnodBlack;M_Glass;M_AlBare;M_Steel;M_Handrail,0.135x0.966x0.92,3628,"Escotilla de 0,92 m con mirilla, válvula de ecualización de presión y mecanismo de cierre de 6 pestillos. Cerrada mientras el puerto está libre."
-3,FWD.INT.LGT,Luminarias del nodo,part,M_LED,1.2x2.097x0.053,24,
-3,FWD.INT.RWS,Estación de trabajo robótica,group,,0.363x1.1x0.776,,"Puesto bajo la cúpula con 2 pantallas, controladores manuales de traslación y rotación y portátil de mando."
-4,FWD.INT.RWS.D1,Pantalla de la estación robótica 1,part,M_Screen_CAMERA,0.0x0.48x0.32,2,"Pantalla de 22"" para vídeo de las cámaras del brazo."
-4,FWD.INT.RWS.D2,Pantalla de la estación robótica 2,part,M_Screen_TRAJ,0.0x0.48x0.32,2,"Pantalla de 22"" para vídeo de las cámaras del brazo."
-4,FWD.INT.RWS.FRM,"Bastidor, reposamanos y controladores manuales",part,M_InteriorDark;M_InteriorGrey;M_Handrail;M_AlAnodBlack;M_AlBare,0.363x1.1x0.776,340,
-3,FWD.INT.STW,Estiba del nodo,group,,2.0x2.677x1.088,,
-4,FWD.INT.STW.BCK,Bastidores de soporte de taquillas,part,M_InteriorDark,2.0x2.677x1.084,48,
-4,FWD.INT.STW.L01,Taquilla del nodo 01,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L02,Taquilla del nodo 02,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L03,Taquilla del nodo 03,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L04,Taquilla del nodo 04,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L05,Taquilla del nodo 05,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L06,Taquilla del nodo 06,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L07,Taquilla del nodo 07,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L08,Taquilla del nodo 08,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L09,Taquilla del nodo 09,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L10,Taquilla del nodo 10,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L11,Taquilla del nodo 11,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L12,Taquilla del nodo 12,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L13,Taquilla del nodo 13,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L14,Taquilla del nodo 14,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
+2,FWD.INT,Interior del nodo,group,,2.08x3.97x5.16,,"Nodo de proa: estación de trabajo robótica, acceso a la cúpula de observación, escotilla de atraque y pozo de la esclusa."
+3,FWD.INT.BAG,Estiba de acceso rápido,part,R_Bag,1.604x0.308x0.408,5076,
+3,FWD.INT.BCK,Trasdós del nodo,part,R_Backing;M_AlBare,2.07x3.97x3.97,1108,
+3,FWD.INT.BHD,Mamparos del nodo,part,R_Lining,2.06x2.44x2.44,2384,
+3,FWD.INT.FLR,Suelo del nodo,part,R_Floor;R_LiningDark;M_AlBare,1.2x1.2x1.4,376,Pavimento sobre el pozo de la esclusa.
+3,FWD.INT.HF,Escotilla de atraque (IDSS),part,R_Lining;R_Accent;R_Black;R_Steel,0.095x0.88x0.88,3268,"Escotilla de paso de 0,80 m hacia el vehículo atracado; cerrada sin vehículo."
+3,FWD.INT.LGT,Luminarias del nodo,part,R_LED,1.8x1.289x0.048,40,
+3,FWD.INT.LIN,Revestimiento del nodo,part,R_Lining;M_AlBare,2.0x2.484x2.484,2400,Paneles curvos del nodo con huecos de cúpula y esclusa.
+3,FWD.INT.RWS,Estación robótica,part,R_LiningDark;R_Black;R_Frame;R_Rubber;R_Accent,0.76x0.468x1.188,3072,Puesto de control del brazo robótico con dos pantallas y controladores manuales.
+3,FWD.INT.RWS.S1,Pantalla de la estación robótica,part,R_Screen,0.33x0.051x0.204,2,Pantalla.
+3,FWD.INT.RWS.S2,Pantalla de la estación robótica,part,R_Screen,0.33x0.051x0.204,2,Pantalla.
+3,FWD.INT.WEL,Pozos de cúpula y esclusa,part,R_Lining;R_Frame;R_Accent;R_Alu;R_Floor,1.4x1.4x4.555,2600,"Brocales, escalerilla y asideros."
 2,FWD.MMOD,Protección MMOD y térmica del nodo,group,,2.26x2.872x2.866,,"Mantas MMOD blandas tipo 'stuffed Whipple' (beta cloth + Nextel + Kevlar) sobre MLI. Se eligen mantas flexibles en el nodo por su geometría compleja (cúpula, atraque)."
 3,FWD.MMOD.BLK1,"Manta MMOD del nodo, cuadrante 1",part,M_BetaCloth;M_AlBare,2.26x1.416x1.416,272,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
 3,FWD.MMOD.BLK1.Q,"Costuras de acolchado, cuadrante 1",part,M_Fabric,1.545x1.422x1.422,240,Costuras de unión de capas (hilo de PTFE).
@@ -159,7 +147,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,HAB.EXT.CWN.G7,Vidrio de ventana de cabina 7,part,M_Glass,0.84x0.748x0.748,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
 3,HAB.EXT.CWN.G8,Vidrio de ventana de cabina 8,part,M_Glass,0.84x0.703x0.679,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
 3,HAB.EXT.CWN.G9,Vidrio de ventana de cabina 9,part,M_Glass,0.84x0.572x0.588,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
-2,HAB.INT,Interior habitable,group,,9.53x3.97x3.98,,"Interior Rebirth: volumen continuo de 8,2 m con cabina, laboratorio, habitáculos y servicios."
+2,HAB.INT,Interior habitable,group,,9.53x3.97x4.055,,"Interior Rebirth: volumen continuo de 8,2 m con cabina, laboratorio, habitáculos y servicios."
 3,HAB.INT.A,Cabina de vuelo (bahía A),group,,3.395x3.97x3.98,,"Cabina de dos puestos orientada a proa con banda panorámica de nueve ventanas en el cono, paneles multifunción, consolas laterales de interruptores y controladores manuales."
 4,HAB.INT.A.BHD,Mamparo de proa y brocal de escotilla,part,R_Lining;R_Accent;R_Frame,0.235x2.48x2.48,1704,Mamparo con brocal bermellón y túnel hacia el nodo.
 4,HAB.INT.A.CON,Revestimiento facetado del cono,part,R_Lining,1.12x3.88x3.88,4308,Dieciséis facetas con nueve huecos de ventana.
@@ -208,25 +196,65 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 5,HAB.INT.A.TGL.SOLAR,Interruptor: Alas solares,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo potencia.
 5,HAB.INT.A.TGL.THERM,Interruptor: Bombeo térmico,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo sistemas.
 4,HAB.INT.A.WEL,Pozos de ventana,part,R_Frame,0.9x3.962x2.288,648,Pozos de aluminio anodizado mate que eliminan reflejos parásitos.
-3,HAB.INT.B,Laboratorio (bahía B),group,,2.1x3.97x3.98,,
-4,HAB.INT.B.SHL.FRM,Nervios y perfiles,part,R_Frame;R_Lining;R_Alu;R_Backing,2.1x3.877x3.241,8484,
+3,HAB.INT.B,Laboratorio (bahía B),group,,2.1x3.97x4.055,,"Laboratorio de ciencias de la vida y observación terrestre: guantera estanca, congelador de muestras a −80 °C, microscopio, cámara de cultivo y dos ventanas de nadir en el suelo."
+4,HAB.INT.B.FLF,Raíles y subsuelo,part,R_Alu;R_Backing;M_AlBare,2.05x3.2x0.064,460,
+4,HAB.INT.B.FLR,Suelo del laboratorio,part,R_Floor;M_AlBare,2.042x2.55x0.03,1616,Pavimento con dos pozos de observación de nadir.
+4,HAB.INT.B.FRZ,Congelador de muestras −80 °C,part,R_Lining;R_Accent;R_Indicator,1.96x0.05x0.613,1200,Cuatro cajones de congelación con registro de muestras.
+4,HAB.INT.B.GBX,Guantera estanca,part,R_Frame;R_Lining;R_LightPanel;R_Black;R_Rubber;R_Indicator,1.1x0.58x0.67,4436,"Volumen de trabajo de 0,26 m³ con dos puertos de guante, iluminación y esclusa de transferencia."
+4,HAB.INT.B.GBXG,Frontal transparente de la guantera,part,R_Glass,1.02x0.008x0.52,12,
+4,HAB.INT.B.MIC,Microscopio óptico,part,R_Lining;R_Black;R_Alu,0.325x0.24x0.51,808,Microscopio invertido con cámara digital y platina motorizada.
+4,HAB.INT.B.MON,Monitor de la guantera,part,R_Black,0.46x0.157x0.273,236,
+4,HAB.INT.B.NAD,Pozos de observación de nadir,part,R_Frame;R_Accent,1.61x0.66x0.922,1344,Pozos de aluminio anodizado mate con brocal de seguridad.
+4,HAB.INT.B.NADG,Vidrios pisables de nadir,part,R_Glass,1.54x0.59x0.02,376,Policarbonato laminado pisable sobre las ventanas ópticas.
+4,HAB.INT.B.RCK,Bastidores de instrumentos,part,R_LiningDark;R_Frame;R_Alu;R_Accent;R_Indicator,2.01x1.05x1.67,4200,Dos bastidores de experimentos con cajones normalizados e indicadores de estado.
+4,HAB.INT.B.SCR1,Pantalla de experimento,part,R_Screen,0.36x0.113x0.189,2,Pantalla.
+4,HAB.INT.B.SCR2,Pantalla de experimento,part,R_Screen,0.36x0.113x0.189,2,Pantalla.
+4,HAB.INT.B.SCR3,Monitor de la guantera,part,R_Screen,0.43x0.127x0.238,2,Pantalla.
+4,HAB.INT.B.SHL.FRM,Nervios y perfiles,part,R_Lining;R_Frame;R_Alu,2.1x3.877x3.241,7896,"Nervios grafito, cornisas, raíles de anclaje."
 4,HAB.INT.B.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x2.676x3.008,132,
-4,HAB.INT.B.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing;R_Floor,2.05x3.97x3.97,3552,
-4,HAB.INT.B.SHL.TOP,Encimeras,part,R_Worktop,2.042x3.87x0.034,512,
-4,HAB.INT.B.SHL.WALL,Revestimiento,part,R_Lining,2.042x3.883x1.902,2928,
-3,HAB.INT.C,Habitáculos (bahía C),group,,2.1x3.97x3.98,,
-4,HAB.INT.C.SHL.FRM,Nervios y perfiles,part,R_Frame;R_Lining;R_Alu;R_Backing,2.1x3.877x3.241,8484,
-4,HAB.INT.C.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x2.676x3.008,132,
-4,HAB.INT.C.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing;R_Floor,2.05x3.97x3.97,3552,
-4,HAB.INT.C.SHL.TOP,Encimeras,part,R_Worktop,2.042x3.87x0.034,512,
-4,HAB.INT.C.SHL.WALL,Revestimiento,part,R_Lining,2.042x3.883x1.902,2928,
-3,HAB.INT.D,Servicios (bahía D),group,,2.085x3.97x3.98,,
+4,HAB.INT.B.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing,2.05x3.97x3.97,2328,Frentes de armario grafito y pavimento de caucho.
+4,HAB.INT.B.SHL.TOP,Encimeras,part,R_Worktop,2.042x3.87x0.034,512,Encimera de compuesto de lino.
+4,HAB.INT.B.SHL.WALL,Revestimiento,part,R_Lining,2.042x2.791x1.902,2016,Paneles curvos de PPSU con juntas y compartimentos altos.
+4,HAB.INT.B.VEG,Cámara de cultivo,part,R_Lining;R_LightPanel;R_Black;R_Plant;R_Rubber,0.8x0.444x0.52,13968,Cámara de crecimiento con iluminación LED de espectro completo y riego por mecha capilar.
+4,HAB.INT.B.VEGG,Puerta acristalada de la cámara,part,R_Glass,0.75x0.006x0.44,12,
+3,HAB.INT.C,Habitáculos (bahía C),group,,3.228x3.97x3.98,,"Cuatro cabinas privadas (dos por costado) con aislamiento acústico, ventilación individual e iluminación regulable."
+4,HAB.INT.C.Q1,Cabina privada 1 (Comandante),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q1.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.706,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q1.CRT,Cortina,part,R_FabricBlue,2.223x0.22x0.05,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q1.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
+4,HAB.INT.C.Q2,Cabina privada 2 (Piloto),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q2.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.703,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q2.CRT,Cortina,part,R_FabricBlue,2.223x0.22x0.044,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q2.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
+4,HAB.INT.C.Q3,Cabina privada 3 (Especialista 1),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q3.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.706,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q3.CRT,Cortina,part,R_FabricBlue,2.223x0.22x0.048,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q3.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
+4,HAB.INT.C.Q4,Cabina privada 4 (Especialista 2),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q4.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.145x1.707,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q4.CRT,Cortina,part,R_FabricBlue,2.223x0.22x0.048,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q4.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
+4,HAB.INT.C.SHL.FRM,Nervios y perfiles,part,R_Lining;R_Frame;R_Alu;R_Backing,2.1x3.877x3.241,5348,"Nervios grafito, cornisas, raíles de anclaje."
+4,HAB.INT.C.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x1.703x0.245,84,
+4,HAB.INT.C.SHL.LOW,Zócalos y suelo,part,R_Floor;R_Backing,2.05x3.97x3.97,1352,Frentes de armario grafito y pavimento de caucho.
+4,HAB.INT.C.SHL.TOP,Encimeras,part,,,0,Encimera de compuesto de lino.
+4,HAB.INT.C.SHL.WALL,Revestimiento,part,R_Lining,2.042x1.699x0.209,1104,Paneles curvos de PPSU con juntas y compartimentos altos.
+4,HAB.INT.C.UPR,Paños superiores,part,R_Lining,2.042x2.323x0.186,360,
+3,HAB.INT.D,Servicios (bahía D),group,,2.085x3.97x3.98,,"Cocina con dispensador de agua y calentador, mesa de comidas, compartimento de higiene y cicloergómetro."
 4,HAB.INT.D.AFT,Mamparo de popa,part,R_Lining,0.03x3.84x3.84,1148,
-4,HAB.INT.D.SHL.FRM,Nervios y perfiles,part,R_Frame;R_Lining;R_Alu;R_Backing,2.08x3.877x3.241,8484,
-4,HAB.INT.D.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.01x2.676x3.008,132,
-4,HAB.INT.D.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing;R_Floor,2.03x3.97x3.97,3552,
-4,HAB.INT.D.SHL.TOP,Encimeras,part,R_Worktop,2.022x3.87x0.034,512,
-4,HAB.INT.D.SHL.WALL,Revestimiento,part,R_Lining,2.022x3.883x1.902,2928,
+4,HAB.INT.D.BAG,Bolsas de estiba,part,R_Bag;R_Label,0.27x2.69x1.558,20448,Bolsas de Nomex con etiquetas de inventario y cintas de sujeción.
+4,HAB.INT.D.CEV,Cicloergómetro,part,R_Frame;R_Lining;R_Black;R_Leather;R_Rubber,0.932x0.46x1.237,3016,"Cicloergómetro con aislamiento de vibraciones, sujeción de pies y monitor de esfuerzo."
+4,HAB.INT.D.CNT,Envases y raciones,part,R_Steel;R_Frame;R_Bag;R_Lining,0.565x0.308x0.152,3628,"Contenedores de raciones, bolsas de bebida y utensilios con sujeción magnética."
+4,HAB.INT.D.H2O,Dispensador de agua,part,R_Lining;R_Black;R_Indicator;R_Accent;R_Steel,0.3x0.352x0.46,680,Dispensador de agua caliente y fría con dosificación en bolsas de bebida.
+4,HAB.INT.D.HYG,Compartimento de higiene,part,R_Lining;R_Frame;R_LiningDark;R_Accent;R_Black,1.0x0.77x3.04,884,"Cabina cerrada con lavado por toallitas, aspiración de residuos y ventilación propia."
+4,HAB.INT.D.OVN,Calentador de alimentos,part,R_Lining;R_Frame;R_Accent;R_Indicator,0.46x0.365x0.34,408,Calentador por conducción para raciones y bolsas termoestabilizadas.
+4,HAB.INT.D.SHL.FRM,Nervios y perfiles,part,R_Frame;R_Lining;R_Alu;R_Backing,2.08x3.877x3.241,7132,"Nervios grafito, cornisas, raíles de anclaje."
+4,HAB.INT.D.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.01x2.19x3.008,108,
+4,HAB.INT.D.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing;R_Floor,2.03x3.97x3.97,2452,Frentes de armario grafito y pavimento de caucho.
+4,HAB.INT.D.SHL.TOP,Encimeras,part,R_Worktop,2.022x0.695x0.034,256,Encimera de compuesto de lino.
+4,HAB.INT.D.SHL.WALL,Revestimiento,part,R_Lining,2.022x3.883x1.902,2928,Paneles curvos de PPSU con juntas y compartimentos altos.
+4,HAB.INT.D.TAB,Tableta del plan del día,part,R_Black,0.269x0.215x0.008,108,
+4,HAB.INT.D.TBL,Mesa de comidas,part,R_Worktop;R_Frame;R_Alu,0.84x0.6x1.07,1164,Mesa de pie con barra de sujeción para los pies y anclajes magnéticos.
 2,HAB.MLI,Aislamiento multicapa (MLI),group,,9.91x4.27x4.27,,Mantas MLI de 20 capas (Mylar aluminizado con separador de red de Dacron) entre casco y escudo MMOD.
 3,HAB.MLI.CON,Manta MLI del cono,part,M_MLI_Gold,1.08x4.27x4.27,1052,
 3,HAB.MLI.DOM,Manta MLI del mamparo de popa,part,M_MLI_Gold,0.63x4.26x4.26,1472,

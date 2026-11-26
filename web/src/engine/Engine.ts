@@ -43,7 +43,7 @@ export type Quality = 'ultra' | 'alta' | 'media' | 'baja';
 
 /** Puntos de aparición (Blender: posición de los OJOS y punto al que se mira). */
 export const WAYPOINTS: Record<string, { label: string; pos: [number, number, number]; look: [number, number, number] }> = {
-  cabina: { label: 'Cabina de vuelo', pos: [6.95, 0.0, 0.48], look: [9.4, 0.0, 0.25] },
+  cabina: { label: 'Cabina de vuelo', pos: [6.35, -0.25, 0.48], look: [9.4, 0.15, -0.15] },
   lab: { label: 'Laboratorio', pos: [4.6, 0.25, 0.48], look: [6.6, -0.4, -0.1] },
   cq: { label: 'Habitáculos', pos: [3.0, 0.0, 0.48], look: [4.6, 0.6, 0.2] },
   servicios: { label: 'Servicios', pos: [2.6, 0.2, 0.48], look: [0.8, -0.4, 0.0] },
@@ -1138,15 +1138,8 @@ export class Engine {
     this.pipeline.debug = this.debug;
     this.pipeline.beginFrame();
     const r = this.renderer;
-    // sombras (fuera de la pasada principal para medirlas)
-    const ts = performance.now();
-    if (r.shadowMap.enabled && r.shadowMap.needsUpdate) {
-      // three procesa las sombras dentro de render(): forzamos aquí una pasada vacía medible
-      (r.shadowMap as any).render([this.lighting.sunLight], this.near, this.camera);
-      r.shadowMap.needsUpdate = false;
-    }
-    this.pipeline.accumulate();
-    const shadowMs = performance.now() - ts;
+    // las sombras se regeneran dentro de la pasada cercana sólo si shadowMap.needsUpdate (ver fitShadow)
+    const shadowMs = r.shadowMap.needsUpdate ? 1 : 0;
     // cámaras de instrumentos (cada 3 fotogramas) — sin bucle de realimentación: las pantallas se ocultan
     const tc = performance.now();
     this.camFrame = (this.camFrame + 1) % 3;

@@ -1,8 +1,8 @@
 {
  "vehicle": "ALCIÓN HX-4",
- "parts": 510,
- "groups": 90,
- "triangles": 628732,
+ "parts": 540,
+ "groups": 88,
+ "triangles": 731866,
  "tree": {
   "code": "ALCION",
   "label": "ALCIÓN HX-4",
@@ -226,7 +226,7 @@
     "depth": 1,
     "dims_m": [
      3.373,
-     3.04,
+     3.97,
      6.292
     ],
     "center_m": [
@@ -2406,124 +2406,170 @@
       "code": "FWD.INT",
       "label": "Interior del nodo",
       "kind": "group",
-      "desc": "Escotillas, estación de trabajo robótica bajo la cúpula y estiba de acceso rápido.",
-      "func": "",
+      "desc": "Nodo de proa: estación de trabajo robótica, acceso a la cúpula de observación, escotilla de atraque y pozo de la esclusa.",
+      "func": "Distribución, observación y salida EVA",
       "depth": 2,
       "dims_m": [
-       2.232,
-       2.677,
-       2.28
+       2.08,
+       3.97,
+       5.16
       ],
       "center_m": [
-       11.075,
+       11.11,
        0.0,
-       -0.076
+       -0.595
       ],
       "children": [
        {
-        "code": "FWD.INT.HA",
-        "label": "Escotilla nodo–hábitat",
+        "code": "FWD.INT.BAG",
+        "label": "Estiba de acceso rápido",
         "kind": "part",
-        "desc": "Escotilla de 1,12 m, abierta 100° y retenida contra la pared del nodo durante la operación normal.",
+        "desc": "",
         "func": "",
         "depth": 3,
         "materials": [
          {
-          "id": "M_AlLi",
-          "desc": "Aleación Al-Li 2195 (casco presurizado, isogrid)"
-         },
+          "id": "R_Bag",
+          "desc": "Bolsa de estiba de Nomex"
+         }
+        ],
+        "tris": 5076,
+        "dims_m": [
+         1.604,
+         0.308,
+         0.408
+        ],
+        "center_m": [
+         10.95,
+         -0.979,
+         0.15
+        ],
+        "count": 1
+       },
+       {
+        "code": "FWD.INT.BCK",
+        "label": "Trasdós del nodo",
+        "kind": "part",
+        "desc": "",
+        "func": "",
+        "depth": 3,
+        "materials": [
          {
-          "id": "M_Rubber",
-          "desc": "Elastómero / sellos de silicona"
-         },
-         {
-          "id": "M_EVAYellow",
-          "desc": "Pasamanos EVA (amarillo de alta visibilidad)"
-         },
-         {
-          "id": "M_AlAnodBlack",
-          "desc": "Aluminio anodizado negro"
-         },
-         {
-          "id": "M_Glass",
-          "desc": "Vidrio de sílice fundida multipanel"
+          "id": "R_Backing",
+          "desc": "Trasdós oscuro"
          },
          {
           "id": "M_AlBare",
           "desc": "Aluminio mecanizado"
-         },
-         {
-          "id": "M_Steel",
-          "desc": "Acero inoxidable A286"
-         },
-         {
-          "id": "M_Handrail",
-          "desc": "Pasamanos (aluminio anodizado amarillo)"
          }
         ],
-        "tris": 3628,
+        "tris": 1108,
         "dims_m": [
-         0.135,
-         1.166,
-         1.12
+         2.07,
+         3.97,
+         3.97
         ],
         "center_m": [
-         10.026,
-         0.019,
+         11.105,
+         0.0,
          0.0
         ],
         "count": 1
        },
        {
-        "code": "FWD.INT.HF",
-        "label": "Escotilla de atraque IDSS",
+        "code": "FWD.INT.BHD",
+        "label": "Mamparos del nodo",
         "kind": "part",
-        "desc": "Escotilla de 0,92 m con mirilla, válvula de ecualización de presión y mecanismo de cierre de 6 pestillos. Cerrada mientras el puerto está libre.",
+        "desc": "",
         "func": "",
         "depth": 3,
         "materials": [
          {
-          "id": "M_AlLi",
-          "desc": "Aleación Al-Li 2195 (casco presurizado, isogrid)"
+          "id": "R_Lining",
+          "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+         }
+        ],
+        "tris": 2384,
+        "dims_m": [
+         2.06,
+         2.44,
+         2.44
+        ],
+        "center_m": [
+         11.12,
+         0.0,
+         0.0
+        ],
+        "count": 1
+       },
+       {
+        "code": "FWD.INT.FLR",
+        "label": "Suelo del nodo",
+        "kind": "part",
+        "desc": "Pavimento sobre el pozo de la esclusa.",
+        "func": "",
+        "depth": 3,
+        "materials": [
+         {
+          "id": "R_Floor",
+          "desc": "Pavimento de caucho técnico con relieve antideslizante"
          },
          {
-          "id": "M_Rubber",
-          "desc": "Elastómero / sellos de silicona"
-         },
-         {
-          "id": "M_EVAYellow",
-          "desc": "Pasamanos EVA (amarillo de alta visibilidad)"
-         },
-         {
-          "id": "M_AlAnodBlack",
-          "desc": "Aluminio anodizado negro"
-         },
-         {
-          "id": "M_Glass",
-          "desc": "Vidrio de sílice fundida multipanel"
+          "id": "R_LiningDark",
+          "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
          },
          {
           "id": "M_AlBare",
           "desc": "Aluminio mecanizado"
-         },
-         {
-          "id": "M_Steel",
-          "desc": "Acero inoxidable A286"
-         },
-         {
-          "id": "M_Handrail",
-          "desc": "Pasamanos (aluminio anodizado amarillo)"
          }
         ],
-        "tris": 3628,
+        "tris": 376,
         "dims_m": [
-         0.135,
-         0.966,
-         0.92
+         1.2,
+         1.2,
+         1.4
         ],
         "center_m": [
-         12.124,
-         -0.019,
+         11.05,
+         0.0,
+         -0.9
+        ],
+        "count": 1
+       },
+       {
+        "code": "FWD.INT.HF",
+        "label": "Escotilla de atraque (IDSS)",
+        "kind": "part",
+        "desc": "Escotilla de paso de 0,80 m hacia el vehículo atracado; cerrada sin vehículo.",
+        "func": "",
+        "depth": 3,
+        "materials": [
+         {
+          "id": "R_Lining",
+          "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+         },
+         {
+          "id": "R_Accent",
+          "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+         },
+         {
+          "id": "R_Black",
+          "desc": "Polímero negro (biseles de pantalla)"
+         },
+         {
+          "id": "R_Steel",
+          "desc": "Acero inoxidable cepillado"
+         }
+        ],
+        "tris": 3268,
+        "dims_m": [
+         0.095,
+         0.88,
+         0.88
+        ],
+        "center_m": [
+         12.067,
+         0.0,
          0.0
         ],
         "count": 1
@@ -2537,775 +2583,191 @@
         "depth": 3,
         "materials": [
          {
-          "id": "M_LED",
-          "desc": "Iluminación LED de estado sólido"
+          "id": "R_LED",
+          "desc": "Tira LED cálida 3500 K"
          }
         ],
-        "tris": 24,
+        "tris": 40,
         "dims_m": [
-         1.2,
-         2.097,
-         0.053
+         1.8,
+         1.289,
+         0.048
         ],
         "center_m": [
-         11.05,
+         11.12,
          0.0,
-         0.814
+         1.05
+        ],
+        "count": 1
+       },
+       {
+        "code": "FWD.INT.LIN",
+        "label": "Revestimiento del nodo",
+        "kind": "part",
+        "desc": "Paneles curvos del nodo con huecos de cúpula y esclusa.",
+        "func": "",
+        "depth": 3,
+        "materials": [
+         {
+          "id": "R_Lining",
+          "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+         },
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
+         }
+        ],
+        "tris": 2400,
+        "dims_m": [
+         2.0,
+         2.484,
+         2.484
+        ],
+        "center_m": [
+         11.12,
+         0.0,
+         0.0
         ],
         "count": 1
        },
        {
         "code": "FWD.INT.RWS",
-        "label": "Estación de trabajo robótica",
-        "kind": "group",
-        "desc": "Puesto bajo la cúpula con 2 pantallas, controladores manuales de traslación y rotación y portátil de mando.",
-        "func": "Control directo del brazo robótico con visión desde la cúpula",
-        "depth": 3,
-        "dims_m": [
-         0.363,
-         1.1,
-         0.776
-        ],
-        "center_m": [
-         11.469,
-         0.0,
-         0.676
-        ],
-        "children": [
-         {
-          "code": "FWD.INT.RWS.D1",
-          "label": "Pantalla de la estación robótica 1",
-          "kind": "part",
-          "desc": "Pantalla de 22\" para vídeo de las cámaras del brazo.",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_Screen_CAMERA",
-            "desc": "Pantalla LCD de cabina (interfaz ficticia)"
-           }
-          ],
-          "tris": 2,
-          "dims_m": [
-           0.0,
-           0.48,
-           0.32
-          ],
-          "center_m": [
-           11.545,
-           0.27,
-           0.58
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.RWS.D2",
-          "label": "Pantalla de la estación robótica 2",
-          "kind": "part",
-          "desc": "Pantalla de 22\" para vídeo de las cámaras del brazo.",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_Screen_TRAJ",
-            "desc": "Pantalla LCD de cabina (interfaz ficticia)"
-           }
-          ],
-          "tris": 2,
-          "dims_m": [
-           0.0,
-           0.48,
-           0.32
-          ],
-          "center_m": [
-           11.545,
-           -0.27,
-           0.58
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.RWS.FRM",
-          "label": "Bastidor, reposamanos y controladores manuales",
-          "kind": "part",
-          "desc": "",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorDark",
-            "desc": "Bastidor interior anodizado oscuro"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Handrail",
-            "desc": "Pasamanos (aluminio anodizado amarillo)"
-           },
-           {
-            "id": "M_AlAnodBlack",
-            "desc": "Aluminio anodizado negro"
-           },
-           {
-            "id": "M_AlBare",
-            "desc": "Aluminio mecanizado"
-           }
-          ],
-          "tris": 340,
-          "dims_m": [
-           0.363,
-           1.1,
-           0.776
-          ],
-          "center_m": [
-           11.469,
-           0.0,
-           0.676
-          ],
-          "count": 1
-         }
-        ],
-        "count": 4
-       },
-       {
-        "code": "FWD.INT.STW",
-        "label": "Estiba del nodo",
-        "kind": "group",
-        "desc": "",
+        "label": "Estación robótica",
+        "kind": "part",
+        "desc": "Puesto de control del brazo robótico con dos pantallas y controladores manuales.",
         "func": "",
         "depth": 3,
-        "dims_m": [
-         2.0,
-         2.677,
-         1.088
-        ],
-        "center_m": [
-         11.1,
-         0.0,
-         -0.672
-        ],
-        "children": [
+        "materials": [
          {
-          "code": "FWD.INT.STW.BCK",
-          "label": "Bastidores de soporte de taquillas",
-          "kind": "part",
-          "desc": "",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorDark",
-            "desc": "Bastidor interior anodizado oscuro"
-           }
-          ],
-          "tris": 48,
-          "dims_m": [
-           2.0,
-           2.677,
-           1.084
-          ],
-          "center_m": [
-           11.1,
-           0.0,
-           -0.674
-          ],
-          "count": 1
+          "id": "R_LiningDark",
+          "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
          },
          {
-          "code": "FWD.INT.STW.L01",
-          "label": "Taquilla del nodo 01",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.384,
-           0.288
-          ],
-          "center_m": [
-           10.35,
-           -0.682,
-           -0.955
-          ],
-          "count": 1
+          "id": "R_Black",
+          "desc": "Polímero negro (biseles de pantalla)"
          },
          {
-          "code": "FWD.INT.STW.L02",
-          "label": "Taquilla del nodo 02",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.384,
-           0.288
-          ],
-          "center_m": [
-           10.85,
-           -0.682,
-           -0.955
-          ],
-          "count": 1
+          "id": "R_Frame",
+          "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
          },
          {
-          "code": "FWD.INT.STW.L03",
-          "label": "Taquilla del nodo 03",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.384,
-           0.288
-          ],
-          "center_m": [
-           11.35,
-           -0.682,
-           -0.955
-          ],
-          "count": 1
+          "id": "R_Rubber",
+          "desc": "Elastómero negro"
          },
          {
-          "code": "FWD.INT.STW.L04",
-          "label": "Taquilla del nodo 04",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.384,
-           0.288
-          ],
-          "center_m": [
-           11.85,
-           -0.682,
-           -0.955
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.STW.L05",
-          "label": "Taquilla del nodo 05",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.384,
-           0.288
-          ],
-          "center_m": [
-           10.35,
-           0.682,
-           -0.955
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.STW.L06",
-          "label": "Taquilla del nodo 06",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.384,
-           0.288
-          ],
-          "center_m": [
-           10.85,
-           0.682,
-           -0.955
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.STW.L07",
-          "label": "Taquilla del nodo 07",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.384,
-           0.288
-          ],
-          "center_m": [
-           11.35,
-           0.682,
-           -0.955
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.STW.L08",
-          "label": "Taquilla del nodo 08",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.384,
-           0.288
-          ],
-          "center_m": [
-           11.85,
-           0.682,
-           -0.955
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.STW.L09",
-          "label": "Taquilla del nodo 09",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.165,
-           0.438
-          ],
-          "center_m": [
-           10.35,
-           -1.121,
-           -0.347
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.STW.L10",
-          "label": "Taquilla del nodo 10",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.165,
-           0.438
-          ],
-          "center_m": [
-           10.85,
-           -1.121,
-           -0.347
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.STW.L11",
-          "label": "Taquilla del nodo 11",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.165,
-           0.438
-          ],
-          "center_m": [
-           11.35,
-           -1.121,
-           -0.347
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.STW.L12",
-          "label": "Taquilla del nodo 12",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.165,
-           0.438
-          ],
-          "center_m": [
-           10.35,
-           1.121,
-           -0.347
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.STW.L13",
-          "label": "Taquilla del nodo 13",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.165,
-           0.438
-          ],
-          "center_m": [
-           10.85,
-           1.121,
-           -0.347
-          ],
-          "count": 1
-         },
-         {
-          "code": "FWD.INT.STW.L14",
-          "label": "Taquilla del nodo 14",
-          "kind": "part",
-          "desc": "Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras).",
-          "func": "",
-          "depth": 4,
-          "materials": [
-           {
-            "id": "M_InteriorPanel",
-            "desc": "Panel interior (compuesto Nomex/fibra de vidrio blanco cálido)"
-           },
-           {
-            "id": "M_InteriorGrey",
-            "desc": "Panel interior gris grafito"
-           },
-           {
-            "id": "M_Steel",
-            "desc": "Acero inoxidable A286"
-           },
-           {
-            "id": "M_ShieldWhite",
-            "desc": "Panel escudo MMOD: aluminio 6061 pintado blanco térmico (Z-93 tipo)"
-           },
-           {
-            "id": "M_Decal",
-            "desc": "Marcado serigrafiado (negro)"
-           }
-          ],
-          "tris": 384,
-          "dims_m": [
-           0.388,
-           0.165,
-           0.438
-          ],
-          "center_m": [
-           11.35,
-           1.121,
-           -0.347
-          ],
-          "count": 1
+          "id": "R_Accent",
+          "desc": "Bermellón ALCIÓN (agarres y seguridad)"
          }
         ],
-        "count": 16
+        "tris": 3072,
+        "dims_m": [
+         0.76,
+         0.468,
+         1.188
+        ],
+        "center_m": [
+         10.68,
+         0.784,
+         -0.026
+        ],
+        "count": 1
+       },
+       {
+        "code": "FWD.INT.RWS.S1",
+        "label": "Pantalla de la estación robótica",
+        "kind": "part",
+        "desc": "Pantalla.",
+        "func": "",
+        "depth": 3,
+        "materials": [
+         {
+          "id": "R_Screen",
+          "desc": "Pantalla multifunción (contenido dinámico)"
+         }
+        ],
+        "tris": 2,
+        "dims_m": [
+         0.33,
+         0.051,
+         0.204
+        ],
+        "center_m": [
+         10.48,
+         0.968,
+         0.45
+        ],
+        "count": 1
+       },
+       {
+        "code": "FWD.INT.RWS.S2",
+        "label": "Pantalla de la estación robótica",
+        "kind": "part",
+        "desc": "Pantalla.",
+        "func": "",
+        "depth": 3,
+        "materials": [
+         {
+          "id": "R_Screen",
+          "desc": "Pantalla multifunción (contenido dinámico)"
+         }
+        ],
+        "tris": 2,
+        "dims_m": [
+         0.33,
+         0.051,
+         0.204
+        ],
+        "center_m": [
+         10.88,
+         0.968,
+         0.45
+        ],
+        "count": 1
+       },
+       {
+        "code": "FWD.INT.WEL",
+        "label": "Pozos de cúpula y esclusa",
+        "kind": "part",
+        "desc": "Brocales, escalerilla y asideros.",
+        "func": "",
+        "depth": 3,
+        "materials": [
+         {
+          "id": "R_Lining",
+          "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+         },
+         {
+          "id": "R_Frame",
+          "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+         },
+         {
+          "id": "R_Accent",
+          "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+         },
+         {
+          "id": "R_Alu",
+          "desc": "Aluminio satinado"
+         },
+         {
+          "id": "R_Floor",
+          "desc": "Pavimento de caucho técnico con relieve antideslizante"
+         }
+        ],
+        "tris": 2600,
+        "dims_m": [
+         1.4,
+         1.4,
+         4.555
+        ],
+        "center_m": [
+         11.05,
+         0.0,
+         -0.898
+        ],
+        "count": 1
        }
       ],
-      "count": 24
+      "count": 12
      },
      {
       "code": "FWD.MMOD",
@@ -3776,7 +3238,7 @@
       "count": 8
      }
     ],
-    "count": 107
+    "count": 95
    },
    {
     "code": "HAB",
@@ -5054,12 +4516,12 @@
       "dims_m": [
        9.53,
        3.97,
-       3.98
+       4.055
       ],
       "center_m": [
        5.355,
        0.0,
-       0.005
+       -0.032
       ],
       "children": [
        {
@@ -6508,25 +5970,123 @@
         "code": "HAB.INT.B",
         "label": "Laboratorio (bahía B)",
         "kind": "group",
-        "desc": "",
-        "func": "",
+        "desc": "Laboratorio de ciencias de la vida y observación terrestre: guantera estanca, congelador de muestras a −80 °C, microscopio, cámara de cultivo y dos ventanas de nadir en el suelo.",
+        "func": "Experimentación, observación y conservación de muestras",
         "depth": 3,
         "dims_m": [
          2.1,
          3.97,
-         3.98
+         4.055
         ],
         "center_m": [
          5.725,
          0.0,
-         0.005
+         -0.032
         ],
         "children": [
          {
-          "code": "HAB.INT.B.SHL.FRM",
-          "label": "Nervios y perfiles",
+          "code": "HAB.INT.B.FLF",
+          "label": "Raíles y subsuelo",
           "kind": "part",
           "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Backing",
+            "desc": "Trasdós oscuro"
+           },
+           {
+            "id": "M_AlBare",
+            "desc": "Aluminio mecanizado"
+           }
+          ],
+          "tris": 460,
+          "dims_m": [
+           2.05,
+           3.2,
+           0.064
+          ],
+          "center_m": [
+           5.725,
+           0.0,
+           -1.178
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.FLR",
+          "label": "Suelo del laboratorio",
+          "kind": "part",
+          "desc": "Pavimento con dos pozos de observación de nadir.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Floor",
+            "desc": "Pavimento de caucho técnico con relieve antideslizante"
+           },
+           {
+            "id": "M_AlBare",
+            "desc": "Aluminio mecanizado"
+           }
+          ],
+          "tris": 1616,
+          "dims_m": [
+           2.042,
+           2.55,
+           0.03
+          ],
+          "center_m": [
+           5.725,
+           0.0,
+           -1.165
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.FRZ",
+          "label": "Congelador de muestras −80 °C",
+          "kind": "part",
+          "desc": "Cuatro cajones de congelación con registro de muestras.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador"
+           }
+          ],
+          "tris": 1200,
+          "dims_m": [
+           1.96,
+           0.05,
+           0.613
+          ],
+          "center_m": [
+           5.74,
+           1.27,
+           -0.444
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.GBX",
+          "label": "Guantera estanca",
+          "kind": "part",
+          "desc": "Volumen de trabajo de 0,26 m³ con dos puertos de guante, iluminación y esclusa de transferencia.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -6539,15 +6099,319 @@
             "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
            },
            {
+            "id": "R_LightPanel",
+            "desc": "Difusor lumínico 4000 K"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Rubber",
+            "desc": "Elastómero negro"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador"
+           }
+          ],
+          "tris": 4436,
+          "dims_m": [
+           1.1,
+           0.58,
+           0.67
+          ],
+          "center_m": [
+           5.6,
+           -1.59,
+           0.305
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.GBXG",
+          "label": "Frontal transparente de la guantera",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Glass",
+            "desc": "Panel interior antirayado"
+           }
+          ],
+          "tris": 12,
+          "dims_m": [
+           1.02,
+           0.008,
+           0.52
+          ],
+          "center_m": [
+           5.6,
+           -1.305,
+           0.29
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.MIC",
+          "label": "Microscopio óptico",
+          "kind": "part",
+          "desc": "Microscopio invertido con cámara digital y platina motorizada.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           }
+          ],
+          "tris": 808,
+          "dims_m": [
+           0.325,
+           0.24,
+           0.51
+          ],
+          "center_m": [
+           5.137,
+           1.58,
+           0.225
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.MON",
+          "label": "Monitor de la guantera",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           }
+          ],
+          "tris": 236,
+          "dims_m": [
+           0.46,
+           0.157,
+           0.273
+          ],
+          "center_m": [
+           5.6,
+           -1.625,
+           0.864
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.NAD",
+          "label": "Pozos de observación de nadir",
+          "kind": "part",
+          "desc": "Pozos de aluminio anodizado mate con brocal de seguridad.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           }
+          ],
+          "tris": 1344,
+          "dims_m": [
+           1.61,
+           0.66,
+           0.922
+          ],
+          "center_m": [
+           5.725,
+           0.0,
+           -1.599
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.NADG",
+          "label": "Vidrios pisables de nadir",
+          "kind": "part",
+          "desc": "Policarbonato laminado pisable sobre las ventanas ópticas.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Glass",
+            "desc": "Panel interior antirayado"
+           }
+          ],
+          "tris": 376,
+          "dims_m": [
+           1.54,
+           0.59,
+           0.02
+          ],
+          "center_m": [
+           5.725,
+           0.0,
+           -1.162
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.RCK",
+          "label": "Bastidores de instrumentos",
+          "kind": "part",
+          "desc": "Dos bastidores de experimentos con cajones normalizados e indicadores de estado.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_LiningDark",
+            "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
             "id": "R_Alu",
             "desc": "Aluminio satinado"
            },
            {
-            "id": "R_Backing",
-            "desc": "Trasdós oscuro"
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador"
            }
           ],
-          "tris": 8484,
+          "tris": 4200,
+          "dims_m": [
+           2.01,
+           1.05,
+           1.67
+          ],
+          "center_m": [
+           5.725,
+           1.404,
+           0.868
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.SCR1",
+          "label": "Pantalla de experimento",
+          "kind": "part",
+          "desc": "Pantalla.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Screen",
+            "desc": "Pantalla multifunción (contenido dinámico)"
+           }
+          ],
+          "tris": 2,
+          "dims_m": [
+           0.36,
+           0.113,
+           0.189
+          ],
+          "center_m": [
+           5.2,
+           1.584,
+           0.952
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.SCR2",
+          "label": "Pantalla de experimento",
+          "kind": "part",
+          "desc": "Pantalla.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Screen",
+            "desc": "Pantalla multifunción (contenido dinámico)"
+           }
+          ],
+          "tris": 2,
+          "dims_m": [
+           0.36,
+           0.113,
+           0.189
+          ],
+          "center_m": [
+           6.25,
+           1.584,
+           0.952
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.SCR3",
+          "label": "Monitor de la guantera",
+          "kind": "part",
+          "desc": "Pantalla.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Screen",
+            "desc": "Pantalla multifunción (contenido dinámico)"
+           }
+          ],
+          "tris": 2,
+          "dims_m": [
+           0.43,
+           0.127,
+           0.238
+          ],
+          "center_m": [
+           5.6,
+           -1.615,
+           0.859
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.SHL.FRM",
+          "label": "Nervios y perfiles",
+          "kind": "part",
+          "desc": "Nervios grafito, cornisas, raíles de anclaje.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           }
+          ],
+          "tris": 7896,
           "dims_m": [
            2.1,
            3.877,
@@ -6594,7 +6458,7 @@
           "code": "HAB.INT.B.SHL.LOW",
           "label": "Zócalos y suelo",
           "kind": "part",
-          "desc": "",
+          "desc": "Frentes de armario grafito y pavimento de caucho.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -6605,13 +6469,9 @@
            {
             "id": "R_Backing",
             "desc": "Trasdós oscuro"
-           },
-           {
-            "id": "R_Floor",
-            "desc": "Pavimento de caucho técnico con relieve antideslizante"
            }
           ],
-          "tris": 3552,
+          "tris": 2328,
           "dims_m": [
            2.05,
            3.97,
@@ -6628,7 +6488,7 @@
           "code": "HAB.INT.B.SHL.TOP",
           "label": "Encimeras",
           "kind": "part",
-          "desc": "",
+          "desc": "Encimera de compuesto de lino.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -6654,7 +6514,7 @@
           "code": "HAB.INT.B.SHL.WALL",
           "label": "Revestimiento",
           "kind": "part",
-          "desc": "",
+          "desc": "Paneles curvos de PPSU con juntas y compartimentos altos.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -6663,43 +6523,229 @@
             "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
            }
           ],
-          "tris": 2928,
+          "tris": 2016,
           "dims_m": [
            2.042,
-           3.883,
+           2.791,
            1.902
           ],
           "center_m": [
            5.725,
-           0.0,
+           -0.546,
            0.985
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.VEG",
+          "label": "Cámara de cultivo",
+          "kind": "part",
+          "desc": "Cámara de crecimiento con iluminación LED de espectro completo y riego por mecha capilar.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_LightPanel",
+            "desc": "Difusor lumínico 4000 K"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Plant",
+            "desc": "Cultivo de hoja"
+           },
+           {
+            "id": "R_Rubber",
+            "desc": "Elastómero negro"
+           }
+          ],
+          "tris": 13968,
+          "dims_m": [
+           0.8,
+           0.444,
+           0.52
+          ],
+          "center_m": [
+           6.22,
+           1.658,
+           0.24
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.B.VEGG",
+          "label": "Puerta acristalada de la cámara",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Glass",
+            "desc": "Panel interior antirayado"
+           }
+          ],
+          "tris": 12,
+          "dims_m": [
+           0.75,
+           0.006,
+           0.44
+          ],
+          "center_m": [
+           6.22,
+           1.437,
+           0.24
           ],
           "count": 1
          }
         ],
-        "count": 6
+        "count": 21
        },
        {
         "code": "HAB.INT.C",
         "label": "Habitáculos (bahía C)",
         "kind": "group",
-        "desc": "",
-        "func": "",
+        "desc": "Cuatro cabinas privadas (dos por costado) con aislamiento acústico, ventilación individual e iluminación regulable.",
+        "func": "Descanso y privacidad de la tripulación",
         "depth": 3,
         "dims_m": [
-         2.1,
+         3.228,
          3.97,
          3.98
         ],
         "center_m": [
-         3.675,
+         3.332,
          0.0,
          0.005
         ],
         "children": [
          {
-          "code": "HAB.INT.C.SHL.FRM",
-          "label": "Nervios y perfiles",
+          "code": "HAB.INT.C.Q1",
+          "label": "Cabina privada 1 (Comandante)",
+          "kind": "part",
+          "desc": "Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_LiningDark",
+            "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Fabric",
+            "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
+           },
+           {
+            "id": "R_Worktop",
+            "desc": "Encimera de compuesto de fibra de lino y resina bio"
+           },
+           {
+            "id": "R_Screen",
+            "desc": "Pantalla multifunción (contenido dinámico)"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
+           },
+           {
+            "id": "R_Bag",
+            "desc": "Bolsa de estiba de Nomex"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           }
+          ],
+          "tris": 2966,
+          "dims_m": [
+           1.005,
+           0.825,
+           2.663
+          ],
+          "center_m": [
+           3.173,
+           1.501,
+           0.181
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q1.BAG",
+          "label": "Saco de dormir",
+          "kind": "part",
+          "desc": "Saco de dormir sujeto a la pared con cinchas ajustables.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           }
+          ],
+          "tris": 7748,
+          "dims_m": [
+           0.661,
+           0.144,
+           1.706
+          ],
+          "center_m": [
+           3.172,
+           1.61,
+           -0.282
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q1.CRT",
+          "label": "Cortina",
+          "kind": "part",
+          "desc": "Cortina de tejido técnico ignífugo recogida.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           }
+          ],
+          "tris": 656,
+          "dims_m": [
+           2.223,
+           0.22,
+           0.05
+          ],
+          "center_m": [
+           2.83,
+           1.11,
+           0.3
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q1.LMP",
+          "label": "Luz de lectura",
           "kind": "part",
           "desc": "",
           "func": "",
@@ -6710,8 +6756,482 @@
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
+            "id": "R_LED",
+            "desc": "Tira LED cálida 3500 K"
+           }
+          ],
+          "tris": 120,
+          "dims_m": [
+           0.06,
+           0.06,
+           0.029
+          ],
+          "center_m": [
+           2.89,
+           1.3,
+           1.466
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q2",
+          "label": "Cabina privada 2 (Piloto)",
+          "kind": "part",
+          "desc": "Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
             "id": "R_Lining",
             "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_LiningDark",
+            "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Fabric",
+            "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
+           },
+           {
+            "id": "R_Worktop",
+            "desc": "Encimera de compuesto de fibra de lino y resina bio"
+           },
+           {
+            "id": "R_Screen",
+            "desc": "Pantalla multifunción (contenido dinámico)"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
+           },
+           {
+            "id": "R_Bag",
+            "desc": "Bolsa de estiba de Nomex"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           }
+          ],
+          "tris": 2966,
+          "dims_m": [
+           1.005,
+           0.825,
+           2.663
+          ],
+          "center_m": [
+           4.177,
+           1.501,
+           0.181
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q2.BAG",
+          "label": "Saco de dormir",
+          "kind": "part",
+          "desc": "Saco de dormir sujeto a la pared con cinchas ajustables.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           }
+          ],
+          "tris": 7748,
+          "dims_m": [
+           0.661,
+           0.144,
+           1.703
+          ],
+          "center_m": [
+           4.177,
+           1.61,
+           -0.281
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q2.CRT",
+          "label": "Cortina",
+          "kind": "part",
+          "desc": "Cortina de tejido técnico ignífugo recogida.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           }
+          ],
+          "tris": 656,
+          "dims_m": [
+           2.223,
+           0.22,
+           0.044
+          ],
+          "center_m": [
+           3.835,
+           1.11,
+           0.302
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q2.LMP",
+          "label": "Luz de lectura",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_LED",
+            "desc": "Tira LED cálida 3500 K"
+           }
+          ],
+          "tris": 120,
+          "dims_m": [
+           0.06,
+           0.06,
+           0.029
+          ],
+          "center_m": [
+           3.895,
+           1.3,
+           1.466
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q3",
+          "label": "Cabina privada 3 (Especialista 1)",
+          "kind": "part",
+          "desc": "Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_LiningDark",
+            "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Fabric",
+            "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
+           },
+           {
+            "id": "R_Worktop",
+            "desc": "Encimera de compuesto de fibra de lino y resina bio"
+           },
+           {
+            "id": "R_Screen",
+            "desc": "Pantalla multifunción (contenido dinámico)"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
+           },
+           {
+            "id": "R_Bag",
+            "desc": "Bolsa de estiba de Nomex"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           }
+          ],
+          "tris": 2966,
+          "dims_m": [
+           1.005,
+           0.825,
+           2.663
+          ],
+          "center_m": [
+           3.173,
+           -1.501,
+           0.181
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q3.BAG",
+          "label": "Saco de dormir",
+          "kind": "part",
+          "desc": "Saco de dormir sujeto a la pared con cinchas ajustables.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           }
+          ],
+          "tris": 7748,
+          "dims_m": [
+           0.661,
+           0.144,
+           1.706
+          ],
+          "center_m": [
+           3.172,
+           -1.611,
+           -0.283
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q3.CRT",
+          "label": "Cortina",
+          "kind": "part",
+          "desc": "Cortina de tejido técnico ignífugo recogida.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           }
+          ],
+          "tris": 656,
+          "dims_m": [
+           2.223,
+           0.22,
+           0.048
+          ],
+          "center_m": [
+           2.83,
+           -1.11,
+           0.302
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q3.LMP",
+          "label": "Luz de lectura",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_LED",
+            "desc": "Tira LED cálida 3500 K"
+           }
+          ],
+          "tris": 120,
+          "dims_m": [
+           0.06,
+           0.06,
+           0.029
+          ],
+          "center_m": [
+           2.89,
+           -1.3,
+           1.466
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q4",
+          "label": "Cabina privada 4 (Especialista 2)",
+          "kind": "part",
+          "desc": "Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_LiningDark",
+            "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Fabric",
+            "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
+           },
+           {
+            "id": "R_Worktop",
+            "desc": "Encimera de compuesto de fibra de lino y resina bio"
+           },
+           {
+            "id": "R_Screen",
+            "desc": "Pantalla multifunción (contenido dinámico)"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
+           },
+           {
+            "id": "R_Bag",
+            "desc": "Bolsa de estiba de Nomex"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           }
+          ],
+          "tris": 2966,
+          "dims_m": [
+           1.005,
+           0.825,
+           2.663
+          ],
+          "center_m": [
+           4.177,
+           -1.501,
+           0.181
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q4.BAG",
+          "label": "Saco de dormir",
+          "kind": "part",
+          "desc": "Saco de dormir sujeto a la pared con cinchas ajustables.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           }
+          ],
+          "tris": 7748,
+          "dims_m": [
+           0.661,
+           0.145,
+           1.707
+          ],
+          "center_m": [
+           4.177,
+           -1.612,
+           -0.282
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q4.CRT",
+          "label": "Cortina",
+          "kind": "part",
+          "desc": "Cortina de tejido técnico ignífugo recogida.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           }
+          ],
+          "tris": 656,
+          "dims_m": [
+           2.223,
+           0.22,
+           0.048
+          ],
+          "center_m": [
+           3.835,
+           -1.11,
+           0.298
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.Q4.LMP",
+          "label": "Luz de lectura",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_LED",
+            "desc": "Tira LED cálida 3500 K"
+           }
+          ],
+          "tris": 120,
+          "dims_m": [
+           0.06,
+           0.06,
+           0.029
+          ],
+          "center_m": [
+           3.895,
+           -1.3,
+           1.466
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.SHL.FRM",
+          "label": "Nervios y perfiles",
+          "kind": "part",
+          "desc": "Nervios grafito, cornisas, raíles de anclaje.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
             "id": "R_Alu",
@@ -6722,7 +7242,7 @@
             "desc": "Trasdós oscuro"
            }
           ],
-          "tris": 8484,
+          "tris": 5348,
           "dims_m": [
            2.1,
            3.877,
@@ -6731,7 +7251,7 @@
           "center_m": [
            3.675,
            0.0,
-           0.374
+           0.375
           ],
           "count": 1
          },
@@ -6752,16 +7272,16 @@
             "desc": "Difusor lumínico 4000 K"
            }
           ],
-          "tris": 132,
+          "tris": 84,
           "dims_m": [
            2.03,
-           2.676,
-           3.008
+           1.703,
+           0.245
           ],
           "center_m": [
            3.675,
            0.0,
-           0.454
+           1.835
           ],
           "count": 1
          },
@@ -6769,24 +7289,20 @@
           "code": "HAB.INT.C.SHL.LOW",
           "label": "Zócalos y suelo",
           "kind": "part",
-          "desc": "",
+          "desc": "Frentes de armario grafito y pavimento de caucho.",
           "func": "",
           "depth": 4,
           "materials": [
            {
-            "id": "R_LiningDark",
-            "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
+            "id": "R_Floor",
+            "desc": "Pavimento de caucho técnico con relieve antideslizante"
            },
            {
             "id": "R_Backing",
             "desc": "Trasdós oscuro"
-           },
-           {
-            "id": "R_Floor",
-            "desc": "Pavimento de caucho técnico con relieve antideslizante"
            }
           ],
-          "tris": 3552,
+          "tris": 1352,
           "dims_m": [
            2.05,
            3.97,
@@ -6803,31 +7319,42 @@
           "code": "HAB.INT.C.SHL.TOP",
           "label": "Encimeras",
           "kind": "part",
-          "desc": "",
+          "desc": "Encimera de compuesto de lino.",
           "func": "",
           "depth": 4,
-          "materials": [
-           {
-            "id": "R_Worktop",
-            "desc": "Encimera de compuesto de fibra de lino y resina bio"
-           }
-          ],
-          "tris": 512,
-          "dims_m": [
-           2.042,
-           3.87,
-           0.034
-          ],
-          "center_m": [
-           3.675,
-           0.0,
-           -0.047
-          ],
+          "materials": [],
+          "tris": 0,
           "count": 1
          },
          {
           "code": "HAB.INT.C.SHL.WALL",
           "label": "Revestimiento",
+          "kind": "part",
+          "desc": "Paneles curvos de PPSU con juntas y compartimentos altos.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           }
+          ],
+          "tris": 1104,
+          "dims_m": [
+           2.042,
+           1.699,
+           0.209
+          ],
+          "center_m": [
+           3.675,
+           0.0,
+           1.832
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.C.UPR",
+          "label": "Paños superiores",
           "kind": "part",
           "desc": "",
           "func": "",
@@ -6838,28 +7365,28 @@
             "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
            }
           ],
-          "tris": 2928,
+          "tris": 360,
           "dims_m": [
            2.042,
-           3.883,
-           1.902
+           2.323,
+           0.186
           ],
           "center_m": [
            3.675,
            0.0,
-           0.985
+           1.62
           ],
           "count": 1
          }
         ],
-        "count": 6
+        "count": 23
        },
        {
         "code": "HAB.INT.D",
         "label": "Servicios (bahía D)",
         "kind": "group",
-        "desc": "",
-        "func": "",
+        "desc": "Cocina con dispensador de agua y calentador, mesa de comidas, compartimento de higiene y cicloergómetro.",
+        "func": "Alimentación, higiene, ejercicio y estiba",
         "depth": 3,
         "dims_m": [
          2.085,
@@ -6899,10 +7426,242 @@
           "count": 1
          },
          {
+          "code": "HAB.INT.D.BAG",
+          "label": "Bolsas de estiba",
+          "kind": "part",
+          "desc": "Bolsas de Nomex con etiquetas de inventario y cintas de sujeción.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Bag",
+            "desc": "Bolsa de estiba de Nomex"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
+           }
+          ],
+          "tris": 20448,
+          "dims_m": [
+           0.27,
+           2.69,
+           1.558
+          ],
+          "center_m": [
+           0.753,
+           0.022,
+           -0.05
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.D.CEV",
+          "label": "Cicloergómetro",
+          "kind": "part",
+          "desc": "Cicloergómetro con aislamiento de vibraciones, sujeción de pies y monitor de esfuerzo.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Leather",
+            "desc": "Tapizado de piel técnica perforada, grafito cálido"
+           },
+           {
+            "id": "R_Rubber",
+            "desc": "Elastómero negro"
+           }
+          ],
+          "tris": 3016,
+          "dims_m": [
+           0.932,
+           0.46,
+           1.237
+          ],
+          "center_m": [
+           2.166,
+           -0.95,
+           -0.521
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.D.CNT",
+          "label": "Envases y raciones",
+          "kind": "part",
+          "desc": "Contenedores de raciones, bolsas de bebida y utensilios con sujeción magnética.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Bag",
+            "desc": "Bolsa de estiba de Nomex"
+           },
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           }
+          ],
+          "tris": 3628,
+          "dims_m": [
+           0.565,
+           0.308,
+           0.152
+          ],
+          "center_m": [
+           1.029,
+           1.63,
+           0.046
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.D.H2O",
+          "label": "Dispensador de agua",
+          "kind": "part",
+          "desc": "Dispensador de agua caliente y fría con dosificación en bolsas de bebida.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           }
+          ],
+          "tris": 680,
+          "dims_m": [
+           0.3,
+           0.352,
+           0.46
+          ],
+          "center_m": [
+           1.95,
+           1.694,
+           0.2
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.D.HYG",
+          "label": "Compartimento de higiene",
+          "kind": "part",
+          "desc": "Cabina cerrada con lavado por toallitas, aspiración de residuos y ventilación propia.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_LiningDark",
+            "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           }
+          ],
+          "tris": 884,
+          "dims_m": [
+           1.0,
+           0.77,
+           3.04
+          ],
+          "center_m": [
+           1.14,
+           -1.365,
+           0.37
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.D.OVN",
+          "label": "Calentador de alimentos",
+          "kind": "part",
+          "desc": "Calentador por conducción para raciones y bolsas termoestabilizadas.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador"
+           }
+          ],
+          "tris": 408,
+          "dims_m": [
+           0.46,
+           0.365,
+           0.34
+          ],
+          "center_m": [
+           1.42,
+           1.688,
+           0.14
+          ],
+          "count": 1
+         },
+         {
           "code": "HAB.INT.D.SHL.FRM",
           "label": "Nervios y perfiles",
           "kind": "part",
-          "desc": "",
+          "desc": "Nervios grafito, cornisas, raíles de anclaje.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -6923,7 +7682,7 @@
             "desc": "Trasdós oscuro"
            }
           ],
-          "tris": 8484,
+          "tris": 7132,
           "dims_m": [
            2.08,
            3.877,
@@ -6953,15 +7712,15 @@
             "desc": "Difusor lumínico 4000 K"
            }
           ],
-          "tris": 132,
+          "tris": 108,
           "dims_m": [
            2.01,
-           2.676,
+           2.19,
            3.008
           ],
           "center_m": [
            1.635,
-           0.0,
+           0.243,
            0.454
           ],
           "count": 1
@@ -6970,7 +7729,7 @@
           "code": "HAB.INT.D.SHL.LOW",
           "label": "Zócalos y suelo",
           "kind": "part",
-          "desc": "",
+          "desc": "Frentes de armario grafito y pavimento de caucho.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -6987,7 +7746,7 @@
             "desc": "Pavimento de caucho técnico con relieve antideslizante"
            }
           ],
-          "tris": 3552,
+          "tris": 2452,
           "dims_m": [
            2.03,
            3.97,
@@ -7004,7 +7763,7 @@
           "code": "HAB.INT.D.SHL.TOP",
           "label": "Encimeras",
           "kind": "part",
-          "desc": "",
+          "desc": "Encimera de compuesto de lino.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -7013,15 +7772,15 @@
             "desc": "Encimera de compuesto de fibra de lino y resina bio"
            }
           ],
-          "tris": 512,
+          "tris": 256,
           "dims_m": [
            2.022,
-           3.87,
+           0.695,
            0.034
           ],
           "center_m": [
            1.635,
-           0.0,
+           1.587,
            -0.047
           ],
           "count": 1
@@ -7030,7 +7789,7 @@
           "code": "HAB.INT.D.SHL.WALL",
           "label": "Revestimiento",
           "kind": "part",
-          "desc": "",
+          "desc": "Paneles curvos de PPSU con juntas y compartimentos altos.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -7051,12 +7810,72 @@
            0.985
           ],
           "count": 1
+         },
+         {
+          "code": "HAB.INT.D.TAB",
+          "label": "Tableta del plan del día",
+          "kind": "part",
+          "desc": "",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           }
+          ],
+          "tris": 108,
+          "dims_m": [
+           0.269,
+           0.215,
+           0.008
+          ],
+          "center_m": [
+           1.7,
+           0.08,
+           -0.064
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.D.TBL",
+          "label": "Mesa de comidas",
+          "kind": "part",
+          "desc": "Mesa de pie con barra de sujeción para los pies y anclajes magnéticos.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "R_Worktop",
+            "desc": "Encimera de compuesto de fibra de lino y resina bio"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           }
+          ],
+          "tris": 1164,
+          "dims_m": [
+           0.84,
+           0.6,
+           1.07
+          ],
+          "center_m": [
+           1.55,
+           0.0,
+           -0.615
+          ],
+          "count": 1
          }
         ],
-        "count": 7
+        "count": 15
        }
       ],
-      "count": 68
+      "count": 108
      },
      {
       "code": "HAB.MLI",
@@ -11692,7 +12511,7 @@
       "count": 21
      }
     ],
-    "count": 246
+    "count": 286
    },
    {
     "code": "PRP",
@@ -19063,6 +19882,6 @@
     "count": 17
    }
   ],
-  "count": 600
+  "count": 628
  }
 }

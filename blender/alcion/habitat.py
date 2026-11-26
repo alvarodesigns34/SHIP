@@ -527,11 +527,14 @@ def build(hab, fwd):
     intg = group("HAB.INT", "Interior habitable", hab, explode=(0, 0, 0),
                  desc="Interior Rebirth: volumen continuo de 8,2 m con cabina, laboratorio, habitáculos y servicios.",
                  func="Habitabilidad, trabajo científico y pilotaje")
+    from . import habitat_rooms as R
+    import importlib
+    importlib.reload(R)
     build_cockpit(intg, hab)
-    gb = build_generic_bay(intg, "B", "Laboratorio (bahía B)")
-    gc = build_generic_bay(intg, "C", "Habitáculos (bahía C)")
-    gd = build_generic_bay(intg, "D", "Servicios (bahía D)")
-    build_aft_wall(gd)
+    R.build_lab(intg)
+    R.build_quarters(intg)
+    R.build_services(intg)
+    R.build_node(fwd)
     return intg
 
 
@@ -567,4 +570,21 @@ def bake_lights():
             area(f"L_toe_{key}_{s}", (xc, s * (FACE + 0.054), FLOOR + TOE - 0.012), L - 0.1, 0.01, (0, 0, 0), 3.0 * L, (1.0, 0.86, 0.72), key)
         # canal cenital (difusor)
         area(f"L_chan_{key}", (xc, 0, R_L + 0.02), L - 0.04, 0.24, (0, 0, 0), 45.0 * L, (1.0, 0.93, 0.85), key)
+    # luminarias específicas declaradas por las estancias (marcadores LMARK_*)
+    for mk in [o for o in bpy.data.objects if o.name.startswith("LMARK_")]:
+        kind = mk.get("lkind", "area")
+        if kind == "point":
+            ld = bpy.data.lights.new(mk.name[6:], 'POINT')
+            ld.shadow_soft_size = 0.1
+        else:
+            ld = bpy.data.lights.new(mk.name[6:], 'AREA')
+            ld.shape = 'RECTANGLE'
+            ld.size, ld.size_y = mk["size"][0], mk["size"][1]
+        ld.energy = mk["power"]
+        ld.color = tuple(mk["color"])
+        ob = bpy.data.objects.new("L_" + mk.name[6:], ld)
+        ob.matrix_world = mk.matrix_world
+        ob["bay"] = mk.get("bay", "A")
+        coll.objects.link(ob)
+        made.append(ob)
     return made

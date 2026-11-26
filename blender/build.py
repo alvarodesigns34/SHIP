@@ -45,7 +45,6 @@ root = lib.group("ALCION", "ALCIÓN HX-4", None, explode=("none", 0),
                  desc="Vehículo tripulado cislunar de ciencia y servicio para 4 tripulantes. Diseño conceptual original de Varro-Lindqvist Astronautics (empresa ficticia).",
                  func="Salidas de hasta 45 días desde una estación en órbita lunar para servicio de observatorios, recogida de muestras y ciencia en órbita")
 fwd = ext.build_forward(root)
-inter.build_node_interior(fwd)
 expn.build_airlock(fwd)
 hab = lib.group("HAB", "Módulo Habitable Presurizado", root, explode=(0, 0, 0),
                 desc="Módulo presurizado principal de Ø4,20 m y 8,2 m de barril cilíndrico; volumen presurizado total del vehículo ≈ 150 m³.",
@@ -259,7 +258,7 @@ if DO_EXPORT:
     bpy.ops.export_scene.gltf(filepath=glb, **common)
     print("[build] exportado", glb, os.path.getsize(glb) // 1024, "KiB")
     # división para carga progresiva: exterior (inmediato) + interior (diferido)
-    INTERIOR_ROOTS = {"HAB.INT", "HAB.UTL", "FWD.INT", "HAB.INT.LIV", "HAB.INT.DEN"}
+    INTERIOR_ROOTS = {"HAB.INT", "HAB.UTL", "FWD.INT", "HAB.INT.LIV", "HAB.INT.DEN", "FWD.ALK.INT"}
 
     def under_interior(o):
         p = o
