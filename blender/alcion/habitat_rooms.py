@@ -266,22 +266,38 @@ def crew_pod(g, key, idx, s, xa, xb, name_tag):
         a = D(10 + k * 9)
         c = H.arc_pt(R_L - 0.036, a, s)
         pod.box("R_Label", 0.09 + 0.03 * rnd.random(), 0.004, 0.07, center=(xb - 0.18 - k * 0.11, c.y, c.z), rot=Matrix.Rotation(H.mirror_a(a, s) - PI / 2, 4, 'X'))
-    pod.box("R_Bag", 0.22, 0.10, 0.16, center=(xb - 0.2, s * 1.52, -0.2))
+    cushion(pod, "R_Bag", 0.24, 0.09, 0.17, center=(xb - 0.2, s * 1.53, -0.2), puff=0.012, round_=0.035, sub=3, seed=idx + 40, wrinkle=0.004)
+    pod.box("R_Frame", 0.20, 0.012, 0.012, center=(xb - 0.2, s * 1.483, -0.13))
     # placa con el nombre
     H.decal(Matrix.Translation(((xa + xb) / 2, s * (y_front - 0.0035), ztop - 0.15)) @ rot_to((0, -s, 0), up=(0, 0, 1)), 0.18, 0.045, H.SIGN[f"trip{idx}"])
     H.P(f"HAB.INT.C.Q{idx}", f"Cabina privada {idx} ({name_tag})", pod, g, key,
         "Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina.", bevel=0.004)
-    # saco de dormir (volumen acolchado) sobre la pared trasera
+    # saco de dormir acolchado: cámaras horizontales reales, capucha, cremallera y cinchas
     sb = MB(f"c_bag{idx}")
-    M = Matrix.Translation(((xa + xb) / 2, s * 1.62, -0.38)) @ rot_to((0, -s, 0), up=(0, 0, 1))
-    vs = cushion(sb, "R_FabricBlue", 0.12, 0.58, 1.45, center=(0, 0, 0), puff=0.03, round_=0.06, sub=4, seed=idx, wrinkle=0.006)
+    M = Matrix.Translation(((xa + xb) / 2, s * 1.60, -0.40)) @ rot_to((0, -s, 0), up=(0, 0, 1))
+    secs = []
+    nz, na = 36, 20
+    for iz in range(nz + 1):
+        z = -0.72 + 1.44 * iz / nz
+        taper = 0.80 + 0.20 * min(1.0, (z + 0.72) / 0.9)              # más estrecho en los pies
+        quilt = 0.012 * (0.5 + 0.5 * math.cos((z + 0.72) / 0.16 * 2 * PI))  # cámaras cada 16 cm
+        ring = []
+        for ia in range(na):
+            t = 2 * PI * ia / na
+            w = 0.29 * taper
+            d = (0.075 + quilt) * (1.0 if math.sin(t) > 0 else 0.45)       # cara frontal abombada, trasera plana
+            ring.append(Vector((d * math.sin(t) + 0.04, w * math.cos(t), z)))
+        secs.append(ring)
+    vs = loft(sb, "R_FabricBlue", secs)
     place(sb, vs, M)
-    vs = cushion(sb, "R_FabricBlue", 0.10, 0.36, 0.22, center=(0.03, 0, 0.82), puff=0.02, round_=0.05, sub=3, seed=idx + 20, wrinkle=0.004)
+    vs = cushion(sb, "R_FabricBlue", 0.13, 0.36, 0.26, center=(0.04, 0, 0.84), puff=0.03, round_=0.07, sub=3, seed=idx + 20, wrinkle=0.005)
     place(sb, vs, M)
-    for zz in (0.35, -0.25):
-        vs = strap(sb, "R_Frame", [(0.07, -0.33, zz), (0.075, 0.0, zz + 0.01), (0.07, 0.33, zz)], 0.035, 0.004, up=(1, 0, 0))
+    vs = sb.box("R_Frame", 0.006, 0.012, 1.1, center=(0.125, 0.10, 0.05))
+    place(sb, vs, M)
+    for zz in (0.42, -0.30):
+        vs = strap(sb, "R_Frame", [(0.13, -0.33, zz), (0.135, 0.0, zz + 0.01), (0.13, 0.33, zz)], 0.035, 0.004, up=(1, 0, 0))
         place(sb, vs, M)
-    ob = H.P(f"HAB.INT.C.Q{idx}.BAG", "Saco de dormir", sb, g, key, "Saco de dormir sujeto a la pared con cinchas ajustables.", smooth=60)
+    ob = H.P(f"HAB.INT.C.Q{idx}.BAG", "Saco de dormir", sb, g, key, "Saco de dormir acolchado sujeto a la pared con cinchas ajustables.", smooth=60)
     ctl(ob, "act:sleep")
     # cortina semiabierta (tejido con pliegues reales)
     ct = MB(f"c_curtain{idx}")
@@ -413,8 +429,11 @@ def build_services(intg):
             z = -0.6 + i * 0.55
             if abs(y) > 1.75 - abs(z) * 0.3:
                 continue
-            cushion(bg, "R_Bag", 0.26, 0.55, 0.42, center=(0.75, y, z), puff=0.02, round_=0.05, sub=2, seed=i * 7 + j, wrinkle=0.004)
-            bg.box("R_Label", 0.006, 0.18, 0.06, center=(0.885, y, z + 0.1))
+            cushion(bg, "R_Bag", 0.22, 0.48, 0.36, center=(0.74, y, z), puff=0.012, round_=0.03, sub=3, seed=i * 7 + j, wrinkle=0.006)
+            bg.box("R_Frame", 0.012, 0.30, 0.018, center=(0.855, y, z + 0.15))
+            for dy in (-0.16, 0.16):
+                bg.box("R_Frame", 0.012, 0.02, 0.30, center=(0.856, y + dy, z))
+            H.decal(Matrix.Translation((0.857, y, z + 0.05)) @ rot_to((1, 0, 0), up=(0, 0, 1)), 0.16, 0.04)
     H.P("HAB.INT.D.BAG", "Bolsas de estiba", bg, g, key, "Bolsas de Nomex con etiquetas de inventario y cintas de sujeción.", smooth=50)
     H.decal(Matrix.Translation((1.95, 1.526, WT + 0.43)) @ rot_to((0, -1, 0), up=(0, 0, 1)), 0.22, 0.055, H.SIGN["agua"])
     H.decal(Matrix.Translation((0.625, 1.15, 0.85)) @ rot_to((1, 0, 0), up=(0, 0, 1)), 0.30, 0.075, H.SIGN["auxilios"])

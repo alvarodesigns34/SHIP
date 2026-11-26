@@ -150,7 +150,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,HAB.EXT.CWN.G9,Vidrio de ventana de cabina 9,part,M_Glass,0.84x0.572x0.588,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
 2,HAB.INT,Interior habitable,group,,9.53x3.994x4.057,,"Interior Rebirth: volumen continuo de 8,2 m con cabina, laboratorio, habitáculos y servicios."
 3,HAB.INT.A,Cabina de vuelo (bahía A),group,,3.395x3.994x3.994,,"Cabina de dos puestos orientada a proa con banda panorámica de nueve ventanas en el cono, paneles multifunción, consolas laterales de interruptores y controladores manuales."
-4,HAB.INT.A.BHD,Mamparo de proa y brocal de escotilla,part,R_Lining;R_Accent;R_Frame,0.235x2.48x2.48,1704,Mamparo con brocal bermellón y túnel hacia el nodo.
+4,HAB.INT.A.BHD,Mamparo de proa y brocal de escotilla,part,R_Lining;R_Accent;R_LED;R_Frame,0.235x2.48x2.48,6984,Mamparo con brocal bermellón y túnel hacia el nodo.
 4,HAB.INT.A.CON,Revestimiento facetado del cono,part,R_Lining,1.12x3.88x3.88,4308,Dieciséis facetas con nueve huecos de ventana.
 4,HAB.INT.A.DCL,Rotulación,part,R_Decal,3.098x3.471x1.98,12,Etiquetas de inventario y señalización de seguridad y orientación.
 4,HAB.INT.A.HC,Controladores manuales,part,R_Frame;R_Rubber;R_Accent,0.084x2.244x0.22,2688,Controladores de traslación y rotación en los reposabrazos.
@@ -223,20 +223,20 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.B.VEGG,Puerta acristalada de la cámara,part,R_Glass,0.75x0.006x0.44,12,
 3,HAB.INT.C,Habitáculos (bahía C),group,,2.1x3.994x3.994,,"Cuatro cabinas privadas (dos por costado) con aislamiento acústico, ventilación individual e iluminación regulable."
 4,HAB.INT.C.DCL,Rotulación,part,R_Decal,1.497x2.759x0.052,12,Etiquetas de inventario y señalización de seguridad y orientación.
-4,HAB.INT.C.Q1,Cabina privada 1 (Comandante),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,2858,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
-4,HAB.INT.C.Q1.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.706,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q1,Cabina privada 1 (Comandante),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,5866,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q1.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.164x1.721,4536,Saco de dormir acolchado sujeto a la pared con cinchas ajustables.
 4,HAB.INT.C.Q1.CRT,Cortina,part,R_FabricBlue,0.26x0.05x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q1.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
-4,HAB.INT.C.Q2,Cabina privada 2 (Piloto),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,2858,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
-4,HAB.INT.C.Q2.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.703,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q2,Cabina privada 2 (Piloto),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,5866,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q2.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.165x1.721,4536,Saco de dormir acolchado sujeto a la pared con cinchas ajustables.
 4,HAB.INT.C.Q2.CRT,Cortina,part,R_FabricBlue,0.26x0.044x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q2.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
-4,HAB.INT.C.Q3,Cabina privada 3 (Especialista 1),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,2858,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
-4,HAB.INT.C.Q3.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.706,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q3,Cabina privada 3 (Especialista 1),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,5866,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q3.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.164x1.72,4536,Saco de dormir acolchado sujeto a la pared con cinchas ajustables.
 4,HAB.INT.C.Q3.CRT,Cortina,part,R_FabricBlue,0.26x0.048x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q3.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
-4,HAB.INT.C.Q4,Cabina privada 4 (Especialista 2),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,2858,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
-4,HAB.INT.C.Q4.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.145x1.707,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q4,Cabina privada 4 (Especialista 2),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,5866,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q4.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.164x1.722,4536,Saco de dormir acolchado sujeto a la pared con cinchas ajustables.
 4,HAB.INT.C.Q4.CRT,Cortina,part,R_FabricBlue,0.26x0.049x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q4.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
 4,HAB.INT.C.SHL.FRM,Nervios y perfiles,part,R_Lining;R_Frame;R_Alu;R_Backing,2.1x3.877x3.241,5348,"Nervios grafito, cornisas, raíles de anclaje."
@@ -247,10 +247,10 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.C.UPR,Paños superiores,part,R_Lining,2.042x2.323x0.186,360,
 3,HAB.INT.D,Servicios (bahía D),group,,2.085x3.994x3.994,,"Cocina con dispensador de agua y calentador, mesa de comidas, compartimento de higiene y cicloergómetro."
 4,HAB.INT.D.AFT,Mamparo de popa,part,R_Lining,0.03x3.84x3.84,1148,
-4,HAB.INT.D.BAG,Bolsas de estiba,part,R_Bag;R_Label,0.27x2.69x1.558,20448,Bolsas de Nomex con etiquetas de inventario y cintas de sujeción.
+4,HAB.INT.D.BAG,Bolsas de estiba,part,R_Bag;R_Frame,0.237x2.621x1.489,36528,Bolsas de Nomex con etiquetas de inventario y cintas de sujeción.
 4,HAB.INT.D.CEV,Cicloergómetro,part,R_Frame;R_Lining;R_Black;R_Leather;R_Rubber,0.932x0.46x1.237,3016,"Cicloergómetro con aislamiento de vibraciones, sujeción de pies y monitor de esfuerzo."
 4,HAB.INT.D.CNT,Envases y raciones,part,R_Steel;R_Frame;R_Bag;R_Lining,0.565x0.308x0.152,3628,"Contenedores de raciones, bolsas de bebida y utensilios con sujeción magnética."
-4,HAB.INT.D.DCL,Rotulación,part,R_Decal,1.717x2.906x1.578,18,Etiquetas de inventario y señalización de seguridad y orientación.
+4,HAB.INT.D.DCL,Rotulación,part,R_Decal,1.717x2.906x1.95,42,Etiquetas de inventario y señalización de seguridad y orientación.
 4,HAB.INT.D.H2O,Dispensador de agua,part,R_Lining;R_Black;R_Indicator;R_Accent;R_Steel,0.3x0.352x0.46,680,Dispensador de agua caliente y fría con dosificación en bolsas de bebida.
 4,HAB.INT.D.HYG,Compartimento de higiene,part,R_Lining;R_Frame;R_LiningDark;R_Accent;R_Black,1.0x0.77x3.04,884,"Cabina cerrada con lavado por toallitas, aspiración de residuos y ventilación propia."
 4,HAB.INT.D.OVN,Calentador de alimentos,part,R_Lining;R_Frame;R_Accent;R_Indicator,0.46x0.365x0.34,408,Calentador por conducción para raciones y bolsas termoestabilizadas.

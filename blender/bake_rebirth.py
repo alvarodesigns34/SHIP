@@ -120,7 +120,7 @@ def ensure_lm_uv(obs):
     bpy.context.view_layer.objects.active = co
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.select_all(action='SELECT')
-    bpy.ops.uv.smart_project(angle_limit=math.radians(66), island_margin=0.0016, area_weight=0.0, scale_to_bounds=False)
+    bpy.ops.uv.smart_project(angle_limit=math.radians(66), island_margin=0.0045, area_weight=0.0, scale_to_bounds=False)
     bpy.ops.object.mode_set(mode='OBJECT')
     src = comb.uv_layers['LM'].data
     # copia por bucles (loops): mismo orden de caras y bucles que el bmesh combinado
@@ -180,29 +180,46 @@ def bake_room(key, obs, res):
     return img, px
 
 
-def denoise(px, mask):
-    """Dos etapas: (1) mediana 3×3 contra puntos calientes; (2) bilateral 9×9 con tolerancia
-    relativa amplia (preserva discontinuidades reales de iluminación entre islas)."""
+def denoise(px, mask, key='x'):
+    """Antifireflies (mediana 3×3) + OIDN (nodo Denoise del compositor de Blender) sobre datos HDR."""
     rgb = px[..., :3].copy()
     lum = rgb.mean(-1)
     stack = np.stack([np.roll(np.roll(lum, dy, 0), dx, 1) for dy in (-1, 0, 1) for dx in (-1, 0, 1)])
     med = np.median(stack, axis=0)
-    hot = lum > med * 1.6 + 0.02
-    scale = np.where(hot, med / np.maximum(lum, 1e-6), 1.0)[..., None]
-    rgb = rgb * scale
-    lum = rgb.mean(-1, keepdims=True)
-    acc = np.zeros_like(rgb)
-    wsum = np.zeros_like(lum)
-    for dy in range(-4, 5):
-        for dx in range(-4, 5):
-            sh = np.roll(np.roll(rgb, dy, 0), dx, 1)
-            shl = np.roll(np.roll(lum, dy, 0), dx, 1)
-            ws = math.exp(-(dx * dx + dy * dy) / (2 * 2.2 ** 2))
-            rel = (shl - lum) / (0.45 * (lum + shl) * 0.5 + 0.01)
-            w = ws * np.exp(-0.5 * rel * rel)
-            acc += sh * w
-            wsum += w
-    return acc / np.maximum(wsum, 1e-6)
+    hot = lum > med * 2.2 + 0.05
+    rgb = rgb * np.where(hot, med / np.maximum(lum, 1e-6), 1.0)[..., None]
+    H_, W_ = rgb.shape[:2]
+    src = bpy.data.images.new(f'_dn_src_{key}', W_, H_, alpha=False, float_buffer=True)
+    buf = np.ones((H_, W_, 4), np.float32); buf[..., :3] = rgb
+    src.pixels.foreach_set(buf.ravel())
+    sc = bpy.context.scene
+    prev_engine = sc.render.engine
+    sc.render.engine = 'BLENDER_WORKBENCH'
+    sc.render.resolution_x, sc.render.resolution_y, sc.render.resolution_percentage = W_, H_, 100
+    tree = bpy.data.node_groups.new("dn", "CompositorNodeTree")
+    sc.compositing_node_group = tree
+    n_in = tree.nodes.new("CompositorNodeImage"); n_in.image = src
+    n_dn = tree.nodes.new("CompositorNodeDenoise")
+    tree.interface.new_socket("Image", in_out='OUTPUT', socket_type='NodeSocketColor')
+    n_out = tree.nodes.new("NodeGroupOutput")
+    tree.links.new(n_in.outputs["Image"], n_dn.inputs["Image"])
+    tree.links.new(n_dn.outputs["Image"], n_out.inputs[0])
+    path = os.path.join(bpy.app.tempdir or '/tmp', f'_dn_{key}.exr')
+    sc.render.filepath = path
+    sc.render.image_settings.file_format = 'OPEN_EXR'
+    sc.render.image_settings.color_depth = '32'
+    sc.view_settings.view_transform = 'Standard'
+    bpy.ops.render.render(write_still=True)
+    out = bpy.data.images.load(path)
+    res = np.array(out.pixels[:], dtype=np.float32).reshape(H_, W_, 4)[..., :3]
+    sc.render.engine = prev_engine
+    sc.compositing_node_group = None
+    bpy.data.node_groups.remove(tree)
+    bpy.data.images.remove(out); bpy.data.images.remove(src)
+    if not np.isfinite(res).all() or res.mean() <= 0:
+        print('[bake] OIDN falló; se conserva el horneado filtrado', flush=True)
+        return rgb
+    return res
 
 
 def save_png(key, px):
@@ -228,7 +245,7 @@ for key in wanted:
         res = RES
         img, px = bake_room(key, obs, res)
         mask = (px[..., 3:4] > 0).astype(np.float32) if px[..., 3].min() < 1 else np.ones_like(px[..., :1])
-        px[..., :3] = denoise(px, mask)
+        px[..., :3] = denoise(px, mask, key)
         save_png(key, px)
         report[key] = {'objects': len(obs), 'res': res, 'max': float(px[..., :3].max())}
 

@@ -394,6 +394,15 @@ def build_cockpit(intg, hab_parent):
     for x, r in ((X_CONE1 - 0.035, HATCH_R + 0.07), (X_CONE1 - 0.035, HATCH_R), (10.12, HATCH_R), (10.12, HATCH_R + 0.03)):
         secs.append([Vector((x, r * math.cos(2 * PI * k / 64), r * math.sin(2 * PI * k / 64))) for k in range(64)])
     loft(bh, "R_Accent", secs[:2], closed=True, cap=False)
+    bh.torus("R_LED", HATCH_R + 0.095, 0.008, 96, 8, center=(X_CONE1 - 0.006, 0, 0), axis='X')
+    # panelado radial del mamparo (juntas grafito)
+    for k in range(8):
+        a = PI / 8 + k * PI / 4
+        p0, p1 = Vector((X_CONE1 - 0.002, (HATCH_R + 0.14) * math.cos(a), (HATCH_R + 0.14) * math.sin(a))), Vector((X_CONE1 - 0.002, (R_CONE_L1 - 0.03) * math.cos(a), (R_CONE_L1 - 0.03) * math.sin(a)))
+        bh.beam("R_Frame", p0, p1, 0.012, 0.006, up=(1, 0, 0))
+    from .habitat_rooms import lmark as _lm
+    _lm("bulk", "area", (9.55, 0.0, 1.05), 28, (1.0, 0.92, 0.84), (0.9, 0.3), (0, D(-55), 0), 'A')
+    _lm("hatchring", "point", (X_CONE1 - 0.08, 0.0, 0.0), 6, (1.0, 0.92, 0.84), (0.1, 0.1), (0, 0, 0), 'A')
     loft(bh, "R_Frame", secs[1:3], closed=True, cap=False)
     # escalones centrales hacia la escotilla
     steps = MB("a_steps")

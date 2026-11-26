@@ -1,62 +1,62 @@
 {
  "01_ext_general": {
-  "calls": 284,
-  "tris": 811628
+  "calls": 287,
+  "tris": 813658
  },
  "02_ext_closeup": {
-  "calls": 257,
-  "tris": 659396
+  "calls": 260,
+  "tris": 661426
  },
  "03_ext_engines": {
-  "calls": 288,
-  "tris": 713488
+  "calls": 294,
+  "tris": 793406
  },
  "04_cockpit_seated": {
-  "calls": 207,
-  "tris": 291694
+  "calls": 208,
+  "tris": 292736
  },
  "05_cockpit_overview": {
-  "calls": 251,
-  "tris": 336308
+  "calls": 252,
+  "tris": 336738
  },
  "06_lab": {
-  "calls": 284,
-  "tris": 425118
+  "calls": 287,
+  "tris": 426706
  },
  "07_crew_quarters": {
   "calls": 82,
-  "tris": 225844
+  "tris": 226226
  },
  "08_galley_services": {
-  "calls": 66,
-  "tris": 187974
+  "calls": 67,
+  "tris": 164340
  },
  "09_corridor_aft": {
-  "calls": 172,
-  "tris": 614568
+  "calls": 171,
+  "tris": 538706
  },
  "10_cupola": {
-  "calls": 44,
-  "tris": 53354
+  "calls": 47,
+  "tris": 72412
  },
  "11_node": {
-  "calls": 69,
-  "tris": 173086
+  "calls": 70,
+  "tris": 174588
  },
  "12_airlock_well": {
-  "calls": 93,
-  "tris": 228238
+  "calls": 96,
+  "tris": 255022
  },
  "13_earth_orbit": {
   "calls": 81,
   "tris": 470440
  },
  "14_earth_window": {
-  "calls": 57,
-  "tris": 210524
+  "calls": 58,
+  "tris": 237324
  },
  "15_exploded": {
-  "calls": 284,
-  "tris": 811418
+  "calls": 287,
+  "tris": 813448
  }
 }

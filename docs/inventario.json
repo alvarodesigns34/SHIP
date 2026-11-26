@@ -1,8 +1,8 @@
 {
  "vehicle": "ALCIÓN HX-4",
  "parts": 546,
- "groups": 107,
- "triangles": 752436,
+ "groups": 109,
+ "triangles": 773004,
  "tree": {
   "code": "ALCION",
   "label": "ALCIÓN HX-4",
@@ -4585,11 +4585,15 @@
             "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            },
            {
+            "id": "R_LED",
+            "desc": "Tira LED cálida 3500 K"
+           },
+           {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 1704,
+          "tris": 6984,
           "dims_m": [
            0.235,
            2.48,
@@ -6820,7 +6824,7 @@
             "desc": "Bolsa de estiba de Nomex"
            }
           ],
-          "tris": 2858,
+          "tris": 5866,
           "dims_m": [
            1.005,
            0.825,
@@ -6837,7 +6841,7 @@
           "code": "HAB.INT.C.Q1.BAG",
           "label": "Saco de dormir",
           "kind": "part",
-          "desc": "Saco de dormir sujeto a la pared con cinchas ajustables.",
+          "desc": "Saco de dormir acolchado sujeto a la pared con cinchas ajustables.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -6850,16 +6854,16 @@
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 7748,
+          "tris": 4536,
           "dims_m": [
            0.661,
-           0.144,
-           1.706
+           0.164,
+           1.721
           ],
           "center_m": [
            3.172,
-           1.61,
-           -0.282
+           1.545,
+           -0.26
           ],
           "count": 1
          },
@@ -6964,7 +6968,7 @@
             "desc": "Bolsa de estiba de Nomex"
            }
           ],
-          "tris": 2858,
+          "tris": 5866,
           "dims_m": [
            1.005,
            0.825,
@@ -6981,7 +6985,7 @@
           "code": "HAB.INT.C.Q2.BAG",
           "label": "Saco de dormir",
           "kind": "part",
-          "desc": "Saco de dormir sujeto a la pared con cinchas ajustables.",
+          "desc": "Saco de dormir acolchado sujeto a la pared con cinchas ajustables.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -6994,16 +6998,16 @@
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 7748,
+          "tris": 4536,
           "dims_m": [
            0.661,
-           0.144,
-           1.703
+           0.165,
+           1.721
           ],
           "center_m": [
            4.177,
-           1.61,
-           -0.281
+           1.545,
+           -0.26
           ],
           "count": 1
          },
@@ -7108,7 +7112,7 @@
             "desc": "Bolsa de estiba de Nomex"
            }
           ],
-          "tris": 2858,
+          "tris": 5866,
           "dims_m": [
            1.005,
            0.825,
@@ -7125,7 +7129,7 @@
           "code": "HAB.INT.C.Q3.BAG",
           "label": "Saco de dormir",
           "kind": "part",
-          "desc": "Saco de dormir sujeto a la pared con cinchas ajustables.",
+          "desc": "Saco de dormir acolchado sujeto a la pared con cinchas ajustables.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -7138,16 +7142,16 @@
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 7748,
+          "tris": 4536,
           "dims_m": [
            0.661,
-           0.144,
-           1.706
+           0.164,
+           1.72
           ],
           "center_m": [
            3.172,
-           -1.611,
-           -0.283
+           -1.545,
+           -0.26
           ],
           "count": 1
          },
@@ -7252,7 +7256,7 @@
             "desc": "Bolsa de estiba de Nomex"
            }
           ],
-          "tris": 2858,
+          "tris": 5866,
           "dims_m": [
            1.005,
            0.825,
@@ -7269,7 +7273,7 @@
           "code": "HAB.INT.C.Q4.BAG",
           "label": "Saco de dormir",
           "kind": "part",
-          "desc": "Saco de dormir sujeto a la pared con cinchas ajustables.",
+          "desc": "Saco de dormir acolchado sujeto a la pared con cinchas ajustables.",
           "func": "",
           "depth": 4,
           "materials": [
@@ -7282,16 +7286,16 @@
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 7748,
+          "tris": 4536,
           "dims_m": [
            0.661,
-           0.145,
-           1.707
+           0.164,
+           1.722
           ],
           "center_m": [
            4.177,
-           -1.612,
-           -0.282
+           -1.545,
+           -0.259
           ],
           "count": 1
          },
@@ -7572,20 +7576,20 @@
             "desc": "Bolsa de estiba de Nomex"
            },
            {
-            "id": "R_Label",
-            "desc": "Rotulación serigrafiada"
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 20448,
+          "tris": 36528,
           "dims_m": [
-           0.27,
-           2.69,
-           1.558
+           0.237,
+           2.621,
+           1.489
           ],
           "center_m": [
-           0.753,
-           0.022,
-           -0.05
+           0.744,
+           0.023,
+           -0.051
           ],
           "count": 1
          },
@@ -7682,16 +7686,16 @@
             "desc": "Etiquetas y señalización (atlas)"
            }
           ],
-          "tris": 18,
+          "tris": 42,
           "dims_m": [
            1.717,
            2.906,
-           1.578
+           1.95
           ],
           "center_m": [
            1.483,
            0.073,
-           0.59
+           0.405
           ],
           "count": 1
          },

@@ -1178,7 +1178,7 @@ export class Engine {
       return;
     }
     if (this.seated) {
-      const head = b2t(7.66, this.seatSide, 0.16);
+      const head = b2t(7.42, this.seatSide, 0.17);
       this.camera.position.copy(root.localToWorld(head));
       this.camera.quaternion.copy(this.interp.q).multiply(this.player.viewQuat());
       return;

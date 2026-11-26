@@ -127,7 +127,7 @@ export function makeMaterial(name: string, lightMap: THREE.Texture | null): THRE
   }
   if (d.kind === 'glass') {
     const m = new THREE.MeshPhysicalMaterial({
-      color: 0xffffff, metalness: 0, roughness: 0.04, transparent: true, opacity: 0.08, depthWrite: false, envMapIntensity: 0.9,
+      color: 0xffffff, metalness: 0, roughness: 0.04, transparent: true, opacity: 0.05, depthWrite: false, envMapIntensity: 0.35,
       specularIntensity: 1, ior: 1.46,
     });
     m.name = name;
