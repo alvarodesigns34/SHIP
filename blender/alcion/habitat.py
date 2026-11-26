@@ -66,6 +66,7 @@ RMAT = {
     "R_Bag":        ((0.48, 0.44, 0.37), 0.0, 0.90, None, "Bolsa de estiba de Nomex"),
     "R_Plant":      ((0.06, 0.20, 0.04), 0.0, 0.55, None, "Cultivo de hoja"),
     "R_Label":      ((0.50, 0.49, 0.46), 0.0, 0.5, None, "Rotulación serigrafiada"),
+    "R_Decal":      ((0.62, 0.60, 0.55), 0.0, 0.6, None, "Etiquetas y señalización (atlas)"),
 }
 
 
@@ -88,6 +89,53 @@ def build_materials():
         m.diffuse_color = (*col, 1)
         m["desc"] = desc
         MATS[name] = m
+
+
+# ------------------------------------------------------------------ rotulación (atlas blender/textures/labels_atlas.png, 8×16 teselas)
+DECALS = []
+_DRND = __import__("random").Random(21)
+SIGN = {"extintor": 96, "mascara": 97, "auxilios": 98, "salida": 99, "proa": 100, "popa": 101, "nopisar": 102, "caliente": 103,
+        "tension": 104, "agua": 105, "aguagris": 106, "o2": 107, "n2": 108, "bayA": 109, "bayB": 110, "bayC": 111,
+        "bayD": 112, "nodo": 113, "esclusa": 114, "cierre": 115, "anclaje": 116, "libre": 117, "co2": 118, "vent": 119,
+        "alcion": 120, "trip1": 121, "trip2": 122, "trip3": 123, "trip4": 124, "crio": 125, "guantera": 126, "asidero": 127}
+
+
+def decal(M, w, h, tile=None):
+    """Calcomanía: M lleva +X local hacia el observador, +Y a la derecha del texto y +Z hacia arriba."""
+    if tile is None:
+        tile = _DRND.randint(0, 95)
+    DECALS.append((M.copy(), w, h, tile))
+
+
+def wall_decal(x, s, a, w, h, tile=None, inward=0.0):
+    p = arc_pt(R_L - 0.0015 - inward, a, s)
+    n = -Vector((0, s * math.cos(a), math.sin(a)))
+    up = Vector((0, -s * math.sin(a), math.cos(a)))
+    decal(Matrix.Translation((x, p.y, p.z)) @ rot_to(n, up=up), w, h, tile)
+
+
+def flush_decals(parent, room, code):
+    if not DECALS:
+        return None
+    mb = MB(f"decals_{room}")
+    bm = mb.bm
+    uv = bm.loops.layers.uv.new("UVMap")
+    idx = mb.mi("R_Decal")
+    for M, w, h, t in DECALS:
+        c, r = t % 8, t // 8
+        u0, u1 = c / 8 + 0.002, (c + 1) / 8 - 0.002
+        v0, v1 = 1 - (r + 1) / 16 + 0.003, 1 - r / 16 - 0.003
+        corners = [(-w / 2, -h / 2, u0, v0), (w / 2, -h / 2, u1, v0), (w / 2, h / 2, u1, v1), (-w / 2, h / 2, u0, v1)]
+        vv = [bm.verts.new(M @ Vector((0.0, x, y))) for x, y, _, _ in corners]
+        f = bm.faces.new(vv)
+        f.material_index = idx
+        for loop, (_, _, u, v) in zip(f.loops, corners):
+            loop[uv].uv = (u, v)
+    DECALS.clear()
+    me = mb.mesh(smooth=None)
+    ob = part(code, "Rotulación", me, parent, desc="Etiquetas de inventario y señalización de seguridad y orientación.")
+    ob["room"] = room
+    return ob
 
 
 # ------------------------------------------------------------------ utilidades
@@ -183,7 +231,7 @@ def lining_module(mb_wall, mb_dark, mb_frame, mb_led, x0, x1, s, lower=True, upp
             prism(mb_dark, "R_LiningDark", prof, xa, xb, 'X')
             # uñero (franja grafito profunda) y placa de inventario
             prism(mb_frame, "R_Frame", rrect(0.03, 0.03, 0.004, cx=s * (FACE + 0.02), cy=WT - 0.06), xa, xb, 'X')
-            prism(mb_frame, "R_Label", rrect(0.004, 0.035, 0.002, cx=s * (FACE - 0.001), cy=WT - 0.16), xa + 0.05, xa + 0.16, 'X')
+            decal(Matrix.Translation((xa + 0.12, s * (FACE - 0.0015), WT - 0.15)) @ rot_to((0, -s, 0), up=(0, 0, 1)), 0.15, 0.0375)
         # zócalo retranqueado con luz rasante
         prism(mb_dark, "R_Backing", [(s * (FACE + 0.06), FLOOR), (s * (FACE + 0.07), FLOOR), (s * (FACE + 0.07), FLOOR + TOE + 0.01), (s * (FACE + 0.06), FLOOR + TOE + 0.01)], x0, x1, 'X')
         prism(mb_led, "R_LED", [(s * (FACE + 0.05), FLOOR + TOE - 0.01), (s * (FACE + 0.058), FLOOR + TOE - 0.01), (s * (FACE + 0.058), FLOOR + TOE), (s * (FACE + 0.05), FLOOR + TOE)], x0 + 0.03, x1 - 0.03, 'X')
@@ -219,8 +267,8 @@ def floor_run(mb_floor, mb_frame, x0, x1, half=FACE - 0.005, step=1.025):
 
 def backing_shell(mb, x0, x1):
     """Trasdós cilíndrico oscuro: garantiza que ninguna junta deja ver el exterior."""
-    secs = [[Vector((x, R_BK * math.cos(2 * PI * k / 64), R_BK * math.sin(2 * PI * k / 64))) for k in range(64)] for x in (x0, x1)]
-    loft(mb, "R_Backing", secs, closed=True, cap=False)
+    for q in range(8):
+        arc_panel(mb, "R_Backing", R_BK, R_BK + 0.012, q * PI / 4, (q + 1) * PI / 4, x0, x1, 8)
 
 
 # ------------------------------------------------------------------ cabina (bahía A + cono)
@@ -472,6 +520,15 @@ def build_cockpit(intg, hab_parent):
     # --- iluminación horneable: luces de área (sólo Cycles; no se exportan)
     lights = [("cove", 6.75, 8.80), ("chan", 6.75, 8.80)]
     # --- emisión de partes
+    for s_ in (1, -1):
+        wall_decal(6.95, s_, D(42), 0.26, 0.065, SIGN["bayA"])
+        wall_decal(8.55, s_, D(26), 0.2, 0.05, SIGN["extintor"] if s_ > 0 else SIGN["mascara"])
+    decal(Matrix.Translation((X_CONE1 - 0.002, 0, HATCH_R + 0.17)) @ rot_to((-1, 0, 0), up=(0, 0, 1)), 0.34, 0.085, SIGN["nodo"])
+    decal(Matrix.Translation((X_CONE1 - 0.002, 0, -HATCH_R - 0.10)) @ rot_to((-1, 0, 0), up=(0, 0, 1)), 0.26, 0.065, SIGN["libre"])
+    flush_decals(g, room, "HAB.INT.A.DCL")
+    from .habitat_rooms import spot as _spot
+    for s_ in (1, -1):
+        _spot(f"cockspot{s_}", (7.55, s_ * 1.32, 1.62), 40, s_, 'A')
     P("HAB.INT.A.SHL.WALL", "Revestimiento de la cabina", wall, g, room, "Paneles curvos de PPSU con juntas de 4 mm y compartimentos altos.", bevel=0.004)
     P("HAB.INT.A.SHL.LOW", "Zócalos, consolas y suelo de cabina", dark, g, room, "Consolas laterales, zócalos y pavimento de caucho.", bevel=0.005)
     P("HAB.INT.A.SHL.FRM", "Nervios, cornisas y perfiles", frame, g, room, "Nervios grafito, cornisas de luz indirecta, raíles de anclaje.", bevel=0.003)
@@ -580,18 +637,23 @@ def bake_lights():
         for s in (1, -1):
             w = arc_pt(R_L, D(63.0), s)
             # cornisa: emite hacia el techo curvo
-            area(f"L_cove_{key}_{s}", (xc, w.y - s * 0.045, w.z + 0.03), L - 0.1, 0.03, (D(180) - s * D(35), 0, 0) if False else (0, 0, 0), 34.0 * L, (1.0, 0.92, 0.84), key)
+            area(f"L_cove_{key}_{s}", (xc, w.y - s * 0.045, w.z + 0.03), L - 0.1, 0.03, (D(180) - s * D(35), 0, 0) if False else (0, 0, 0), 30.0 * L, (1.0, 0.92, 0.84), key)
             made[-1].rotation_euler = (PI + s * D(40), 0, 0)
             # zócalo
             area(f"L_toe_{key}_{s}", (xc, s * (FACE + 0.054), FLOOR + TOE - 0.012), L - 0.1, 0.01, (0, 0, 0), 3.0 * L, (1.0, 0.92, 0.84), key)
         # canal cenital (difusor)
-        area(f"L_chan_{key}", (xc, 0, R_L + 0.02), L - 0.04, 0.24, (0, 0, 0), 45.0 * L, (1.0, 0.93, 0.85), key)
+        area(f"L_chan_{key}", (xc, 0, R_L + 0.02), L - 0.04, 0.24, (0, 0, 0), 24.0 * L, (1.0, 0.93, 0.85), key)
     # luminarias específicas declaradas por las estancias (marcadores LMARK_*)
     for mk in [o for o in bpy.data.objects if o.name.startswith("LMARK_")]:
         kind = mk.get("lkind", "area")
         if kind == "point":
             ld = bpy.data.lights.new(mk.name[6:], 'POINT')
             ld.shadow_soft_size = 0.1
+        elif kind == "spot":
+            ld = bpy.data.lights.new(mk.name[6:], 'SPOT')
+            ld.spot_size = mk["size"][0]
+            ld.spot_blend = mk["size"][1]
+            ld.shadow_soft_size = 0.04
         else:
             ld = bpy.data.lights.new(mk.name[6:], 'AREA')
             ld.shape = 'RECTANGLE'

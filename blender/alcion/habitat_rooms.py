@@ -22,6 +22,10 @@ D = math.radians
 FLOOR, WT, R_L, FACE, TOE = H.FLOOR, H.WT, H.R_L, H.FACE, H.TOE
 
 
+def spot(name, loc, power, s=1, bay='A', angle=70, color=(1.0, 0.92, 0.84)):
+    return lmark(name, "spot", loc, power, color, (math.radians(angle), 0.6), (s * D(14), 0, 0), bay)
+
+
 def lmark(name, kind, loc, power, color=(1.0, 0.86, 0.72), size=(0.2, 0.2), rot=(PI, 0, 0), bay='A'):
     """Marcador de luminaria para el horneado (no se exporta)."""
     ob = bpy.data.objects.new(f"LMARK_{name}", None)
@@ -36,7 +40,7 @@ def lmark(name, kind, loc, power, color=(1.0, 0.86, 0.72), size=(0.2, 0.2), rot=
     return ob
 
 
-def shell(key, g, x0, x1, sides, lower=True, worktop=True, upper=True, floor=True):
+def shell(key, g, x0, x1, sides, lower=True, worktop=True, upper=True, floor=True, backing=True):
     """Revestimiento común de una bahía; `sides` decide qué costados usan el módulo estándar."""
     wall, dark, frame, led, top = MB(f"{key}_wall"), MB(f"{key}_dark"), MB(f"{key}_frame"), MB(f"{key}_led"), MB(f"{key}_top")
     xm = (x0 + x1) / 2
@@ -50,7 +54,11 @@ def shell(key, g, x0, x1, sides, lower=True, worktop=True, upper=True, floor=Tru
     H.rib(frame, x0); H.rib(frame, xm); H.rib(frame, x1)
     if floor:
         H.floor_run(dark, frame, x0, x1)
-    H.backing_shell(dark, x0, x1)
+    if backing:
+        H.backing_shell(dark, x0, x1)
+    sign = {"B": "bayB", "C": "bayC", "D": "bayD"}[key]
+    for s_ in (1, -1):
+        H.wall_decal(x0 + 0.25, s_, D(45), 0.26, 0.065, H.SIGN[sign])
     H.P(f"HAB.INT.{key}.SHL.WALL", "Revestimiento", wall, g, key, "Paneles curvos de PPSU con juntas y compartimentos altos.", bevel=0.004)
     H.P(f"HAB.INT.{key}.SHL.LOW", "Zócalos y suelo", dark, g, key, "Frentes de armario grafito y pavimento de caucho.", bevel=0.005)
     H.P(f"HAB.INT.{key}.SHL.FRM", "Nervios y perfiles", frame, g, key, "Nervios grafito, cornisas, raíles de anclaje.", bevel=0.003)
@@ -89,7 +97,12 @@ def build_lab(intg):
     g = group("HAB.INT.B", "Laboratorio (bahía B)", intg, explode=(0, 0, 0.6),
               desc="Laboratorio de ciencias de la vida y observación terrestre: guantera estanca, congelador de muestras a −80 °C, microscopio, cámara de cultivo y dos ventanas de nadir en el suelo.",
               func="Experimentación, observación y conservación de muestras")
-    shell(key, g, x0, x1, {1: {'all': {'upper': False}}, -1: {}}, floor=False)
+    shell(key, g, x0, x1, {1: {'all': {'upper': False}}, -1: {}}, floor=False, backing=False)
+    from .exterior import cutter as _cut, LAB_WINDOWS_X as _LW
+    bk = MB("b_backing")
+    H.backing_shell(bk, x0, x1)
+    me = boolean_cut(bk.mesh(smooth=None), [_cut(0.33, 0.8, (xw, 0, -1.9)) for xw in _LW], "b_back_cut")
+    ob = part("HAB.INT.B.BCK", "Trasdós del laboratorio", me, g); ob["room"] = key
     # --- suelo con dos ventanas de nadir (pozos con vidrio pisable)
     fl, fr = MB("b_floor"), MB("b_floor_frame")
     H.floor_run(fl, fr, x0, x1)
@@ -151,6 +164,8 @@ def build_lab(intg):
     pg = MB("b_plants_glass")
     pg.box("R_Glass", xb - xa - 0.05, 0.006, 0.44, center=((xa + xb) / 2, s * 1.437, WT + 0.27))
     H.P("HAB.INT.B.VEGG", "Puerta acristalada de la cámara", pg, g, key, smooth=None)
+    for i, (x, ss) in enumerate(((5.15, 1), (6.2, 1), (5.6, -1))):
+        spot(f"labspot{i}", (x, ss * 1.45, 1.62), 55, ss, 'B', color=(0.96, 0.97, 1.0))
     lmark("veg", "area", ((xa + xb) / 2, s * 1.64, WT + 0.49), 25, (1.0, 0.92, 0.95), (0.7, 0.3), (PI, 0, 0), 'B')
     # microscopio (mitad de popa)
     mc = MB("b_micro")
@@ -205,6 +220,11 @@ def build_lab(intg):
     place(mm, vs, M)
     H.P("HAB.INT.B.MON", "Monitor de la guantera", mm, g, key, bevel=0.002)
     screen_quad("HAB.INT.B.SCR3", M @ Matrix.Translation((0.001, 0, 0)), 0.43, 0.27, key, g, None, "Monitor de la guantera")
+    H.decal(Matrix.Translation((x0 + 0.29, FACE - 0.017, WT - 0.24)) @ rot_to((0, -1, 0), up=(0, 0, 1)), 0.16, 0.04, H.SIGN["crio"])
+    H.decal(Matrix.Translation((5.6, -(1.30 - 0.052), WT + 0.635)) @ rot_to((0, 1, 0), up=(0, 0, 1)), 0.26, 0.065, H.SIGN["guantera"])
+    for xw in LAB_WINDOWS_X:
+        H.decal(Matrix.Translation((xw - 0.42, 0.0, FLOOR + 0.0015)) @ rot_to((0, 0, 1), up=(1, 0, 0)), 0.2, 0.05, H.SIGN["nopisar"])
+    H.flush_decals(g, key, "HAB.INT.B.DCL")
 
 
 # ====================================================================== HABITÁCULOS (C)
@@ -248,7 +268,7 @@ def crew_pod(g, key, idx, s, xa, xb, name_tag):
         pod.box("R_Label", 0.09 + 0.03 * rnd.random(), 0.004, 0.07, center=(xb - 0.18 - k * 0.11, c.y, c.z), rot=Matrix.Rotation(H.mirror_a(a, s) - PI / 2, 4, 'X'))
     pod.box("R_Bag", 0.22, 0.10, 0.16, center=(xb - 0.2, s * 1.52, -0.2))
     # placa con el nombre
-    pod.box("R_Black", 0.16, 0.006, 0.05, center=((xa + xb) / 2, s * (y_front - 0.003), ztop - 0.15))
+    H.decal(Matrix.Translation(((xa + xb) / 2, s * (y_front - 0.0035), ztop - 0.15)) @ rot_to((0, -s, 0), up=(0, 0, 1)), 0.18, 0.045, H.SIGN[f"trip{idx}"])
     H.P(f"HAB.INT.C.Q{idx}", f"Cabina privada {idx} ({name_tag})", pod, g, key,
         "Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina.", bevel=0.004)
     # saco de dormir (volumen acolchado) sobre la pared trasera
@@ -295,6 +315,7 @@ def build_quarters(intg):
     for s in (1, -1):
         H.arc(up, "R_Lining", R_L - 0.01, R_L + 0.012, D(53), D(62.5), x0 + 0.004, x1 - 0.004, s, 4)
     H.P("HAB.INT.C.UPR", "Paños superiores", up, g, key, bevel=0.003)
+    H.flush_decals(g, key, "HAB.INT.C.DCL")
 
 
 # ====================================================================== SERVICIOS (D)
@@ -349,6 +370,8 @@ def build_services(intg):
     tbl.box("R_Black", 0.24, 0.17, 0.008, center=(1.70, 0.08, -0.064), rot=Matrix.Rotation(D(12), 4, 'Z'))
     ob = H.P("HAB.INT.D.TAB", "Tableta del plan del día", tbl, g, key, bevel=0.002)
     ctl(ob, "act:read")
+    for i, x in enumerate((1.42, 1.95)):
+        spot(f"galspot{i}", (x, 1.45, 1.62), 50, 1, 'D')
     lmark("table", "area", (1.55, 0.0, 1.20), 22, (1.0, 0.86, 0.7), (0.5, 0.4), (0, 0, 0), 'D')
     # --- estribor: compartimento de higiene + cicloergómetro
     s = -1
@@ -393,6 +416,10 @@ def build_services(intg):
             cushion(bg, "R_Bag", 0.26, 0.55, 0.42, center=(0.75, y, z), puff=0.02, round_=0.05, sub=2, seed=i * 7 + j, wrinkle=0.004)
             bg.box("R_Label", 0.006, 0.18, 0.06, center=(0.885, y, z + 0.1))
     H.P("HAB.INT.D.BAG", "Bolsas de estiba", bg, g, key, "Bolsas de Nomex con etiquetas de inventario y cintas de sujeción.", smooth=50)
+    H.decal(Matrix.Translation((1.95, 1.526, WT + 0.43)) @ rot_to((0, -1, 0), up=(0, 0, 1)), 0.22, 0.055, H.SIGN["agua"])
+    H.decal(Matrix.Translation((0.625, 1.15, 0.85)) @ rot_to((1, 0, 0), up=(0, 0, 1)), 0.30, 0.075, H.SIGN["auxilios"])
+    H.decal(Matrix.Translation((0.625, -1.15, 0.85)) @ rot_to((1, 0, 0), up=(0, 0, 1)), 0.30, 0.075, H.SIGN["extintor"])
+    H.flush_decals(g, key, "HAB.INT.D.DCL")
 
 
 # ====================================================================== NODO (N), CÚPULA Y ESCLUSA
@@ -496,6 +523,9 @@ def build_node(fwd):
     for a in (D(60), D(120)):
         arc_panel(led, "R_LED", RN - 0.01, RN - 0.004, a - D(2), a + D(2), xa + 0.1, xb - 0.1, 2)
     H.P("FWD.INT.LGT", "Luminarias del nodo", led, g, key)
+    H.decal(Matrix.Translation((xa + 0.002, -0.72, 0.15)) @ rot_to((1, 0, 0), up=(0, 0, 1)), 0.30, 0.075, H.SIGN["esclusa"])
+    H.decal(Matrix.Translation((xa + 0.002, 0.72, 0.15)) @ rot_to((1, 0, 0), up=(0, 0, 1)), 0.30, 0.075, H.SIGN["cierre"])
+    H.flush_decals(g, key, "FWD.INT.DCL")
     lmark("node1", "area", ((xa + xb) / 2, 0.62, 1.0), 70, (1.0, 0.93, 0.85), (1.6, 0.08), (D(-30), 0, 0), 'N')
     lmark("node2", "area", ((xa + xb) / 2, -0.62, 1.0), 70, (1.0, 0.93, 0.85), (1.6, 0.08), (D(30), 0, 0), 'N')
     lmark("node3", "area", (10.5, 0.0, 1.12), 30, (1.0, 0.93, 0.85), (0.4, 0.4), (0, 0, 0), 'N')

@@ -77,6 +77,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,FWD.INT.BAG,Estiba de acceso rápido,part,R_Bag,1.604x0.308x0.408,5076,
 3,FWD.INT.BCK,Trasdós del nodo,part,R_Backing;M_AlBare,2.07x2.61x2.61,908,
 3,FWD.INT.BHD,Mamparos del nodo,part,R_Lining,2.06x2.44x2.44,2384,
+3,FWD.INT.DCL,Rotulación,part,R_Decal,0.0x1.74x0.075,4,Etiquetas de inventario y señalización de seguridad y orientación.
 3,FWD.INT.FLR,Suelo del nodo,part,R_Floor,2.0x2.061x0.03,220,Pavimento sobre el pozo de la esclusa.
 3,FWD.INT.HF,Escotilla de atraque (IDSS),part,R_Lining;R_Accent;R_Black;R_Steel,0.095x0.88x0.88,3268,"Escotilla de paso de 0,80 m hacia el vehículo atracado; cerrada sin vehículo."
 3,FWD.INT.LGT,Luminarias del nodo,part,R_LED,1.8x1.289x0.048,40,
@@ -147,10 +148,11 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,HAB.EXT.CWN.G7,Vidrio de ventana de cabina 7,part,M_Glass,0.84x0.748x0.748,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
 3,HAB.EXT.CWN.G8,Vidrio de ventana de cabina 8,part,M_Glass,0.84x0.703x0.679,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
 3,HAB.EXT.CWN.G9,Vidrio de ventana de cabina 9,part,M_Glass,0.84x0.572x0.588,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
-2,HAB.INT,Interior habitable,group,,9.53x3.97x4.055,,"Interior Rebirth: volumen continuo de 8,2 m con cabina, laboratorio, habitáculos y servicios."
-3,HAB.INT.A,Cabina de vuelo (bahía A),group,,3.395x3.97x3.98,,"Cabina de dos puestos orientada a proa con banda panorámica de nueve ventanas en el cono, paneles multifunción, consolas laterales de interruptores y controladores manuales."
+2,HAB.INT,Interior habitable,group,,9.53x3.994x4.057,,"Interior Rebirth: volumen continuo de 8,2 m con cabina, laboratorio, habitáculos y servicios."
+3,HAB.INT.A,Cabina de vuelo (bahía A),group,,3.395x3.994x3.994,,"Cabina de dos puestos orientada a proa con banda panorámica de nueve ventanas en el cono, paneles multifunción, consolas laterales de interruptores y controladores manuales."
 4,HAB.INT.A.BHD,Mamparo de proa y brocal de escotilla,part,R_Lining;R_Accent;R_Frame,0.235x2.48x2.48,1704,Mamparo con brocal bermellón y túnel hacia el nodo.
 4,HAB.INT.A.CON,Revestimiento facetado del cono,part,R_Lining,1.12x3.88x3.88,4308,Dieciséis facetas con nueve huecos de ventana.
+4,HAB.INT.A.DCL,Rotulación,part,R_Decal,3.098x3.471x1.98,12,Etiquetas de inventario y señalización de seguridad y orientación.
 4,HAB.INT.A.HC,Controladores manuales,part,R_Frame;R_Rubber;R_Accent,0.084x2.244x0.22,2688,Controladores de traslación y rotación en los reposabrazos.
 4,HAB.INT.A.PAN,Paneles interiores antirayado,part,R_Glass,0.84x3.786x2.17,288,Paneles de policarbonato de protección.
 4,HAB.INT.A.PNL,Panel de instrumentos,part,R_LiningDark;R_Fabric;R_Alu;R_Black;R_Frame,2.13x3.734x1.995,12444,Dos cuerpos con seis pantallas multifunción y visera tapizada.
@@ -164,7 +166,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.A.SCR.C2D3,Pantalla C2D3,part,R_Screen,0.15x0.284x0.202,2,Pantalla multifunción táctil.
 4,HAB.INT.A.SHL.FRM,"Nervios, cornisas y perfiles",part,R_Frame;R_Lining;R_Accent;R_Black;R_Alu;R_Backing,2.475x3.877x3.241,11660,"Nervios grafito, cornisas de luz indirecta, raíles de anclaje."
 4,HAB.INT.A.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x1.703x0.245,84,"Tiras LED de cornisa, zócalo y canal cenital."
-4,HAB.INT.A.SHL.LOW,"Zócalos, consolas y suelo de cabina",part,R_Floor;R_Backing;R_LiningDark,2.456x3.97x3.97,2032,"Consolas laterales, zócalos y pavimento de caucho."
+4,HAB.INT.A.SHL.LOW,"Zócalos, consolas y suelo de cabina",part,R_Floor;R_Backing;R_LiningDark,2.456x3.994x3.994,3520,"Consolas laterales, zócalos y pavimento de caucho."
 4,HAB.INT.A.SHL.WALL,Revestimiento de la cabina,part,R_Lining;R_Fabric;R_LiningDark,2.05x3.883x3.129,4032,Paneles curvos de PPSU con juntas de 4 mm y compartimentos altos.
 4,HAB.INT.A.ST1,Asiento del comandante,part,R_Frame;R_Alu;R_Leather;R_FabricBlue;R_Accent,0.679x0.665x1.405,17512,"Asiento con pedestal sobre raíles, cojines de piel técnica perforada, alas laterales y arnés de cinco puntos."
 4,HAB.INT.A.ST2,Asiento del piloto,part,R_Frame;R_Alu;R_Leather;R_FabricBlue;R_Accent,0.679x0.665x1.405,17512,"Asiento con pedestal sobre raíles, cojines de piel técnica perforada, alas laterales y arnés de cinco puntos."
@@ -196,7 +198,9 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 5,HAB.INT.A.TGL.SOLAR,Interruptor: Alas solares,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo potencia.
 5,HAB.INT.A.TGL.THERM,Interruptor: Bombeo térmico,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo sistemas.
 4,HAB.INT.A.WEL,Pozos de ventana,part,R_Frame,0.9x3.962x2.288,648,Pozos de aluminio anodizado mate que eliminan reflejos parásitos.
-3,HAB.INT.B,Laboratorio (bahía B),group,,2.1x3.97x4.055,,"Laboratorio de ciencias de la vida y observación terrestre: guantera estanca, congelador de muestras a −80 °C, microscopio, cámara de cultivo y dos ventanas de nadir en el suelo."
+3,HAB.INT.B,Laboratorio (bahía B),group,,2.1x3.994x4.057,,"Laboratorio de ciencias de la vida y observación terrestre: guantera estanca, congelador de muestras a −80 °C, microscopio, cámara de cultivo y dos ventanas de nadir en el suelo."
+4,HAB.INT.B.BCK,Trasdós del laboratorio,part,R_Backing;M_AlBare,2.05x3.994x3.994,980,
+4,HAB.INT.B.DCL,Rotulación,part,R_Decal,1.687x2.759x2.528,28,Etiquetas de inventario y señalización de seguridad y orientación.
 4,HAB.INT.B.FLF,Raíles y subsuelo,part,R_Alu;R_Backing;M_AlBare,2.05x3.2x0.064,460,
 4,HAB.INT.B.FLR,Suelo del laboratorio,part,R_Floor;M_AlBare,2.042x2.55x0.03,1616,Pavimento con dos pozos de observación de nadir.
 4,HAB.INT.B.FRZ,Congelador de muestras −80 °C,part,R_Lining;R_Accent;R_Indicator,1.96x0.05x0.613,1200,Cuatro cajones de congelación con registro de muestras.
@@ -210,47 +214,49 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.B.SCR1,Pantalla de experimento,part,R_Screen,0.36x0.113x0.189,2,Pantalla.
 4,HAB.INT.B.SCR2,Pantalla de experimento,part,R_Screen,0.36x0.113x0.189,2,Pantalla.
 4,HAB.INT.B.SCR3,Monitor de la guantera,part,R_Screen,0.43x0.127x0.238,2,Pantalla.
-4,HAB.INT.B.SHL.FRM,Nervios y perfiles,part,R_Lining;R_Frame;R_Alu;R_Label;R_Accent;R_Black,2.1x3.877x3.242,12920,"Nervios grafito, cornisas, raíles de anclaje."
+4,HAB.INT.B.SHL.FRM,Nervios y perfiles,part,R_Lining;R_Frame;R_Alu;R_Accent;R_Black,2.1x3.877x3.241,10968,"Nervios grafito, cornisas, raíles de anclaje."
 4,HAB.INT.B.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x2.676x3.008,132,
-4,HAB.INT.B.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing,2.05x3.97x3.97,2328,Frentes de armario grafito y pavimento de caucho.
+4,HAB.INT.B.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing,2.05x3.4x1.028,2200,Frentes de armario grafito y pavimento de caucho.
 4,HAB.INT.B.SHL.TOP,Encimeras,part,R_Worktop,2.042x3.87x0.034,512,Encimera de compuesto de lino.
 4,HAB.INT.B.SHL.WALL,Revestimiento,part,R_Lining,2.042x2.791x1.902,2016,Paneles curvos de PPSU con juntas y compartimentos altos.
 4,HAB.INT.B.VEG,Cámara de cultivo,part,R_Lining;R_LightPanel;R_Black;R_Plant;R_Rubber,0.8x0.444x0.52,13968,Cámara de crecimiento con iluminación LED de espectro completo y riego por mecha capilar.
 4,HAB.INT.B.VEGG,Puerta acristalada de la cámara,part,R_Glass,0.75x0.006x0.44,12,
-3,HAB.INT.C,Habitáculos (bahía C),group,,2.1x3.97x3.98,,"Cuatro cabinas privadas (dos por costado) con aislamiento acústico, ventilación individual e iluminación regulable."
-4,HAB.INT.C.Q1,Cabina privada 1 (Comandante),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+3,HAB.INT.C,Habitáculos (bahía C),group,,2.1x3.994x3.994,,"Cuatro cabinas privadas (dos por costado) con aislamiento acústico, ventilación individual e iluminación regulable."
+4,HAB.INT.C.DCL,Rotulación,part,R_Decal,1.497x2.759x0.052,12,Etiquetas de inventario y señalización de seguridad y orientación.
+4,HAB.INT.C.Q1,Cabina privada 1 (Comandante),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,2858,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
 4,HAB.INT.C.Q1.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.706,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
 4,HAB.INT.C.Q1.CRT,Cortina,part,R_FabricBlue,0.26x0.05x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q1.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
-4,HAB.INT.C.Q2,Cabina privada 2 (Piloto),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q2,Cabina privada 2 (Piloto),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,2858,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
 4,HAB.INT.C.Q2.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.703,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
 4,HAB.INT.C.Q2.CRT,Cortina,part,R_FabricBlue,0.26x0.044x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q2.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
-4,HAB.INT.C.Q3,Cabina privada 3 (Especialista 1),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q3,Cabina privada 3 (Especialista 1),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,2858,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
 4,HAB.INT.C.Q3.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.706,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
 4,HAB.INT.C.Q3.CRT,Cortina,part,R_FabricBlue,0.26x0.048x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q3.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
-4,HAB.INT.C.Q4,Cabina privada 4 (Especialista 2),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q4,Cabina privada 4 (Especialista 2),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag,1.005x0.825x2.663,2858,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
 4,HAB.INT.C.Q4.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.145x1.707,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
 4,HAB.INT.C.Q4.CRT,Cortina,part,R_FabricBlue,0.26x0.049x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q4.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
 4,HAB.INT.C.SHL.FRM,Nervios y perfiles,part,R_Lining;R_Frame;R_Alu;R_Backing,2.1x3.877x3.241,5348,"Nervios grafito, cornisas, raíles de anclaje."
 4,HAB.INT.C.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x1.703x0.245,84,
-4,HAB.INT.C.SHL.LOW,Zócalos y suelo,part,R_Floor;R_Backing,2.05x3.97x3.97,1352,Frentes de armario grafito y pavimento de caucho.
+4,HAB.INT.C.SHL.LOW,Zócalos y suelo,part,R_Floor;R_Backing,2.05x3.994x3.994,2840,Frentes de armario grafito y pavimento de caucho.
 4,HAB.INT.C.SHL.TOP,Encimeras,part,,,0,Encimera de compuesto de lino.
 4,HAB.INT.C.SHL.WALL,Revestimiento,part,R_Lining,2.042x1.699x0.209,1104,Paneles curvos de PPSU con juntas y compartimentos altos.
 4,HAB.INT.C.UPR,Paños superiores,part,R_Lining,2.042x2.323x0.186,360,
-3,HAB.INT.D,Servicios (bahía D),group,,2.085x3.97x3.98,,"Cocina con dispensador de agua y calentador, mesa de comidas, compartimento de higiene y cicloergómetro."
+3,HAB.INT.D,Servicios (bahía D),group,,2.085x3.994x3.994,,"Cocina con dispensador de agua y calentador, mesa de comidas, compartimento de higiene y cicloergómetro."
 4,HAB.INT.D.AFT,Mamparo de popa,part,R_Lining,0.03x3.84x3.84,1148,
 4,HAB.INT.D.BAG,Bolsas de estiba,part,R_Bag;R_Label,0.27x2.69x1.558,20448,Bolsas de Nomex con etiquetas de inventario y cintas de sujeción.
 4,HAB.INT.D.CEV,Cicloergómetro,part,R_Frame;R_Lining;R_Black;R_Leather;R_Rubber,0.932x0.46x1.237,3016,"Cicloergómetro con aislamiento de vibraciones, sujeción de pies y monitor de esfuerzo."
 4,HAB.INT.D.CNT,Envases y raciones,part,R_Steel;R_Frame;R_Bag;R_Lining,0.565x0.308x0.152,3628,"Contenedores de raciones, bolsas de bebida y utensilios con sujeción magnética."
+4,HAB.INT.D.DCL,Rotulación,part,R_Decal,1.717x2.906x1.578,18,Etiquetas de inventario y señalización de seguridad y orientación.
 4,HAB.INT.D.H2O,Dispensador de agua,part,R_Lining;R_Black;R_Indicator;R_Accent;R_Steel,0.3x0.352x0.46,680,Dispensador de agua caliente y fría con dosificación en bolsas de bebida.
 4,HAB.INT.D.HYG,Compartimento de higiene,part,R_Lining;R_Frame;R_LiningDark;R_Accent;R_Black,1.0x0.77x3.04,884,"Cabina cerrada con lavado por toallitas, aspiración de residuos y ventilación propia."
 4,HAB.INT.D.OVN,Calentador de alimentos,part,R_Lining;R_Frame;R_Accent;R_Indicator,0.46x0.365x0.34,408,Calentador por conducción para raciones y bolsas termoestabilizadas.
-4,HAB.INT.D.SHL.FRM,Nervios y perfiles,part,R_Frame;R_Lining;R_Alu;R_Accent;R_Black;R_Label;R_Backing,2.08x3.877x3.242,14252,"Nervios grafito, cornisas, raíles de anclaje."
+4,HAB.INT.D.SHL.FRM,Nervios y perfiles,part,R_Frame;R_Lining;R_Alu;R_Accent;R_Black;R_Backing,2.08x3.877x3.241,13276,"Nervios grafito, cornisas, raíles de anclaje."
 4,HAB.INT.D.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.01x2.19x3.008,108,
-4,HAB.INT.D.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing;R_Floor,2.03x3.97x3.97,2452,Frentes de armario grafito y pavimento de caucho.
+4,HAB.INT.D.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing;R_Floor,2.03x3.994x3.994,3940,Frentes de armario grafito y pavimento de caucho.
 4,HAB.INT.D.SHL.TOP,Encimeras,part,R_Worktop,2.022x0.695x0.034,256,Encimera de compuesto de lino.
 4,HAB.INT.D.SHL.WALL,Revestimiento,part,R_Lining,2.022x3.883x1.902,2928,Paneles curvos de PPSU con juntas y compartimentos altos.
 4,HAB.INT.D.TAB,Tableta del plan del día,part,R_Black,0.269x0.215x0.008,108,
