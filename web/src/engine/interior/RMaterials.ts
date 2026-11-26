@@ -147,8 +147,8 @@ varying float vShipX;
           float tHit = max( min( min( tFar.x, tFar.y ), tFar.z ), 0.0 );
           vec3 hitLocal = vShipPos + localR * tHit;
           vec3 corrLocal = normalize( hitLocal - uBoxCenter );
-          vec3 corrWorld = normalize( transpose( shipInv3 ) * corrLocal );
-          vec4 envMapColor = textureCubeUV( envMap, envMapRotation * corrWorld, roughness );
+          // Las sondas de Interior.captureProbes() se capturan en el marco local de la nave
+          vec4 envMapColor = textureCubeUV( envMap, corrLocal, roughness );
           return envMapColor.rgb * envMapIntensity;
         }
       #endif
