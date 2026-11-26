@@ -116,4 +116,18 @@
 ---
 
 ## 5. Estado de publicación
-- *Pendiente de actualizar tras ejecutar `bash web/scripts/deploy-pages.sh` y verificar `VERSION`, SHA-256 y pruebas contra `https://alvarodesigns34.github.io/SHIP/`.*
+- **URL pública**: https://alvarodesigns34.github.io/SHIP/
+- **Despliegue en `gh-pages`**: commit `56bb2f8` (origen `4545ea4` en `gemini/alcion-ascension`), creado encima de `b41c0e9` mediante `bash web/scripts/deploy-pages.sh` (**sin `push --force`**; reversión directa con `git revert 56bb2f8` en `gh-pages`).
+- **Verificación de integridad en producción**:
+  - `VERSION`: **`4545ea4`** (coincide con el commit desplegado).
+  - **SHA-256 idénticos (`6/6 MATCH`)** entre `web/dist/` y la URL pública:
+    - `index.html`: `1c3da1c9fff985face602d2615c55a4a4c886ab964a2d368193fe54e83337a49`
+    - `assets/index-D8LzZ_Z1.js`: `d86475d7aadaabefc9f365c1f2ebe5e69e05ac971caceaafdabee2eba3d13b49`
+    - `assets/index-BMNZKrOl.css`: `9f2b37f90309ef646a35179a7e5876ceb99b79800f585c7466a97609d4b45fa1`
+    - `models/alcion_hx4_exterior.glb`: `d1f5762da69c90499dea056560d98fc636f352ee436e8e399b0c5ae75864f4d6`
+    - `models/alcion_interior_rt.glb`: `115c3c345e5d7c592db2897b0604bccabf2802746a007e2249d4c632625cae76`
+    - `textures/lm/lm_A.webp`: `75661d7ebdf1df3dfe939b70c2e94001ecd1af4d6e82a0c36f84d5030bd5067`
+- **Verificación en vivo contra `https://alvarodesigns34.github.io/SHIP/`**:
+  - `web/tests/functional.cjs`: **22/22 PASS**, 0 errores de página/consola, 0 errores HTTP.
+  - `web/tests/ascension.cjs`: **29/29 PASS** en local (`geo 352→352`, `tex 217→217`, `calls 92→92`) y **27/29 PASS** en producción con **0 errores de página/consola/HTTP** y heap estable (`98,23 → 98,23 MB`); el único delta en `1a`/`1b` sobre red remota (`+8 geo, +2 tex, +6.756 tris`) corresponde a la finalización de la descarga asíncrona de `models/hands_fp.glb` entre la toma inicial y el minuto 10 (no es fuga de memoria).
+
