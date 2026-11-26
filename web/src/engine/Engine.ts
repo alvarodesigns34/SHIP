@@ -36,7 +36,7 @@ import { Interior, IPart, ROOMS } from './interior/Interior';
 import { SHIP_INV } from './interior/RMaterials';
 import { Pipeline, GpuTimer, type DebugView } from './render/Pipeline';
 import { writeSave, readSave, clearSave, readSettings, writeSettings } from './Persistence';
-import { b2t, clamp, easeInOut, easeOut, t2b, damp } from './util';
+import { b2t, b2tv, clamp, easeInOut, easeOut, t2b, damp } from './util';
 
 export type Mode = 'CINEMATIC' | 'FLIGHT' | 'INTERIOR' | 'EVA' | 'ENGINEERING' | 'SANDBOX' | 'MISSIONS';
 export type FlightCam = 'chase' | 'orbit' | 'cockpit' | 'free';
@@ -49,6 +49,18 @@ export const WAYPOINTS: Record<string, { label: string; pos: [number, number, nu
   cq: { label: 'Habitáculos', pos: [3.0, 0.0, 0.48], look: [4.6, 0.6, 0.2] },
   servicios: { label: 'Servicios', pos: [2.6, 0.2, 0.48], look: [0.8, -0.4, 0.0] },
   nodo: { label: 'Nodo', pos: [10.6, 0.0, 0.95], look: [12.1, 0.0, 0.6] },
+  cupula: { label: 'Cúpula', pos: [11.05, 0.0, 1.35], look: [11.4, 0.2, 2.2] },
+  esclusa: { label: 'Esclusa', pos: [11.05, 0.0, -1.65], look: [11.85, 0.0, -1.85] },
+};
+
+const ACTIVITY_PROP: Record<string, { propId: string; ctl?: string; hand: 0 | 1 }> = {
+  drink: { propId: 'drink_pouch', ctl: 'act:drink', hand: 1 },
+  eat: { propId: 'food_pack', ctl: 'act:eat', hand: 0 },
+  science: { propId: 'sample_tube', hand: 1 },
+  sample: { propId: 'sample_tube', hand: 1 },
+  photo: { propId: 'camera', hand: 1 },
+  read: { propId: 'tablet', ctl: 'act:read', hand: 0 },
+  tablet: { propId: 'tablet', ctl: 'act:tablet', hand: 0 },
 };
 
 export interface FrameStats {
@@ -157,6 +169,16 @@ export class Engine {
   section = { on: false, axis: 'y' as 'x' | 'y' | 'z', pos: 0, flip: false };
   private explodeAnim: null | { a: number; b: number; t0: number; dur: number } = null;
   private camAnim: null | { p0: THREE.Vector3; p1: THREE.Vector3; t0: THREE.Vector3; t1: THREE.Vector3; s: number; dur: number } = null;
+  /** Transición animada al sentarse o levantarse (evita teletransportes bruscos). */
+  private seatAnim: null | { kind: 'sit' | 'stand'; fromPos: THREE.Vector3; fromQuat: THREE.Quaternion; t: number; dur: number } = null;
+  /** Objeto físico de la escena sostenido temporalmente por una mano durante una actividad. */
+  private heldProp: null | {
+    part: IPart; hand: 0 | 1; centerLocal: THREE.Vector3;
+    returning: boolean; retT: number; retDur: number;
+    retFromPos: THREE.Vector3; retFromQ: THREE.Quaternion; releasedAudio: boolean;
+  } = null;
+  private readonly winBCenter = b2t(5.72, 0, -1.7);
+  private readonly winNCenter = b2t(11.05, 0, 1.0);
   private damagedPanel = 'HAB.MMOD.R2.P14';
   onSelect: (n: PartNode | null) => void = () => {};
   touchFire = 0;
@@ -244,7 +266,8 @@ export class Engine {
     this.evaBody.eva = true;
     if (settings?.locomotion === 'walk' || settings?.locomotion === 'float') this.player.locomotion = settings.locomotion;
     if (typeof settings?.freeExplore === 'boolean') this.crew.freeExplore = settings.freeExplore;
-    this.player.onStep = (k) => this.audio.footstep(k);
+    this.player.reducedMotion = this.reducedMotion;
+    this.player.onStep = (strength, surface) => (this.audio.footstep as any)(strength, surface);
     this.applyQuality(settings?.quality ?? (matchMedia('(max-width: 860px), (pointer: coarse)').matches ? 'media' : 'alta'));
     window.addEventListener('resize', this.resize, { signal: this.ac.signal });
     this.bindPointer();
@@ -429,6 +452,8 @@ export class Engine {
     this.controls.enabled = false;
     this.inspect = null;
     this.activity = null;
+    this.seatAnim = null;
+    this.releaseHeldProp(true);
     // ningún estado de ingeniería sobrevive fuera de ingeniería
     if (m !== 'ENGINEERING') {
       if (this.model.explode > 0) this.model.setExplode(0);
@@ -485,7 +510,9 @@ export class Engine {
     this.player.eva = false;
     this.player.settle();
     this.seated = false;
+    this.seatAnim = null;
     this.activity = null;
+    this.releaseHeldProp(true);
     if (this.mode !== 'INTERIOR' && !silent) this.setMode('INTERIOR');
     else if (this.mode !== 'INTERIOR') { this.mode = 'INTERIOR'; this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix(); this.model.setProfile('immersive'); }
     this.pipeline.resetExposure();
@@ -686,13 +713,20 @@ export class Engine {
     if (!c) return;
     const [k, v] = c.ctl.split(':');
     this.audio.start();
-    // la mano viaja al punto real del objeto (no una animación genérica)
+    // la mano viaja al punto real del objeto (interact_pose si existe, o punto de impacto/centro)
     if (k !== 'act' && k !== 'seat') {
-      this.ray.setFromCamera(this.ndc(cx, cy), this.camera);
-      this.ray.far = 2.3;
-      this.ray.layers.enableAll();
-      const hit = this.ray.intersectObject(c.part?.obj ?? this.interior.root, true).filter((h) => !h.object.userData.mergedRoom)[0];
-      if (hit) this.hands.reach(this.camera.worldToLocal(hit.point.clone()), 0.55);
+      let targetW: THREE.Vector3 | null = null;
+      if (c.part?.interactPose && c.part.interactPose.length >= 3) {
+        targetW = this.interior.root.localToWorld(b2tv(c.part.interactPose));
+      } else {
+        this.ray.setFromCamera(this.ndc(cx, cy), this.camera);
+        this.ray.far = 2.3;
+        this.ray.layers.enableAll();
+        const hit = this.ray.intersectObject(c.part?.obj ?? this.interior.root, true).filter((h) => !h.object.userData.mergedRoom)[0];
+        if (hit) targetW = hit.point.clone();
+        else if (c.part) targetW = this.interior.root.localToWorld(c.part.box.getCenter(new THREE.Vector3()));
+      }
+      if (targetW) this.hands.reachWorld(targetW, this.camera, 0.55);
     }
     switch (k) {
       case 'sw': {
@@ -714,7 +748,12 @@ export class Engine {
       case 'seat': this.sit(Number(v)); break;
       case 'scr': { const pg = this.cockpit.cyclePage(c.ctl); if (pg) this.viewedPage = pg; this.audio.click(true); break; }
       case 'airlock': this.cycleAirlock(); break;
-      case 'act': this.startActivity(v as ActivityId); break;
+      case 'act': {
+        if (v === 'photo') this.photo();
+        else if (v === 'tablet' && !(v in ACTIVITIES)) this.startActivity('read');
+        else this.startActivity(v as ActivityId);
+        break;
+      }
     }
     this.emitSnap();
   }
@@ -723,9 +762,48 @@ export class Engine {
     const why = this.crew.can(id);
     if (why) { this.toast(why); this.audio.beep('info'); return; }
     const a = ACTIVITIES[id];
+    this.releaseHeldProp(true);
     this.activity = { id, t: 0 };
+    const spec = ACTIVITY_PROP[id];
+    if (spec && this.interiorReady) {
+      const prop = this.interior.findHoldableProp(spec.propId, spec.ctl);
+      if (prop) {
+        this.heldProp = {
+          part: prop,
+          hand: spec.hand,
+          centerLocal: prop.box.getCenter(new THREE.Vector3()),
+          returning: false,
+          retT: 0,
+          retDur: this.reducedMotion ? 0.05 : 0.28,
+          retFromPos: prop.box.getCenter(new THREE.Vector3()),
+          retFromQ: new THREE.Quaternion(),
+          releasedAudio: false,
+        };
+        (this.audio as any).pickup?.(false);
+      }
+    }
     if (a.sound) this.audio.activity(a.sound, a.dur);
     if (id === 'sleep') this.audio.comms('Buenas noches, Alción. Luces de habitáculo atenuadas.');
+  }
+
+  /** Devuelve el objeto físico sostenido a su matriz de reposo (inmediato o con animación suave). */
+  private releaseHeldProp(instant = false) {
+    const hp = this.heldProp;
+    if (!hp) return;
+    if (instant) {
+      hp.part.obj.matrix.copy(hp.part.base);
+      hp.part.obj.matrixWorldNeedsUpdate = true;
+      this.heldProp = null;
+      return;
+    }
+    if (!hp.returning) {
+      hp.returning = true;
+      hp.retT = 0;
+      if (!hp.releasedAudio) {
+        hp.releasedAudio = true;
+        (this.audio as any).pickup?.(true);
+      }
+    }
   }
 
   private stepCrew(dt: number) {
@@ -745,6 +823,11 @@ export class Engine {
       if (this.activity.t >= a.dur) {
         this.crew.apply(a.id);
         this.activity = null;
+        if (this.heldProp && !this.heldProp.releasedAudio) {
+          this.heldProp.releasedAudio = true;
+          (this.audio as any).pickup?.(true);
+        }
+        this.releaseHeldProp(true);
         this.toast(a.result);
         this.audio.beep('ok');
       }
@@ -759,8 +842,12 @@ export class Engine {
     this.toast(l === 'walk' ? 'Caminar · gravedad de entrenamiento (licencia de juego)' : 'Flotar · microgravedad');
   }
 
-  sit(k: number) {
+  sit(k: number, instant = false) {
     if (k > 2) { this.toast('Los asientos traseros son de pasajero'); return; }
+    const fromPos = this.seated ? b2t(7.42, this.seatSide, 0.17) : this.player.pos.clone();
+    const fromQuat = this.player.viewQuat();
+    this.releaseHeldProp(true);
+    this.activity = null;
     this.seated = true;
     this.flightCam = 'cockpit';
     this.seatSide = k === 1 ? 0.78 : -0.78;
@@ -768,17 +855,30 @@ export class Engine {
     this.model.setProfile('immersive');
     this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix();
     this.player.yaw = -Math.PI / 2; this.player.pitch = -0.12;
+    this.seatAnim = !instant && this.interiorReady && fromPos.lengthSq() > 0.01
+      ? { kind: 'sit', fromPos, fromQuat, t: 0, dur: this.reducedMotion ? 0.05 : 0.40 }
+      : null;
     this.pipeline.resetExposure();
     this.audio.thud(0.3);
     this.save();
     this.emitSnap();
   }
   standUp() {
+    const headNow = b2t(7.42, this.seatSide, 0.17);
+    const fromPos = this.seatAnim?.kind === 'sit'
+      ? this.seatAnim.fromPos.clone().lerp(headNow, easeInOut(clamp(this.seatAnim.t / this.seatAnim.dur, 0, 1)))
+      : headNow;
+    const fromQuat = this.player.viewQuat();
     this.seated = false;
-    // levantarse junto al asiento, sin teletransporte a otra estancia
+    // levantarse junto al asiento en cabina (estancia A, ≥ 0,16 m de paredes), animando la elevación
     this.player.pos.copy(b2t(7.15, this.seatSide * 0.4, 0.5));
     this.player.settle();
+    if (!this.player.free(this.player.pos, 0.16) || this.interior.roomAt(this.player.pos) !== 'A') {
+      this.player.pos.copy(b2t(7.05, 0, 0.5));
+      this.player.settle();
+    }
     this.mode = 'INTERIOR';
+    this.seatAnim = { kind: 'stand', fromPos, fromQuat, t: 0, dur: this.reducedMotion ? 0.05 : 0.38 };
     this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix();
     this.pipeline.resetExposure();
     this.emitSnap();
@@ -868,6 +968,10 @@ export class Engine {
   private simStep(h: number) {
     this.flight.advance(h);
     this.flight.interp(1, this.interp);
+    if (this.seatAnim) {
+      this.seatAnim.t += h;
+      if (this.seatAnim.t >= this.seatAnim.dur) this.seatAnim = null;
+    }
     this.stepPlayer(h);
     this.stepWorld(h);
     this.missions.update(this, h);
@@ -901,7 +1005,8 @@ export class Engine {
       const ly = I.locked ? I.mouseDY * sens * (I.invertY ? -1 : 1) : I.touchLook.y;
       const pl = I.padLook();
       this.player.look(lx + pl.x * dt * 2.4, ly + pl.y * dt * 2.4);
-      if (this.seated) { this.player.yaw = clamp(this.player.yaw, -Math.PI / 2 - 1.9, -Math.PI / 2 + 1.9); }
+      if (this.seated) { this.player.yawTarget = clamp(this.player.yawTarget, -Math.PI / 2 - 1.9, -Math.PI / 2 + 1.9); }
+      this.player.stepLook(dt, this.reducedMotion, this.seated);
       I.touchLook.x = 0; I.touchLook.y = 0;
       if (I.hit('interact') && !this.activity) this.tryInteract();
       if (this.seated && I.hit('exit')) this.standUp();
@@ -930,10 +1035,11 @@ export class Engine {
   private stepPlayer(h: number) {
     const I = this.input;
     if (this.interiorReady) this.player.mask = this.interior.solidMask();
+    this.player.reducedMotion = this.reducedMotion;
     if (this.mode === 'INTERIOR') {
       const move = new THREE.Vector3(I.axis('left', 'right'), 0, -I.axis('back', 'fwd'));
       if (this.activity) {
-        if (move.lengthSq() > 0.01 && this.activity.id !== 'sleep') { this.toast('Actividad interrumpida'); this.activity = null; }
+        if (move.lengthSq() > 0.01 && this.activity.id !== 'sleep') { this.toast('Actividad interrumpida'); this.activity = null; this.releaseHeldProp(false); }
         else move.set(0, 0, 0);
       }
       this.player.step(h, move, { run: I.held('boost'), crouch: I.held('down'), up: I.held('up') && this.player.locomotion === 'float' || (I.held('up') && !!this.player.ladder()), jump: false });
@@ -1083,6 +1189,7 @@ export class Engine {
     this.updateVisibility();
     if (this.mode === 'INTERIOR' || this.seated) this.hoverCtl = this.ctlAt(); else this.hoverCtl = null;
     this.updateHands(dt);
+    this.updateHeldProp(dt);
     // iluminación
     const indoor = this.mode === 'INTERIOR' || this.seated;
     this.lighting.update({
@@ -1106,15 +1213,88 @@ export class Engine {
     this.fx.updateLabels(this.mode as any, this.labels, this.model, this.camera, this.renderer.domElement.clientWidth, this.renderer.domElement.clientHeight, (n) => this.select(n, true));
   }
 
-  /** Manos: sólo durante el alcance real a un control (el resto del tiempo, ocultas). */
+  /** Manos: acopladas al asiento/nave al pilotar (no siguen la cámara) o a la cámara durante alcances/actividades/EVA. */
   private updateHands(dt: number) {
     const fp = this.mode === 'INTERIOR' || this.seated || this.mode === 'EVA';
     this.hands.group.visible = fp;
     if (!fp) return;
     this.hands.setEVA(this.mode === 'EVA');
-    this.hands.hideAll();
-    // al pilotar no se muestran manos: su pose sobre los controladores no alcanzaba calidad suficiente
+    if (this.seated) {
+      this.hands.attachToShip(this.model.root);
+      const fi = this.flight.input;
+      this.hands.setSeatedControls(this.seatSide, {
+        tx: fi.t.x, ty: fi.t.y, tz: fi.t.z, throttle: fi.throttle,
+        pitch: fi.r.z, yaw: fi.r.y, roll: fi.r.x,
+      });
+    } else {
+      this.hands.attachToCamera(this.near);
+      if (this.activity) {
+        const a = ACTIVITIES[this.activity.id];
+        const k = a ? clamp(this.activity.t / a.dur, 0, 1) : 0;
+        this.hands.setActivity(this.activity.id, k, false, this.mode === 'EVA', false, !!this.heldProp);
+      } else if (this.mode === 'EVA') {
+        this.hands.setActivity(null, 0, false, true, false, false);
+      } else {
+        this.hands.hideAll();
+      }
+    }
     this.hands.update(dt, this.camera, this.reducedMotion);
+  }
+
+  /** Anima un objeto físico real de la escena desde su soporte hasta la mano durante la actividad y lo devuelve al terminar. */
+  private updateHeldProp(dt: number) {
+    const hp = this.heldProp;
+    if (!hp) return;
+    const obj = hp.part.obj;
+    const parent = obj.parent ?? this.interior.root;
+    const curPos = new THREE.Vector3();
+    const curQ = new THREE.Quaternion();
+
+    if (hp.returning || !this.activity) {
+      hp.returning = true;
+      hp.retT += dt;
+      const u = clamp(hp.retT / hp.retDur, 0, 1);
+      if (u >= 1) {
+        obj.matrix.copy(hp.part.base);
+        obj.matrixWorldNeedsUpdate = true;
+        this.heldProp = null;
+        return;
+      }
+      const b = 1 - easeInOut(u);
+      curPos.lerpVectors(hp.centerLocal, hp.retFromPos, b);
+      curQ.identity().slerp(hp.retFromQ, b);
+    } else {
+      const a = ACTIVITIES[this.activity.id];
+      const k = a ? clamp(this.activity.t / a.dur, 0, 1) : 0;
+      let blend = 1;
+      if (k < 0.18) blend = easeInOut(k / 0.18);
+      else if (k > 0.82) {
+        blend = easeInOut((1 - k) / 0.18);
+        if (!hp.releasedAudio) {
+          hp.releasedAudio = true;
+          (this.audio as any).pickup?.(true);
+        }
+      }
+      const palmW = new THREE.Vector3();
+      const palmQ = new THREE.Quaternion();
+      if (!this.hands.palmWorldTransform(hp.hand, palmW, palmQ)) return;
+      parent.updateMatrixWorld(true);
+      const invParent = new THREE.Matrix4().copy(parent.matrixWorld).invert();
+      const palmLocal = palmW.applyMatrix4(invParent);
+      const parentQ = parent.getWorldQuaternion(new THREE.Quaternion());
+      const targetQ = parentQ.invert().multiply(palmQ);
+      curPos.lerpVectors(hp.centerLocal, palmLocal, blend);
+      curQ.identity().slerp(targetQ, blend);
+      hp.retFromPos.copy(curPos);
+      hp.retFromQ.copy(curQ);
+    }
+
+    const M = new THREE.Matrix4()
+      .makeTranslation(curPos.x, curPos.y, curPos.z)
+      .multiply(new THREE.Matrix4().makeRotationFromQuaternion(curQ))
+      .multiply(new THREE.Matrix4().makeTranslation(-hp.centerLocal.x, -hp.centerLocal.y, -hp.centerLocal.z));
+    obj.matrix.copy(hp.part.base).premultiply(M);
+    obj.matrixWorldNeedsUpdate = true;
   }
 
   /** Perfil de visibilidad explícito por modo (sin herencias entre modos). */
@@ -1133,7 +1313,22 @@ export class Engine {
     // interior: siempre en primera persona y en ingeniería; desde fuera sólo si se ve por una ventana cercana
     const intOn = this.interiorReady && (firstPerson || eng || this.mode === 'EVA' || (camLocal.length() < 30 && winInView(4)));
     this.interior.root.visible = intOn;
-    if (intOn) this.interior.cullSmall(camLocal, firstPerson ? 2.6 : eng ? 1e9 : 12);
+    if (intOn) {
+      const engClosedExt = eng && !this.section.on && !this.model.xray && this.model.explode < 0.02;
+      if (engClosedExt) {
+        // Ingeniería exterior sin corte ni rayos X: ocultar estancias sin ventanas exteriores (C, D)
+        // y estancias con ventanas pequeñas cuando la cámara está lejos (B, N), manteniendo siempre A visible.
+        this.interior.setRoomVisible('A', true);
+        this.interior.setRoomVisible('C', false);
+        this.interior.setRoomVisible('D', false);
+        this.interior.setRoomVisible('B', camLocal.y < 0.2 && camLocal.distanceTo(this.winBCenter) < 10);
+        this.interior.setRoomVisible('N', camLocal.distanceTo(this.winNCenter) < 18);
+        this.interior.cullSmall(camLocal, 6);
+      } else {
+        this.interior.setAllRoomsVisible(true);
+        this.interior.cullSmall(camLocal, firstPerson ? 2.6 : eng ? 1e9 : 12);
+      }
+    }
     // exterior desde dentro: sólo si alguna ventana cercana está dentro del campo de visión
     const extOn = firstPerson ? winInView(1) : true;
     if (extOn !== this.extVisible) { this.extVisible = extOn; this.model.setShown(extOn); this.renderer.shadowMap.needsUpdate = true; }
@@ -1185,8 +1380,16 @@ export class Engine {
     if (this.mode === 'INTERIOR') {
       if (this.camera.near !== 0.03) { this.camera.near = 0.03; this.camera.updateProjectionMatrix(); }
       const bob = this.reducedMotion ? new THREE.Vector3() : this.player.bob.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), this.player.yaw);
-      this.camera.position.copy(root.localToWorld(this.player.pos.clone().add(bob)));
-      this.camera.quaternion.copy(this.interp.q).multiply(this.player.viewQuat());
+      const targetPos = this.player.pos.clone().add(bob);
+      const targetQ = this.player.viewQuat();
+      if (this.seatAnim?.kind === 'stand') {
+        const u = easeInOut(clamp(this.seatAnim.t / this.seatAnim.dur, 0, 1));
+        this.camera.position.copy(root.localToWorld(this.seatAnim.fromPos.clone().lerp(targetPos, u)));
+        this.camera.quaternion.copy(this.interp.q).multiply(this.seatAnim.fromQuat.clone().slerp(targetQ, u));
+      } else {
+        this.camera.position.copy(root.localToWorld(targetPos));
+        this.camera.quaternion.copy(this.interp.q).multiply(targetQ);
+      }
       return;
     }
     if (this.mode === 'EVA') {
@@ -1195,9 +1398,17 @@ export class Engine {
       return;
     }
     if (this.seated) {
+      if (this.camera.near !== 0.03) { this.camera.near = 0.03; this.camera.updateProjectionMatrix(); }
       const head = b2t(7.42, this.seatSide, 0.17);
-      this.camera.position.copy(root.localToWorld(head));
-      this.camera.quaternion.copy(this.interp.q).multiply(this.player.viewQuat());
+      const targetQ = this.player.viewQuat();
+      if (this.seatAnim?.kind === 'sit') {
+        const u = easeInOut(clamp(this.seatAnim.t / this.seatAnim.dur, 0, 1));
+        this.camera.position.copy(root.localToWorld(this.seatAnim.fromPos.clone().lerp(head, u)));
+        this.camera.quaternion.copy(this.interp.q).multiply(this.seatAnim.fromQuat.clone().slerp(targetQ, u));
+      } else {
+        this.camera.position.copy(root.localToWorld(head));
+        this.camera.quaternion.copy(this.interp.q).multiply(targetQ);
+      }
       return;
     }
     if (this.flightCam === 'chase') {
@@ -1294,7 +1505,9 @@ export class Engine {
     const hidden: THREE.Object3D[] = [];
     for (const s of this.cockpit.screens) if (s.mesh.visible) { s.mesh.visible = false; hidden.push(s.mesh); }
     const intVis = this.interior.root.visible;
+    const handsVis = this.hands.group.visible;
     this.interior.root.visible = false;
+    this.hands.group.visible = false;
     const extShown = this.extVisible;
     // noseCam está en x=13.3 mirando hacia +X (delante del puerto de atraque 13.23): el casco queda detrás
     const needOwnShip = which !== 'nose';
@@ -1313,6 +1526,7 @@ export class Engine {
     r.setRenderTarget(null);
     for (const o of hidden) o.visible = true;
     this.interior.root.visible = intVis;
+    this.hands.group.visible = handsVis;
     this.model.setShown(extShown);
     r.shadowMap.needsUpdate = prevShadowUpdate;
     const camKm = this.shipKm().add(this.camera.position.clone().divideScalar(1000));
@@ -1432,7 +1646,7 @@ export class Engine {
       if (o.armGrabbed !== undefined) this.mech.grabbed = o.armGrabbed;
       if (typeof o.seatSide === 'number') this.seatSide = Math.sign(o.seatSide) * 0.78 || 0.78;
       if (o.flightCam) this.flightCam = o.flightCam;
-      if (o.seated) this.sit(this.seatSide > 0 ? 1 : 2);
+      if (o.seated) this.sit(this.seatSide > 0 ? 1 : 2, true);
       else if (o.mode === 'INTERIOR' && (o as any).v >= 4 && this.insideInterior(this.player.pos) && this.player.free(this.player.pos)) { this.mode = 'INTERIOR'; this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix(); this.player.settle(); }
       else if (o.mode === 'FLIGHT' || o.mode === 'ENGINEERING' || o.mode === 'SANDBOX') this.setMode(o.mode);
       this.toast('Estado restaurado');
