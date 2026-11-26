@@ -1,0 +1,95 @@
+{
+ "entorno": "Contenedor sin GPU: Chromium + SwiftShader (rasterizador CPU). Cifras de llamadas/triángulos independientes del hardware; tiempos sólo comparables entre versiones en este mismo entorno. GPU NO medida.",
+ "singularity_baseline_medido": {
+  "exterior_listo_ms": 9221,
+  "interior_listo_ms": 39985,
+  "cabina_llamadas": 488,
+  "cabina_triangulos": 1760711,
+  "exterior_llamadas": 200,
+  "exterior_triangulos": 1012861,
+  "nota": "Singularity reiniciaba renderer.info DESPUÉS de las cámaras de instrumentos: sus cifras excluían parte del trabajo real."
+ },
+ "rebirth_medido": {
+  "tiempos_carga_ms": {
+   "Arranque: exterior listo < 20 s (SwiftShader)": "2830 ms",
+   "Arranque: interior listo < 60 s (SwiftShader)": "13201 ms"
+  },
+  "capturas_comparativas_llamadas_y_triangulos_todas_las_pasadas": {
+   "01_ext_general": {
+    "calls": 284,
+    "tris": 811628
+   },
+   "02_ext_closeup": {
+    "calls": 257,
+    "tris": 659396
+   },
+   "03_ext_engines": {
+    "calls": 288,
+    "tris": 713488
+   },
+   "04_cockpit_seated": {
+    "calls": 207,
+    "tris": 291694
+   },
+   "05_cockpit_overview": {
+    "calls": 251,
+    "tris": 336308
+   },
+   "06_lab": {
+    "calls": 284,
+    "tris": 425118
+   },
+   "07_crew_quarters": {
+    "calls": 82,
+    "tris": 225844
+   },
+   "08_galley_services": {
+    "calls": 66,
+    "tris": 187974
+   },
+   "09_corridor_aft": {
+    "calls": 172,
+    "tris": 614568
+   },
+   "10_cupola": {
+    "calls": 44,
+    "tris": 53354
+   },
+   "11_node": {
+    "calls": 69,
+    "tris": 173086
+   },
+   "12_airlock_well": {
+    "calls": 93,
+    "tris": 228238
+   },
+   "13_earth_orbit": {
+    "calls": 81,
+    "tris": 470440
+   },
+   "14_earth_window": {
+    "calls": 57,
+    "tris": 210524
+   },
+   "15_exploded": {
+    "calls": 284,
+    "tris": 811418
+   }
+  },
+  "pruebas": {
+   "rebirth": "26/26",
+   "heredadas_singularity": "22/22 (adaptadas a la nueva arquitectura)"
+  }
+ },
+ "activos": {
+  "exterior_glb_MiB": 3.4,
+  "interior_rt_glb_MiB": 3.99,
+  "lightmaps_webp_KiB": [
+   257,
+   207,
+   205,
+   213,
+   305
+  ]
+ }
+}

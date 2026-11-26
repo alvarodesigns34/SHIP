@@ -36,12 +36,46 @@
 - **Manos**: ancladas a los controladores físicos al pilotar y con alcance al punto real del objeto al interactuar; ocultas el resto del tiempo (se eliminaron poses genéricas relativas a la cámara).
 - **Publicación** sin `push -f`: cada despliegue es un commit sobre `gh-pages` (reversión con `git revert`).
 
-## Mediciones
-Ver `docs/rebirth/metrics.json` y `docs/rebirth/tests/results.json` (generados por las pruebas).
+## Mediciones (Chromium + SwiftShader, mismo contenedor para ambas versiones)
+| Métrica | Singularity | Rebirth |
+|---|---|---|
+| Exterior listo | 9,2 s | 2,8–3,6 s |
+| Interior listo | 40,0 s | 12–15 s |
+| Cabina de pie (llamadas / triángulos, **todas** las pasadas) | 488 / 1,76 M (sin contar cámaras de instrumentos) | 251 / 0,34 M |
+| Habitáculos mirando a popa | — | 70 / 0,16 M |
+| Exterior en vuelo, cámara de persecución | ~200 / 1,0 M (incompleto) | 81 / 0,47 M |
+| Matrices de instancia reescritas por fotograma con la nave inmóvil | ~2.700 | 0 |
+| Pruebas | 22 heredadas (estado interno, calidad baja) | 26 de producto (entradas reales, píxeles, colisiones) + 22 heredadas adaptadas |
+
+Detalle: `docs/rebirth/metrics.json`, `docs/rebirth/tests/results.json`, `docs/rebirth/after/stats.json`.
+Los picos (≈ 250–290 llamadas en cabina) corresponden a fotogramas con cámara de instrumentos o regeneración de sombras; ambas están ahora acotadas (cámaras alternas a ~10 Hz sólo si la pantalla está a < 4,5 m y en el campo de visión; sombras sólo al cambiar sol, actitud o encuadre).
 
 ## Evidencias visuales
 - `docs/rebirth/compare/` — pares Singularity (izquierda) / Rebirth (derecha) con cámaras, FOV y resolución idénticos, capturados del renderizado real de la aplicación.
 - `renders/rebirth/` — renders Cycles del interior (categoría separada: NO son evidencia del tiempo real).
 
-## Pendiente / limitaciones conocidas
-Ver sección final (se actualiza al cierre de la sesión).
+## Validación
+- `web/tests/rebirth.cjs` (26/26): arranque, flujo «Subir a bordo» por la interfaz, teclado real con aceleración suave, liberación de teclas al perder el foco, recorrido aleatorio de 800 pasos sin que la cámara se acerque a < 12 cm de ninguna superficie ni salga del volumen, microgravedad contra el techo, interruptor apuntado con el punto de mira, sentarse/levantarse, 4 ciclos ingeniería↔interior sin contaminación (rayos X, corte, explosión, recorte de materiales), imagen sin NaN, presupuestos de llamadas, cero escrituras de matrices en reposo, EVA completa por la esclusa, persistencia tras recarga, móvil táctil (palanca, `pointercancel`, sin desbordamiento) y consola sin errores.
+- `web/tests/functional.cjs` (22/22): batería heredada de Singularity adaptada donde verificaba detalles de la implementación anterior (lightmap único en BatchedMesh → lightmaps por estancia; guardado v3 → v4).
+- `web/tests/compare_rebirth.cjs`: capturas con las mismas cámaras que Singularity → `docs/rebirth/compare/`.
+
+## Pendiente / limitaciones conocidas (honestas)
+- **GPU no medida**: no hay GPU en el entorno. Los objetivos de 60 FPS (equilibrado) y 30 FPS (móvil) **no están verificados**; sí lo están la reducción estructural de trabajo (llamadas, triángulos, matrices, cargas) y la escala de resolución dinámica (mín. 70 %).
+- **Fotorrealismo**: el interior es arquitectónicamente coherente, cerrado, con iluminación horneada sin ruido y materiales calibrados, pero todavía es una estética limpia de «producto»; le falta densidad de detalle (cableado gestionado, rotulación fina, desgaste, objetos personales con modelado de alta calidad) para considerarse fotorrealista. No me asigno una nota.
+- **Manos**: sólo aparecen ancladas a los controladores al pilotar y al alcanzar objetos; las actividades (beber, comer, dormir…) se representan con progreso y fundido, no con animación de manos.
+- **Exterior y entorno astronómico**: se conserva el exterior de Singularity (con ventanas nuevas, cortes corregidos y estructura oculta fuera de ingeniería). La Tierra, nubes y estrellas no se han reelaborado en esta iteración.
+- **Audio**: sistema heredado sin cambios.
+- **Ingeniería**: el árbol de componentes cubre el exterior; las piezas del interior se inspeccionan pulsándolas (ficha), no desde el árbol.
+- **Activos**: los lightmaps requieren hornear (`blender/bake_rebirth.py`, ≈ 35 min en 4 núcleos CPU) tras cualquier cambio del interior; `build.py` sin horneado deja el `.blend` sin el canal UV «LM».
+
+## Reproducción
+```
+python3 blender/build.py                                   # modelo maestro + exportaciones (bpy 5.1)
+python3 blender/bake_rebirth.py --samples 128 --res 2048   # lightmaps por estancia + interior inmersivo
+cd web && node scripts/optimize-model.mjs && npm run build
+npx vite preview --port 4173 & ALCION_URL=http://127.0.0.1:4173/ node tests/rebirth.cjs
+bash scripts/deploy-pages.sh                               # commit nuevo sobre gh-pages (sin force-push)
+```
+
+## Estado de publicación
+Se actualiza tras el despliegue (ver final del documento).

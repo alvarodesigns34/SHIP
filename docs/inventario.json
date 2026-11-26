@@ -2,7 +2,7 @@
  "vehicle": "ALCIÓN HX-4",
  "parts": 540,
  "groups": 100,
- "triangles": 749290,
+ "triangles": 749878,
  "tree": {
   "code": "ALCION",
   "label": "ALCIÓN HX-4",
@@ -2411,7 +2411,7 @@
       "depth": 2,
       "dims_m": [
        2.08,
-       2.6,
+       2.61,
        4.555
       ],
       "center_m": [
@@ -2463,11 +2463,11 @@
           "desc": "Aluminio mecanizado"
          }
         ],
-        "tris": 592,
+        "tris": 908,
         "dims_m": [
          2.07,
-         2.6,
-         2.6
+         2.61,
+         2.61
         ],
         "center_m": [
          11.105,

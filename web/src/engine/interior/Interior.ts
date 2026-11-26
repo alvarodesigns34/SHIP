@@ -187,6 +187,12 @@ export class Interior {
     for (const m of this.mechs.values()) this.applyMech(m);
     const t0 = performance.now();
     this.buildVoxels(meshes);
+    // escotilla interior de la esclusa cerrada = tapa transitable a ras del suelo del nodo (licencia de juego al caminar)
+    const hb = this.hatchBits.get('hatch:alk_in');
+    if (hb) {
+      const s = this.voxels.s;
+      for (let x = -0.62; x <= 0.62; x += s * 0.5) for (let z = -0.62; z <= 0.62; z += s * 0.5) if (x * x + z * z < 0.62 * 0.62) this.voxels.markPoint(11.05 + x, -0.64, z, hb);
+    }
     this.stats.voxelMs = performance.now() - t0;
     this.mergeStatic(meshes, roomOf);
     this.loaded = true;

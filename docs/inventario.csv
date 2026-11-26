@@ -73,9 +73,9 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,FWD.EXT.LGA2,Antena de baja ganancia banda S 2,part,M_Teflon;M_AlBare;M_Cable,0.207x0.216x0.133,212,Antena de parche omnidireccional de banda S para enlace de emergencia.
 3,FWD.EXT.NAV1,Baliza de navegación babor (roja),part,M_AlAnodBlack;M_LEDRed,0.08x0.09x0.08,284,Baliza LED de navegación para identificación visual de orientación.
 3,FWD.EXT.NAV2,Baliza de navegación estribor (verde),part,M_AlAnodBlack;M_LEDGreen,0.08x0.09x0.08,284,Baliza LED de navegación para identificación visual de orientación.
-2,FWD.INT,Interior del nodo,group,,2.08x2.6x4.555,,"Nodo de proa: estación de trabajo robótica, acceso a la cúpula de observación, escotilla de atraque y pozo de la esclusa."
+2,FWD.INT,Interior del nodo,group,,2.08x2.61x4.555,,"Nodo de proa: estación de trabajo robótica, acceso a la cúpula de observación, escotilla de atraque y pozo de la esclusa."
 3,FWD.INT.BAG,Estiba de acceso rápido,part,R_Bag,1.604x0.308x0.408,5076,
-3,FWD.INT.BCK,Trasdós del nodo,part,R_Backing;M_AlBare,2.07x2.6x2.6,592,
+3,FWD.INT.BCK,Trasdós del nodo,part,R_Backing;M_AlBare,2.07x2.61x2.61,908,
 3,FWD.INT.BHD,Mamparos del nodo,part,R_Lining,2.06x2.44x2.44,2384,
 3,FWD.INT.FLR,Suelo del nodo,part,R_Floor,2.0x2.061x0.03,220,Pavimento sobre el pozo de la esclusa.
 3,FWD.INT.HF,Escotilla de atraque (IDSS),part,R_Lining;R_Accent;R_Black;R_Steel,0.095x0.88x0.88,3268,"Escotilla de paso de 0,80 m hacia el vehículo atracado; cerrada sin vehículo."

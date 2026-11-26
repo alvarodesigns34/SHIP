@@ -180,6 +180,8 @@ export class Engine {
   private camsMs = 0;
   private shadowKey = '';
   private evaReturnArmed = false;
+  /** tras volver de la EVA hay que subir por la escalerilla antes de poder salir de nuevo */
+  private evaExitArmed = true;
   private extVisible = true;
   /** ventanas (espacio nave three) para decidir si el exterior puede verse desde dentro */
   private windows: THREE.Sphere[] = [
@@ -916,6 +918,16 @@ export class Engine {
       if (rep && I.held('interact')) { this.holdT = this.systems.repair(rep as any, h); if (this.holdT >= 1) this.audio.beep('ok'); }
       else this.holdT = 0;
     } else if (this.mode === 'EVA') {
+      // regreso por la escotilla exterior (antes de la colisión exterior, que podría desplazar al astronauta)
+      const dHatch = this.evaBody.pos.distanceTo(b2t(11.05, 0, -3.6));
+      if (dHatch > 1.1) this.evaReturnArmed = true;
+      if (this.evaReturnArmed && dHatch < 0.85 && this.airlock === 'vac') {
+        this.player.eva = false; this.mode = 'INTERIOR'; this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix();
+        this.player.pos.copy(b2t(11.05, 0, -3.16 + 1.66)); this.player.vel.set(0, 0, 0); this.player.settle();
+        this.audio.comms('Bienvenido a bordo. Represuriza la esclusa desde su panel.'); this.emitSnap();
+        this.evaExitArmed = false;
+        return;
+      }
       const move = new THREE.Vector3(I.axis('left', 'right'), I.axis('down', 'up'), -I.axis('back', 'fwd'));
       this.evaBody.step(h, move, I.held('boost'), null);
       this.player.jetFuel = this.evaBody.jetFuel;
@@ -965,7 +977,8 @@ export class Engine {
       }
     }
     // transiciones EVA a través de la esclusa (fondo del pozo ↔ exterior bajo la escotilla)
-    if (this.mode === 'INTERIOR' && this.airlock === 'vac') {
+    if (this.mode === 'INTERIOR' && this.player.pos.y - this.player.eyeH > -2.3) this.evaExitArmed = true;
+    if (this.mode === 'INTERIOR' && this.airlock === 'vac' && this.evaExitArmed) {
       const [px, py, pz] = t2b(this.player.pos);
       if (pz - this.player.eyeH < -2.95 + 0.2 && Math.hypot(px - 11.05, py) < 0.6) {
         this.player.eva = true;
@@ -974,14 +987,6 @@ export class Engine {
         this.evaBody.yaw = this.player.yaw; this.evaBody.pitch = -0.6;
         this.mode = 'EVA'; this.camera.fov = 70; this.camera.updateProjectionMatrix();
         this.audio.comms('Alción, EVA iniciada. Línea de seguridad conectada.'); this.emitSnap();
-      }
-    } else if (this.mode === 'EVA') {
-      const dHatch = this.evaBody.pos.distanceTo(b2t(11.05, 0, -3.6));
-      if (dHatch > 1.1) this.evaReturnArmed = true;
-      if (this.evaReturnArmed && dHatch < 0.85 && this.airlock === 'vac') {
-        this.player.eva = false; this.mode = 'INTERIOR'; this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix();
-        this.player.pos.copy(b2t(11.05, 0, -3.16 + 1.66)); this.player.vel.set(0, 0, 0); this.player.settle();
-        this.audio.comms('Bienvenido a bordo. Represuriza la esclusa desde su panel.'); this.emitSnap();
       }
     }
     if (!this.flight.docked && this.systems.on('DOCK')) {
