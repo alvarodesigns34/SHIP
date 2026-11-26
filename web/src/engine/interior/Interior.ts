@@ -19,6 +19,7 @@ import { b2tv } from '../util';
 export interface IMech { type: 'hinge' | 'slide'; pivot: THREE.Vector3; axis: THREE.Vector3; min: number; max: number; rest: number; id: string; speed: number; value: number; target: number; }
 export interface IPart {
   code: string; label: string; desc: string; room: string; obj: THREE.Object3D; ctl: string | null; mech: IMech | null;
+  propId: string | null; interactPose: number[] | null;
   base: THREE.Matrix4; box: THREE.Box3; meshes: THREE.Mesh[];
 }
 
@@ -143,9 +144,11 @@ export class Interior {
   parts = new Map<string, IPart>();
   mechs = new Map<string, IPart>();
   controls: IPart[] = [];
+  propsById = new Map<string, IPart>();
   screens = new Map<string, THREE.Mesh>();
   roomGroups = new Map<string, THREE.Object3D[]>();
   roomBoxes = new Map<string, THREE.Box3>();
+  private roomVis = new Map<string, boolean>();
   materials: THREE.Material[] = [];
   lightmaps = new Map<string, THREE.Texture>();
   voxels = new VoxelGrid();
@@ -201,15 +204,27 @@ export class Interior {
       this.stats.meshes++;
       this.stats.tris += (mesh.geometry.index ? mesh.geometry.index.count : mesh.geometry.attributes.position.count) / 3;
     }
-    // piezas con identidad
+    // piezas con identidad y nodos raíz por estancia
     gltf.scene.traverse((o) => {
       const ud = o.userData as any;
       o.matrixAutoUpdate = false;
       o.updateMatrix();
+      const ownRoom = ud?.room;
+      if (ownRoom && roomOf(o.parent) !== ownRoom) {
+        let list = this.roomGroups.get(ownRoom);
+        if (!list) { list = []; this.roomGroups.set(ownRoom, list); }
+        list.push(o);
+      }
       if (!ud?.code) return;
       const ms: THREE.Mesh[] = [];
       o.traverse((c) => { if ((c as THREE.Mesh).isMesh) ms.push(c as THREE.Mesh); });
-      const p: IPart = { code: ud.code, label: ud.label ?? ud.code, desc: ud.desc ?? '', room: roomOf(o) ?? '', obj: o, ctl: ud.ctl ?? null, mech: null, base: o.matrix.clone(), box: new THREE.Box3().setFromObject(o), meshes: ms };
+      const p: IPart = {
+        code: ud.code, label: ud.label ?? ud.code, desc: ud.desc ?? '', room: roomOf(o) ?? '',
+        obj: o, ctl: ud.ctl ?? null, mech: null,
+        propId: ud.prop_id ?? null,
+        interactPose: Array.isArray(ud.interact_pose) ? ud.interact_pose : null,
+        base: o.matrix.clone(), box: new THREE.Box3().setFromObject(o), meshes: ms,
+      };
       if (ud.mech) {
         const m = ud.mech;
         p.mech = { type: m.type, pivot: b2tv(m.pivot), axis: b2tv(m.axis).normalize(), min: m.min, max: m.max, rest: m.rest, id: m.id, speed: m.speed ?? 1, value: m.rest, target: m.rest };
@@ -219,6 +234,7 @@ export class Interior {
         this.controls.push(p);
         if (p.ctl.startsWith('scr:') && ms[0]) this.screens.set(p.ctl, ms[0]);
       }
+      if (p.propId) this.propsById.set(p.propId, p);
       this.parts.set(p.code, p);
       if (p.room) {
         if (!this.roomBoxes.has(p.room)) this.roomBoxes.set(p.room, new THREE.Box3());
@@ -245,15 +261,43 @@ export class Interior {
   cullSmall(viewer: THREE.Vector3, dist: number) {
     if (!this.small) {
       const sz = new THREE.Vector3();
-      this.small = [...this.parts.values()].filter((p) => (p.ctl || p.mech) && p.meshes.length && p.box.getSize(sz).length() < 0.25 && p.obj.layers.test(new THREE.Layers()));
+      this.small = [...this.parts.values()].filter((p) => (p.ctl || p.mech) && !p.propId && p.meshes.length && p.box.getSize(sz).length() < 0.25 && p.obj.layers.test(new THREE.Layers()));
     }
     const d2 = dist * dist;
     for (const p of this.small) {
+      if (this.roomVis.get(p.room) === false) { p.obj.visible = false; continue; }
       const c = p.box.getCenter(this.tmpV);
       p.obj.visible = c.distanceToSquared(viewer) < d2;
     }
   }
   private tmpV = new THREE.Vector3();
+
+  /** Activa u oculta toda la geometría (fusionada y dinámica) de una estancia. */
+  setRoomVisible(room: string, visible: boolean) {
+    if (this.roomVis.get(room) === visible) return;
+    this.roomVis.set(room, visible);
+    const mg = this.roomMerged.get(room);
+    if (mg) mg.visible = visible;
+    const gs = this.roomGroups.get(room);
+    if (gs) for (const o of gs) o.visible = visible;
+  }
+
+  setAllRoomsVisible(visible = true) {
+    for (const r of Object.keys(ROOMS)) this.setRoomVisible(r, visible);
+  }
+
+  /** Busca un objeto físico interactuable por propId o, en su defecto, por ctl si es compacto (≤ 0,45 m). */
+  findHoldableProp(propId: string, fallbackCtl?: string): IPart | null {
+    const byId = this.propsById.get(propId);
+    if (byId) return byId;
+    if (fallbackCtl) {
+      const sz = new THREE.Vector3();
+      for (const p of this.controls) {
+        if (p.ctl === fallbackCtl && p.meshes.length && p.box.getSize(sz).length() <= 0.45) return p;
+      }
+    }
+    return null;
+  }
 
   /** Grupos de geometría fusionada por estancia (se desplazan juntos en la vista explosionada). */
   roomMerged = new Map<string, THREE.Group>();
@@ -266,7 +310,7 @@ export class Interior {
    */
   private mergeStatic(meshes: THREE.Mesh[], roomOf: (o: THREE.Object3D | null) => string | null) {
     const groups = new Map<string, { room: string; mat: THREE.Material; geos: THREE.BufferGeometry[]; cast: boolean; recv: boolean; order: number }>();
-    const dynamic = (o: THREE.Object3D | null) => { for (; o; o = o.parent) { const u = o.userData as any; if (u?.ctl || u?.mech) return true; } return false; };
+    const dynamic = (o: THREE.Object3D | null) => { for (; o; o = o.parent) { const u = o.userData as any; if (u?.ctl || u?.mech || u?.prop_id) return true; } return false; };
     this.root.updateMatrixWorld(true);
     const inv = new THREE.Matrix4().copy(this.root.matrixWorld).invert();
     for (const mesh of meshes) {
@@ -339,6 +383,8 @@ export class Interior {
       if (code && /\.TGL\./.test(code)) continue;
       // escotillas: bit propio, sólo sólidas mientras están cerradas (ver solidMask)
       const part = this.partOf(mesh);
+      // los objetos sueltos tomables (prop_id) no bloquean el paso
+      if (part?.propId) continue;
       let bit = 1;
       if (part?.mech && part.mech.id.startsWith('hatch:')) {
         if (!this.hatchBits.has(part.mech.id)) this.hatchBits.set(part.mech.id, 2 << this.hatchBits.size);
