@@ -78,4 +78,7 @@ bash scripts/deploy-pages.sh                               # commit nuevo sobre 
 ```
 
 ## Estado de publicación
-Se actualiza tras el despliegue (ver final del documento).
+- Publicado en https://alvarodesigns34.github.io/SHIP/ — commit de despliegue `0c0b0d3` en `gh-pages` (origen `9231f41`), creado **encima** del despliegue anterior `153b05a` (Singularity) sin reescribir historial.
+- Verificación en producción: `VERSION` = `9231f41`; SHA-256 idénticos entre `web/dist` y lo servido (index, JS, GLB exterior e interior, lightmap); `tests/rebirth.cjs` contra la URL pública: **26/26**.
+- Reversión: `git revert 0c0b0d3` en `gh-pages` (o republicar `153b05a`).
+- Es una versión validada por las pruebas descritas, **no** un producto terminado: ver «Pendiente / limitaciones conocidas».
