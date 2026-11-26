@@ -14,7 +14,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'meshoptimizer';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { makeMaterial, LM_SCALE } from './RMaterials';
-import { b2tv } from '../util';
+import { b2tv, clamp } from '../util';
+import type { PartNode, ExplodePreset } from '../ship/ShipModel';
 
 export interface IMech { type: 'hinge' | 'slide'; pivot: THREE.Vector3; axis: THREE.Vector3; min: number; max: number; rest: number; id: string; speed: number; value: number; target: number; }
 export interface IPart {
@@ -22,6 +23,35 @@ export interface IPart {
   propId: string | null; interactPose: number[] | null;
   base: THREE.Matrix4; box: THREE.Box3; meshes: THREE.Mesh[];
 }
+
+const ROOM_ORDER = ['A', 'B', 'C', 'D', 'N'] as const;
+const ROOM_TREE_META: Record<string, { label: string; desc: string; off: [number, number, number] }> = {
+  A: { label: 'Cabina de vuelo (Estancia A)', desc: 'Puesto de pilotaje, consola central, paneles de instrumentos y ventanas panorámicas.', off: [1.5, 1.4, 0] },
+  B: { label: 'Laboratorio (Estancia B)', desc: 'Bastidores científicos, guantera estanca, microscopio, congelador −80 °C y pozos de nadir.', off: [0.4, 2.2, 0] },
+  C: { label: 'Habitáculos (Estancia C)', desc: 'Cuatro cabinas privadas con sacos de dormir, iluminación de lectura y refugio antiradiación.', off: [-0.6, 3.0, 0] },
+  D: { label: 'Servicios (Estancia D)', desc: 'Cocina orbital, higiene, cicloergómetro, mesa de comidas y soporte vital regenerativo.', off: [-1.6, 3.8, 0] },
+  N: { label: 'Nodo y Esclusa (Estancia N)', desc: 'Nodo de proa, estación robótica, escotilla IDSS, cúpula y esclusa EVA.', off: [3.0, 0.9, 0] },
+};
+const INT_MAT_DESC: Record<string, string> = {
+  R_PanelLight: 'Panel compuesto interior claro',
+  R_PanelDark: 'Panel estructural interior grafito',
+  R_Floor: 'Cubierta antideslizante interior',
+  R_Metal: 'Aluminio anodizado interior',
+  R_MetalDark: 'Aleación anodizada oscura',
+  R_Fabric: 'Tejido técnico ignífugo',
+  R_Wood: 'Laminado cálido de mobiliario',
+  R_Glass: 'Vidrio óptico laminado',
+  R_Screen: 'Pantalla MFD activa',
+  R_LED: 'Luminaria LED integrada',
+  R_LightPanel: 'Difusor lumínico cenital',
+  R_Backing: 'Trasdós de cerramiento',
+  R_Rubber: 'Elastómero técnico / sujeción',
+  R_Accent: 'Detalle anodizado naranja',
+};
+const smoothstep = (e0: number, e1: number, x: number) => {
+  const u = clamp((x - e0) / Math.max(1e-6, e1 - e0), 0, 1);
+  return u * u * (3 - 2 * u);
+};
 
 export const ROOMS: Record<string, { label: string; x0: number; x1: number }> = {
   D: { label: 'Servicios', x0: 0.0, x1: 2.65 },
@@ -147,6 +177,7 @@ export class Interior {
   propsById = new Map<string, IPart>();
   screens = new Map<string, THREE.Mesh>();
   roomGroups = new Map<string, THREE.Object3D[]>();
+  private roomGroupSet = new Set<THREE.Object3D>();
   roomBoxes = new Map<string, THREE.Box3>();
   private roomVis = new Map<string, boolean>();
   materials: THREE.Material[] = [];
@@ -154,6 +185,27 @@ export class Interior {
   voxels = new VoxelGrid();
   loaded = false;
   stats: { meshes: number; tris: number; voxelMs: number; merged?: number } = { meshes: 0, tris: 0, voxelMs: 0 };
+  /** Árbol jerárquico de ingeniería del interior (raíz HAB.INT.IMM → estancias A..N → piezas IPart). */
+  tree: PartNode | null = null;
+  treeNodes = new Map<string, PartNode>();
+  explodeValue = 0;
+  explodePreset: ExplodePreset = 'all';
+  private explodedMode = false;
+  private staticMeshes: THREE.Mesh[] = [];
+  private isolatedNode: PartNode | null = null;
+  private lastLocalExKey = '';
+  private highlightedCode: string | null = null;
+  private highlightGroup = new THREE.Group();
+  private highlightMat = new THREE.MeshBasicMaterial({
+    color: 0xe2572b,
+    transparent: true,
+    opacity: 0.24,
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -2,
+    side: THREE.DoubleSide,
+  });
   private probes = new Map<string, THREE.Texture>();
   probeRes = 0;
   private probeMats: THREE.MeshStandardMaterial[] = [];
@@ -214,6 +266,7 @@ export class Interior {
         let list = this.roomGroups.get(ownRoom);
         if (!list) { list = []; this.roomGroups.set(ownRoom, list); }
         list.push(o);
+        this.roomGroupSet.add(o);
       }
       if (!ud?.code) return;
       const ms: THREE.Mesh[] = [];
@@ -242,6 +295,9 @@ export class Interior {
       }
     });
     this.root.add(gltf.scene);
+    this.highlightGroup.visible = false;
+    this.highlightGroup.name = '__interior_highlight';
+    this.root.add(this.highlightGroup);
     for (const m of this.mechs.values()) this.applyMech(m);
     const t0 = performance.now();
     this.buildVoxels(meshes);
@@ -253,12 +309,14 @@ export class Interior {
     }
     this.stats.voxelMs = performance.now() - t0;
     this.mergeStatic(meshes, roomOf);
+    this.buildTree();
     this.loaded = true;
   }
 
   private small: IPart[] | null = null;
   /** Oculta piezas móviles pequeñas (palancas, indicadores) más allá de `dist` metros. */
   cullSmall(viewer: THREE.Vector3, dist: number) {
+    if (this.explodedMode) return;
     if (!this.small) {
       const sz = new THREE.Vector3();
       this.small = [...this.parts.values()].filter((p) => (p.ctl || p.mech) && !p.propId && p.meshes.length && p.box.getSize(sz).length() < 0.25 && p.obj.layers.test(new THREE.Layers()));
@@ -277,9 +335,9 @@ export class Interior {
     if (this.roomVis.get(room) === visible) return;
     this.roomVis.set(room, visible);
     const mg = this.roomMerged.get(room);
-    if (mg) mg.visible = visible;
+    if (mg) mg.visible = visible && !this.explodedMode;
     const gs = this.roomGroups.get(room);
-    if (gs) for (const o of gs) o.visible = visible;
+    if (gs && !this.explodedMode) for (const o of gs) o.visible = visible;
   }
 
   setAllRoomsVisible(visible = true) {
@@ -353,6 +411,7 @@ export class Interior {
         g.cast = g.cast || mesh.castShadow;
       }
       mesh.layers.set(Interior.PICK_LAYER);
+      this.staticMeshes.push(mesh);
     }
     for (const g of groups.values()) {
       const want = ['position', 'normal', 'uv', ...((g.mat as any).lightMap ? ['uv1'] : [])];
@@ -370,6 +429,407 @@ export class Interior {
       grp.add(m);
       this.stats.merged = (this.stats.merged ?? 0) + 1;
     }
+  }
+
+  /** Calcula un vector de separación limpio para una pieza interior dentro de su estancia. */
+  private computePartExplode(p: IPart, roomCenter: THREE.Vector3): THREE.Vector3 {
+    const c = p.box.getCenter(new THREE.Vector3());
+    const rel = c.clone().sub(roomCenter);
+    const code = p.code;
+    // Suelos, subsuelos y pozos de nadir bajan
+    if (/\.(FLR|FLF|SHL\.LOW|NAD|NADG|STP)$/.test(code)) {
+      return new THREE.Vector3(rel.x * 0.15, -0.78, rel.z * 0.18);
+    }
+    // Luminarias, techos y nervios suben
+    if (/\.(SHL\.LED|LGT|SHL\.FRM|UPR)$/.test(code)) {
+      return new THREE.Vector3(rel.x * 0.12, 0.85, rel.z * 0.22);
+    }
+    // Revestimientos exteriores de estancia, trasdós y mamparos se abren radial/axialmente
+    if (/\.(SHL\.WALL|BCK|LIN|CON|PAN|WEL|BHD|AFT)$/.test(code)) {
+      const radial = new THREE.Vector3(rel.x * 0.45, rel.y * 0.45, rel.z * 0.65);
+      if (radial.lengthSq() < 0.04) radial.set(0, 0.5, 0.6);
+      return radial.normalize().multiplyScalar(0.82);
+    }
+    // Consolas, pantallas, palancas, mobiliario y props se despliegan en abanico radial legible
+    const out = new THREE.Vector3(rel.x * 0.22, rel.y * 0.35 + 0.12, rel.z * 0.72);
+    if (out.lengthSq() < 0.02) out.set(0.15, 0.35, 0.4);
+    const mag = (p.propId || /\.(SCR|TGL|MON|MIC|TAB)/.test(code)) ? 0.58 : 0.48;
+    return out.normalize().multiplyScalar(mag);
+  }
+
+  /** Construye el árbol de ingeniería compatible con `PartNode` agrupado por estancias A..N. */
+  private buildTree() {
+    this.treeNodes.clear();
+    const rootBox = new THREE.Box3();
+    const rootMats = new Map<string, string>();
+    const rootNode: PartNode = {
+      code: 'HAB.INT.IMM',
+      label: 'Interior Habitable Inmersivo',
+      desc: 'Estancias presurizadas completas con mobiliario, instrumentación, controles interactivos e iluminación horneada.',
+      func: 'Hábitat tripulado de 4 bahías (A–D) y nodo de proa con cúpula y esclusa EVA (N)',
+      kind: 'group',
+      depth: 2,
+      obj: this.root,
+      parent: null,
+      children: [],
+      ex: new THREE.Vector3(0, 1.8, 0),
+      base: new THREE.Matrix4(),
+      center0: new THREE.Vector3(),
+      box0: rootBox,
+      box: rootBox,
+      meshes: [],
+      materials: [],
+      tris: 0,
+      parts: 0,
+      count: 0,
+      sector: 'int',
+      hidden: false,
+      mech: null,
+      ctl: null,
+      inspect: true,
+      localEx: 0,
+      external: true,
+    };
+    this.treeNodes.set(rootNode.code, rootNode);
+
+    const hasChildPart = (p: IPart) => {
+      for (const ch of p.obj.children) {
+        const c = (ch.userData as any)?.code;
+        if (c && this.parts.has(c)) return true;
+      }
+      return false;
+    };
+
+    for (const r of ROOM_ORDER) {
+      const meta = ROOM_TREE_META[r];
+      const rBox = (this.roomBoxes.get(r) ?? new THREE.Box3()).clone();
+      const rCenter = rBox.isEmpty() ? new THREE.Vector3() : rBox.getCenter(new THREE.Vector3());
+      const rMats = new Map<string, string>();
+      const rNode: PartNode = {
+        code: `HAB.INT.IMM.${r}`,
+        label: meta.label,
+        desc: meta.desc,
+        func: `Estancia presurizada ${r} (${ROOMS[r]?.label ?? r})`,
+        kind: 'group',
+        depth: 3,
+        obj: this.roomMerged.get(r) ?? this.root,
+        parent: rootNode,
+        children: [],
+        ex: new THREE.Vector3(...meta.off),
+        base: new THREE.Matrix4(),
+        center0: rCenter.clone(),
+        box0: new THREE.Box3(),
+        meshes: [],
+        materials: [],
+        tris: 0,
+        parts: 0,
+        count: 0,
+        sector: 'int',
+        hidden: false,
+        mech: null,
+        ctl: null,
+        inspect: true,
+        localEx: 0,
+        external: true,
+      };
+      rNode.box = rNode.box0;
+
+      const roomParts = [...this.parts.values()]
+        .filter((p) => p.room === r && p.meshes.length > 0 && ((p.obj as THREE.Mesh).isMesh || !hasChildPart(p)))
+        .sort((a, b) => a.label.localeCompare(b.label, 'es'));
+
+      for (const p of roomParts) {
+        let tris = 0;
+        const pMats = new Map<string, string>();
+        for (const m of p.meshes) {
+          const idx = m.geometry.index;
+          tris += (idx ? idx.count : m.geometry.attributes.position.count) / 3;
+          const mlist = (Array.isArray(m.material) ? m.material : [m.material]) as THREE.Material[];
+          for (const mm of mlist) {
+            if (!mm?.name) continue;
+            const d = INT_MAT_DESC[mm.name] ?? (mm as any).userData?.desc ?? mm.name;
+            pMats.set(mm.name, d);
+            rMats.set(mm.name, d);
+            rootMats.set(mm.name, d);
+          }
+        }
+        const pBox = p.box.clone();
+        const pNode: PartNode = {
+          code: p.code,
+          label: p.label,
+          desc: p.desc || `Componente interior de ${ROOMS[r]?.label ?? r}`,
+          func: p.ctl ? `Control interactivo (${p.ctl})` : p.propId ? `Objeto manipulable (${p.propId})` : `Equipamiento de ${ROOMS[r]?.label ?? r}`,
+          kind: 'part',
+          depth: 4,
+          obj: p.obj,
+          parent: rNode,
+          children: [],
+          ex: this.computePartExplode(p, rCenter),
+          base: p.base.clone(),
+          center0: pBox.isEmpty() ? new THREE.Vector3() : pBox.getCenter(new THREE.Vector3()),
+          box0: pBox,
+          box: pBox,
+          meshes: p.meshes,
+          materials: [...pMats.entries()].map(([name, desc]) => ({ name, desc })).sort((a, b) => a.name.localeCompare(b.name)),
+          tris,
+          parts: 1,
+          count: 1,
+          sector: 'int',
+          hidden: false,
+          mech: p.mech,
+          ctl: p.ctl,
+          inspect: true,
+          localEx: 0,
+          external: true,
+        };
+        rNode.children.push(pNode);
+        rNode.meshes.push(...p.meshes);
+        rNode.tris += tris;
+        rNode.parts += 1;
+        if (!pBox.isEmpty()) rNode.box0.union(pBox);
+        this.treeNodes.set(pNode.code, pNode);
+      }
+
+      if (!rNode.box0.isEmpty()) rNode.box0.getCenter(rNode.center0);
+      rNode.count = rNode.parts;
+      rNode.materials = [...rMats.entries()].map(([name, desc]) => ({ name, desc })).sort((a, b) => a.name.localeCompare(b.name));
+      rootNode.children.push(rNode);
+      rootNode.meshes.push(...rNode.meshes);
+      rootNode.tris += rNode.tris;
+      rootNode.parts += rNode.parts;
+      if (!rNode.box0.isEmpty()) rootNode.box0.union(rNode.box0);
+      this.treeNodes.set(rNode.code, rNode);
+    }
+
+    if (!rootNode.box0.isEmpty()) rootNode.box0.getCenter(rootNode.center0);
+    rootNode.count = rootNode.parts;
+    rootNode.materials = [...rootMats.entries()].map(([name, desc]) => ({ name, desc })).sort((a, b) => a.name.localeCompare(b.name));
+    this.tree = rootNode;
+  }
+
+  /** Comprueba si algún subnodo del árbol interior tiene explosión local activa. */
+  hasLocalExplode(): boolean {
+    if (!this.tree) return false;
+    if (this.tree.localEx > 0.001) return true;
+    return this.tree.children.some((c) => c.localEx > 0.001);
+  }
+
+  /** Reinicia todas las explosiones locales del subárbol interior. */
+  resetLocalExplode() {
+    if (!this.tree) return;
+    this.tree.localEx = 0;
+    for (const c of this.tree.children) c.localEx = 0;
+    this.lastLocalExKey = '';
+  }
+
+  /** Detecta cambios en los deslizadores de explosión local del árbol interior. */
+  checkLocalExplodeDirty(): boolean {
+    if (!this.tree) return false;
+    const key = [this.tree.localEx.toFixed(3), ...this.tree.children.map((c) => c.localEx.toFixed(3))].join('|');
+    if (key === this.lastLocalExKey) return false;
+    this.lastLocalExKey = key;
+    return true;
+  }
+
+  private hasCustomVisibility(): boolean {
+    if (this.isolatedNode) return true;
+    for (const n of this.treeNodes.values()) if (n.hidden) return true;
+    return false;
+  }
+
+  private isNodeHidden(n: PartNode | null): boolean {
+    let p = n;
+    while (p) { if (p.hidden) return true; p = p.parent; }
+    return false;
+  }
+
+  private isUnderNode(n: PartNode | null, ancestor: PartNode): boolean {
+    let p = n;
+    while (p) { if (p === ancestor) return true; p = p.parent; }
+    return false;
+  }
+
+  /** Sincroniza visibilidad de piezas interiores ocultas o aisladas desde el árbol de ingeniería. */
+  syncEngineeringVisibility(isolateNode: PartNode | null) {
+    this.isolatedNode = isolateNode;
+    this.setExplode(this.explodeValue, this.explodePreset);
+  }
+
+  /**
+   * Separa limpiamente las estancias (A, B, C, D, N) y sus piezas individuales según `t ∈ [0, 1]`.
+   * Al restaurar `t = 0` (al salir de ingeniería o volver al interior), devuelve exactamente
+   * `matrix = p.base` (o el estado del mecanismo), `roomMerged = identidad` y `PICK_LAYER` original.
+   */
+  setExplode(t: number, preset: ExplodePreset = this.explodePreset) {
+    if (!this.loaded) return;
+    this.explodeValue = clamp(t, 0, 1);
+    this.explodePreset = preset;
+
+    const kGlobal = (preset === 'all' || preset === 'interior') ? this.explodeValue : 0;
+    const treeLocal = this.tree?.localEx ?? 0;
+    const roomK: Record<string, number> = {};
+    let maxK = Math.max(kGlobal, treeLocal);
+    for (const r of ROOM_ORDER) {
+      const rNode = this.treeNodes.get(`HAB.INT.IMM.${r}`);
+      const kr = Math.max(kGlobal, treeLocal, rNode?.localEx ?? 0);
+      roomK[r] = kr;
+      if (kr > maxK) maxK = kr;
+    }
+
+    const customVis = this.hasCustomVisibility();
+    const wantIndividual = maxK > 0.001 || customVis;
+
+    if (!wantIndividual) {
+      this.explodedMode = false;
+      for (const m of this.staticMeshes) m.layers.set(Interior.PICK_LAYER);
+      for (const [r, mg] of this.roomMerged) {
+        mg.matrix.identity();
+        mg.matrixWorldNeedsUpdate = true;
+        mg.visible = this.roomVis.get(r) !== false;
+      }
+      for (const p of this.parts.values()) {
+        if (p.mech) this.applyMech(p);
+        else { p.obj.matrix.copy(p.base); p.obj.matrixWorldNeedsUpdate = true; }
+        p.obj.visible = this.roomGroupSet.has(p.obj) ? (this.roomVis.get(p.room) !== false) : true;
+      }
+      this.root.updateMatrixWorld(true);
+      this.syncHighlight();
+      return;
+    }
+
+    this.explodedMode = true;
+    for (const m of this.staticMeshes) m.layers.set(0);
+    for (const mg of this.roomMerged.values()) {
+      mg.matrix.identity();
+      mg.matrixWorldNeedsUpdate = true;
+      mg.visible = false;
+    }
+
+    const iso = this.isolatedNode;
+    const isoIsExternal = !!iso && !!iso.external;
+    const T = new THREE.Matrix4();
+
+    for (const p of this.parts.values()) {
+      if (p.mech) this.applyMech(p);
+      else p.obj.matrix.copy(p.base);
+
+      const kr = roomK[p.room] ?? kGlobal;
+      const kRoom = smoothstep(0.0, 0.48, kr);
+      const kPart = smoothstep(0.22, 1.0, kr);
+      let ox = 0, oy = 0, oz = 0;
+
+      if (this.roomGroupSet.has(p.obj) && kRoom > 1e-5) {
+        const off = ROOM_TREE_META[p.room]?.off;
+        if (off) { ox += off[0] * kRoom; oy += off[1] * kRoom; oz += off[2] * kRoom; }
+      }
+      const tn = this.treeNodes.get(p.code);
+      if (tn && tn.kind === 'part' && kPart > 1e-5) {
+        ox += tn.ex.x * kPart;
+        oy += tn.ex.y * kPart;
+        oz += tn.ex.z * kPart;
+      }
+      if (Math.abs(ox) > 1e-6 || Math.abs(oy) > 1e-6 || Math.abs(oz) > 1e-6) {
+        T.makeTranslation(ox, oy, oz);
+        p.obj.matrix.premultiply(T);
+      }
+      p.obj.matrixWorldNeedsUpdate = true;
+
+      if (tn) {
+        let vis = !this.isNodeHidden(tn);
+        if (iso) vis = vis && isoIsExternal && this.isUnderNode(tn, iso);
+        // Ocultar trasdós opacos de cerramiento durante explosión salvo que se seleccionen/aíslen explícitamente
+        if (maxK > 0.05 && !iso && /\.BCK$/.test(p.code) && this.highlightedCode !== p.code) vis = false;
+        p.obj.visible = vis;
+      } else if (this.roomGroupSet.has(p.obj)) {
+        const rNode = this.treeNodes.get(`HAB.INT.IMM.${p.room}`) ?? null;
+        let vis = !this.isNodeHidden(rNode);
+        if (iso && !isoIsExternal) vis = false;
+        p.obj.visible = vis;
+      }
+    }
+
+    this.root.updateMatrixWorld(true);
+    this.syncHighlight();
+  }
+
+  /** Caja envolvente actual de un nodo o pieza interior en espacio local de la nave (`this.root`). */
+  localBox(code: string): THREE.Box3 | null {
+    const tn = this.treeNodes.get(code);
+    const meshes = tn ? tn.meshes : this.parts.get(code)?.meshes;
+    if (!meshes || !meshes.length) return null;
+    this.root.updateMatrixWorld(true);
+    const invRoot = new THREE.Matrix4().copy(this.root.matrixWorld).invert();
+    const mat = new THREE.Matrix4();
+    const box = new THREE.Box3();
+    for (const m of meshes) {
+      if (!m.geometry.boundingBox) m.geometry.computeBoundingBox();
+      mat.multiplyMatrices(invRoot, m.matrixWorld);
+      box.union(m.geometry.boundingBox!.clone().applyMatrix4(mat));
+    }
+    return box.isEmpty() ? null : box;
+  }
+
+  /** Caja envolvente actual de un nodo o pieza interior en coordenadas mundo. */
+  worldBox(code: string): THREE.Box3 | null {
+    const lb = this.localBox(code);
+    if (!lb) return null;
+    return lb.applyMatrix4(this.root.matrixWorld);
+  }
+
+  /** Resalta una pieza o estancia interior seleccionada en modo Ingeniería (o limpia con `null`). */
+  highlightPart(code: string | null) {
+    this.highlightedCode = code;
+    this.syncHighlight();
+  }
+
+  /** Actualiza las mallas de resaltado y el marco envolvente del elemento interior seleccionado. */
+  syncHighlight() {
+    for (const ch of [...this.highlightGroup.children]) {
+      this.highlightGroup.remove(ch);
+      if ((ch as any).isBox3Helper) {
+        (ch as THREE.Box3Helper).geometry.dispose();
+        ((ch as THREE.Box3Helper).material as THREE.Material).dispose();
+      }
+    }
+    if (!this.highlightedCode) {
+      this.highlightGroup.visible = false;
+      return;
+    }
+    const tn = this.treeNodes.get(this.highlightedCode);
+    const meshes = tn ? tn.meshes : this.parts.get(this.highlightedCode)?.meshes;
+    if (!meshes || !meshes.length) {
+      this.highlightGroup.visible = false;
+      return;
+    }
+    this.root.updateMatrixWorld(true);
+    const invRoot = new THREE.Matrix4().copy(this.root.matrixWorld).invert();
+    const localM = new THREE.Matrix4();
+    const box = new THREE.Box3();
+    const limit = tn && tn.kind === 'group' ? 40 : meshes.length;
+    for (let i = 0; i < meshes.length; i++) {
+      const m = meshes[i];
+      if (!m.geometry.boundingBox) m.geometry.computeBoundingBox();
+      localM.multiplyMatrices(invRoot, m.matrixWorld);
+      box.union(m.geometry.boundingBox!.clone().applyMatrix4(localM));
+      if (i < limit) {
+        const hl = new THREE.Mesh(m.geometry, this.highlightMat);
+        hl.matrixAutoUpdate = false;
+        hl.matrix.copy(localM);
+        hl.renderOrder = 10;
+        hl.castShadow = false;
+        hl.receiveShadow = false;
+        hl.raycast = () => {};
+        this.highlightGroup.add(hl);
+      }
+    }
+    if (!box.isEmpty()) {
+      const helper = new THREE.Box3Helper(box, new THREE.Color(0xe2572b));
+      helper.renderOrder = 11;
+      helper.raycast = () => {};
+      this.highlightGroup.add(helper);
+    }
+    this.highlightGroup.visible = true;
+    this.highlightGroup.updateMatrixWorld(true);
   }
 
   private buildVoxels(meshes: THREE.Mesh[]) {
@@ -571,6 +1031,8 @@ export class Interior {
   }
 
   dispose() {
+    this.highlightPart(null);
+    this.highlightMat.dispose();
     this.root.traverse((o) => { const m = o as THREE.Mesh; if (m.isMesh) m.geometry.dispose(); });
     for (const m of this.materials) m.dispose();
     for (const t of this.lightmaps.values()) t.dispose();

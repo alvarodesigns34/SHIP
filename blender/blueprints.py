@@ -24,6 +24,11 @@ os.makedirs(OUT, exist_ok=True)
 sys.path.insert(0, HERE)
 import alcion.spec as S
 
+# Compatibilidad directa con módulo `bpy` (p. ej. .venv-bpy/bin/python blender/blueprints.py)
+# manteniendo ALCION_HX4_master.blend intacto (solo lectura, nunca se guarda).
+if "ALCION" not in bpy.data.objects:
+    bpy.ops.wm.open_mainfile(filepath=os.path.join(HERE, "ALCION_HX4_master.blend"))
+
 scn = bpy.context.scene
 scn.render.engine = 'BLENDER_WORKBENCH'
 sh = scn.display.shading
@@ -44,9 +49,9 @@ w.color = (1, 1, 1)
 scn.view_settings.view_transform = 'Standard'
 scn.render.film_transparent = False
 
-# las capas opcionales (MLI de depósitos) no se dibujan en planos
+# las capas opcionales (MLI de depósitos) y luces de horneado no se dibujan en planos
 for ob in bpy.data.objects:
-    if ob.get("optional_layer"):
+    if ob.get("optional_layer") or ob.type == 'LIGHT':
         ob.hide_render = True
 
 cam = bpy.data.objects.new("BPCAM", bpy.data.cameras.new("BPCAM"))
@@ -154,10 +159,16 @@ render_view("front", (-1, 0, 0), (0, 0, 1), (0, 0, 0), 44, labels=LAB_FRONT, poi
 render_view("rear", (1, 0, 0), (0, 0, 1), (0, 0, 0), 44, labels=["PRP.ENG", "PRP.SEP", "PWR.W1", "PWR.W2", "THR.R1", "THR.R2", "COM"], points=ext_points)
 
 # sección longitudinal: plano y = 0 visto desde +Y (se oculta la mitad de babor)
-LAB_INT = ["HAB.INT.A", "HAB.INT.B", "HAB.INT.C", "HAB.INT.D", "HAB.INT.AFT", "FWD.INT.RWS", "FWD.DCK", "FWD.CUP", "SVC.PRP.XE", "SVC.PRP.BIP", "PRP.ENG", "SVC.AVX.RWA", "HAB.UTL"]
+LAB_INT = [
+    "HAB.INT.A", "HAB.INT.B", "HAB.INT.C", "HAB.INT.D", "HAB.INT.D.AFT",
+    "FWD.INT.RWS", "FWD.DCK", "FWD.CUP", "FWD.ALK.INT.HI",
+    "SVC.PRP.XE", "SVC.PRP.BIP", "PRP.ENG", "SVC.AVX.RWA",
+]
 hidden = []
 for code in ("PWR", "THR", "COM"):
     ob = bpy.data.objects.get(code)
+    if not ob:
+        continue
     for o in [ob] + list(ob.children_recursive):
         if not o.hide_render:
             o.hide_render = True
@@ -171,8 +182,13 @@ for key, x in (("A", 7.75), ("B", 5.72), ("C", 3.67), ("D", 1.62), ("N", 11.05),
 
 # distribución interior: planta cortada en z = 0 vista desde arriba
 render_view("layout", (0, 0, -1), (0, 1, 0), (5.6, 0, 0), 15.5, res=(3200, 2000), clip=80.0,
-            labels=["HAB.INT.A.SEAT", "HAB.INT.A.CNS", "HAB.INT.B.PG", "HAB.INT.B.PF", "HAB.INT.B.SE1", "HAB.INT.B.SE2", "HAB.INT.C.CQ1", "HAB.INT.C.CQ2",
-                    "HAB.INT.C.CQ3", "HAB.INT.C.CQ4", "HAB.INT.D.PG", "HAB.INT.D.PS", "HAB.INT.D.SH", "HAB.INT.D.SO", "HAB.INT.D.DK2", "FWD.INT.RWS", "FWD.INT.HF", "HAB.INT.AFT"],
+            labels=[
+                "HAB.INT.A.ST1", "HAB.INT.A.PNL",
+                "HAB.INT.B.GBX", "HAB.INT.B.FRZ", "HAB.INT.B.MIC", "HAB.INT.B.VEG",
+                "HAB.INT.C.Q1", "HAB.INT.C.Q2", "HAB.INT.C.Q3", "HAB.INT.C.Q4",
+                "HAB.INT.D.CEV", "HAB.INT.D.HYG", "HAB.INT.D.OVN", "HAB.INT.D.TBL", "HAB.INT.D.AFT",
+                "FWD.INT.RWS", "FWD.INT.HF",
+            ],
             points=[(f"frame{i}", (S.X_HAB_A + S.BARREL_L * i, 0, 0)) for i in range(5)] + [("nodeA", (S.X_NODE_A, 0, 0)), ("nodeF", (S.X_NODE_F, 0, 0)), ("aisleP", (4.7, 1.15, 0)), ("aisleS", (4.7, -1.15, 0))])
 for o in hidden:
     o.hide_render = False
@@ -180,5 +196,5 @@ for o in hidden:
 # ensamblaje conceptual: explosión parcial en vista isométrica
 apply_explode(0.40)
 d = Vector((-0.62, -0.55, -0.42))
-render_view("assembly", tuple(d), (0, 0, 1), (1.0, 0, -1.5), 50, labels=["FWD", "HAB", "SVC", "PRP", "PWR.W1", "THR.R1", "COM", "RBT"] + ["HAB.MMOD", "HAB.MLI", "HAB.STR", "HAB.INT", "HAB.UTL", "SVC.PRP", "SVC.AVX", "SVC.SKN"], points=[])
+render_view("assembly", tuple(d), (0, 0, 1), (1.0, 0, -1.5), 50, labels=["FWD", "HAB", "SVC", "PRP", "PWR.W1", "THR.R1", "COM", "RBT"] + ["HAB.MMOD", "HAB.MLI", "HAB.STR", "HAB.INT", "SVC.PRP", "SVC.AVX", "SVC.SKN"], points=[])
 print("[bp] listo")

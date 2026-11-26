@@ -50,6 +50,11 @@ export interface PartNode {
   inspect: boolean;
   /** explosión local adicional (explosión de subsistema) */
   localEx: number;
+  /** alias de caja y conteo para compatibilidad con árbol unificado */
+  box?: THREE.Box3;
+  count?: number;
+  /** true para nodos del subárbol interior gestionados por Interior.ts */
+  external?: boolean;
 }
 
 interface Inst { batch: Batch; id: number; mesh: THREE.Mesh; node: PartNode; }
@@ -193,7 +198,7 @@ function normalizeGeometry(g: THREE.BufferGeometry, includeUV1: boolean): THREE.
 
 const STANDALONE_MAT = /^M_Screen/;
 
-export type ExplodePreset = 'all' | 'hull' | 'interior' | 'service' | 'power';
+export type ExplodePreset = 'all' | 'hull' | 'interior' | 'service' | 'power' | 'systems' | 'fwd' | 'svc';
 
 export class ShipModel {
   root = new THREE.Group();
@@ -214,12 +219,20 @@ export class ShipModel {
   extra = new Map<string, THREE.Matrix4>();
   hideExteriorSkin = false;
   showInterior = true;
+  /** Notificación cuando cambia visibilidad/aislamiento de nodos externos (interior). */
+  onExternalVisChange: (() => void) | null = null;
   private dirty = true;
   private visDirty = true;
   private lastHideSkin = false;
   private lastShowInt = true;
   private instByMesh = new Map<THREE.Mesh, Inst[]>();
   stats = { batches: 0, instances: 0, tris: 0 };
+
+  /** Alias compatible con búsquedas por código (`model.byCode.get(code)`). */
+  get byCode() { return this.nodes; }
+
+  /** Alias compatible con consumidores del árbol (`model.rootNode`). */
+  get rootNode() { return this.top; }
 
   constructor() {
     this.root.add(this.proxies);
@@ -377,6 +390,7 @@ export class ShipModel {
     this.explode = 0;
     this.applyTransforms(true);
     const visit = (n: PartNode) => {
+      if (n.external) return;
       n.box0.makeEmpty(); n.meshes = []; n.tris = 0; n.parts = n.kind === 'part' ? 1 : 0;
       const mats = new Map<string, string>();
       n.obj.traverse((o) => {
@@ -392,12 +406,45 @@ export class ShipModel {
       });
       n.materials = [...mats.entries()].map(([name, desc]) => ({ name, desc })).sort((a, b) => a.name.localeCompare(b.name));
       n.box0.getCenter(n.center0);
-      for (const c of n.children) { visit(c); n.parts += c.parts; }
+      n.box = n.box0;
+      for (const c of n.children) { visit(c); n.parts += c.parts; if (c.external) n.tris += c.tris; }
+      n.count = n.parts;
     };
     if (this.top) visit(this.top);
     this.stats.tris = this.top ? this.top.tris : 0;
     this.explode = saved;
     this.applyTransforms(true);
+  }
+
+  /**
+   * Integra una rama externa (p.ej. el subárbol completo del interior inmersivo) en el árbol
+   * de ingeniería sin alterar las matrices ni lotes BatchedMesh del modelo exterior.
+   */
+  attachExternalBranch(parentCode: string, branch: PartNode, extNodes: Map<string, PartNode>) {
+    const parent = this.nodes.get(parentCode) ?? this.top;
+    if (!parent) return;
+    const prevIdx = parent.children.findIndex((c) => c.code === branch.code);
+    if (prevIdx >= 0) {
+      const prev = parent.children[prevIdx];
+      parent.children.splice(prevIdx, 1);
+      for (let p: PartNode | null = parent; p; p = p.parent) {
+        p.parts = Math.max(0, p.parts - prev.parts);
+        p.count = p.parts;
+        p.tris = Math.max(0, p.tris - prev.tris);
+      }
+    }
+    branch.parent = parent;
+    parent.children.push(branch);
+    for (const [code, node] of extNodes) {
+      if (!this.nodes.has(code) || this.nodes.get(code)?.external) {
+        this.nodes.set(code, node);
+      }
+    }
+    for (let p: PartNode | null = parent; p; p = p.parent) {
+      p.parts += branch.parts;
+      p.count = p.parts;
+      p.tris += branch.tris;
+    }
   }
 
   // ------------------------------------------------------------ transformaciones sin asignaciones por fotograma
@@ -410,13 +457,25 @@ export class ShipModel {
     switch (this.explodePreset) {
       case 'all': return true;
       case 'hull': return code.startsWith('HAB.MMOD') || code.startsWith('HAB.MLI') || code.startsWith('FWD.MMOD') || code.startsWith('FWD.CUP');
-      case 'interior': return code.startsWith('HAB.INT') || code.startsWith('HAB.UTL') || code.startsWith('FWD.INT') || code.startsWith('HAB.MMOD');
-      case 'service': return code.startsWith('SVC') || code.startsWith('PRP');
-      case 'power': return code.startsWith('PWR') || code.startsWith('THR') || code.startsWith('COM') || code.startsWith('RBT');
+      case 'interior':
+        return code.startsWith('HAB.INT') || code.startsWith('HAB.UTL') || code.startsWith('FWD.INT')
+          || code.startsWith('HAB.MMOD') || code.startsWith('HAB.MLI') || code.startsWith('HAB.STR')
+          || code.startsWith('HAB.EXT') || code.startsWith('HAB.RCS')
+          || code.startsWith('FWD.MMOD') || code.startsWith('FWD.CUP') || code.startsWith('FWD.STR')
+          || code.startsWith('RBT');
+      case 'service':
+      case 'svc':
+        return code.startsWith('SVC') || code.startsWith('PRP');
+      case 'power':
+      case 'systems':
+        return code.startsWith('PWR') || code.startsWith('THR') || code.startsWith('COM') || code.startsWith('RBT');
+      case 'fwd':
+        return code.startsWith('FWD');
     }
   }
 
   private composeLocal(n: PartNode) {
+    if (n.external) return;
     let k = (n.parent && this.explode > 0 && this.presetMatches(n.code)) ? stageOf(n.depth, this.explode) : 0;
     let exk = k;
     let a: PartNode | null = n.parent;
@@ -437,7 +496,15 @@ export class ShipModel {
     }
     const ex = this.extra.get(n.code);
     if (ex) m.premultiply(ex);
-    if (exk > 0) m.premultiply(this.tmp.makeTranslation(n.ex.x * exk, n.ex.y * exk, n.ex.z * exk));
+    if (exk > 0) {
+      const boost = this.explodePreset === 'interior' && (n.code.startsWith('HAB.MMOD') || n.code.startsWith('HAB.MLI') || n.code.startsWith('FWD.MMOD')) ? 1.45 : 1.0;
+      m.premultiply(this.tmp.makeTranslation(n.ex.x * exk * boost, n.ex.y * exk * boost, n.ex.z * exk * boost));
+    }
+    // En preset 'interior', abrir suavemente el barril presurizado hacia abajo para despejar las estancias interiores
+    if (this.explodePreset === 'interior' && this.explode > 0 && (n.code === 'HAB.STR' || n.code === 'FWD.STR')) {
+      const drop = -2.8 * stageOf(2, this.explode);
+      m.premultiply(this.tmp.makeTranslation(0, drop, 0));
+    }
     n.obj.matrixWorldNeedsUpdate = true;
   }
 
@@ -562,8 +629,8 @@ export class ShipModel {
 
   updateVisibility() {
     if (!this.visDirty) return;
-    const keep = this.isolate ? new Set(this.isolate.meshes) : null;
-    const selected = this.selected ? new Set(this.selected.meshes) : null;
+    const keep = this.isolate ? (this.isolate.external ? new Set<THREE.Mesh>() : new Set(this.isolate.meshes)) : null;
+    const selected = this.selected && !this.selected.external ? new Set(this.selected.meshes) : null;
     const hiddenBy = (n: PartNode) => { let p: PartNode | null = n; while (p) { if (p.hidden) return true; p = p.parent; } return false; };
     for (const b of this.batches) {
       b.bm.visible = b.sector === 'ext' || this.showInterior;
@@ -579,7 +646,7 @@ export class ShipModel {
     }
     for (const s of this.standalone) s.mesh.visible = !hiddenBy(s.node) && (!keep || keep.has(s.src)) && (s.node.sector === 'ext' || this.showInterior);
     for (const p of [...this.proxies.children]) this.proxies.remove(p);
-    if (this.selected) {
+    if (this.selected && !this.selected.external) {
       for (const m of this.selected.meshes) {
         if (!this.instByMesh.has(m)) continue;
         if (hiddenBy(this.nodeOfMesh(m)!) || (keep && !keep.has(m))) continue;
@@ -602,9 +669,9 @@ export class ShipModel {
 
   setXray(on: boolean) { this.xray = on; this.visDirty = true; }
   select(n: PartNode | null) { this.selected = n; this.visDirty = true; }
-  setIsolate(n: PartNode | null) { this.isolate = n; this.visDirty = true; }
-  setHidden(n: PartNode, h: boolean) { n.hidden = h; this.visDirty = true; }
-  showAll() { for (const n of this.nodes.values()) n.hidden = false; this.isolate = null; this.visDirty = true; }
+  setIsolate(n: PartNode | null) { this.isolate = n; this.visDirty = true; this.onExternalVisChange?.(); }
+  setHidden(n: PartNode, h: boolean) { n.hidden = h; this.visDirty = true; this.onExternalVisChange?.(); }
+  showAll() { for (const n of this.nodes.values()) n.hidden = false; this.isolate = null; this.visDirty = true; this.onExternalVisChange?.(); }
 
   setNodeColor(n: PartNode, c: THREE.Color) {
     for (const m of n.meshes) for (const it of this.instByMesh.get(m) ?? []) it.batch.bm.setColorAt(it.id, c);

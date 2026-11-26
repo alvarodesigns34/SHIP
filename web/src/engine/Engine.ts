@@ -163,7 +163,10 @@ export class Engine {
   activity: { id: ActivityId; t: number } | null = null;
   fade = 0;
   private labelsLayer: HTMLDivElement;
+  private labelEls = new Map<string, { el: HTMLDivElement; w: number; h: number }>();
   labels = true;
+  contextLost = false;
+  private selectedNode: PartNode | null = null;
   private clipPlaneLocal = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
   private clipPlane = new THREE.Plane();
   section = { on: false, axis: 'y' as 'x' | 'y' | 'z', pos: 0, flip: false };
@@ -232,8 +235,14 @@ export class Engine {
     this.gpu = new GpuTimer(this.renderer);
     container.appendChild(this.renderer.domElement);
     this.renderer.domElement.style.touchAction = 'none';
-    this.renderer.domElement.addEventListener('webglcontextlost', (e) => { e.preventDefault(); this.toast('Contexto gráfico perdido: recuperando…'); }, { signal: this.ac.signal });
-    this.renderer.domElement.addEventListener('webglcontextrestored', () => { this.renderer.shadowMap.needsUpdate = true; this.toast('Contexto gráfico recuperado'); }, { signal: this.ac.signal });
+    this.renderer.domElement.addEventListener('webglcontextlost', (e) => {
+      e.preventDefault();
+      this.contextLost = true;
+      this.toast('Contexto gráfico perdido: pausando renderizado…');
+    }, { signal: this.ac.signal });
+    this.renderer.domElement.addEventListener('webglcontextrestored', () => {
+      this.onContextRestored();
+    }, { signal: this.ac.signal });
 
     this.labelsLayer = document.createElement('div');
     this.labelsLayer.className = 'labels-layer';
@@ -276,6 +285,44 @@ export class Engine {
     this.loop();
   }
 
+  // ------------------------------------------------------------------ recuperación WebGL
+  private onContextRestored() {
+    this.contextLost = false;
+    try {
+      initKTX2(this.renderer);
+      this.gpu = new GpuTimer(this.renderer);
+      this.pipeline.configure({ ...this.pipeline.opts });
+      this.resize();
+      this.pipeline.resetExposure();
+      this.shadowKey = '';
+      this.renderer.shadowMap.needsUpdate = true;
+      this.near.environment = this.lighting.rebuildExteriorEnv(
+        this.renderer,
+        this.earthDirWorld(),
+        this.earthAngularRadius(),
+        this.astro.sunDir,
+        this.scenario === 'lunar',
+      );
+      for (const tex of this.interior.lightmaps.values()) tex.needsUpdate = true;
+      for (const sc of this.cockpit.screens) {
+        sc.tex.needsUpdate = true;
+        sc.lastDraw = -1;
+      }
+      if (this.interiorReady) {
+        this.model.root.updateMatrixWorld(true);
+        this.interior.captureProbes(this.renderer, this.near, this.model.root, this.probeResolution(this.quality));
+      }
+      if (this.ready) {
+        this.updateScene(SIM_DT);
+        this.renderFrame(SIM_DT);
+      }
+      this.toast('Contexto gráfico recuperado');
+    } catch (err) {
+      console.warn('Error al recuperar contexto WebGL:', err);
+    }
+    this.emitSnap();
+  }
+
   // ------------------------------------------------------------------ calidad
   private probeResolution(q: Quality) {
     return q === 'ultra' ? 256 : q === 'baja' ? 64 : 128;
@@ -285,6 +332,7 @@ export class Engine {
     this.quality = q;
     const dpr = window.devicePixelRatio || 1;
     this.dpr = q === 'ultra' ? Math.min(dpr, 2) : q === 'alta' ? Math.min(dpr, 1.5) : q === 'media' ? Math.min(dpr, 1.25) : Math.min(dpr, 1);
+    if (this.contextLost) return;
     this.pipeline.configure({
       msaa: q === 'ultra' ? 4 : q === 'alta' ? 4 : q === 'media' ? 2 : 0,
       bloom: q !== 'baja',
@@ -308,6 +356,7 @@ export class Engine {
   resize = () => {
     const w = this.container.clientWidth || 1, h = this.container.clientHeight || 1;
     this.camera.aspect = w / h; this.camera.updateProjectionMatrix();
+    if (this.contextLost) return;
     const pr = this.dpr * this.dprScale;
     this.renderer.setPixelRatio(pr);
     this.renderer.setSize(w, h);
@@ -330,11 +379,17 @@ export class Engine {
     void base;
     try {
       await pInt;
+      if (this.interior.tree) {
+        this.model.attachExternalBranch('HAB', this.interior.tree, this.interior.treeNodes);
+        this.model.onExternalVisChange = () => this.interior.syncEngineeringVisibility(this.model.isolate);
+      }
       this.cockpit.setup(this.interior, this.model.root);
       this.player.grid = this.interior.voxels;
       this.evaBody.buildColliders();
       this.model.root.updateMatrixWorld(true);
-      this.interior.captureProbes(this.renderer, this.near, this.model.root, this.probeResolution(this.quality));
+      if (!this.contextLost) {
+        this.interior.captureProbes(this.renderer, this.near, this.model.root, this.probeResolution(this.quality));
+      }
       this.interiorReady = true;
       this.restore();
     } catch (e) {
@@ -367,9 +422,11 @@ export class Engine {
     this.satellite.obj.pos.copy(P(-1400, 400, 1900));
     this.canister.pos.copy(P(40, 22, 18));
     this.canister.group.visible = true;
-    this.near.environment = this.lighting.rebuildExteriorEnv(this.renderer, this.earthDirWorld(), this.earthAngularRadius(), this.astro.sunDir, id === 'lunar');
-    this.renderer.shadowMap.needsUpdate = true;
-    this.pipeline.resetExposure();
+    if (!this.contextLost) {
+      this.near.environment = this.lighting.rebuildExteriorEnv(this.renderer, this.earthDirWorld(), this.earthAngularRadius(), this.astro.sunDir, id === 'lunar');
+      this.renderer.shadowMap.needsUpdate = true;
+      this.pipeline.resetExposure();
+    }
     if (!initial) this.toast(`Escenario: ${sc.label}`);
   }
 
@@ -459,8 +516,15 @@ export class Engine {
       if (this.model.explode > 0) this.model.setExplode(0);
       this.explodeAnim = null;
       if (this.model.xray) this.model.setXray(false);
-      this.model.select(null); this.model.setIsolate(null); this.setSection(false);
-      this.interiorExplode(0);
+      this.selectedNode = null;
+      this.model.select(null);
+      this.model.showAll();
+      this.onSelect(null);
+      this.setSection(false);
+      this.interior.resetLocalExplode();
+      this.interior.highlightPart(null);
+      this.interior.syncEngineeringVisibility(null);
+      this.interior.setExplode(0, 'all');
     }
     if (m !== 'SANDBOX' && this.sandbox.active) this.sandbox.stop();
     if (m !== 'FLIGHT') this.seated = false;
@@ -513,6 +577,10 @@ export class Engine {
     this.seatAnim = null;
     this.activity = null;
     this.releaseHeldProp(true);
+    this.interior.resetLocalExplode();
+    this.interior.highlightPart(null);
+    this.interior.syncEngineeringVisibility(null);
+    this.interior.setExplode(0, 'all');
     if (this.mode !== 'INTERIOR' && !silent) this.setMode('INTERIOR');
     else if (this.mode !== 'INTERIOR') { this.mode = 'INTERIOR'; this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix(); this.model.setProfile('immersive'); }
     this.pipeline.resetExposure();
@@ -525,15 +593,54 @@ export class Engine {
     this.camAnim = { p0: this.camera.position.clone(), p1, t0: this.controls.target.clone(), t1, s: performance.now(), dur };
   }
 
-  focus(n: PartNode) {
-    const b = this.model.currentBox(n);
-    if (b.isEmpty()) return;
+  /** Devuelve el árbol completo de ingeniería (exterior + subárbol interior HAB.INT.IMM). */
+  engineeringTree(): PartNode | null {
+    return this.model.top;
+  }
+
+  /** Selecciona y enfoca cualquier componente exterior o pieza interior por su código único. */
+  selectCode(code: string | null, focus = true): PartNode | null {
+    if (!code) {
+      this.select(null);
+      return null;
+    }
+    const node = this.model.byCode.get(code) ?? this.interior.treeNodes.get(code) ?? null;
+    if (node) {
+      this.select(node, focus);
+      return node;
+    }
+    const ipart = this.interior.parts.get(code);
+    if (ipart) {
+      this.selectedNode = null;
+      this.model.select(null);
+      if (this.mode === 'ENGINEERING') this.interior.setAllRoomsVisible(true);
+      this.interior.highlightPart(ipart.code);
+      this.inspect = { label: ipart.label, desc: ipart.desc ? `${ipart.desc} · ${ipart.code}` : ipart.code };
+      if (focus) {
+        const b = this.interior.localBox(ipart.code);
+        if (b && !b.isEmpty()) this.focusBoxLocal(b);
+      }
+      this.onSelect(null);
+      this.emitSnap();
+    }
+    return null;
+  }
+
+  private focusBoxLocal(b: THREE.Box3) {
     const c = b.getCenter(new THREE.Vector3());
-    const r = Math.max(0.25, b.getSize(new THREE.Vector3()).length() / 2);
-    const dist = Math.min(160, (r / Math.sin(THREE.MathUtils.degToRad(this.camera.fov) / 2)) * 1.05);
-    const dirW = this.camera.position.clone().sub(this.controls.target).normalize();
+    const r = Math.max(0.22, b.getSize(new THREE.Vector3()).length() / 2);
+    const dist = Math.min(160, Math.max(0.9, (r / Math.sin(THREE.MathUtils.degToRad(this.camera.fov) / 2)) * 1.12));
+    const dirW = this.camera.position.clone().sub(this.controls.target);
+    if (dirW.lengthSq() < 1e-4) dirW.set(0.65, 0.35, 0.65);
+    dirW.normalize();
     const dirL = dirW.applyQuaternion(this.model.root.quaternion.clone().invert());
     this.flyOrbit(c.clone().addScaledVector(dirL, dist), c, 1000);
+  }
+
+  focus(n: PartNode) {
+    const b = n.sector === 'int' ? this.interior.localBox(n.code) : this.model.currentBox(n);
+    if (!b || b.isEmpty()) return;
+    this.focusBoxLocal(b);
   }
 
   viewPreset(v: 'iso' | 'front' | 'rear' | 'side' | 'top' | 'bottom') {
@@ -546,31 +653,35 @@ export class Engine {
   }
 
   // ------------------------------------------------------------------ vista explosionada
-  setExplode(t: number, animate = false) {
-    if (animate) this.explodeAnim = { a: this.model.explode, b: t, t0: performance.now(), dur: this.reducedMotion ? 1 : 1500 };
-    else { this.explodeAnim = null; this.model.setExplode(t); this.interiorExplode(t); this.emitSnap(); }
+  setExplode(t: number, animateOrPreset: boolean | ExplodePreset = false, preset?: ExplodePreset) {
+    const animate = typeof animateOrPreset === 'boolean' ? animateOrPreset : false;
+    const pre = typeof animateOrPreset === 'string' ? animateOrPreset : preset;
+    if (pre) this.model.setExplodePreset(pre);
+    if (animate) {
+      this.explodeAnim = { a: this.model.explode, b: t, t0: performance.now(), dur: this.reducedMotion ? 1 : 1500 };
+    } else {
+      this.explodeAnim = null;
+      this.model.setExplode(t, pre);
+      this.interiorExplode(t);
+      this.emitSnap();
+    }
   }
   setExplodePreset(preset: ExplodePreset) {
     this.model.setExplodePreset(preset);
     if (this.model.explode < 0.05 && preset !== 'all') this.setExplode(0.65, true);
+    else this.interiorExplode(this.model.explode);
     this.emitSnap();
   }
   assemble() { this.model.setExplode(1); this.interiorExplode(1); this.explodeAnim = { a: 1, b: 0, t0: performance.now() + 300, dur: this.reducedMotion ? 1 : 4200 }; }
 
-  /** El interior se separa por estancias (cada una conserva su identidad), siguiendo al módulo habitable. */
+  /** El interior se separa por estancias y piezas individuales, restaurando `p.base` al volver a 0. */
   private interiorExplode(t: number) {
+    if (!this.interior.loaded) return;
     const pre = this.model.explodePreset;
-    const k = (pre === 'all' || pre === 'interior') ? t : 0;
-    for (const [code, p] of this.interior.parts) {
-      if (!/^HAB\.INT\.[A-D]$|^FWD\.INT$/.test(code)) continue;
-      const room = code.endsWith('A') ? 'A' : code.endsWith('B') ? 'B' : code.endsWith('C') ? 'C' : code.endsWith('D') ? 'D' : 'N';
-      const off = { A: [1.2, 1.6, 0], B: [0.4, 2.6, 0], C: [-0.4, 3.4, 0], D: [-1.2, 4.2, 0], N: [2.6, 1.0, 0] }[room]!;
-      const T = new THREE.Matrix4().makeTranslation(off[0] * k * 2.2, off[1] * k * 1.6, off[2]);
-      p.obj.matrix.copy(p.base).premultiply(T);
-      p.obj.matrixWorldNeedsUpdate = true;
-      const mg = this.interior.roomMerged.get(room);
-      if (mg) { mg.matrix.copy(T); mg.matrixWorldNeedsUpdate = true; }
+    if (this.mode === 'ENGINEERING' && (t > 0.01 || pre === 'interior')) {
+      this.interior.setAllRoomsVisible(true);
     }
+    this.interior.setExplode(t, pre);
   }
 
   // ------------------------------------------------------------------ corte
@@ -597,9 +708,19 @@ export class Engine {
   }
 
   select(n: PartNode | null, focus = false) {
+    this.selectedNode = n;
     this.model.select(n);
+    if (n && n.sector === 'int') {
+      if (this.mode === 'ENGINEERING') this.interior.setAllRoomsVisible(true);
+      this.interior.highlightPart(n.code);
+      this.inspect = this.mode === 'ENGINEERING' ? { label: n.label, desc: n.desc ? `${n.desc} · ${n.code}` : n.code } : null;
+    } else {
+      this.interior.highlightPart(null);
+      this.inspect = null;
+    }
     this.onSelect(n);
     if (n && focus) this.focus(n);
+    this.emitSnap();
   }
 
   // ------------------------------------------------------------------ puntero
@@ -623,14 +744,26 @@ export class Engine {
       if (moved > 6 || !quick) return;
       if (this.mode === 'ENGINEERING') {
         const hit = this.pickAt(e.clientX, e.clientY);
-        // el interior Rebirth también es inspeccionable (pieza con identidad propia)
+        // el interior Rebirth también es inspeccionable (pieza con identidad propia en el árbol)
         if (this.interior.root.visible) {
           this.ray.setFromCamera(this.ndc(e.clientX, e.clientY), this.camera); this.ray.far = 1000;
           this.ray.layers.enableAll();
           const ih = this.ray.intersectObject(this.interior.root, true).find((h) => !h.object.userData.mergedRoom && !((h.object as THREE.Mesh).material as THREE.Material).transparent);
           if (ih && (!hit || ih.distance < hit.dist - 0.01)) {
             const part = this.interior.partOf(ih.object);
-            if (part) { this.select(null); this.inspect = { label: part.label, desc: `${part.desc} · ${part.code}` }; this.emitSnap(); return; }
+            if (part) {
+              const tn = this.interior.treeNodes.get(part.code) ?? null;
+              if (tn) {
+                if (this.selectedNode === tn && tn.parent && tn.parent.depth > 0) this.select(tn.parent);
+                else this.select(tn);
+              } else {
+                this.select(null);
+                this.interior.highlightPart(part.code);
+                this.inspect = { label: part.label, desc: `${part.desc} · ${part.code}` };
+                this.emitSnap();
+              }
+              return;
+            }
           }
         }
         this.inspect = null;
@@ -929,7 +1062,7 @@ export class Engine {
     const now = performance.now();
     const rawDt = (now - this.last) / 1000;
     this.last = now;
-    if (!this.ready) return;
+    if (!this.ready || this.contextLost) return;
     // historial para percentiles
     this.frameHist[this.frameHistN++ % this.frameHist.length] = rawDt * 1000;
     const dt = Math.min(0.25, rawDt);
@@ -1208,9 +1341,200 @@ export class Engine {
     this.fx.updatePlumes(this.mode as any, this.model, this.flight, this.systems);
     this.fx.updateTether(this.mode === 'EVA', root, this.evaBody.pos);
     this.fx.updateDamageMarker(this.mode as any, this.model, this.systems, this.damagedPanel, this.interp.q);
+    if (this.mode === 'ENGINEERING' && this.interiorReady && this.interior.checkLocalExplodeDirty()) {
+      this.interior.setExplode(this.model.explode, this.model.explodePreset);
+    }
     const camKm = this.shipKm().add(this.camera.position.clone().divideScalar(1000));
     this.astro.update(dt, camKm, this.camera.getWorldQuaternion(new THREE.Quaternion()), this.camera.fov, this.camera.aspect, 1, this.renderer.getPixelRatio());
-    this.fx.updateLabels(this.mode as any, this.labels, this.model, this.camera, this.renderer.domElement.clientWidth, this.renderer.domElement.clientHeight, (n) => this.select(n, true));
+    this.updateLabels();
+  }
+
+  /**
+   * Proyecta las etiquetas 3D del modo Ingeniería y garantiza 0 solapamientos 2D
+   * mediante colocación prioritaria por profundidad + búsqueda multi-desplazamiento
+   * y supresión limpia si no cabe sin pisar otra etiqueta.
+   */
+  private updateLabels() {
+    const want: PartNode[] = [];
+    if (this.mode === 'ENGINEERING' && this.labels && this.model.top) {
+      const sel = this.selectedNode ?? this.model.selected;
+      if (sel && sel.children.length && sel.depth >= 1) {
+        want.push(...sel.children);
+      } else if (!sel) {
+        want.push(...this.model.top.children);
+        if (this.model.explode > 0.35 && this.model.explodePreset === 'interior' && this.interior.tree) {
+          want.push(...this.interior.tree.children);
+        } else if (this.model.explode > 0.45) {
+          want.push(...(this.model.nodes.get('HAB')?.children ?? []));
+        }
+      }
+    }
+
+    const keep = new Set(want.map((n) => n.code));
+    for (const [code, rec] of this.labelEls) {
+      if (!keep.has(code)) {
+        rec.el.remove();
+        this.labelEls.delete(code);
+      }
+    }
+    if (!want.length) return;
+
+    const width = this.renderer.domElement.clientWidth || 1;
+    const height = this.renderer.domElement.clientHeight || 1;
+    const padX = 10;
+    const padY = 8;
+    const minX = 14;
+    const maxX = Math.max(minX + 40, width - 14);
+    const minY = this.hudHidden ? 16 : 72;
+    const maxY = Math.max(minY + 32, height - (this.hudHidden ? 24 : 124));
+
+    type Cand = {
+      n: PartNode;
+      rec: { el: HTMLDivElement; w: number; h: number };
+      ax: number;
+      ay: number;
+      z: number;
+      prio: number;
+    };
+    const cands: Cand[] = [];
+    const center = new THREE.Vector3();
+
+    for (const n of want.slice(0, 32)) {
+      if (n.hidden) continue;
+      if (n.sector === 'int' && !this.interiorReady) continue;
+      let rec = this.labelEls.get(n.code);
+      if (!rec) {
+        const el = document.createElement('div');
+        el.className = 'label3d';
+        el.style.position = 'absolute';
+        el.style.left = '0px';
+        el.style.top = '0px';
+        el.style.pointerEvents = 'auto';
+        el.style.cursor = 'pointer';
+        el.style.whiteSpace = 'nowrap';
+        el.style.display = 'inline-flex';
+        el.style.alignItems = 'center';
+        el.style.gap = '6px';
+        el.style.padding = '3px 8px';
+        el.style.borderRadius = '4px';
+        el.style.background = 'rgba(14, 15, 17, 0.78)';
+        el.style.border = '1px solid rgba(236, 232, 225, 0.18)';
+        el.style.color = '#ece8e1';
+        el.style.fontSize = '12px';
+        el.style.lineHeight = '1.2';
+        el.style.textShadow = '0 1px 2px rgba(0, 0, 0, 0.85)';
+        el.style.willChange = 'transform';
+        const dot = document.createElement('span');
+        dot.className = 'dot';
+        dot.style.width = '6px';
+        dot.style.height = '6px';
+        dot.style.borderRadius = '50%';
+        dot.style.background = 'var(--accent, #e2572b)';
+        dot.style.flex = 'none';
+        const txt = document.createElement('span');
+        txt.className = 'txt';
+        txt.textContent = n.label;
+        el.append(dot, txt);
+        el.onclick = (e) => { e.stopPropagation(); this.select(n, true); };
+        this.labelsLayer.appendChild(el);
+        const w = Math.ceil(el.offsetWidth || (n.label.length * 7.4 + 28));
+        const h = Math.ceil(el.offsetHeight || 24);
+        rec = { el, w, h };
+        this.labelEls.set(n.code, rec);
+      }
+
+      if (n.sector === 'int') {
+        const wb = this.interior.worldBox(n.code);
+        if (!wb || wb.isEmpty()) { rec.el.style.display = 'none'; continue; }
+        wb.getCenter(center);
+      } else {
+        const lb = this.model.currentBox(n);
+        if (lb.isEmpty()) { rec.el.style.display = 'none'; continue; }
+        lb.getCenter(center).applyMatrix4(this.model.root.matrixWorld);
+      }
+      center.project(this.camera);
+      if (center.z < -1 || center.z > 1 || Math.abs(center.x) > 1.05 || Math.abs(center.y) > 1.05) {
+        rec.el.style.display = 'none';
+        continue;
+      }
+      const ax = ((center.x + 1) * 0.5) * width;
+      const ay = ((1 - center.y) * 0.5) * height;
+      const prio = (n.depth <= 1 ? 0 : n.depth) * 2 + center.z;
+      cands.push({ n, rec, ax, ay, z: center.z, prio });
+    }
+
+    // Ordenar por prioridad (módulos principales y más cercanos a cámara primero)
+    cands.sort((a, b) => a.prio - b.prio);
+
+    const placed: { x0: number; y0: number; x1: number; y1: number }[] = [];
+    const overlaps = (x: number, y: number, w: number, h: number) => {
+      const x0 = x - padX * 0.5, y0 = y - padY * 0.5;
+      const x1 = x + w + padX * 0.5, y1 = y + h + padY * 0.5;
+      for (let i = 0; i < placed.length; i++) {
+        const p = placed[i];
+        if (x0 < p.x1 && x1 > p.x0 && y0 < p.y1 && y1 > p.y0) return true;
+      }
+      return false;
+    };
+
+    const offsets: [number, number][] = [
+      [0, 0], [0, -1], [0, 1], [0, -2], [0, 2],
+      [0.6, -1], [-0.6, -1], [0.6, 1], [-0.6, 1],
+      [0, -3], [0, 3], [0.9, 0], [-0.9, 0],
+      [0.6, -2], [-0.6, -2], [0.6, 2], [-0.6, 2],
+      [0, -4], [0, 4], [1.1, -1], [-1.1, -1], [1.1, 1], [-1.1, 1],
+    ];
+
+    for (const c of cands) {
+      const { el, w, h } = c.rec;
+      const baseX = clamp(c.ax - w * 0.5, minX, Math.max(minX, maxX - w));
+      const baseY = clamp(c.ay - h * 0.5, minY, Math.max(minY, maxY - h));
+      const stepY = h + padY;
+      const stepX = w * 0.55 + padX;
+
+      let bestX = baseX, bestY = baseY, bestCost = Infinity, found = false;
+      for (const [ox, oy] of offsets) {
+        const cx = clamp(baseX + ox * stepX, minX, Math.max(minX, maxX - w));
+        const cy = clamp(baseY + oy * stepY, minY, Math.max(minY, maxY - h));
+        if (overlaps(cx, cy, w, h)) continue;
+        const dx = cx - baseX, dy = cy - baseY;
+        const cost = dx * dx * 1.4 + dy * dy;
+        if (cost < bestCost) {
+          bestCost = cost;
+          bestX = cx;
+          bestY = cy;
+          found = true;
+          if (ox === 0 && oy === 0) break;
+        }
+      }
+
+      if (!found) {
+        // Barrido vertical fino como último recurso antes de suprimir
+        for (let k = 1; k <= 10 && !found; k++) {
+          for (const dir of [-1, 1]) {
+            const cy = clamp(baseY + dir * k * (h + padY * 0.75), minY, Math.max(minY, maxY - h));
+            if (!overlaps(baseX, cy, w, h)) {
+              bestX = baseX;
+              bestY = cy;
+              found = true;
+              break;
+            }
+          }
+        }
+      }
+
+      if (found) {
+        placed.push({ x0: bestX, y0: bestY, x1: bestX + w, y1: bestY + h });
+        el.style.display = 'inline-flex';
+        el.style.opacity = '1';
+        el.style.pointerEvents = 'auto';
+        el.style.transform = `translate3d(${bestX.toFixed(1)}px, ${bestY.toFixed(1)}px, 0)`;
+      } else {
+        el.style.display = 'none';
+        el.style.opacity = '0';
+        el.style.pointerEvents = 'none';
+      }
+    }
   }
 
   /** Manos: acopladas al asiento/nave al pilotar (no siguen la cámara) o a la cámara durante alcances/actividades/EVA. */
@@ -1314,7 +1638,15 @@ export class Engine {
     const intOn = this.interiorReady && (firstPerson || eng || this.mode === 'EVA' || (camLocal.length() < 30 && winInView(4)));
     this.interior.root.visible = intOn;
     if (intOn) {
-      const engClosedExt = eng && !this.section.on && !this.model.xray && this.model.explode < 0.02;
+      const engShowAllInterior = eng && (
+        this.section.on
+        || this.model.xray
+        || this.model.explode >= 0.01
+        || this.model.explodePreset === 'interior'
+        || this.selectedNode?.sector === 'int'
+        || this.interior.hasLocalExplode()
+      );
+      const engClosedExt = eng && !engShowAllInterior;
       if (engClosedExt) {
         // Ingeniería exterior sin corte ni rayos X: ocultar estancias sin ventanas exteriores (C, D)
         // y estancias con ventanas pequeñas cuando la cámara está lejos (B, N), manteniendo siempre A visible.
@@ -1455,6 +1787,7 @@ export class Engine {
   }
 
   private renderFrame(dt = SIM_DT) {
+    if (this.contextLost) return;
     if (this.section.on) this.clipPlane.copy(this.clipPlaneLocal).applyMatrix4(this.model.root.matrixWorld);
     else { this.clipPlane.normal.set(0, 1, 0); this.clipPlane.constant = 1e9; }
     this.pipeline.debug = this.debug;

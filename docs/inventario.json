@@ -1,8 +1,8 @@
 {
  "vehicle": "ALCIÓN HX-4",
- "parts": 546,
- "groups": 109,
- "triangles": 773004,
+ "parts": 557,
+ "groups": 89,
+ "triangles": 882846,
  "tree": {
   "code": "ALCION",
   "label": "ALCIÓN HX-4",
@@ -91,7 +91,7 @@
         "code": "COM.DSH.FED",
         "label": "Bocina alimentadora y subreflector",
         "kind": "part",
-        "desc": "Bocina corrugada de doble banda y subreflector soportado por un trípode de CFRP.",
+        "desc": "Bocina corrugada de doble banda X/Ka con guía de ondas de cobre y subreflector hiperbólico sobre trípode de CFRP con zapatas de titanio.",
         "func": "",
         "depth": 3,
         "materials": [
@@ -100,20 +100,44 @@
           "desc": "Aluminio mecanizado"
          },
          {
+          "id": "M_GoldPlate",
+          "desc": "Contactos dorados"
+         },
+         {
+          "id": "M_Teflon",
+          "desc": "PTFE"
+         },
+         {
+          "id": "M_Copper",
+          "desc": "Cobre"
+         },
+         {
+          "id": "M_AlAnodBlack",
+          "desc": "Aluminio anodizado negro"
+         },
+         {
+          "id": "M_Bolt",
+          "desc": "Tornillería de acero pasivado / titanio"
+         },
+         {
           "id": "M_CFRP",
           "desc": "Compuesto de fibra de carbono (CFRP)"
+         },
+         {
+          "id": "M_Titanium",
+          "desc": "Titanio Ti-6Al-4V"
          }
         ],
-        "tris": 404,
+        "tris": 3616,
         "dims_m": [
-         0.965,
-         0.895,
-         0.863
+         0.988,
+         0.919,
+         0.897
         ],
         "center_m": [
-         -1.17,
-         -2.609,
-         -2.587
+         -1.162,
+         -2.597,
+         -2.582
         ],
         "count": 1
        },
@@ -121,7 +145,7 @@
         "code": "COM.DSH.REF",
         "label": "Reflector parabólico de Ø1,6 m",
         "kind": "part",
-        "desc": "Reflector de CFRP con nervios traseros; superficie pintada en blanco térmico.",
+        "desc": "Reflector de CFRP con nervios traseros, aro intermedio y cubo LNA aislado en MLI; superficie pintada en blanco térmico.",
         "func": "",
         "depth": 3,
         "materials": [
@@ -134,11 +158,15 @@
           "desc": "Aluminio mecanizado"
          },
          {
+          "id": "M_MLI_Gold",
+          "desc": "MLI exterior: Kapton aluminizado (cara ámbar)"
+         },
+         {
           "id": "M_CFRP",
           "desc": "Compuesto de fibra de carbono (CFRP)"
          }
         ],
-        "tris": 4960,
+        "tris": 5660,
         "dims_m": [
          1.422,
          1.278,
@@ -226,7 +254,7 @@
     "depth": 1,
     "dims_m": [
      3.373,
-     3.04,
+     3.048,
      6.292
     ],
     "center_m": [
@@ -544,6 +572,7 @@
         "desc": "",
         "func": "",
         "depth": 3,
+        "room": "N",
         "dims_m": [
          1.605,
          1.826,
@@ -562,6 +591,7 @@
           "desc": "Escotilla de 1,0 m en el suelo del nodo; se abre hacia el nodo.",
           "func": "",
           "depth": 4,
+          "room": "N",
           "materials": [
            {
             "id": "M_AlLi",
@@ -616,6 +646,7 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "N",
           "materials": [
            {
             "id": "M_Handrail",
@@ -646,6 +677,7 @@
           "desc": "Panel con esquema de procedimiento EVA, manómetro digital, válvulas de despresurización y luz de estado.",
           "func": "",
           "depth": 4,
+          "room": "N",
           "materials": [
            {
             "id": "M_InteriorGrey",
@@ -692,6 +724,7 @@
           "desc": "Traje EVA conceptual de torso rígido con mochila de soporte vital; representación estilizada.",
           "func": "",
           "depth": 4,
+          "room": "N",
           "materials": [
            {
             "id": "M_ShieldWhite",
@@ -758,6 +791,7 @@
           "desc": "Traje EVA conceptual de torso rígido con mochila de soporte vital; representación estilizada.",
           "func": "",
           "depth": 4,
+          "room": "N",
           "materials": [
            {
             "id": "M_ShieldWhite",
@@ -2137,18 +2171,18 @@
       "code": "FWD.EXT",
       "label": "Equipos exteriores del nodo",
       "kind": "group",
-      "desc": "Antenas de baja ganancia, balizas de navegación y pasamanos EVA del nodo.",
+      "desc": "Antenas de baja ganancia banda S, balizas de navegación carenadas, placas de servicio y pasamanos EVA del nodo.",
       "func": "",
       "depth": 2,
       "dims_m": [
-       1.861,
-       3.04,
-       2.456
+       2.204,
+       3.048,
+       2.893
       ],
       "center_m": [
-       11.16,
+       11.05,
        0.0,
-       -0.107
+       0.006
       ],
       "children": [
        {
@@ -2275,33 +2309,45 @@
         "code": "FWD.EXT.LGA1",
         "label": "Antena de baja ganancia banda S 1",
         "kind": "part",
-        "desc": "Antena de parche omnidireccional de banda S para enlace de emergencia.",
+        "desc": "Antena de parche omnidireccional de banda S con radomo de PTFE y conector coaxial blindado.",
         "func": "",
         "depth": 3,
         "materials": [
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
+         },
+         {
+          "id": "M_Bolt",
+          "desc": "Tornillería de acero pasivado / titanio"
+         },
          {
           "id": "M_Teflon",
           "desc": "PTFE"
          },
          {
-          "id": "M_AlBare",
-          "desc": "Aluminio mecanizado"
+          "id": "M_AlAnodBlack",
+          "desc": "Aluminio anodizado negro"
+         },
+         {
+          "id": "M_GoldPlate",
+          "desc": "Contactos dorados"
          },
          {
           "id": "M_Cable",
           "desc": "Mazo de cables con funda"
          }
         ],
-        "tris": 212,
+        "tris": 992,
         "dims_m": [
-         0.207,
-         0.216,
-         0.133
+         0.23,
+         0.3,
+         0.185
         ],
         "center_m": [
          11.6,
-         0.701,
-         -1.256
+         0.735,
+         -1.247
         ],
         "count": 1
        },
@@ -2309,33 +2355,45 @@
         "code": "FWD.EXT.LGA2",
         "label": "Antena de baja ganancia banda S 2",
         "kind": "part",
-        "desc": "Antena de parche omnidireccional de banda S para enlace de emergencia.",
+        "desc": "Antena de parche omnidireccional de banda S con radomo de PTFE y conector coaxial blindado.",
         "func": "",
         "depth": 3,
         "materials": [
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
+         },
+         {
+          "id": "M_Bolt",
+          "desc": "Tornillería de acero pasivado / titanio"
+         },
          {
           "id": "M_Teflon",
           "desc": "PTFE"
          },
          {
-          "id": "M_AlBare",
-          "desc": "Aluminio mecanizado"
+          "id": "M_AlAnodBlack",
+          "desc": "Aluminio anodizado negro"
+         },
+         {
+          "id": "M_GoldPlate",
+          "desc": "Contactos dorados"
          },
          {
           "id": "M_Cable",
           "desc": "Mazo de cables con funda"
          }
         ],
-        "tris": 212,
+        "tris": 992,
         "dims_m": [
-         0.207,
-         0.216,
-         0.133
+         0.23,
+         0.3,
+         0.185
         ],
         "center_m": [
          11.6,
-         -0.678,
-         -1.268
+         -0.653,
+         -1.292
         ],
         "count": 1
        },
@@ -2343,10 +2401,18 @@
         "code": "FWD.EXT.NAV1",
         "label": "Baliza de navegación babor (roja)",
         "kind": "part",
-        "desc": "Baliza LED de navegación para identificación visual de orientación.",
+        "desc": "Baliza LED de navegación con carenado protector y visera direccional.",
         "func": "",
         "depth": 3,
         "materials": [
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
+         },
+         {
+          "id": "M_Bolt",
+          "desc": "Tornillería de acero pasivado / titanio"
+         },
          {
           "id": "M_AlAnodBlack",
           "desc": "Aluminio anodizado negro"
@@ -2356,15 +2422,15 @@
           "desc": "Indicador LED rojo"
          }
         ],
-        "tris": 284,
+        "tris": 996,
         "dims_m": [
-         0.08,
-         0.09,
-         0.08
+         0.128,
+         0.094,
+         0.124
         ],
         "center_m": [
-         12.05,
-         1.475,
+         12.018,
+         1.477,
          0.0
         ],
         "count": 1
@@ -2373,10 +2439,18 @@
         "code": "FWD.EXT.NAV2",
         "label": "Baliza de navegación estribor (verde)",
         "kind": "part",
-        "desc": "Baliza LED de navegación para identificación visual de orientación.",
+        "desc": "Baliza LED de navegación con carenado protector y visera direccional.",
         "func": "",
         "depth": 3,
         "materials": [
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
+         },
+         {
+          "id": "M_Bolt",
+          "desc": "Tornillería de acero pasivado / titanio"
+         },
          {
           "id": "M_AlAnodBlack",
           "desc": "Aluminio anodizado negro"
@@ -2386,21 +2460,105 @@
           "desc": "Indicador LED verde"
          }
         ],
-        "tris": 284,
+        "tris": 996,
         "dims_m": [
-         0.08,
-         0.09,
-         0.08
+         0.128,
+         0.094,
+         0.124
         ],
         "center_m": [
-         12.05,
-         -1.475,
+         12.018,
+         -1.477,
+         0.0
+        ],
+        "count": 1
+       },
+       {
+        "code": "FWD.EXT.NAV3",
+        "label": "Baliza de navegación proa dorsal (blanca)",
+        "kind": "part",
+        "desc": "Baliza LED de navegación con carenado protector y visera direccional.",
+        "func": "",
+        "depth": 3,
+        "materials": [
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
+         },
+         {
+          "id": "M_Bolt",
+          "desc": "Tornillería de acero pasivado / titanio"
+         },
+         {
+          "id": "M_AlAnodBlack",
+          "desc": "Aluminio anodizado negro"
+         },
+         {
+          "id": "M_NavLight",
+          "desc": "Baliza de navegación"
+         }
+        ],
+        "tris": 996,
+        "dims_m": [
+         0.128,
+         0.149,
+         0.131
+        ],
+        "center_m": [
+         12.058,
+         0.506,
+         1.387
+        ],
+        "count": 1
+       },
+       {
+        "code": "FWD.EXT.TRM",
+        "label": "Bandas térmicas y placas de servicio del nodo",
+        "kind": "part",
+        "desc": "Cintas de sellado térmico de Kapton/aluminio en los bordes del nodo y paneles de servicio de presurización.",
+        "func": "",
+        "depth": 3,
+        "materials": [
+         {
+          "id": "M_MLI_Gold",
+          "desc": "MLI exterior: Kapton aluminizado (cara ámbar)"
+         },
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
+         },
+         {
+          "id": "M_Graphite",
+          "desc": "Pintura de identidad (grafito)"
+         },
+         {
+          "id": "M_Accent",
+          "desc": "Pintura de identidad (bermellón ALCIÓN)"
+         },
+         {
+          "id": "M_GoldPlate",
+          "desc": "Contactos dorados"
+         },
+         {
+          "id": "M_Bolt",
+          "desc": "Tornillería de acero pasivado / titanio"
+         }
+        ],
+        "tris": 2192,
+        "dims_m": [
+         2.204,
+         2.882,
+         2.88
+        ],
+        "center_m": [
+         11.05,
+         0.0,
          0.0
         ],
         "count": 1
        }
       ],
-      "count": 9
+      "count": 11
      },
      {
       "code": "FWD.INT",
@@ -2410,38 +2568,59 @@
       "func": "Distribución, observación y salida EVA",
       "depth": 2,
       "dims_m": [
-       2.08,
+       2.106,
        2.61,
-       4.555
+       4.878
       ],
       "center_m": [
-       11.11,
+       11.123,
        0.0,
-       -0.898
+       -0.736
       ],
       "children": [
        {
         "code": "FWD.INT.BAG",
-        "label": "Estiba de acceso rápido",
+        "label": "Estiba EVA de acceso rápido",
         "kind": "part",
-        "desc": "",
+        "desc": "Bolsas CTB y caja rígida de herramientas EVA con sujeción rápida.",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_Bag",
-          "desc": "Bolsa de estiba de Nomex"
+          "desc": "Bolsa de estiba de Nomex arena"
+         },
+         {
+          "id": "R_Black",
+          "desc": "Polímero negro (biseles de pantalla)"
+         },
+         {
+          "id": "R_Alu",
+          "desc": "Aluminio satinado"
+         },
+         {
+          "id": "R_Frame",
+          "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+         },
+         {
+          "id": "R_Accent",
+          "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+         },
+         {
+          "id": "R_BagTech",
+          "desc": "Bolsa de estiba de tejido técnico gris pizarra"
          }
         ],
-        "tris": 5076,
+        "tris": 2464,
         "dims_m": [
-         1.604,
-         0.308,
-         0.408
+         1.589,
+         0.313,
+         0.384
         ],
         "center_m": [
-         10.95,
-         -0.979,
+         11.009,
+         -0.971,
          0.15
         ],
         "count": 1
@@ -2453,6 +2632,7 @@
         "desc": "",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_Backing",
@@ -2480,23 +2660,56 @@
         "code": "FWD.INT.BHD",
         "label": "Mamparos del nodo",
         "kind": "part",
-        "desc": "",
+        "desc": "Mamparos estructurales con válvulas de presurización, manómetros y asideros.",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_Lining",
           "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+         },
+         {
+          "id": "R_Frame",
+          "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+         },
+         {
+          "id": "R_Alu",
+          "desc": "Aluminio satinado"
+         },
+         {
+          "id": "R_Dial",
+          "desc": "Esfera de instrumento / manómetro"
+         },
+         {
+          "id": "R_Accent",
+          "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+         },
+         {
+          "id": "R_Black",
+          "desc": "Polímero negro (biseles de pantalla)"
+         },
+         {
+          "id": "R_Steel",
+          "desc": "Acero inoxidable cepillado"
+         },
+         {
+          "id": "R_FabricBlue",
+          "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+         },
+         {
+          "id": "R_Indicator",
+          "desc": "Indicador nominal verde"
          }
         ],
-        "tris": 2384,
+        "tris": 3032,
         "dims_m": [
-         2.06,
+         2.086,
          2.44,
          2.44
         ],
         "center_m": [
-         11.12,
+         11.133,
          0.0,
          0.0
         ],
@@ -2509,22 +2722,23 @@
         "desc": "Etiquetas de inventario y señalización de seguridad y orientación.",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_Decal",
           "desc": "Etiquetas y señalización (atlas)"
          }
         ],
-        "tris": 4,
+        "tris": 14,
         "dims_m": [
-         0.0,
-         1.74,
-         0.075
+         1.99,
+         1.75,
+         0.805
         ],
         "center_m": [
-         10.122,
-         0.0,
-         0.15
+         11.119,
+         -0.005,
+         0.186
         ],
         "count": 1
        },
@@ -2535,6 +2749,7 @@
         "desc": "Pavimento sobre el pozo de la esclusa.",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_Floor",
@@ -2558,36 +2773,53 @@
         "code": "FWD.INT.HF",
         "label": "Escotilla de atraque (IDSS)",
         "kind": "part",
-        "desc": "Escotilla de paso de 0,80 m hacia el vehículo atracado; cerrada sin vehículo.",
+        "desc": "Escotilla de paso de 0,80 m con volante de 3 radios, mirilla óptica, seis pestillos y válvula de ecualización.",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_Lining",
           "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
          },
          {
+          "id": "R_Alu",
+          "desc": "Aluminio satinado"
+         },
+         {
           "id": "R_Accent",
           "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+         },
+         {
+          "id": "R_Steel",
+          "desc": "Acero inoxidable cepillado"
+         },
+         {
+          "id": "R_Frame",
+          "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
          },
          {
           "id": "R_Black",
           "desc": "Polímero negro (biseles de pantalla)"
          },
          {
-          "id": "R_Steel",
-          "desc": "Acero inoxidable cepillado"
+          "id": "R_Glass",
+          "desc": "Panel interior antirayado"
+         },
+         {
+          "id": "R_Dial",
+          "desc": "Esfera de instrumento / manómetro"
          }
         ],
-        "tris": 3268,
+        "tris": 3448,
         "dims_m": [
-         0.095,
-         0.88,
-         0.88
+         0.11,
+         0.913,
+         0.902
         ],
         "center_m": [
-         12.067,
-         0.0,
+         12.061,
+         0.006,
          0.0
         ],
         "count": 1
@@ -2599,6 +2831,7 @@
         "desc": "",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_LED",
@@ -2625,6 +2858,7 @@
         "desc": "Paneles curvos del nodo con huecos de cúpula y esclusa.",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_Lining",
@@ -2652,17 +2886,38 @@
         "code": "FWD.INT.RWS",
         "label": "Estación robótica",
         "kind": "part",
-        "desc": "Puesto de control del brazo robótico con dos pantallas y controladores manuales.",
+        "desc": "Puesto de control del brazo robótico con pantallas con visera, subpanel y controladores.",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_LiningDark",
           "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
          },
          {
+          "id": "R_Alu",
+          "desc": "Aluminio satinado"
+         },
+         {
+          "id": "R_Leather",
+          "desc": "Tapizado de piel técnica perforada, grafito cálido"
+         },
+         {
           "id": "R_Black",
           "desc": "Polímero negro (biseles de pantalla)"
+         },
+         {
+          "id": "R_Indicator",
+          "desc": "Indicador nominal verde"
+         },
+         {
+          "id": "R_Warning",
+          "desc": "Avisador de cautela ámbar"
+         },
+         {
+          "id": "R_Alarm",
+          "desc": "Avisador de alarma rojo"
          },
          {
           "id": "R_Frame",
@@ -2677,16 +2932,16 @@
           "desc": "Bermellón ALCIÓN (agarres y seguridad)"
          }
         ],
-        "tris": 3072,
+        "tris": 7568,
         "dims_m": [
-         0.76,
-         0.468,
-         1.188
+         0.768,
+         0.59,
+         1.206
         ],
         "center_m": [
          10.68,
-         0.784,
-         -0.026
+         0.835,
+         -0.017
         ],
         "count": 1
        },
@@ -2697,6 +2952,7 @@
         "desc": "Pantalla.",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_Screen",
@@ -2723,6 +2979,7 @@
         "desc": "Pantalla.",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_Screen",
@@ -2746,9 +3003,10 @@
         "code": "FWD.INT.WEL",
         "label": "Pozos de cúpula y esclusa",
         "kind": "part",
-        "desc": "Brocales, escalerilla y asideros.",
+        "desc": "Brocales, pasamanos y contraventanas de cúpula, brazo de cámara, escalerilla y válvulas del pozo.",
         "func": "",
         "depth": 3,
+        "room": "N",
         "materials": [
          {
           "id": "R_Lining",
@@ -2759,6 +3017,69 @@
           "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
          },
          {
+          "id": "R_Alu",
+          "desc": "Aluminio satinado"
+         },
+         {
+          "id": "R_Accent",
+          "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+         },
+         {
+          "id": "R_Steel",
+          "desc": "Acero inoxidable cepillado"
+         },
+         {
+          "id": "R_Rubber",
+          "desc": "Elastómero negro"
+         },
+         {
+          "id": "R_Dial",
+          "desc": "Esfera de instrumento / manómetro"
+         },
+         {
+          "id": "R_Black",
+          "desc": "Polímero negro (biseles de pantalla)"
+         },
+         {
+          "id": "R_FabricBlue",
+          "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+         },
+         {
+          "id": "R_Floor",
+          "desc": "Pavimento de caucho técnico con relieve antideslizante"
+         }
+        ],
+        "tris": 6528,
+        "dims_m": [
+         1.4,
+         1.4,
+         4.72
+        ],
+        "center_m": [
+         11.05,
+         0.0,
+         -0.815
+        ],
+        "count": 1
+       },
+       {
+        "code": "HAB.INT.N.PROP.CAM",
+        "label": "Cámara DSLR científica",
+        "kind": "part",
+        "desc": "Cámara réflex científica con teleobjetivo, anillo bermellón, empuñadura ergonómica y pantalla trasera.",
+        "func": "",
+        "depth": 3,
+        "room": "N",
+        "materials": [
+         {
+          "id": "R_Frame",
+          "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+         },
+         {
+          "id": "R_Rubber",
+          "desc": "Elastómero negro"
+         },
+         {
           "id": "R_Accent",
           "desc": "Bermellón ALCIÓN (agarres y seguridad)"
          },
@@ -2767,25 +3088,37 @@
           "desc": "Aluminio satinado"
          },
          {
-          "id": "R_Floor",
-          "desc": "Pavimento de caucho técnico con relieve antideslizante"
+          "id": "R_Steel",
+          "desc": "Acero inoxidable cepillado"
+         },
+         {
+          "id": "R_Black",
+          "desc": "Polímero negro (biseles de pantalla)"
+         },
+         {
+          "id": "R_Screen",
+          "desc": "Pantalla multifunción (contenido dinámico)"
+         },
+         {
+          "id": "R_Glass",
+          "desc": "Panel interior antirayado"
          }
         ],
-        "tris": 2600,
+        "tris": 888,
         "dims_m": [
-         1.4,
-         1.4,
-         4.555
+         0.315,
+         0.269,
+         0.229
         ],
         "center_m": [
-         11.05,
-         0.0,
-         -0.898
+         10.594,
+         0.195,
+         1.589
         ],
         "count": 1
        }
       ],
-      "count": 13
+      "count": 14
      },
      {
       "code": "FWD.MMOD",
@@ -3264,7 +3597,7 @@
       "count": 8
      }
     ],
-    "count": 96
+    "count": 99
    },
    {
     "code": "HAB",
@@ -3274,12 +3607,12 @@
     "func": "Alojar a la tripulación, la cabina de vuelo, el laboratorio y el soporte vital",
     "depth": 1,
     "dims_m": [
-     10.15,
+     10.47,
      4.545,
      5.012
     ],
     "center_m": [
-     5.045,
+     4.885,
      0.0,
      -0.234
     ],
@@ -3292,13 +3625,13 @@
       "func": "",
       "depth": 2,
       "dims_m": [
-       7.968,
-       3.168,
+       9.034,
+       4.388,
        4.943
       ],
       "center_m": [
-       4.7,
-       -0.618,
+       4.167,
+       -0.008,
        -0.269
       ],
       "children": [
@@ -3936,6 +4269,151 @@
         "count": 1
        },
        {
+        "code": "HAB.EXT.RCW",
+        "label": "Canalizaciones umbilicales exteriores",
+        "kind": "group",
+        "desc": "Dos tendidos longitudinales (babor y estribor) con bandeja protectora, líneas de fluidos en acero inoxidable, mazo de potencia 120 V y abrazaderas térmicas.",
+        "func": "",
+        "depth": 3,
+        "dims_m": [
+         8.7,
+         4.372,
+         0.199
+        ],
+        "center_m": [
+         4.0,
+         0.0,
+         0.878
+        ],
+        "children": [
+         {
+          "code": "HAB.EXT.RCW.1",
+          "label": "Canalización umbilical exterior (babor)",
+          "kind": "part",
+          "desc": "Tendido externo protegido de líneas térmicas, bus 120 V y datos con cajas de empalme.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_AlBare",
+            "desc": "Aluminio mecanizado"
+           },
+           {
+            "id": "M_Steel",
+            "desc": "Acero inoxidable A286"
+           },
+           {
+            "id": "M_CableOrange",
+            "desc": "Cable de alta tensión (funda naranja)"
+           },
+           {
+            "id": "M_Cable",
+            "desc": "Mazo de cables con funda"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Bolt",
+            "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_MLI_Gold",
+            "desc": "MLI exterior: Kapton aluminizado (cara ámbar)"
+           },
+           {
+            "id": "M_Graphite",
+            "desc": "Pintura de identidad (grafito)"
+           },
+           {
+            "id": "M_Accent",
+            "desc": "Pintura de identidad (bermellón ALCIÓN)"
+           },
+           {
+            "id": "M_GoldPlate",
+            "desc": "Contactos dorados"
+           }
+          ],
+          "tris": 1972,
+          "dims_m": [
+           8.7,
+           0.13,
+           0.199
+          ],
+          "center_m": [
+           4.0,
+           2.121,
+           0.878
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.EXT.RCW.2",
+          "label": "Canalización umbilical exterior (estribor)",
+          "kind": "part",
+          "desc": "Tendido externo protegido de líneas térmicas, bus 120 V y datos con cajas de empalme.",
+          "func": "",
+          "depth": 4,
+          "materials": [
+           {
+            "id": "M_AlBare",
+            "desc": "Aluminio mecanizado"
+           },
+           {
+            "id": "M_Steel",
+            "desc": "Acero inoxidable A286"
+           },
+           {
+            "id": "M_CableOrange",
+            "desc": "Cable de alta tensión (funda naranja)"
+           },
+           {
+            "id": "M_Cable",
+            "desc": "Mazo de cables con funda"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Bolt",
+            "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_MLI_Gold",
+            "desc": "MLI exterior: Kapton aluminizado (cara ámbar)"
+           },
+           {
+            "id": "M_Graphite",
+            "desc": "Pintura de identidad (grafito)"
+           },
+           {
+            "id": "M_Accent",
+            "desc": "Pintura de identidad (bermellón ALCIÓN)"
+           },
+           {
+            "id": "M_GoldPlate",
+            "desc": "Contactos dorados"
+           }
+          ],
+          "tris": 1972,
+          "dims_m": [
+           8.7,
+           0.13,
+           0.199
+          ],
+          "center_m": [
+           4.0,
+           -2.121,
+           0.878
+          ],
+          "count": 1
+         }
+        ],
+        "count": 3
+       },
+       {
         "code": "HAB.EXT.WIN",
         "label": "Ventanas científicas de nadir",
         "kind": "group",
@@ -4041,7 +4519,7 @@
         "count": 3
        }
       ],
-      "count": 25
+      "count": 28
      },
      {
       "code": "HAB.EXT.CWN",
@@ -4572,9 +5050,10 @@
           "code": "HAB.INT.A.BHD",
           "label": "Mamparo de proa y brocal de escotilla",
           "kind": "part",
-          "desc": "Mamparo con brocal bermellón y túnel hacia el nodo.",
+          "desc": "Mamparo mecanizado con brida atornillada, cajas de aviónica, cableado y túnel hacia el nodo.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Lining",
@@ -4585,22 +5064,46 @@
             "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            },
            {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
             "id": "R_LED",
             "desc": "Tira LED cálida 3500 K"
            },
            {
-            "id": "R_Frame",
-            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Dial",
+            "desc": "Esfera de instrumento / manómetro"
+           },
+           {
+            "id": "R_Warning",
+            "desc": "Avisador de cautela ámbar"
            }
           ],
-          "tris": 6984,
+          "tris": 7112,
           "dims_m": [
-           0.235,
-           2.48,
-           2.48
+           0.326,
+           2.5,
+           2.5
           ],
           "center_m": [
-           10.003,
+           9.957,
            0.0,
            0.0
           ],
@@ -4613,6 +5116,7 @@
           "desc": "Dieciséis facetas con nueve huecos de ventana.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Lining",
@@ -4621,12 +5125,12 @@
           ],
           "tris": 4308,
           "dims_m": [
-           1.12,
+           1.08,
            3.88,
            3.88
           ],
           "center_m": [
-           9.36,
+           9.34,
            0.0,
            0.0
           ],
@@ -4639,22 +5143,23 @@
           "desc": "Etiquetas de inventario y señalización de seguridad y orientación.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Decal",
             "desc": "Etiquetas y señalización (atlas)"
            }
           ],
-          "tris": 12,
+          "tris": 28,
           "dims_m": [
-           3.098,
+           3.056,
            3.471,
-           1.98
+           2.025
           ],
           "center_m": [
-           8.369,
+           8.348,
            0.0,
-           0.318
+           0.295
           ],
           "count": 1
          },
@@ -4662,13 +5167,18 @@
           "code": "HAB.INT.A.HC",
           "label": "Controladores manuales",
           "kind": "part",
-          "desc": "Controladores de traslación y rotación en los reposabrazos.",
+          "desc": "Controladores ergonómicos de traslación y rotación en los reposabrazos.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
            },
            {
             "id": "R_Rubber",
@@ -4679,16 +5189,16 @@
             "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            }
           ],
-          "tris": 2688,
+          "tris": 2912,
           "dims_m": [
-           0.084,
-           2.244,
-           0.22
+           0.099,
+           2.273,
+           0.233
           ],
           "center_m": [
-           7.8,
-           0.0,
-           -0.36
+           7.799,
+           0.008,
+           -0.354
           ],
           "count": 1
          },
@@ -4699,6 +5209,7 @@
           "desc": "Paneles de policarbonato de protección.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Glass",
@@ -4708,13 +5219,13 @@
           "tris": 288,
           "dims_m": [
            0.84,
-           3.786,
-           2.17
+           3.782,
+           2.167
           ],
           "center_m": [
            9.36,
            0.0,
-           0.808
+           0.807
           ],
           "count": 1
          },
@@ -4722,41 +5233,58 @@
           "code": "HAB.INT.A.PNL",
           "label": "Panel de instrumentos",
           "kind": "part",
-          "desc": "Dos cuerpos con seis pantallas multifunción y visera tapizada.",
+          "desc": "Dos cuerpos con seis pantallas multifunción, visera antideslumbrante, avisadores y subpaneles.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_LiningDark",
             "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
            },
            {
-            "id": "R_Fabric",
-            "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
+            "id": "R_Leather",
+            "desc": "Tapizado de piel técnica perforada, grafito cálido"
            },
            {
             "id": "R_Alu",
             "desc": "Aluminio satinado"
            },
            {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Alarm",
+            "desc": "Avisador de alarma rojo"
+           },
+           {
+            "id": "R_Warning",
+            "desc": "Avisador de cautela ámbar"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
             "id": "R_Black",
             "desc": "Polímero negro (biseles de pantalla)"
            },
            {
-            "id": "R_Frame",
-            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            }
           ],
-          "tris": 12444,
+          "tris": 9396,
           "dims_m": [
-           2.13,
-           3.734,
-           1.995
+           2.173,
+           3.688,
+           1.927
           ],
           "center_m": [
-           8.485,
+           8.434,
            0.0,
-           -0.156
+           -0.186
           ],
           "count": 1
          },
@@ -4767,6 +5295,7 @@
           "desc": "Pantalla multifunción táctil.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Screen",
@@ -4775,9 +5304,9 @@
           ],
           "tris": 2,
           "dims_m": [
-           0.23,
-           0.127,
-           0.348
+           0.37,
+           0.079,
+           0.216
           ],
           "center_m": [
            7.55,
@@ -4793,6 +5322,7 @@
           "desc": "Pantalla multifunción táctil.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Screen",
@@ -4801,9 +5331,9 @@
           ],
           "tris": 2,
           "dims_m": [
-           0.23,
-           0.127,
-           0.348
+           0.37,
+           0.079,
+           0.216
           ],
           "center_m": [
            7.55,
@@ -4819,6 +5349,7 @@
           "desc": "Pantalla multifunción táctil.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Screen",
@@ -4845,6 +5376,7 @@
           "desc": "Pantalla multifunción táctil.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Screen",
@@ -4871,6 +5403,7 @@
           "desc": "Pantalla multifunción táctil.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Screen",
@@ -4897,6 +5430,7 @@
           "desc": "Pantalla multifunción táctil.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Screen",
@@ -4923,6 +5457,7 @@
           "desc": "Pantalla multifunción táctil.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Screen",
@@ -4949,6 +5484,7 @@
           "desc": "Pantalla multifunción táctil.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Screen",
@@ -4975,10 +5511,15 @@
           "desc": "Nervios grafito, cornisas de luz indirecta, raíles de anclaje.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
            },
            {
             "id": "R_Lining",
@@ -4993,15 +5534,15 @@
             "desc": "Polímero negro (biseles de pantalla)"
            },
            {
-            "id": "R_Alu",
-            "desc": "Aluminio satinado"
-           },
-           {
             "id": "R_Backing",
             "desc": "Trasdós oscuro"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
            }
           ],
-          "tris": 11660,
+          "tris": 21178,
           "dims_m": [
            2.475,
            3.877,
@@ -5021,6 +5562,7 @@
           "desc": "Tiras LED de cornisa, zócalo y canal cenital.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_LED",
@@ -5051,6 +5593,7 @@
           "desc": "Consolas laterales, zócalos y pavimento de caucho.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Floor",
@@ -5085,6 +5628,7 @@
           "desc": "Paneles curvos de PPSU con juntas de 4 mm y compartimentos altos.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Lining",
@@ -5116,17 +5660,30 @@
           "code": "HAB.INT.A.ST1",
           "label": "Asiento del comandante",
           "kind": "part",
-          "desc": "Asiento con pedestal sobre raíles, cojines de piel técnica perforada, alas laterales y arnés de cinco puntos.",
+          "desc": "Asiento esculpido sobre raíles deslizantes con carcasa anatómica, cojines segmentados, reposacabezas en doble barra y arnés de cuatro puntos.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
-            "id": "R_Alu",
-            "desc": "Aluminio satinado"
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_LiningDark",
+            "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
            },
            {
             "id": "R_Leather",
@@ -5135,22 +5692,18 @@
            {
             "id": "R_FabricBlue",
             "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
-           },
-           {
-            "id": "R_Accent",
-            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            }
           ],
-          "tris": 17512,
+          "tris": 15788,
           "dims_m": [
-           0.679,
-           0.665,
-           1.405
+           0.716,
+           0.662,
+           1.452
           ],
           "center_m": [
-           7.536,
+           7.523,
            0.78,
-           -0.447
+           -0.424
           ],
           "count": 1
          },
@@ -5158,17 +5711,30 @@
           "code": "HAB.INT.A.ST2",
           "label": "Asiento del piloto",
           "kind": "part",
-          "desc": "Asiento con pedestal sobre raíles, cojines de piel técnica perforada, alas laterales y arnés de cinco puntos.",
+          "desc": "Asiento esculpido sobre raíles deslizantes con carcasa anatómica, cojines segmentados, reposacabezas en doble barra y arnés de cuatro puntos.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
-            "id": "R_Alu",
-            "desc": "Aluminio satinado"
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_LiningDark",
+            "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
            },
            {
             "id": "R_Leather",
@@ -5177,22 +5743,18 @@
            {
             "id": "R_FabricBlue",
             "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
-           },
-           {
-            "id": "R_Accent",
-            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            }
           ],
-          "tris": 17512,
+          "tris": 15788,
           "dims_m": [
-           0.679,
-           0.665,
-           1.405
+           0.716,
+           0.662,
+           1.452
           ],
           "center_m": [
-           7.536,
+           7.523,
            -0.78,
-           -0.447
+           -0.424
           ],
           "count": 1
          },
@@ -5203,6 +5765,7 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_LiningDark",
@@ -5219,12 +5782,12 @@
           ],
           "tris": 1272,
           "dims_m": [
-           1.22,
+           1.18,
            0.74,
            0.598
           ],
           "center_m": [
-           9.31,
+           9.29,
            0.0,
            -0.851
           ],
@@ -5237,7 +5800,12 @@
           "desc": "Bases y guardas de los 24 interruptores repartidos en las consolas laterales.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
            {
             "id": "R_Black",
             "desc": "Polímero negro (biseles de pantalla)"
@@ -5247,16 +5815,16 @@
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 7776,
+          "tris": 8112,
           "dims_m": [
-           1.11,
-           3.09,
-           0.073
+           1.18,
+           3.117,
+           0.076
           ],
           "center_m": [
            7.6,
-           0.0,
-           -0.347
+           -0.0,
+           -0.348
           ],
           "count": 1
          },
@@ -5285,6 +5853,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo potencia.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5315,6 +5884,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo potencia.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5345,6 +5915,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo potencia.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5375,6 +5946,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo potencia.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5405,6 +5977,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo sistemas.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5435,6 +6008,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo propulsión.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5465,6 +6039,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo sistemas.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5495,6 +6070,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo sistemas.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5525,6 +6101,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo potencia.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5555,6 +6132,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo sistemas.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5585,6 +6163,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo iluminación.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5615,6 +6194,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo iluminación.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5645,6 +6225,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo iluminación.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5675,6 +6256,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo iluminación.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5705,6 +6287,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo iluminación.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5735,6 +6318,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo iluminación.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5765,6 +6349,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo propulsión.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5795,6 +6380,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo propulsión.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5825,6 +6411,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo propulsión.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5855,6 +6442,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo propulsión.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5885,6 +6473,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo sistemas.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5915,6 +6504,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo propulsión.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5945,6 +6535,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo potencia.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -5975,6 +6566,7 @@
             "desc": "Palanca protegida de dos posiciones del grupo sistemas.",
             "func": "",
             "depth": 5,
+            "room": "A",
             "materials": [
              {
               "id": "R_Steel",
@@ -6008,6 +6600,7 @@
           "desc": "Pozos de aluminio anodizado mate que eliminan reflejos parásitos.",
           "func": "",
           "depth": 4,
+          "room": "A",
           "materials": [
            {
             "id": "R_Frame",
@@ -6055,6 +6648,7 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Backing",
@@ -6085,21 +6679,22 @@
           "desc": "Etiquetas de inventario y señalización de seguridad y orientación.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Decal",
             "desc": "Etiquetas y señalización (atlas)"
            }
           ],
-          "tris": 28,
+          "tris": 30,
           "dims_m": [
            1.687,
-           2.759,
+           2.838,
            2.528
           ],
           "center_m": [
            5.593,
-           0.0,
+           0.011,
            0.116
           ],
           "count": 1
@@ -6111,6 +6706,7 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Alu",
@@ -6119,13 +6715,9 @@
            {
             "id": "R_Backing",
             "desc": "Trasdós oscuro"
-           },
-           {
-            "id": "M_AlBare",
-            "desc": "Aluminio mecanizado"
            }
           ],
-          "tris": 460,
+          "tris": 330,
           "dims_m": [
            2.05,
            3.2,
@@ -6145,17 +6737,14 @@
           "desc": "Pavimento con dos pozos de observación de nadir.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Floor",
             "desc": "Pavimento de caucho técnico con relieve antideslizante"
-           },
-           {
-            "id": "M_AlBare",
-            "desc": "Aluminio mecanizado"
            }
           ],
-          "tris": 1616,
+          "tris": 744,
           "dims_m": [
            2.042,
            2.55,
@@ -6172,33 +6761,50 @@
           "code": "HAB.INT.B.FRZ",
           "label": "Congelador de muestras −80 °C",
           "kind": "part",
-          "desc": "Cuatro cajones de congelación con registro de muestras.",
+          "desc": "Cuatro cajones de congelación criogénica con registro y tiradores térmicos.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Lining",
             "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
            },
            {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
             "id": "R_Accent",
             "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            },
            {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
             "id": "R_Indicator",
-            "desc": "Indicador"
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
            }
           ],
-          "tris": 1200,
+          "tris": 5696,
           "dims_m": [
            1.96,
-           0.05,
-           0.613
+           0.058,
+           0.621
           ],
           "center_m": [
            5.74,
-           1.27,
-           -0.444
+           1.266,
+           -0.449
           ],
           "count": 1
          },
@@ -6206,13 +6812,18 @@
           "code": "HAB.INT.B.GBX",
           "label": "Guantera estanca",
           "kind": "part",
-          "desc": "Volumen de trabajo de 0,26 m³ con dos puertos de guante, iluminación y esclusa de transferencia.",
+          "desc": "Guantera científica con vidrio inclinado, bridas de bayoneta, esclusa de transferencia, viales y panel de control.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
            },
            {
             "id": "R_Lining",
@@ -6223,28 +6834,52 @@
             "desc": "Difusor lumínico 4000 K"
            },
            {
-            "id": "R_Black",
-            "desc": "Polímero negro (biseles de pantalla)"
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
            },
            {
             "id": "R_Rubber",
             "desc": "Elastómero negro"
            },
            {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Dial",
+            "desc": "Esfera de instrumento / manómetro"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Glass",
+            "desc": "Panel interior antirayado"
+           },
+           {
             "id": "R_Indicator",
-            "desc": "Indicador"
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Warning",
+            "desc": "Avisador de cautela ámbar"
+           },
+           {
+            "id": "R_Alarm",
+            "desc": "Avisador de alarma rojo"
            }
           ],
-          "tris": 4436,
+          "tris": 4964,
           "dims_m": [
-           1.1,
-           0.58,
-           0.67
+           1.574,
+           0.59,
+           0.68
           ],
           "center_m": [
-           5.6,
-           -1.59,
-           0.305
+           5.677,
+           -1.585,
+           0.31
           ],
           "count": 1
          },
@@ -6255,6 +6890,7 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Glass",
@@ -6263,14 +6899,14 @@
           ],
           "tris": 12,
           "dims_m": [
-           1.02,
-           0.008,
-           0.52
+           0.99,
+           0.116,
+           0.48
           ],
           "center_m": [
-           5.6,
-           -1.305,
-           0.29
+           5.53,
+           -1.36,
+           0.285
           ],
           "count": 1
          },
@@ -6278,33 +6914,58 @@
           "code": "HAB.INT.B.MIC",
           "label": "Microscopio óptico",
           "kind": "part",
-          "desc": "Microscopio invertido con cámara digital y platina motorizada.",
+          "desc": "Microscopio binocular con platina XY, revólver de tres objetivos y cámara digital.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Lining",
             "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
            },
            {
-            "id": "R_Black",
-            "desc": "Polímero negro (biseles de pantalla)"
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_LightPanel",
+            "desc": "Difusor lumínico 4000 K"
            },
            {
             "id": "R_Alu",
             "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Rubber",
+            "desc": "Elastómero negro"
            }
           ],
-          "tris": 808,
+          "tris": 4400,
           "dims_m": [
-           0.325,
-           0.24,
-           0.51
+           0.336,
+           0.285,
+           0.495
           ],
           "center_m": [
-           5.137,
-           1.58,
-           0.225
+           5.15,
+           1.57,
+           0.218
           ],
           "count": 1
          },
@@ -6315,22 +6976,31 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Black",
             "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
            }
           ],
-          "tris": 236,
+          "tris": 776,
           "dims_m": [
-           0.46,
+           0.47,
            0.157,
-           0.273
+           0.275
           ],
           "center_m": [
-           5.6,
-           -1.625,
-           0.864
+           5.55,
+           -1.624,
+           0.863
           ],
           "count": 1
          },
@@ -6341,6 +7011,7 @@
           "desc": "Pozos de aluminio anodizado mate con brocal de seguridad.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Frame",
@@ -6349,18 +7020,22 @@
            {
             "id": "R_Accent",
             "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
            }
           ],
-          "tris": 1344,
+          "tris": 1824,
           "dims_m": [
            1.61,
            0.66,
-           0.922
+           0.925
           ],
           "center_m": [
            5.725,
            0.0,
-           -1.599
+           -1.597
           ],
           "count": 1
          },
@@ -6371,6 +7046,7 @@
           "desc": "Policarbonato laminado pisable sobre las ventanas ópticas.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Glass",
@@ -6391,12 +7067,72 @@
           "count": 1
          },
          {
+          "code": "HAB.INT.B.PROP.SAMPLE",
+          "label": "Contenedor de muestras biológicas",
+          "kind": "part",
+          "desc": "Tubo presurizado de policarbonato con muestra biológica interna, tapón roscado bermellón y etiqueta de registro.",
+          "func": "",
+          "depth": 4,
+          "room": "B",
+          "materials": [
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Rubber",
+            "desc": "Elastómero negro"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Glass",
+            "desc": "Panel interior antirayado"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Plant",
+            "desc": "Cultivo de hoja verde"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           }
+          ],
+          "tris": 864,
+          "dims_m": [
+           0.073,
+           0.079,
+           0.187
+          ],
+          "center_m": [
+           5.559,
+           1.476,
+           0.064
+          ],
+          "count": 1
+         },
+         {
           "code": "HAB.INT.B.RCK",
           "label": "Bastidores de instrumentos",
           "kind": "part",
-          "desc": "Dos bastidores de experimentos con cajones normalizados e indicadores de estado.",
+          "desc": "Dos bastidores de experimentos con cajones, ventilación, cableado y anclajes de pies.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_LiningDark",
@@ -6411,24 +7147,36 @@
             "desc": "Aluminio satinado"
            },
            {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
             "id": "R_Accent",
             "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            },
            {
             "id": "R_Indicator",
-            "desc": "Indicador"
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Warning",
+            "desc": "Avisador de cautela ámbar"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
            }
           ],
-          "tris": 4200,
+          "tris": 17904,
           "dims_m": [
            2.01,
-           1.05,
-           1.67
+           3.173,
+           2.843
           ],
           "center_m": [
            5.725,
-           1.404,
-           0.868
+           0.343,
+           0.282
           ],
           "count": 1
          },
@@ -6439,6 +7187,7 @@
           "desc": "Pantalla.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Screen",
@@ -6465,6 +7214,7 @@
           "desc": "Pantalla.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Screen",
@@ -6491,6 +7241,7 @@
           "desc": "Pantalla.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Screen",
@@ -6504,7 +7255,7 @@
            0.238
           ],
           "center_m": [
-           5.6,
+           5.55,
            -1.615,
            0.859
           ],
@@ -6517,6 +7268,7 @@
           "desc": "Nervios grafito, cornisas, raíles de anclaje.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Lining",
@@ -6531,15 +7283,15 @@
             "desc": "Aluminio satinado"
            },
            {
-            "id": "R_Accent",
-            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
-           },
-           {
             "id": "R_Black",
             "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            }
           ],
-          "tris": 10968,
+          "tris": 19720,
           "dims_m": [
            2.1,
            3.877,
@@ -6559,6 +7311,7 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_LED",
@@ -6589,6 +7342,7 @@
           "desc": "Frentes de armario grafito y pavimento de caucho.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_LiningDark",
@@ -6603,12 +7357,12 @@
           "dims_m": [
            2.05,
            3.4,
-           1.028
+           1.03
           ],
           "center_m": [
            5.725,
            0.0,
-           -0.636
+           -0.635
           ],
           "count": 1
          },
@@ -6619,6 +7373,7 @@
           "desc": "Encimera de compuesto de lino.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Worktop",
@@ -6645,6 +7400,7 @@
           "desc": "Paneles curvos de PPSU con juntas y compartimentos altos.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Lining",
@@ -6668,13 +7424,22 @@
           "code": "HAB.INT.B.VEG",
           "label": "Cámara de cultivo",
           "kind": "part",
-          "desc": "Cámara de crecimiento con iluminación LED de espectro completo y riego por mecha capilar.",
+          "desc": "Cámara hidropónica acristalada con iluminación LED, bandejas escalonadas y cultivos de hoja.",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Lining",
             "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
             "id": "R_LightPanel",
@@ -6685,24 +7450,44 @@
             "desc": "Polímero negro (biseles de pantalla)"
            },
            {
-            "id": "R_Plant",
-            "desc": "Cultivo de hoja"
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Warning",
+            "desc": "Avisador de cautela ámbar"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            },
            {
             "id": "R_Rubber",
             "desc": "Elastómero negro"
+           },
+           {
+            "id": "R_PlantDark",
+            "desc": "Tallos y follaje oscuro de cultivo"
+           },
+           {
+            "id": "R_Plant",
+            "desc": "Cultivo de hoja verde"
            }
           ],
-          "tris": 13968,
+          "tris": 13548,
           "dims_m": [
-           0.8,
-           0.444,
-           0.52
+           0.82,
+           0.485,
+           0.541
           ],
           "center_m": [
-           6.22,
-           1.658,
-           0.24
+           6.23,
+           1.641,
+           0.241
           ],
           "count": 1
          },
@@ -6713,6 +7498,7 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "B",
           "materials": [
            {
             "id": "R_Glass",
@@ -6721,19 +7507,19 @@
           ],
           "tris": 12,
           "dims_m": [
-           0.75,
+           0.69,
            0.006,
-           0.44
+           0.395
           ],
           "center_m": [
-           6.22,
-           1.437,
-           0.24
+           6.205,
+           1.44,
+           0.245
           ],
           "count": 1
          }
         ],
-        "count": 23
+        "count": 24
        },
        {
         "code": "HAB.INT.C",
@@ -6760,22 +7546,23 @@
           "desc": "Etiquetas de inventario y señalización de seguridad y orientación.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Decal",
             "desc": "Etiquetas y señalización (atlas)"
            }
           ],
-          "tris": 12,
+          "tris": 20,
           "dims_m": [
-           1.497,
-           2.759,
-           0.052
+           1.854,
+           2.86,
+           1.107
           ],
           "center_m": [
-           3.519,
+           3.697,
            0.0,
-           1.36
+           0.832
           ],
           "count": 1
          },
@@ -6783,9 +7570,10 @@
           "code": "HAB.INT.C.Q1",
           "label": "Cabina privada 1 (Comandante)",
           "kind": "part",
-          "desc": "Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina.",
+          "desc": "Cabina individual de 1,9 m³ con consola personal, bolsillos organizadores, pared acústica y cajón.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Lining",
@@ -6808,23 +7596,43 @@
             "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
            },
            {
-            "id": "R_Worktop",
-            "desc": "Encimera de compuesto de fibra de lino y resina bio"
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
            },
            {
             "id": "R_Screen",
             "desc": "Pantalla multifunción (contenido dinámico)"
            },
            {
-            "id": "R_Label",
-            "desc": "Rotulación serigrafiada"
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
            },
            {
             "id": "R_Bag",
-            "desc": "Bolsa de estiba de Nomex"
+            "desc": "Bolsa de estiba de Nomex arena"
+           },
+           {
+            "id": "R_Leather",
+            "desc": "Tapizado de piel técnica perforada, grafito cálido"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
            }
           ],
-          "tris": 5866,
+          "tris": 8114,
           "dims_m": [
            1.005,
            0.825,
@@ -6841,29 +7649,46 @@
           "code": "HAB.INT.C.Q1.BAG",
           "label": "Saco de dormir",
           "kind": "part",
-          "desc": "Saco de dormir acolchado sujeto a la pared con cinchas ajustables.",
+          "desc": "Saco de dormir acolchado en cámaras horizontales con capucha, cremallera y hebillas de liberación rápida.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_FabricBlue",
             "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
            },
            {
+            "id": "R_Fabric",
+            "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 4536,
+          "tris": 7368,
           "dims_m": [
-           0.661,
-           0.164,
-           1.721
+           0.623,
+           0.155,
+           1.517
           ],
           "center_m": [
-           3.172,
-           1.545,
-           -0.26
+           3.153,
+           1.565,
+           -0.062
           ],
           "count": 1
          },
@@ -6871,25 +7696,42 @@
           "code": "HAB.INT.C.Q1.CRT",
           "label": "Cortina",
           "kind": "part",
-          "desc": "Cortina de tejido técnico ignífugo recogida.",
+          "desc": "Cortina ignífuga sobre riel con anillas y cinta recogedora.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
            {
             "id": "R_FabricBlue",
             "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            }
           ],
-          "tris": 656,
+          "tris": 1804,
           "dims_m": [
-           0.26,
-           0.05,
-           2.223
+           0.905,
+           0.073,
+           2.241
           ],
           "center_m": [
-           2.85,
-           1.111,
-           0.301
+           3.172,
+           1.118,
+           0.31
           ],
           "count": 1
          },
@@ -6897,29 +7739,34 @@
           "code": "HAB.INT.C.Q1.LMP",
           "label": "Luz de lectura",
           "kind": "part",
-          "desc": "",
+          "desc": "Lámpara LED orientable sobre brazo articulado.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
             "id": "R_LED",
             "desc": "Tira LED cálida 3500 K"
            }
           ],
-          "tris": 120,
+          "tris": 364,
           "dims_m": [
-           0.06,
-           0.06,
-           0.029
+           0.193,
+           0.175,
+           0.13
           ],
           "center_m": [
-           2.89,
-           1.3,
-           1.466
+           3.542,
+           1.419,
+           0.568
           ],
           "count": 1
          },
@@ -6927,9 +7774,10 @@
           "code": "HAB.INT.C.Q2",
           "label": "Cabina privada 2 (Piloto)",
           "kind": "part",
-          "desc": "Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina.",
+          "desc": "Cabina individual de 1,9 m³ con consola personal, bolsillos organizadores, pared acústica y cajón.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Lining",
@@ -6952,23 +7800,43 @@
             "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
            },
            {
-            "id": "R_Worktop",
-            "desc": "Encimera de compuesto de fibra de lino y resina bio"
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
            },
            {
             "id": "R_Screen",
             "desc": "Pantalla multifunción (contenido dinámico)"
            },
            {
-            "id": "R_Label",
-            "desc": "Rotulación serigrafiada"
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
            },
            {
             "id": "R_Bag",
-            "desc": "Bolsa de estiba de Nomex"
+            "desc": "Bolsa de estiba de Nomex arena"
+           },
+           {
+            "id": "R_Leather",
+            "desc": "Tapizado de piel técnica perforada, grafito cálido"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
            }
           ],
-          "tris": 5866,
+          "tris": 8114,
           "dims_m": [
            1.005,
            0.825,
@@ -6985,29 +7853,46 @@
           "code": "HAB.INT.C.Q2.BAG",
           "label": "Saco de dormir",
           "kind": "part",
-          "desc": "Saco de dormir acolchado sujeto a la pared con cinchas ajustables.",
+          "desc": "Saco de dormir acolchado en cámaras horizontales con capucha, cremallera y hebillas de liberación rápida.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_FabricBlue",
             "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
            },
            {
+            "id": "R_Fabric",
+            "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 4536,
+          "tris": 7368,
           "dims_m": [
-           0.661,
-           0.165,
-           1.721
+           0.623,
+           0.154,
+           1.518
           ],
           "center_m": [
-           4.177,
-           1.545,
-           -0.26
+           4.158,
+           1.565,
+           -0.061
           ],
           "count": 1
          },
@@ -7015,25 +7900,42 @@
           "code": "HAB.INT.C.Q2.CRT",
           "label": "Cortina",
           "kind": "part",
-          "desc": "Cortina de tejido técnico ignífugo recogida.",
+          "desc": "Cortina ignífuga sobre riel con anillas y cinta recogedora.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
            {
             "id": "R_FabricBlue",
             "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            }
           ],
-          "tris": 656,
+          "tris": 1804,
           "dims_m": [
-           0.26,
-           0.044,
-           2.223
+           0.905,
+           0.077,
+           2.241
           ],
           "center_m": [
-           3.855,
-           1.11,
-           0.301
+           4.177,
+           1.119,
+           0.31
           ],
           "count": 1
          },
@@ -7041,29 +7943,34 @@
           "code": "HAB.INT.C.Q2.LMP",
           "label": "Luz de lectura",
           "kind": "part",
-          "desc": "",
+          "desc": "Lámpara LED orientable sobre brazo articulado.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
             "id": "R_LED",
             "desc": "Tira LED cálida 3500 K"
            }
           ],
-          "tris": 120,
+          "tris": 364,
           "dims_m": [
-           0.06,
-           0.06,
-           0.029
+           0.193,
+           0.175,
+           0.13
           ],
           "center_m": [
-           3.895,
-           1.3,
-           1.466
+           4.547,
+           1.419,
+           0.568
           ],
           "count": 1
          },
@@ -7071,9 +7978,10 @@
           "code": "HAB.INT.C.Q3",
           "label": "Cabina privada 3 (Especialista 1)",
           "kind": "part",
-          "desc": "Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina.",
+          "desc": "Cabina individual de 1,9 m³ con consola personal, bolsillos organizadores, pared acústica y cajón.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Lining",
@@ -7096,23 +8004,43 @@
             "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
            },
            {
-            "id": "R_Worktop",
-            "desc": "Encimera de compuesto de fibra de lino y resina bio"
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
            },
            {
             "id": "R_Screen",
             "desc": "Pantalla multifunción (contenido dinámico)"
            },
            {
-            "id": "R_Label",
-            "desc": "Rotulación serigrafiada"
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
            },
            {
             "id": "R_Bag",
-            "desc": "Bolsa de estiba de Nomex"
+            "desc": "Bolsa de estiba de Nomex arena"
+           },
+           {
+            "id": "R_Leather",
+            "desc": "Tapizado de piel técnica perforada, grafito cálido"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
            }
           ],
-          "tris": 5866,
+          "tris": 8114,
           "dims_m": [
            1.005,
            0.825,
@@ -7129,29 +8057,46 @@
           "code": "HAB.INT.C.Q3.BAG",
           "label": "Saco de dormir",
           "kind": "part",
-          "desc": "Saco de dormir acolchado sujeto a la pared con cinchas ajustables.",
+          "desc": "Saco de dormir acolchado en cámaras horizontales con capucha, cremallera y hebillas de liberación rápida.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_FabricBlue",
             "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
            },
            {
+            "id": "R_Fabric",
+            "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 4536,
+          "tris": 7368,
           "dims_m": [
-           0.661,
-           0.164,
-           1.72
+           0.623,
+           0.155,
+           1.516
           ],
           "center_m": [
-           3.172,
-           -1.545,
-           -0.26
+           3.153,
+           -1.565,
+           -0.062
           ],
           "count": 1
          },
@@ -7159,25 +8104,42 @@
           "code": "HAB.INT.C.Q3.CRT",
           "label": "Cortina",
           "kind": "part",
-          "desc": "Cortina de tejido técnico ignífugo recogida.",
+          "desc": "Cortina ignífuga sobre riel con anillas y cinta recogedora.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
            {
             "id": "R_FabricBlue",
             "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            }
           ],
-          "tris": 656,
+          "tris": 1804,
           "dims_m": [
-           0.26,
-           0.048,
-           2.223
+           0.905,
+           0.07,
+           2.241
           ],
           "center_m": [
-           2.85,
-           -1.11,
-           0.301
+           3.172,
+           -1.114,
+           0.31
           ],
           "count": 1
          },
@@ -7185,29 +8147,34 @@
           "code": "HAB.INT.C.Q3.LMP",
           "label": "Luz de lectura",
           "kind": "part",
-          "desc": "",
+          "desc": "Lámpara LED orientable sobre brazo articulado.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
             "id": "R_LED",
             "desc": "Tira LED cálida 3500 K"
            }
           ],
-          "tris": 120,
+          "tris": 364,
           "dims_m": [
-           0.06,
-           0.06,
-           0.029
+           0.193,
+           0.175,
+           0.13
           ],
           "center_m": [
-           2.89,
-           -1.3,
-           1.466
+           3.542,
+           -1.419,
+           0.568
           ],
           "count": 1
          },
@@ -7215,9 +8182,10 @@
           "code": "HAB.INT.C.Q4",
           "label": "Cabina privada 4 (Especialista 2)",
           "kind": "part",
-          "desc": "Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina.",
+          "desc": "Cabina individual de 1,9 m³ con consola personal, bolsillos organizadores, pared acústica y cajón.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Lining",
@@ -7240,23 +8208,43 @@
             "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
            },
            {
-            "id": "R_Worktop",
-            "desc": "Encimera de compuesto de fibra de lino y resina bio"
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
            },
            {
             "id": "R_Screen",
             "desc": "Pantalla multifunción (contenido dinámico)"
            },
            {
-            "id": "R_Label",
-            "desc": "Rotulación serigrafiada"
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
            },
            {
             "id": "R_Bag",
-            "desc": "Bolsa de estiba de Nomex"
+            "desc": "Bolsa de estiba de Nomex arena"
+           },
+           {
+            "id": "R_Leather",
+            "desc": "Tapizado de piel técnica perforada, grafito cálido"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
            }
           ],
-          "tris": 5866,
+          "tris": 8114,
           "dims_m": [
            1.005,
            0.825,
@@ -7273,29 +8261,46 @@
           "code": "HAB.INT.C.Q4.BAG",
           "label": "Saco de dormir",
           "kind": "part",
-          "desc": "Saco de dormir acolchado sujeto a la pared con cinchas ajustables.",
+          "desc": "Saco de dormir acolchado en cámaras horizontales con capucha, cremallera y hebillas de liberación rápida.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_FabricBlue",
             "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
            },
            {
+            "id": "R_Fabric",
+            "desc": "Tejido acústico de lana técnica en espiga, gris cálido"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 4536,
+          "tris": 7368,
           "dims_m": [
-           0.661,
-           0.164,
-           1.722
+           0.623,
+           0.154,
+           1.516
           ],
           "center_m": [
-           4.177,
-           -1.545,
-           -0.259
+           4.158,
+           -1.565,
+           -0.062
           ],
           "count": 1
          },
@@ -7303,25 +8308,42 @@
           "code": "HAB.INT.C.Q4.CRT",
           "label": "Cortina",
           "kind": "part",
-          "desc": "Cortina de tejido técnico ignífugo recogida.",
+          "desc": "Cortina ignífuga sobre riel con anillas y cinta recogedora.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
            {
             "id": "R_FabricBlue",
             "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            }
           ],
-          "tris": 656,
+          "tris": 1804,
           "dims_m": [
-           0.26,
-           0.049,
-           2.223
+           0.905,
+           0.066,
+           2.241
           ],
           "center_m": [
-           3.855,
-           -1.114,
-           0.301
+           4.177,
+           -1.117,
+           0.31
           ],
           "count": 1
          },
@@ -7329,29 +8351,34 @@
           "code": "HAB.INT.C.Q4.LMP",
           "label": "Luz de lectura",
           "kind": "part",
-          "desc": "",
+          "desc": "Lámpara LED orientable sobre brazo articulado.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
             "id": "R_LED",
             "desc": "Tira LED cálida 3500 K"
            }
           ],
-          "tris": 120,
+          "tris": 364,
           "dims_m": [
-           0.06,
-           0.06,
-           0.029
+           0.193,
+           0.175,
+           0.13
           ],
           "center_m": [
-           3.895,
-           -1.3,
-           1.466
+           4.547,
+           -1.419,
+           0.568
           ],
           "count": 1
          },
@@ -7362,6 +8389,7 @@
           "desc": "Nervios grafito, cornisas, raíles de anclaje.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Lining",
@@ -7400,6 +8428,7 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_LED",
@@ -7430,6 +8459,7 @@
           "desc": "Frentes de armario grafito y pavimento de caucho.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Floor",
@@ -7460,6 +8490,7 @@
           "desc": "Encimera de compuesto de lino.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [],
           "tris": 0,
           "count": 1
@@ -7471,6 +8502,7 @@
           "desc": "Paneles curvos de PPSU con juntas y compartimentos altos.",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Lining",
@@ -7497,6 +8529,7 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "C",
           "materials": [
            {
             "id": "R_Lining",
@@ -7544,20 +8577,25 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_Lining",
             "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            }
           ],
-          "tris": 1148,
+          "tris": 1580,
           "dims_m": [
-           0.03,
+           0.04,
            3.84,
            3.84
           ],
           "center_m": [
-           0.605,
+           0.61,
            0.0,
            0.0
           ],
@@ -7567,29 +8605,50 @@
           "code": "HAB.INT.D.BAG",
           "label": "Bolsas de estiba",
           "kind": "part",
-          "desc": "Bolsas de Nomex con etiquetas de inventario y cintas de sujeción.",
+          "desc": "Bolsas aeroespaciales CTB en Nomex y tejido técnico con cremallera, correas de compresión, asas y etiquetas.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_Bag",
-            "desc": "Bolsa de estiba de Nomex"
+            "desc": "Bolsa de estiba de Nomex arena"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
            },
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_BagTech",
+            "desc": "Bolsa de estiba de tejido técnico gris pizarra"
+           },
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
            }
           ],
-          "tris": 36528,
+          "tris": 13152,
           "dims_m": [
-           0.237,
-           2.621,
-           1.489
+           0.265,
+           2.583,
+           1.496
           ],
           "center_m": [
-           0.744,
-           0.023,
-           -0.051
+           0.765,
+           0.007,
+           -0.04
           ],
           "count": 1
          },
@@ -7597,17 +8656,30 @@
           "code": "HAB.INT.D.CEV",
           "label": "Cicloergómetro",
           "kind": "part",
-          "desc": "Cicloergómetro con aislamiento de vibraciones, sujeción de pies y monitor de esfuerzo.",
+          "desc": "Cicloergómetro CEVIS con aislamiento de vibraciones, volante ranurado, pedales con correas, arnés de cintura y consola.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
-            "id": "R_Lining",
-            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+            "id": "R_Rubber",
+            "desc": "Elastómero negro"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            },
            {
             "id": "R_Black",
@@ -7618,20 +8690,28 @@
             "desc": "Tapizado de piel técnica perforada, grafito cálido"
            },
            {
-            "id": "R_Rubber",
-            "desc": "Elastómero negro"
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           },
+           {
+            "id": "R_Screen",
+            "desc": "Pantalla multifunción (contenido dinámico)"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
            }
           ],
-          "tris": 3016,
+          "tris": 9182,
           "dims_m": [
-           0.932,
-           0.46,
-           1.237
+           0.96,
+           0.457,
+           1.167
           ],
           "center_m": [
-           2.166,
-           -0.95,
-           -0.521
+           2.15,
+           -0.96,
+           -0.567
           ],
           "count": 1
          },
@@ -7642,6 +8722,7 @@
           "desc": "Contenedores de raciones, bolsas de bebida y utensilios con sujeción magnética.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_Steel",
@@ -7653,23 +8734,27 @@
            },
            {
             "id": "R_Bag",
-            "desc": "Bolsa de estiba de Nomex"
+            "desc": "Bolsa de estiba de Nomex arena"
            },
            {
             "id": "R_Lining",
             "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_BagTech",
+            "desc": "Bolsa de estiba de tejido técnico gris pizarra"
            }
           ],
-          "tris": 3628,
+          "tris": 5224,
           "dims_m": [
-           0.565,
-           0.308,
-           0.152
+           0.513,
+           0.311,
+           0.155
           ],
           "center_m": [
-           1.029,
-           1.63,
-           0.046
+           1.005,
+           1.626,
+           0.044
           ],
           "count": 1
          },
@@ -7680,22 +8765,23 @@
           "desc": "Etiquetas de inventario y señalización de seguridad y orientación.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_Decal",
             "desc": "Etiquetas y señalización (atlas)"
            }
           ],
-          "tris": 42,
+          "tris": 44,
           "dims_m": [
            1.717,
-           2.906,
-           1.95
+           3.252,
+           1.956
           ],
           "center_m": [
            1.483,
-           0.073,
-           0.405
+           0.246,
+           0.402
           ],
           "count": 1
          },
@@ -7703,41 +8789,58 @@
           "code": "HAB.INT.D.H2O",
           "label": "Dispensador de agua",
           "kind": "part",
-          "desc": "Dispensador de agua caliente y fría con dosificación en bolsas de bebida.",
+          "desc": "Dispensador de agua fría y caliente con boquilla dosificadora y bandeja antigoteo.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_Lining",
             "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
            },
            {
-            "id": "R_Black",
-            "desc": "Polímero negro (biseles de pantalla)"
-           },
-           {
-            "id": "R_Indicator",
-            "desc": "Indicador"
-           },
-           {
-            "id": "R_Accent",
-            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
             "id": "R_Steel",
             "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Screen",
+            "desc": "Pantalla multifunción (contenido dinámico)"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Alarm",
+            "desc": "Avisador de alarma rojo"
+           },
+           {
+            "id": "R_Warning",
+            "desc": "Avisador de cautela ámbar"
            }
           ],
-          "tris": 680,
+          "tris": 3004,
           "dims_m": [
-           0.3,
-           0.352,
-           0.46
+           0.32,
+           0.363,
+           0.483
           ],
           "center_m": [
-           1.95,
-           1.694,
-           0.2
+           1.96,
+           1.69,
+           0.21
           ],
           "count": 1
          },
@@ -7745,9 +8848,61 @@
           "code": "HAB.INT.D.HYG",
           "label": "Compartimento de higiene",
           "kind": "part",
-          "desc": "Cabina cerrada con lavado por toallitas, aspiración de residuos y ventilación propia.",
+          "desc": "Cabina cerrada con puerta corredera, ventilación dedicada y cerradura con indicador.",
           "func": "",
           "depth": 4,
+          "room": "D",
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
+           {
+            "id": "R_LiningDark",
+            "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Black",
+            "desc": "Polímero negro (biseles de pantalla)"
+           }
+          ],
+          "tris": 2772,
+          "dims_m": [
+           1.0,
+           0.783,
+           2.61
+          ],
+          "center_m": [
+           1.14,
+           -1.359,
+           0.155
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.D.OVN",
+          "label": "Calentador de alimentos",
+          "kind": "part",
+          "desc": "Calentador por conducción con puerta aislada, control de temperatura y ventilación.",
+          "func": "",
+          "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_Lining",
@@ -7766,58 +8921,142 @@
             "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            },
            {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
             "id": "R_Black",
             "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Screen",
+            "desc": "Pantalla multifunción (contenido dinámico)"
+           },
+           {
+            "id": "R_Warning",
+            "desc": "Avisador de cautela ámbar"
            }
           ],
-          "tris": 884,
+          "tris": 2424,
           "dims_m": [
-           1.0,
-           0.77,
-           3.04
+           0.48,
+           0.391,
+           0.364
           ],
           "center_m": [
-           1.14,
-           -1.365,
-           0.37
+           1.4,
+           1.674,
+           0.152
           ],
           "count": 1
          },
          {
-          "code": "HAB.INT.D.OVN",
-          "label": "Calentador de alimentos",
+          "code": "HAB.INT.D.PROP.DRINK",
+          "label": "Bolsa de bebida",
           "kind": "part",
-          "desc": "Calentador por conducción para raciones y bolsas termoestabilizadas.",
+          "desc": "Bolsa presurizada plateada de bebida con válvula bermellón, pajita curva y etiqueta de hidratación.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
-            "id": "R_Lining",
-            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
            },
            {
-            "id": "R_Frame",
-            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+            "id": "R_Bag",
+            "desc": "Bolsa de estiba de Nomex arena"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
+           },
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
            },
            {
             "id": "R_Accent",
             "desc": "Bermellón ALCIÓN (agarres y seguridad)"
            },
            {
-            "id": "R_Indicator",
-            "desc": "Indicador"
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Rubber",
+            "desc": "Elastómero negro"
            }
           ],
-          "tris": 408,
+          "tris": 1036,
           "dims_m": [
-           0.46,
-           0.365,
-           0.34
+           0.09,
+           0.057,
+           0.216
           ],
           "center_m": [
-           1.42,
-           1.688,
-           0.14
+           1.96,
+           1.619,
+           0.129
+          ],
+          "count": 1
+         },
+         {
+          "code": "HAB.INT.D.PROP.FOOD",
+          "label": "Paquete de ración espacial",
+          "kind": "part",
+          "desc": "Envase termoformado de ración orbital con tapa sellada, banda de velcro, sobre y cuchara de acero sujeta.",
+          "func": "",
+          "depth": 4,
+          "room": "D",
+          "materials": [
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Rubber",
+            "desc": "Elastómero negro"
+           },
+           {
+            "id": "R_Label",
+            "desc": "Rotulación serigrafiada"
+           },
+           {
+            "id": "R_FabricBlue",
+            "desc": "Tejido técnico petróleo (tapizados, sacos de dormir)"
+           },
+           {
+            "id": "R_Bag",
+            "desc": "Bolsa de estiba de Nomex arena"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           }
+          ],
+          "tris": 1796,
+          "dims_m": [
+           0.184,
+           0.147,
+           0.047
+          ],
+          "center_m": [
+           1.663,
+           1.389,
+           -0.007
           ],
           "count": 1
          },
@@ -7828,18 +9067,19 @@
           "desc": "Nervios grafito, cornisas, raíles de anclaje.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
-            "id": "R_Lining",
-            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
-           },
-           {
             "id": "R_Alu",
             "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Lining",
+            "desc": "Revestimiento interior: polímero técnico PPSU texturizado, tono hueso cálido"
            },
            {
             "id": "R_Accent",
@@ -7854,7 +9094,7 @@
             "desc": "Trasdós oscuro"
            }
           ],
-          "tris": 13276,
+          "tris": 19668,
           "dims_m": [
            2.08,
            3.877,
@@ -7874,6 +9114,7 @@
           "desc": "",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_LED",
@@ -7904,6 +9145,7 @@
           "desc": "Frentes de armario grafito y pavimento de caucho.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_LiningDark",
@@ -7938,6 +9180,7 @@
           "desc": "Encimera de compuesto de lino.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_Worktop",
@@ -7964,6 +9207,7 @@
           "desc": "Paneles curvos de PPSU con juntas y compartimentos altos.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_Lining",
@@ -7987,25 +9231,54 @@
           "code": "HAB.INT.D.TAB",
           "label": "Tableta del plan del día",
           "kind": "part",
-          "desc": "",
+          "desc": "Tableta táctica con bisel grafito, pantalla iluminada, botón lateral y soporte antideslizante.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
+           {
+            "id": "R_Frame",
+            "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
+           },
            {
             "id": "R_Black",
             "desc": "Polímero negro (biseles de pantalla)"
+           },
+           {
+            "id": "R_Screen",
+            "desc": "Pantalla multifunción (contenido dinámico)"
+           },
+           {
+            "id": "R_Indicator",
+            "desc": "Indicador nominal verde"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
+            "id": "R_Rubber",
+            "desc": "Elastómero negro"
            }
           ],
-          "tris": 108,
+          "tris": 180,
           "dims_m": [
-           0.269,
-           0.215,
-           0.008
+           0.286,
+           0.235,
+           0.06
           ],
           "center_m": [
-           1.7,
-           0.08,
-           -0.064
+           1.699,
+           0.072,
+           -0.059
           ],
           "count": 1
          },
@@ -8013,41 +9286,58 @@
           "code": "HAB.INT.D.TBL",
           "label": "Mesa de comidas",
           "kind": "part",
-          "desc": "Mesa de pie con barra de sujeción para los pies y anclajes magnéticos.",
+          "desc": "Mesa con reborde perimetral, bandas elásticas de retención, vaso y barra apoyapiés.",
           "func": "",
           "depth": 4,
+          "room": "D",
           "materials": [
            {
             "id": "R_Worktop",
             "desc": "Encimera de compuesto de fibra de lino y resina bio"
            },
            {
+            "id": "R_Alu",
+            "desc": "Aluminio satinado"
+           },
+           {
+            "id": "R_Accent",
+            "desc": "Bermellón ALCIÓN (agarres y seguridad)"
+           },
+           {
+            "id": "R_Steel",
+            "desc": "Acero inoxidable cepillado"
+           },
+           {
             "id": "R_Frame",
             "desc": "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"
            },
            {
-            "id": "R_Alu",
-            "desc": "Aluminio satinado"
+            "id": "R_Bag",
+            "desc": "Bolsa de estiba de Nomex arena"
+           },
+           {
+            "id": "R_Rubber",
+            "desc": "Elastómero negro"
            }
           ],
-          "tris": 1164,
+          "tris": 6454,
           "dims_m": [
-           0.84,
-           0.6,
-           1.07
+           0.85,
+           0.61,
+           1.26
           ],
           "center_m": [
            1.55,
            0.0,
-           -0.615
+           -0.52
           ],
           "count": 1
          }
         ],
-        "count": 16
+        "count": 18
        }
       ],
-      "count": 113
+      "count": 116
      },
      {
       "code": "HAB.MLI",
@@ -8804,7 +10094,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.028,
@@ -8850,7 +10140,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.357,
@@ -8896,7 +10186,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.631,
@@ -8942,7 +10232,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.809,
@@ -8988,7 +10278,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.864,
@@ -9062,7 +10352,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.809,
@@ -9108,7 +10398,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.631,
@@ -9154,7 +10444,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.357,
@@ -9200,7 +10490,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.028,
@@ -9246,7 +10536,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.357,
@@ -9292,7 +10582,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.631,
@@ -9338,7 +10628,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.809,
@@ -9384,7 +10674,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.864,
@@ -9430,7 +10720,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.809,
@@ -9476,7 +10766,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.631,
@@ -9522,7 +10812,7 @@
             "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.357,
@@ -9611,7 +10901,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.028,
@@ -9677,7 +10967,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.357,
@@ -9713,18 +11003,34 @@
            {
             "id": "M_Decal",
             "desc": "Marcado serigrafiado (negro)"
+           },
+           {
+            "id": "M_Graphite",
+            "desc": "Pintura de identidad (grafito)"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Steel",
+            "desc": "Acero inoxidable A286"
+           },
+           {
+            "id": "M_Accent",
+            "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1720,
+          "tris": 2800,
           "dims_m": [
            2.03,
-           0.631,
-           0.631
+           0.634,
+           0.634
           ],
           "center_m": [
            3.675,
-           1.597,
-           1.597
+           1.598,
+           1.598
           ],
           "count": 1
          },
@@ -9753,7 +11059,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.809,
@@ -9791,7 +11097,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.864,
@@ -9829,7 +11135,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.809,
@@ -9865,18 +11171,34 @@
            {
             "id": "M_Decal",
             "desc": "Marcado serigrafiado (negro)"
+           },
+           {
+            "id": "M_Graphite",
+            "desc": "Pintura de identidad (grafito)"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Steel",
+            "desc": "Acero inoxidable A286"
+           },
+           {
+            "id": "M_Accent",
+            "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1720,
+          "tris": 2800,
           "dims_m": [
            2.03,
-           0.631,
-           0.631
+           0.634,
+           0.634
           ],
           "center_m": [
            3.675,
-           -1.597,
-           1.597
+           -1.598,
+           1.598
           ],
           "count": 1
          },
@@ -9905,7 +11227,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.357,
@@ -9943,7 +11265,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.028,
@@ -10009,7 +11331,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.357,
@@ -10045,18 +11367,34 @@
            {
             "id": "M_Decal",
             "desc": "Marcado serigrafiado (negro)"
+           },
+           {
+            "id": "M_Graphite",
+            "desc": "Pintura de identidad (grafito)"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Steel",
+            "desc": "Acero inoxidable A286"
+           },
+           {
+            "id": "M_Accent",
+            "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1720,
+          "tris": 2800,
           "dims_m": [
            2.03,
-           0.631,
-           0.631
+           0.634,
+           0.634
           ],
           "center_m": [
            3.675,
-           -1.597,
-           -1.597
+           -1.598,
+           -1.598
           ],
           "count": 1
          },
@@ -10085,7 +11423,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.809,
@@ -10151,7 +11489,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.864,
@@ -10189,7 +11527,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.809,
@@ -10225,18 +11563,34 @@
            {
             "id": "M_Decal",
             "desc": "Marcado serigrafiado (negro)"
+           },
+           {
+            "id": "M_Graphite",
+            "desc": "Pintura de identidad (grafito)"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Steel",
+            "desc": "Acero inoxidable A286"
+           },
+           {
+            "id": "M_Accent",
+            "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1720,
+          "tris": 2800,
           "dims_m": [
            2.03,
-           0.631,
-           0.631
+           0.634,
+           0.634
           ],
           "center_m": [
            3.675,
-           1.597,
-           -1.597
+           1.598,
+           -1.598
           ],
           "count": 1
          },
@@ -10265,7 +11619,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.357,
@@ -10354,7 +11708,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.028,
@@ -10444,18 +11798,34 @@
            {
             "id": "M_Decal",
             "desc": "Marcado serigrafiado (negro)"
+           },
+           {
+            "id": "M_Graphite",
+            "desc": "Pintura de identidad (grafito)"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Steel",
+            "desc": "Acero inoxidable A286"
+           },
+           {
+            "id": "M_Accent",
+            "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1720,
+          "tris": 2800,
           "dims_m": [
            2.03,
-           0.357,
-           0.809
+           0.36,
+           0.811
           ],
           "center_m": [
            5.725,
-           2.086,
-           0.864
+           2.088,
+           0.865
           ],
           "count": 1
          },
@@ -10484,7 +11854,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.631,
@@ -10522,7 +11892,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.809,
@@ -10560,7 +11930,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.864,
@@ -10598,7 +11968,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.809,
@@ -10636,7 +12006,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.631,
@@ -10672,18 +12042,34 @@
            {
             "id": "M_Decal",
             "desc": "Marcado serigrafiado (negro)"
+           },
+           {
+            "id": "M_Graphite",
+            "desc": "Pintura de identidad (grafito)"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Steel",
+            "desc": "Acero inoxidable A286"
+           },
+           {
+            "id": "M_Accent",
+            "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1720,
+          "tris": 2800,
           "dims_m": [
            2.03,
-           0.357,
-           0.809
+           0.36,
+           0.811
           ],
           "center_m": [
            5.725,
-           -2.086,
-           0.864
+           -2.088,
+           0.865
           ],
           "count": 1
          },
@@ -10712,7 +12098,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.028,
@@ -10802,18 +12188,34 @@
            {
             "id": "M_Decal",
             "desc": "Marcado serigrafiado (negro)"
+           },
+           {
+            "id": "M_Graphite",
+            "desc": "Pintura de identidad (grafito)"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Steel",
+            "desc": "Acero inoxidable A286"
+           },
+           {
+            "id": "M_Accent",
+            "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1720,
+          "tris": 2800,
           "dims_m": [
            2.03,
-           0.357,
-           0.809
+           0.36,
+           0.811
           ],
           "center_m": [
            5.725,
-           -2.086,
-           -0.864
+           -2.088,
+           -0.865
           ],
           "count": 1
          },
@@ -10842,7 +12244,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.631,
@@ -10880,7 +12282,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.809,
@@ -10918,7 +12320,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1600,
+          "tris": 1816,
           "dims_m": [
            2.03,
            0.864,
@@ -10956,7 +12358,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.809,
@@ -10994,7 +12396,7 @@
             "desc": "Marcado serigrafiado (negro)"
            }
           ],
-          "tris": 1720,
+          "tris": 2104,
           "dims_m": [
            2.03,
            0.631,
@@ -11030,18 +12432,34 @@
            {
             "id": "M_Decal",
             "desc": "Marcado serigrafiado (negro)"
+           },
+           {
+            "id": "M_Graphite",
+            "desc": "Pintura de identidad (grafito)"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Steel",
+            "desc": "Acero inoxidable A286"
+           },
+           {
+            "id": "M_Accent",
+            "desc": "Pintura de identidad (bermellón ALCIÓN)"
            }
           ],
-          "tris": 1720,
+          "tris": 2800,
           "dims_m": [
            2.03,
-           0.357,
-           0.809
+           0.36,
+           0.811
           ],
           "center_m": [
            5.725,
-           2.086,
-           -0.864
+           2.088,
+           -0.865
           ],
           "count": 1
          },
@@ -11129,7 +12547,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.028,
@@ -11175,7 +12593,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.357,
@@ -11221,7 +12639,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.631,
@@ -11295,7 +12713,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.809,
@@ -11341,7 +12759,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.864,
@@ -11387,7 +12805,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.809,
@@ -11433,7 +12851,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.631,
@@ -11479,7 +12897,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.357,
@@ -11525,7 +12943,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.028,
@@ -11571,7 +12989,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.357,
@@ -11617,7 +13035,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.631,
@@ -11663,7 +13081,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.809,
@@ -11709,7 +13127,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.864,
@@ -11783,7 +13201,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.809,
@@ -11829,7 +13247,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.631,
@@ -11875,7 +13293,7 @@
             "desc": "Pintura de identidad (grafito)"
            }
           ],
-          "tris": 1744,
+          "tris": 2128,
           "dims_m": [
            2.03,
            0.357,
@@ -11920,9 +13338,39 @@
          }
         ],
         "count": 20
+       },
+       {
+        "code": "HAB.MMOD.SEAM",
+        "label": "Cintas térmicas y flejes de costura entre anillos",
+        "kind": "part",
+        "desc": "Sellado térmico de Kapton aluminizado y flejes de aluminio en las juntas circunferenciales entre anillos MMOD.",
+        "func": "",
+        "depth": 3,
+        "materials": [
+         {
+          "id": "M_MLI_Gold",
+          "desc": "MLI exterior: Kapton aluminizado (cara ámbar)"
+         },
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
+         }
+        ],
+        "tris": 768,
+        "dims_m": [
+         6.194,
+         4.538,
+         4.538
+        ],
+        "center_m": [
+         5.725,
+         0.0,
+         0.0
+        ],
+        "count": 1
        }
       ],
-      "count": 100
+      "count": 101
      },
      {
       "code": "HAB.RCS",
@@ -12683,7 +14131,7 @@
       "count": 21
      }
     ],
-    "count": 291
+    "count": 298
    },
    {
     "code": "PRP",
@@ -15986,7 +17434,7 @@
     "dims_m": [
      5.424,
      4.478,
-     4.478
+     4.598
     ],
     "center_m": [
      -2.092,
@@ -16592,7 +18040,7 @@
       "dims_m": [
        4.563,
        4.478,
-       4.478
+       4.598
       ],
       "center_m": [
        -2.061,
@@ -16717,6 +18165,82 @@
          -0.6,
          1.588,
          -1.588
+        ],
+        "count": 1
+       },
+       {
+        "code": "SVC.EXT.NAV1",
+        "label": "Baliza de navegación de popa (cenital)",
+        "kind": "part",
+        "desc": "Baliza estroboscópica blanca de popa con carenado anodizado.",
+        "func": "",
+        "depth": 3,
+        "materials": [
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
+         },
+         {
+          "id": "M_Bolt",
+          "desc": "Tornillería de acero pasivado / titanio"
+         },
+         {
+          "id": "M_AlAnodBlack",
+          "desc": "Aluminio anodizado negro"
+         },
+         {
+          "id": "M_NavLight",
+          "desc": "Baliza de navegación"
+         }
+        ],
+        "tris": 996,
+        "dims_m": [
+         0.127,
+         0.124,
+         0.094
+        ],
+        "center_m": [
+         -4.022,
+         0.0,
+         2.252
+        ],
+        "count": 1
+       },
+       {
+        "code": "SVC.EXT.NAV2",
+        "label": "Baliza de navegación de popa (nadiral)",
+        "kind": "part",
+        "desc": "Baliza estroboscópica blanca de popa con carenado anodizado.",
+        "func": "",
+        "depth": 3,
+        "materials": [
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
+         },
+         {
+          "id": "M_Bolt",
+          "desc": "Tornillería de acero pasivado / titanio"
+         },
+         {
+          "id": "M_AlAnodBlack",
+          "desc": "Aluminio anodizado negro"
+         },
+         {
+          "id": "M_NavLight",
+          "desc": "Baliza de navegación"
+         }
+        ],
+        "tris": 996,
+        "dims_m": [
+         0.127,
+         0.124,
+         0.094
+        ],
+        "center_m": [
+         -4.022,
+         -0.0,
+         -2.252
         ],
         "count": 1
        },
@@ -16959,47 +18483,63 @@
         "func": "",
         "depth": 3,
         "dims_m": [
-         1.183,
-         0.526,
-         0.526
+         1.317,
+         0.63,
+         0.63
         ],
         "center_m": [
-         -3.05,
-         1.68,
-         -1.68
+         -3.051,
+         1.723,
+         -1.723
         ],
         "children": [
          {
           "code": "SVC.EXT.STR.ST1",
           "label": "Rastreador estelar 1",
           "kind": "part",
-          "desc": "Cámara estelar autónoma con parasol de 4 deflectores; precisión conceptual < 5 arcsec.",
+          "desc": "Cámara estelar autónoma sobre aisladores de titanio con parasol de 6 deflectores y visera solar; precisión conceptual < 5 arcsec.",
           "func": "",
           "depth": 4,
           "materials": [
+           {
+            "id": "M_AlBare",
+            "desc": "Aluminio mecanizado"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
+           },
            {
             "id": "M_AlAnodBlack",
             "desc": "Aluminio anodizado negro"
            },
            {
-            "id": "M_Lens",
-            "desc": "Lente óptica"
-           },
-           {
             "id": "M_MLI_Gold",
             "desc": "MLI exterior: Kapton aluminizado (cara ámbar)"
+           },
+           {
+            "id": "M_GoldPlate",
+            "desc": "Contactos dorados"
+           },
+           {
+            "id": "M_Cable",
+            "desc": "Mazo de cables con funda"
+           },
+           {
+            "id": "M_Lens",
+            "desc": "Lente óptica"
            }
           ],
-          "tris": 1460,
+          "tris": 2720,
           "dims_m": [
-           0.417,
-           0.526,
-           0.526
+           0.493,
+           0.629,
+           0.629
           ],
           "center_m": [
-           -2.667,
-           1.68,
-           -1.68
+           -2.639,
+           1.724,
+           -1.724
           ],
           "count": 1
          },
@@ -17007,33 +18547,49 @@
           "code": "SVC.EXT.STR.ST2",
           "label": "Rastreador estelar 2",
           "kind": "part",
-          "desc": "Cámara estelar autónoma con parasol de 4 deflectores; precisión conceptual < 5 arcsec.",
+          "desc": "Cámara estelar autónoma sobre aisladores de titanio con parasol de 6 deflectores y visera solar; precisión conceptual < 5 arcsec.",
           "func": "",
           "depth": 4,
           "materials": [
+           {
+            "id": "M_AlBare",
+            "desc": "Aluminio mecanizado"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
+           },
            {
             "id": "M_AlAnodBlack",
             "desc": "Aluminio anodizado negro"
            },
            {
-            "id": "M_Lens",
-            "desc": "Lente óptica"
-           },
-           {
             "id": "M_MLI_Gold",
             "desc": "MLI exterior: Kapton aluminizado (cara ámbar)"
+           },
+           {
+            "id": "M_GoldPlate",
+            "desc": "Contactos dorados"
+           },
+           {
+            "id": "M_Cable",
+            "desc": "Mazo de cables con funda"
+           },
+           {
+            "id": "M_Lens",
+            "desc": "Lente óptica"
            }
           ],
-          "tris": 1460,
+          "tris": 2720,
           "dims_m": [
-           0.417,
-           0.526,
-           0.526
+           0.493,
+           0.629,
+           0.629
           ],
           "center_m": [
-           -3.433,
-           1.68,
-           -1.68
+           -3.463,
+           1.723,
+           -1.723
           ],
           "count": 1
          }
@@ -17161,7 +18717,7 @@
         "count": 1
        }
       ],
-      "count": 18
+      "count": 20
      },
      {
       "code": "SVC.PRP",
@@ -17901,8 +19457,8 @@
       "depth": 2,
       "dims_m": [
        4.97,
-       4.408,
-       4.379
+       4.446,
+       4.412
       ],
       "center_m": [
        -1.9,
@@ -17919,8 +19475,8 @@
         "depth": 3,
         "dims_m": [
          2.47,
-         4.408,
-         4.379
+         4.446,
+         4.412
         ],
         "center_m": [
          -0.65,
@@ -17951,17 +19507,25 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           0.044,
+           0.063,
            1.754
           ],
           "center_m": [
            -0.65,
-           2.182,
+           2.191,
            0.0
           ],
           "count": 1
@@ -17989,18 +19553,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           1.272,
-           1.272
+           1.285,
+           1.285
           ],
           "center_m": [
            -0.65,
-           1.543,
-           1.543
+           1.55,
+           1.55
           ],
           "count": 1
          },
@@ -18023,18 +19595,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1700,
+          "tris": 2356,
           "dims_m": [
            2.47,
            1.754,
-           0.029
+           0.046
           ],
           "center_m": [
            -0.65,
            -0.0,
-           2.175
+           2.183
           ],
           "count": 1
          },
@@ -18061,18 +19641,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           1.272,
-           1.272
+           1.285,
+           1.285
           ],
           "center_m": [
            -0.65,
-           -1.543,
-           1.543
+           -1.55,
+           1.55
           ],
           "count": 1
          },
@@ -18099,17 +19687,25 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           0.044,
+           0.063,
            1.754
           ],
           "center_m": [
            -0.65,
-           -2.182,
+           -2.191,
            -0.0
           ],
           "count": 1
@@ -18137,18 +19733,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           1.272,
-           1.272
+           1.285,
+           1.285
           ],
           "center_m": [
            -0.65,
-           -1.543,
-           -1.543
+           -1.55,
+           -1.55
           ],
           "count": 1
          },
@@ -18171,18 +19775,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1700,
+          "tris": 2356,
           "dims_m": [
            2.47,
            1.754,
-           0.029
+           0.046
           ],
           "center_m": [
            -0.65,
            0.0,
-           -2.175
+           -2.183
           ],
           "count": 1
          },
@@ -18209,18 +19821,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           1.272,
-           1.272
+           1.285,
+           1.285
           ],
           "center_m": [
            -0.65,
-           1.543,
-           -1.543
+           1.55,
+           -1.55
           ],
           "count": 1
          }
@@ -18236,8 +19856,8 @@
         "depth": 3,
         "dims_m": [
          2.47,
-         4.408,
-         4.379
+         4.446,
+         4.412
         ],
         "center_m": [
          -3.15,
@@ -18268,17 +19888,25 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           0.044,
+           0.063,
            1.754
           ],
           "center_m": [
            -3.15,
-           2.182,
+           2.191,
            0.0
           ],
           "count": 1
@@ -18306,18 +19934,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           1.272,
-           1.272
+           1.285,
+           1.285
           ],
           "center_m": [
            -3.15,
-           1.543,
-           1.543
+           1.55,
+           1.55
           ],
           "count": 1
          },
@@ -18340,18 +19976,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1700,
+          "tris": 2356,
           "dims_m": [
            2.47,
            1.754,
-           0.029
+           0.046
           ],
           "center_m": [
            -3.15,
            -0.0,
-           2.175
+           2.183
           ],
           "count": 1
          },
@@ -18378,18 +20022,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           1.272,
-           1.272
+           1.285,
+           1.285
           ],
           "center_m": [
            -3.15,
-           -1.543,
-           1.543
+           -1.55,
+           1.55
           ],
           "count": 1
          },
@@ -18416,17 +20068,25 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           0.044,
+           0.063,
            1.754
           ],
           "center_m": [
            -3.15,
-           -2.182,
+           -2.191,
            -0.0
           ],
           "count": 1
@@ -18454,18 +20114,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           1.272,
-           1.272
+           1.285,
+           1.285
           ],
           "center_m": [
            -3.15,
-           -1.543,
-           -1.543
+           -1.55,
+           -1.55
           ],
           "count": 1
          },
@@ -18488,18 +20156,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1700,
+          "tris": 2356,
           "dims_m": [
            2.47,
            1.754,
-           0.029
+           0.046
           ],
           "center_m": [
            -3.15,
            0.0,
-           -2.175
+           -2.183
           ],
           "count": 1
          },
@@ -18526,18 +20202,26 @@
            {
             "id": "M_Bolt",
             "desc": "Tornillería de acero pasivado / titanio"
+           },
+           {
+            "id": "M_AlAnodBlack",
+            "desc": "Aluminio anodizado negro"
+           },
+           {
+            "id": "M_Titanium",
+            "desc": "Titanio Ti-6Al-4V"
            }
           ],
-          "tris": 1364,
+          "tris": 2020,
           "dims_m": [
            2.47,
-           1.272,
-           1.272
+           1.285,
+           1.285
           ],
           "center_m": [
            -3.15,
-           1.543,
-           -1.543
+           1.55,
+           -1.55
           ],
           "count": 1
          }
@@ -19538,7 +21222,7 @@
       "count": 4
      }
     ],
-    "count": 118
+    "count": 120
    },
    {
     "code": "THR",
@@ -20054,6 +21738,6 @@
     "count": 17
    }
   ],
-  "count": 634
+  "count": 646
  }
 }
