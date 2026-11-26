@@ -1122,7 +1122,7 @@ export class Engine {
       const d = this.dockInfo();
       if (d.range < 0.6 && d.angle < 6 && d.closing < 0.25) {
         this.flight.docked = 'tesela';
-        this.audio.thud(1); this.audio.comms('Captura confirmada. Alción atracada en Tesela.'); this.toast('Captura: atracado en la estación Tesela');
+        this.audio.dockLock(); this.audio.comms('Captura confirmada. Alción atracada en Tesela.'); this.toast('Captura: atracado en la estación Tesela');
       }
     }
     for (const o of this.objects) {
@@ -1548,7 +1548,9 @@ export class Engine {
     return {
       vel: s.vel.clone().applyQuaternion(qInv), w: s.w, q: s.q, throttle: this.flight.throttle, assist: this.flight.assist, rcsArmed: this.flight.rcsArmed,
       mainArmed: this.flight.mainArmed, altKm: alt.km, body: alt.body, eclipse: this.astro.eclipse, orbit, targets, dock,
-      mission: mc ? { title: mc.title, step: mc.step, progress: mc.progress } : null, arm: this.mech.joints.map((j) => j.angle),
+      mission: mc ? { title: mc.title, step: mc.step, hint: mc.hint, progress: mc.progress } : null, arm: this.mech.joints.map((j) => j.angle),
+      airlock: this.airlock, armGrabbed: this.mech.grabbed,
+      clock: { met: this.crew.metText(), utc: this.crew.utcText(), metSeconds: this.crew.metSeconds },
       checklist: [
         { label: 'Batería maestra', done: this.systems.sw.BAT }, { label: 'Buses A y B', done: this.systems.sw.BUSA && this.systems.sw.BUSB },
         { label: 'Aviónica en línea', done: this.systems.booted }, { label: 'Soporte vital y ventilación', done: this.systems.on('ECLSS') && this.systems.on('FANS') },
