@@ -325,7 +325,7 @@ export class Engine {
 
   // ------------------------------------------------------------------ calidad
   private probeResolution(q: Quality) {
-    return q === 'ultra' ? 256 : q === 'baja' ? 64 : 128;
+    return q === 'ultra' ? 256 : q === 'alta' ? 128 : 64;
   }
 
   applyQuality(q: Quality) {
@@ -338,7 +338,7 @@ export class Engine {
       bloom: q !== 'baja',
       autoExposure: q !== 'baja',
       ao: q === 'ultra' || q === 'alta',
-      fxaa: true,
+      fxaa: q !== 'media',
     });
     this.renderer.shadowMap.enabled = true;
     const ms = q === 'ultra' ? 2048 : q === 'baja' ? 512 : 1024;
