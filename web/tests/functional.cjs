@@ -8,7 +8,7 @@
  * Uso:
  *   ALCION_URL=http://127.0.0.1:4173/ node tests/functional.cjs
  */
-const { chromium } = require('playwright');
+const { chromium } = require(process.env.PW || 'playwright');
 const fs = require('node:fs');
 
 function findChrome() {

@@ -418,13 +418,18 @@ def build_node(fwd):
     loft(bk, "R_Backing", secs, closed=True, cap=False)
     me = boolean_cut(bk.mesh(smooth=None), [cutter(0.64, 1.6, (xc, 0, 1.5)), cutter(0.60, 2.0, (xc, 0, -1.4))], "n_back_cut")
     ob = part("FWD.INT.BCK", "Trasdós del nodo", me, g); ob["room"] = key
-    # suelo con hueco de la esclusa
+    # suelo con hueco de la esclusa: dos mitades con muesca semicircular (sin booleanas, que fallaban en silencio)
     fl = MB("n_floor")
     hw = math.sqrt(RN * RN - zf * zf) - 0.02
-    prism(fl, "R_Floor", rrect(2 * hw, 0.03, 0.006, cx=0, cy=zf - 0.015), xa, xb, 'X')
-    prism(fl, "R_LiningDark", [(-hw, zf - 0.03), (hw, zf - 0.03), (hw * 0.7, -1.18), (-hw * 0.7, -1.18)], xa, xb, 'X')
-    me = boolean_cut(fl.mesh(smooth=None, bevel=0.004), [cutter(0.60, 1.4, (xc, 0, -0.9))], "n_floor_cut")
-    ob = part("FWD.INT.FLR", "Suelo del nodo", me, g, desc="Pavimento sobre el pozo de la esclusa."); ob["room"] = key
+    rh = 0.60
+    for sy in (1, -1):
+        pts = [(xa, 0.0), (xc - rh, 0.0)]
+        for k in range(1, 24):
+            t = PI - PI * k / 24
+            pts.append((xc + rh * math.cos(t), sy * rh * math.sin(t)))
+        pts += [(xc + rh, 0.0), (xb, 0.0), (xb, sy * hw), (xa, sy * hw)]
+        prism(fl, "R_Floor", fillet(pts, 0.0, 1), zf - 0.03, zf, 'Z')
+    ob = H.P("FWD.INT.FLR", "Suelo del nodo", fl, g, key, "Pavimento sobre el pozo de la esclusa.", smooth=None)
     # brocales: cúpula (aluminio) y esclusa (bermellón) con pozos cilíndricos
     wl = MB("n_wells")
     def ring(r_in, r_out, z0, z1, mat, seg=64):

@@ -16,6 +16,11 @@ const MODES: { id: Mode; label: string; key: string }[] = [
 const fmt = (n: number, d = 1) => n.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
 const touchDevice = () => matchMedia('(pointer: coarse)').matches;
 
+const TUTORIAL_TOUCH: Partial<Record<Mode, string[]>> = {
+  INTERIOR: ['Palanca izquierda para moverte · arrastra en la mitad derecha para mirar', 'Apunta con el centro de la pantalla: si un objeto es interactivo aparece su acción · «Usar»', '☰ abre destinos, desplazamiento y ajustes'],
+  FLIGHT: ['Palanca izquierda: traslación · arrastra a la derecha para girar', '▲▼ subir y bajar · «Freno» detiene la nave'],
+  ENGINEERING: ['Toca una pieza para seleccionarla · pellizca para acercar', 'El deslizador inferior separa la nave por niveles'],
+};
 const TUTORIAL: Partial<Record<Mode, string[]>> = {
   INTERIOR: ['Haz clic para mirar con el ratón · WASD para moverte · Mayús para correr · Ctrl para agacharte', 'Apunta a un objeto: si es interactivo aparece su acción bajo el punto de mira · G o clic para usarla', 'Siéntate en un asiento de la cabina para pilotar · Esc abre el menú (destinos, desplazamiento, ajustes)'],
   FLIGHT: ['W/S avanzar/retroceder · A/D lateral · R/F subir/bajar (RCS)', 'Flechas o I/J/K/L: cabeceo y guiñada · Q/E: alabeo', 'X/Z: empuje principal · T: asistido/manual · B: frenado asistido', 'C: cambiar cámara · clic: capturar ratón · P: foto · H: ocultar interfaz'],
@@ -116,7 +121,7 @@ export default function App() {
           {tut && (
             <div className="tutorial" role="dialog" aria-label="Tutorial">
               <p className="eyebrow">Primeros pasos · {MODES.find((m) => m.id === mode)?.label}</p>
-              <ul>{TUTORIAL[mode]!.map((t) => <li key={t}>{t}</li>)}</ul>
+              <ul>{((touchDevice() ? TUTORIAL_TOUCH[mode] : null) ?? TUTORIAL[mode]!).map((t) => <li key={t}>{t}</li>)}</ul>
               <div className="row-btns">
                 <button className="btn primary" onClick={() => setTutSeen({ ...tutSeen, [mode]: true })}>Entendido</button>
                 <button className="btn ghost" onClick={() => { setTutorialOff(true); localStorage.setItem('alcion-tut-off', '1'); }}>No volver a mostrar</button>

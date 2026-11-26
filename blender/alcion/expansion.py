@@ -196,7 +196,7 @@ def build_airlock(fwd):
     hi.matrix_basis = Matrix.Translation((XA, 0, -1.26)) @ Matrix.Rotation(PI / 2, 4, 'Z')
     mech(hi, "hinge", (XA, -0.53, -1.26), (1, 0, 0), 0.0, 1.75, 0.0, ident="hatch:alk_in", speed=0.8)
     ctl(hi, "hatch:alk_in")
-    for k, (dx, dy, yaw, nm) in enumerate(((-0.22, 0.36, -PI / 2 - 0.5, "A"), (0.22, -0.36, PI / 2 - 0.5, "B"))):
+    for k, (dx, dy, yaw, nm) in enumerate(((-0.30, 0.44, -PI / 2 - 0.5, "A"), (-0.30, -0.44, PI / 2 + 0.5, "B"))):
         p = part(f"FWD.ALK.INT.SUIT{nm}", f"Traje EVA {nm}", suit_mesh(f"suit_{nm}", k), ig, explode=("radial", 0.5),
                  desc="Traje EVA conceptual de torso rígido con mochila de soporte vital; representación estilizada.")
         p.matrix_basis = Matrix.Translation((XA + dx, dy, -2.18)) @ Matrix.Rotation(yaw, 4, 'Z') @ Matrix.Diagonal((0.92, 0.92, 0.92, 1))
@@ -234,6 +234,12 @@ def cut_node_for_airlock(fwd_objects):
         mats = list(ob.data.materials)
         new = boolean_cut(ob.data, [cutter(r, 1.2, (XA, 0, -1.3))], ob.data.name + "_alk")
         ob.data = new
+    # la abertura de la cúpula también debe atravesar mantas y cinchas (antes las cinchas cruzaban la vista cenital)
+    for name in ("FWD.MMOD.BLK1", "FWD.MMOD.BLK2", "FWD.MMOD.BLK1.Q", "FWD.MMOD.BLK2.Q"):
+        ob = bpy.data.objects.get(name)
+        if ob is None:
+            continue
+        ob.data = boolean_cut(ob.data, [cutter(0.78, 1.0, (XA, 0, 1.35))], ob.data.name + "_cup")
 
 
 # ---------------------------------------------------------------------------

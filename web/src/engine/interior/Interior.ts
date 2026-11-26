@@ -286,8 +286,15 @@ export class Interior {
       const mats = (Array.isArray(mesh.material) ? mesh.material : [mesh.material]) as THREE.Material[];
       if (mats.every((m) => m.name === 'R_LED' || m.name === 'R_LightPanel')) continue;
       const code = this.codeOf(mesh);
-      // los mecanismos móviles (interruptores) no bloquean el paso; las escotillas se tratan aparte
+      // los mecanismos móviles (interruptores) no bloquean el paso
       if (code && /\.TGL\./.test(code)) continue;
+      // escotillas: bit propio, sólo sólidas mientras están cerradas (ver solidMask)
+      const part = this.partOf(mesh);
+      let bit = 1;
+      if (part?.mech && part.mech.id.startsWith('hatch:')) {
+        if (!this.hatchBits.has(part.mech.id)) this.hatchBits.set(part.mech.id, 2 << this.hatchBits.size);
+        bit = this.hatchBits.get(part.mech.id)!;
+      }
       const pos = mesh.geometry.attributes.position as THREE.BufferAttribute;
       const idx = mesh.geometry.index;
       const M = mesh.matrixWorld;
@@ -295,9 +302,17 @@ export class Interior {
       for (let t = 0; t < n; t += 3) {
         const i0 = idx ? idx.getX(t) : t, i1 = idx ? idx.getX(t + 1) : t + 1, i2 = idx ? idx.getX(t + 2) : t + 2;
         a.fromBufferAttribute(pos, i0).applyMatrix4(M); b.fromBufferAttribute(pos, i1).applyMatrix4(M); c.fromBufferAttribute(pos, i2).applyMatrix4(M);
-        this.voxels.tri(a, b, c);
+        this.voxels.tri(a, b, c, bit);
       }
     }
+  }
+
+  hatchBits = new Map<string, number>();
+  /** Máscara de ocupación vigente: estructura + escotillas cerradas. */
+  solidMask() {
+    let m = 1;
+    for (const [id, bit] of this.hatchBits) { const me = this.mech(id); if (!me || Math.abs(me.value - me.rest) < 0.15) m |= bit; }
+    return m;
   }
 
   codeOf(o: THREE.Object3D | null): string | null { while (o) { const c = (o.userData as any)?.code; if (c) return c; o = o.parent; } return null; }

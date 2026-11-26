@@ -1,0 +1,137 @@
+{
+ "date": "2026-11-26T03:38:56.499Z",
+ "pass": 26,
+ "total": 26,
+ "results": [
+  {
+   "name": "Arranque: exterior listo < 20 s (SwiftShader)",
+   "pass": true,
+   "info": "2642 ms"
+  },
+  {
+   "name": "Arranque: interior listo < 60 s (SwiftShader)",
+   "pass": true,
+   "info": "11789 ms"
+  },
+  {
+   "name": "Interfaz: «Subir a bordo» lleva al modo interior",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "name": "Gráficos: interior sin NaN (magenta) ni negro total",
+   "pass": true,
+   "info": "{\"mean\":81.93715252778011,\"black\":0.009097222222222222,\"white\":0,\"magenta\":0}"
+  },
+  {
+   "name": "Teclado: W desplaza al tripulante (aceleración suave)",
+   "pass": true,
+   "info": "1.64 m en 1 s"
+  },
+  {
+   "name": "Pérdida de foco: las teclas mantenidas se liberan",
+   "pass": true,
+   "info": "0.01 m"
+  },
+  {
+   "name": "Colisiones: la cámara nunca queda a < 12 cm de una superficie",
+   "pass": true,
+   "info": "mínimo 0.160 m en 800 pasos"
+  },
+  {
+   "name": "Colisiones: el tripulante nunca sale del volumen presurizado",
+   "pass": true,
+   "info": "0 fuera"
+  },
+  {
+   "name": "Microgravedad: empujarse hacia el techo no atraviesa el revestimiento",
+   "pass": true,
+   "info": "0.210 m"
+  },
+  {
+   "name": "Interacción: el punto de mira detecta el interruptor BAT",
+   "pass": true,
+   "info": "sw:BAT (primer impacto HAB.INT.A.SHL.FRM)"
+  },
+  {
+   "name": "Interacción: G conmuta el interruptor y la palanca se mueve",
+   "pass": true,
+   "info": "{\"bat\":false,\"mech\":-0.45}"
+  },
+  {
+   "name": "Asiento: apuntar al asiento y G sienta al tripulante",
+   "pass": true,
+   "info": "seat:1 → true"
+  },
+  {
+   "name": "Asiento: Y levanta junto al asiento (sin teletransporte a otra estancia)",
+   "pass": true,
+   "info": "{\"seated\":false,\"mode\":\"INTERIOR\",\"room\":\"A\"}"
+  },
+  {
+   "name": "Modos: el interior nunca hereda rayos X, corte ni explosión de ingeniería",
+   "pass": true,
+   "info": "{\"x\":false,\"s\":false,\"ex\":0,\"clipped\":false,\"inner\":\"immersive\",\"sideDouble\":0}"
+  },
+  {
+   "name": "Gráficos: tras 4 ciclos ingeniería↔interior la imagen sigue siendo válida",
+   "pass": true,
+   "info": "{\"mean\":74.40088736111191,\"black\":0.0001388888888888889,\"white\":0,\"magenta\":0}"
+  },
+  {
+   "name": "Rendimiento: habitáculos mirando a popa (sin ventanas en vista) ≤ 120 llamadas",
+   "pass": true,
+   "info": "{\"calls\":70,\"tris\":155902}"
+  },
+  {
+   "name": "Rendimiento: sin mecanismos en movimiento no se reescriben matrices de toda la nave",
+   "pass": true,
+   "info": "0 escrituras"
+  },
+  {
+   "name": "Rendimiento: exterior completo ≤ 260 llamadas incluidas sombras",
+   "pass": true,
+   "info": "{\"calls\":81,\"tris\":505440}"
+  },
+  {
+   "name": "EVA: ciclo de esclusa → salida al exterior → regreso → represurización",
+   "pass": true,
+   "info": "{\"vac\":\"vac\",\"modeOut\":\"EVA\",\"eva\":true,\"modeIn\":\"INTERIOR\",\"pres\":\"pres\"}"
+  },
+  {
+   "name": "Persistencia: modo, posición y sistemas se restauran tras recargar",
+   "pass": true,
+   "info": "{\"saved\":{\"pos\":[4.6,0.52,-0.25],\"bat\":true},\"rest\":{\"mode\":\"INTERIOR\",\"pos\":[4.6,0.52,-0.25],\"bat\":true}}"
+  },
+  {
+   "name": "Consola: sin errores durante la sesión de escritorio",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "name": "Móvil: sin desbordamiento horizontal",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "name": "Móvil: palanca táctil visible en el interior",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "name": "Móvil: la palanca desplaza al tripulante",
+   "pass": true,
+   "info": "1.85 m"
+  },
+  {
+   "name": "Móvil: pointercancel libera el control (sin deriva)",
+   "pass": true,
+   "info": "0.000 m"
+  },
+  {
+   "name": "Consola: sin errores en móvil",
+   "pass": true,
+   "info": ""
+  }
+ ]
+}

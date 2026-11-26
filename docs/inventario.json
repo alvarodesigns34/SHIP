@@ -1,8 +1,8 @@
 {
  "vehicle": "ALCIÓN HX-4",
  "parts": 540,
- "groups": 88,
- "triangles": 748838,
+ "groups": 100,
+ "triangles": 749290,
  "tree": {
   "code": "ALCION",
   "label": "ALCIÓN HX-4",
@@ -546,12 +546,12 @@
         "depth": 3,
         "dims_m": [
          1.605,
-         1.711,
+         1.826,
          2.075
         ],
         "center_m": [
          11.058,
-         -0.0,
+         0.022,
          -2.203
         ],
         "children": [
@@ -745,8 +745,8 @@
            1.624
           ],
           "center_m": [
-           10.789,
-           0.382,
+           10.709,
+           0.462,
            -2.429
           ],
           "count": 1
@@ -815,8 +815,8 @@
            1.624
           ],
           "center_m": [
-           11.311,
-           -0.382,
+           10.791,
+           -0.418,
            -2.429
           ],
           "count": 1
@@ -2513,26 +2513,18 @@
          {
           "id": "R_Floor",
           "desc": "Pavimento de caucho técnico con relieve antideslizante"
-         },
-         {
-          "id": "R_LiningDark",
-          "desc": "Revestimiento inferior: polímero grafito resistente a rozaduras"
-         },
-         {
-          "id": "M_AlBare",
-          "desc": "Aluminio mecanizado"
          }
         ],
-        "tris": 376,
+        "tris": 220,
         "dims_m": [
-         1.2,
-         1.2,
-         1.4
+         2.0,
+         2.061,
+         0.03
         ],
         "center_m": [
-         11.05,
+         11.12,
          0.0,
-         -0.9
+         -0.635
         ],
         "count": 1
        },
@@ -2779,12 +2771,12 @@
       "dims_m": [
        2.26,
        2.872,
-       2.866
+       2.86
       ],
       "center_m": [
        11.05,
        0.0,
-       0.003
+       0.0
       ],
       "children": [
        {
@@ -2804,7 +2796,7 @@
           "desc": "Aluminio mecanizado"
          }
         ],
-        "tris": 272,
+        "tris": 276,
         "dims_m": [
          2.26,
          1.416,
@@ -2828,18 +2820,22 @@
          {
           "id": "M_Fabric",
           "desc": "Tejido Nomex acolchado de estiba"
+         },
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
          }
         ],
-        "tris": 240,
+        "tris": 200,
         "dims_m": [
          1.545,
-         1.422,
-         1.422
+         1.331,
+         1.413
         ],
         "center_m": [
          11.05,
-         0.725,
-         0.725
+         0.771,
+         0.721
         ],
         "count": 1
        },
@@ -2860,7 +2856,7 @@
           "desc": "Aluminio mecanizado"
          }
         ],
-        "tris": 272,
+        "tris": 276,
         "dims_m": [
          2.26,
          1.416,
@@ -2884,18 +2880,22 @@
          {
           "id": "M_Fabric",
           "desc": "Tejido Nomex acolchado de estiba"
+         },
+         {
+          "id": "M_AlBare",
+          "desc": "Aluminio mecanizado"
          }
         ],
-        "tris": 240,
+        "tris": 200,
         "dims_m": [
          1.545,
-         1.422,
-         1.422
+         1.331,
+         1.413
         ],
         "center_m": [
          11.05,
-         -0.725,
-         0.725
+         -0.771,
+         0.721
         ],
         "count": 1
        },

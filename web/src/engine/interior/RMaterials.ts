@@ -43,7 +43,7 @@ const lin = (r: number, g: number, b: number): [number, number, number] => [r, g
 
 /** Valores lineales iguales a los de Blender (RMAT) salvo ajustes de respuesta. */
 export const RDEF: Record<string, Def> = {
-  R_Lining: { color: lin(0.56, 0.54, 0.50), rough: 0.5, metal: 0, maps: { n: 'polymer_n', rep: 4.0, ns: 0.05 } },
+  R_Lining: { color: lin(0.56, 0.54, 0.50), rough: 0.5, metal: 0, maps: { n: 'polymer_n', r: 'polymer_r', rep: 1.3, ns: 0.04 } },
   R_LiningDark: { color: lin(0.085, 0.09, 0.10), rough: 0.55, metal: 0, maps: { n: 'polymer_n', rep: 4.0, ns: 0.08 } },
   R_Fabric: { color: lin(0.16, 0.155, 0.15), rough: 0.95, metal: 0, maps: { c: 'wool_c', n: 'wool_n', r: 'wool_r', rep: 3.2, ns: 0.9 }, sheen: 0.35 },
   R_FabricBlue: { color: lin(0.045, 0.085, 0.11), rough: 0.9, metal: 0, maps: { c: 'linen_c', n: 'linen_n', r: 'linen_r', rep: 4.0, ns: 0.7 }, sheen: 0.4 },

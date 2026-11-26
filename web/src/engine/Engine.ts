@@ -179,6 +179,7 @@ export class Engine {
   private simMs = 0;
   private camsMs = 0;
   private shadowKey = '';
+  private evaReturnArmed = false;
   private extVisible = true;
   /** ventanas (espacio nave three) para decidir si el exterior puede verse desde dentro */
   private windows: THREE.Sphere[] = [
@@ -764,6 +765,7 @@ export class Engine {
       if (ih && Math.abs(ih.value) > 0.05) { this.toast('Cierra la escotilla interior antes de despresurizar'); this.audio.beep('warn'); return; }
       this.airlock = 'depress'; this.airlockT = 0; this.audio.beep('warn'); this.toast('Despresurizando la esclusa…');
     } else if (this.airlock === 'vac') {
+      if (this.mode === 'EVA') { this.toast('No se puede represurizar con un tripulante fuera'); this.audio.beep('warn'); return; }
       this.airlock = 'repress'; this.airlockT = 0; this.toast('Represurizando…');
     }
   }
@@ -902,6 +904,7 @@ export class Engine {
 
   private stepPlayer(h: number) {
     const I = this.input;
+    if (this.interiorReady) this.player.mask = this.interior.solidMask();
     if (this.mode === 'INTERIOR') {
       const move = new THREE.Vector3(I.axis('left', 'right'), 0, -I.axis('back', 'fwd'));
       if (this.activity) {
@@ -966,14 +969,16 @@ export class Engine {
       const [px, py, pz] = t2b(this.player.pos);
       if (pz - this.player.eyeH < -2.95 + 0.2 && Math.hypot(px - 11.05, py) < 0.6) {
         this.player.eva = true;
-        this.evaBody.pos.copy(b2t(11.05, 0, -4.0)); this.evaBody.vel.set(0, 0, 0); this.evaBody.jetFuel = 1;
+        this.evaBody.pos.copy(b2t(11.05, 0, -4.0)); this.evaBody.vel.set(0, 0, -0.3).applyQuaternion(new THREE.Quaternion()); this.evaBody.jetFuel = 1;
+        this.evaReturnArmed = false;
         this.evaBody.yaw = this.player.yaw; this.evaBody.pitch = -0.6;
         this.mode = 'EVA'; this.camera.fov = 70; this.camera.updateProjectionMatrix();
         this.audio.comms('Alción, EVA iniciada. Línea de seguridad conectada.'); this.emitSnap();
       }
     } else if (this.mode === 'EVA') {
-      const [px, py, pz] = t2b(this.evaBody.pos);
-      if (pz > -3.75 && pz < -3.2 && Math.hypot(px - 11.05, py) < 0.55 && this.airlock === 'vac') {
+      const dHatch = this.evaBody.pos.distanceTo(b2t(11.05, 0, -3.6));
+      if (dHatch > 1.1) this.evaReturnArmed = true;
+      if (this.evaReturnArmed && dHatch < 0.85 && this.airlock === 'vac') {
         this.player.eva = false; this.mode = 'INTERIOR'; this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix();
         this.player.pos.copy(b2t(11.05, 0, -3.16 + 1.66)); this.player.vel.set(0, 0, 0); this.player.settle();
         this.audio.comms('Bienvenido a bordo. Represuriza la esclusa desde su panel.'); this.emitSnap();
@@ -1223,8 +1228,9 @@ export class Engine {
     const shadowMs = r.shadowMap.needsUpdate ? 1 : 0;
     // cámaras de instrumentos (cada 3 fotogramas) — sin bucle de realimentación: las pantallas se ocultan
     const tc = performance.now();
-    this.camFrame = (this.camFrame + 1) % 3;
-    if (this.camFrame === 0 && (this.cockpit.wantsCam || this.cockpit.wantsArmCam) && this.liveScreenInView()) this.renderScreenCams();
+    // cámaras de instrumentos alternadas (nariz en un fotograma, brazo en otro; cada una a ~10 Hz)
+    this.camFrame = (this.camFrame + 1) % 6;
+    if ((this.camFrame === 0 || this.camFrame === 3) && (this.cockpit.wantsCam || this.cockpit.wantsArmCam) && this.liveScreenInView()) this.renderScreenCams(this.camFrame === 0 ? 'nose' : 'arm');
     this.pipeline.accumulate();
     const camsMs = performance.now() - tc;
     this.pipeline.render({ scene: this.astro.scene, camera: this.astro.camera }, { scene: this.near, camera: this.camera });
@@ -1247,7 +1253,7 @@ export class Engine {
     });
   }
 
-  private renderScreenCams() {
+  private renderScreenCams(which: 'nose' | 'arm') {
     const r = this.renderer;
     const armTip = this.mech.tip().clone().add(b2t(0.25, 0, 0.18));
     this.cockpit.placeCams(this.model.root, armTip);
@@ -1257,8 +1263,8 @@ export class Engine {
     this.interior.root.visible = false;
     const extShown = this.extVisible;
     if (!extShown) this.model.setShown(true);
-    for (const [cam, rt, want] of [[this.cockpit.noseCam, this.cockpit.camRT, this.cockpit.wantsCam], [this.cockpit.armCam, this.cockpit.armRT, this.cockpit.wantsArmCam]] as const) {
-      if (!want) continue;
+    for (const [cam, rt, want, id] of [[this.cockpit.noseCam, this.cockpit.camRT, this.cockpit.wantsCam, 'nose'], [this.cockpit.armCam, this.cockpit.armRT, this.cockpit.wantsArmCam, 'arm']] as const) {
+      if (!want || id !== which) continue;
       const camKm = this.shipKm().add(cam.position.clone().divideScalar(1000));
       this.astro.update(0, camKm, cam.quaternion, cam.fov, cam.aspect, 1, 1);
       r.setRenderTarget(rt);

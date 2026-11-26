@@ -18,7 +18,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,FWD.ALK.HO,Escotilla exterior EVA,group,,1.2x1.2x0.135,,
 4,FWD.ALK.HO.DOOR,Escotilla exterior (puerta),part,M_AlLi;M_Rubber;M_EVAYellow;M_AlAnodBlack;M_Glass;M_AlBare;M_Steel;M_Handrail,1.0x1.046x0.135,3628,"Puerta de 1,0 m con mirilla, válvula de ecualización y cierre de 6 pestillos; abre hacia el interior de la esclusa."
 4,FWD.ALK.HO.RNG,Marco de la escotilla exterior,part,M_AlBare;M_Rubber;M_EVAYellow,1.2x1.2x0.095,1136,
-3,FWD.ALK.INT,Interior de la esclusa,group,,1.605x1.711x2.075,,
+3,FWD.ALK.INT,Interior de la esclusa,group,,1.605x1.826x2.075,,
 4,FWD.ALK.INT.HI,Escotilla interior nodo–esclusa,part,M_AlLi;M_Rubber;M_EVAYellow;M_AlAnodBlack;M_Glass;M_AlBare;M_Steel;M_Handrail,1.0x1.046x0.135,3628,"Escotilla de 1,0 m en el suelo del nodo; se abre hacia el nodo."
 4,FWD.ALK.INT.HR,Pasamanos y luminarias interiores,part,M_Handrail;M_LED,1.59x1.042x1.5,136,
 4,FWD.ALK.INT.PNL,Panel de control de despresurización,part,M_InteriorGrey;M_InteriorDark;M_CrewAtlas;M_LEDRed;M_LEDGreen;M_DecalRed,0.066x0.44x0.56,122,"Panel con esquema de procedimiento EVA, manómetro digital, válvulas de despresurización y luz de estado."
@@ -77,7 +77,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,FWD.INT.BAG,Estiba de acceso rápido,part,R_Bag,1.604x0.308x0.408,5076,
 3,FWD.INT.BCK,Trasdós del nodo,part,R_Backing;M_AlBare,2.07x2.6x2.6,592,
 3,FWD.INT.BHD,Mamparos del nodo,part,R_Lining,2.06x2.44x2.44,2384,
-3,FWD.INT.FLR,Suelo del nodo,part,R_Floor;R_LiningDark;M_AlBare,1.2x1.2x1.4,376,Pavimento sobre el pozo de la esclusa.
+3,FWD.INT.FLR,Suelo del nodo,part,R_Floor,2.0x2.061x0.03,220,Pavimento sobre el pozo de la esclusa.
 3,FWD.INT.HF,Escotilla de atraque (IDSS),part,R_Lining;R_Accent;R_Black;R_Steel,0.095x0.88x0.88,3268,"Escotilla de paso de 0,80 m hacia el vehículo atracado; cerrada sin vehículo."
 3,FWD.INT.LGT,Luminarias del nodo,part,R_LED,1.8x1.289x0.048,40,
 3,FWD.INT.LIN,Revestimiento del nodo,part,R_Lining;M_AlBare,2.0x2.484x2.484,2400,Paneles curvos del nodo con huecos de cúpula y esclusa.
@@ -85,11 +85,11 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,FWD.INT.RWS.S1,Pantalla de la estación robótica,part,R_Screen,0.33x0.051x0.204,2,Pantalla.
 3,FWD.INT.RWS.S2,Pantalla de la estación robótica,part,R_Screen,0.33x0.051x0.204,2,Pantalla.
 3,FWD.INT.WEL,Pozos de cúpula y esclusa,part,R_Lining;R_Frame;R_Accent;R_Alu;R_Floor,1.4x1.4x4.555,2600,"Brocales, escalerilla y asideros."
-2,FWD.MMOD,Protección MMOD y térmica del nodo,group,,2.26x2.872x2.866,,"Mantas MMOD blandas tipo 'stuffed Whipple' (beta cloth + Nextel + Kevlar) sobre MLI. Se eligen mantas flexibles en el nodo por su geometría compleja (cúpula, atraque)."
-3,FWD.MMOD.BLK1,"Manta MMOD del nodo, cuadrante 1",part,M_BetaCloth;M_AlBare,2.26x1.416x1.416,272,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
-3,FWD.MMOD.BLK1.Q,"Costuras de acolchado, cuadrante 1",part,M_Fabric,1.545x1.422x1.422,240,Costuras de unión de capas (hilo de PTFE).
-3,FWD.MMOD.BLK2,"Manta MMOD del nodo, cuadrante 2",part,M_BetaCloth;M_AlBare,2.26x1.416x1.416,272,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
-3,FWD.MMOD.BLK2.Q,"Costuras de acolchado, cuadrante 2",part,M_Fabric,1.545x1.422x1.422,240,Costuras de unión de capas (hilo de PTFE).
+2,FWD.MMOD,Protección MMOD y térmica del nodo,group,,2.26x2.872x2.86,,"Mantas MMOD blandas tipo 'stuffed Whipple' (beta cloth + Nextel + Kevlar) sobre MLI. Se eligen mantas flexibles en el nodo por su geometría compleja (cúpula, atraque)."
+3,FWD.MMOD.BLK1,"Manta MMOD del nodo, cuadrante 1",part,M_BetaCloth;M_AlBare,2.26x1.416x1.416,276,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
+3,FWD.MMOD.BLK1.Q,"Costuras de acolchado, cuadrante 1",part,M_Fabric;M_AlBare,1.545x1.331x1.413,200,Costuras de unión de capas (hilo de PTFE).
+3,FWD.MMOD.BLK2,"Manta MMOD del nodo, cuadrante 2",part,M_BetaCloth;M_AlBare,2.26x1.416x1.416,276,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
+3,FWD.MMOD.BLK2.Q,"Costuras de acolchado, cuadrante 2",part,M_Fabric;M_AlBare,1.545x1.331x1.413,200,Costuras de unión de capas (hilo de PTFE).
 3,FWD.MMOD.BLK3,"Manta MMOD del nodo, cuadrante 3",part,M_BetaCloth;M_AlBare,2.26x1.416x1.416,284,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
 3,FWD.MMOD.BLK3.Q,"Costuras de acolchado, cuadrante 3",part,M_Fabric;M_AlBare,1.545x1.017x1.353,174,Costuras de unión de capas (hilo de PTFE).
 3,FWD.MMOD.BLK4,"Manta MMOD del nodo, cuadrante 4",part,M_BetaCloth;M_AlBare,2.26x1.416x1.416,284,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."

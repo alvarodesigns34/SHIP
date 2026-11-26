@@ -45,6 +45,8 @@ export class Controller {
   bob = new THREE.Vector3();
   onStep: ((k: number) => void) | null = null;
   grid: VoxelGrid | null = null;
+  /** bits de ocupación que bloquean (estructura + escotillas cerradas) */
+  mask = 1;
   /** suavizado del escalón (la cámara no salta al subir) */
   private stepOffset = 0;
   private tmp = new THREE.Vector3();
@@ -62,7 +64,7 @@ export class Controller {
 
   private solidAt(x: number, y: number, z: number) {
     const g = this.grid!;
-    return g.get(Math.floor((x - g.min.x) / g.s), Math.floor((y - g.min.y) / g.s), Math.floor((z - g.min.z) / g.s)) !== 0;
+    return (g.get(Math.floor((x - g.min.x) / g.s), Math.floor((y - g.min.y) / g.s), Math.floor((z - g.min.z) / g.s)) & this.mask) !== 0;
   }
 
   /** Superficie de apoyo más alta bajo los pies (en un disco de radio 0,1 m), entre y−0,5 y y+STEP. */
@@ -74,7 +76,7 @@ export class Controller {
     for (const [ox, oz] of [[0, 0], [0.08, 0], [-0.08, 0], [0, 0.08], [0, -0.08]]) {
       const i = Math.floor((x + ox - g.min.x) / s), k = Math.floor((z + oz - g.min.z) / s);
       for (let j = j1; j >= j0; j--) {
-        if (g.get(i, j, k) && !g.get(i, j + 1, k)) { best = Math.max(best, g.min.y + (j + 1) * s); break; }
+        if ((g.get(i, j, k) & this.mask) && !(g.get(i, j + 1, k) & this.mask)) { best = Math.max(best, g.min.y + (j + 1) * s); break; }
       }
     }
     return best;
@@ -83,7 +85,11 @@ export class Controller {
   /** Altura libre sobre los pies. */
   clearance(x: number, feetY: number, z: number) {
     const g = this.grid!;
-    for (let h = 0.25; h < 2.4; h += g.s) if (this.solidAt(x, feetY + h, z) || this.solidAt(x + 0.1, feetY + h, z) || this.solidAt(x - 0.1, feetY + h, z) || this.solidAt(x, feetY + h, z + 0.1) || this.solidAt(x, feetY + h, z - 0.1)) return h;
+    // sólo cuenta como techo lo que está por encima de la altura de escalón (los escalones vecinos no son techo)
+    for (let h = STEP + 0.06; h < 2.4; h += g.s) {
+      if (this.solidAt(x, feetY + h, z)) return h;
+      if (h > 0.9 && (this.solidAt(x + 0.1, feetY + h, z) || this.solidAt(x - 0.1, feetY + h, z) || this.solidAt(x, feetY + h, z + 0.1) || this.solidAt(x, feetY + h, z - 0.1))) return h;
+    }
     return 2.4;
   }
 
@@ -92,7 +98,7 @@ export class Controller {
     const g = this.grid!;
     nOut.set(0, 0, 0);
     for (let it = 0; it < 4; it++) {
-      const d = g.nearest(c, r, this.tmp);
+      const d = g.nearest(c, r, this.tmp, this.mask);
       if (!Number.isFinite(d)) break;
       const n = this.tmp2.copy(c).sub(this.tmp);
       if (horizontal) n.y = 0;
@@ -190,14 +196,14 @@ export class Controller {
       // cuerpo: torso y rodillas (por encima del escalón) contra paredes, sólo horizontal
       c.set(nx, base + Math.min(1.05, this.eyeH - 0.35), nz);
       this.pushSphere(c, R_BODY, true, nrm);
-      const k2 = c.clone().setY(base + STEP + R_BODY * 0.5);
+      const k2 = c.clone().setY(base + STEP + R_BODY * 0.9 + 0.03);
       const nrm2 = new THREE.Vector3();
       this.pushSphere(k2, R_BODY * 0.9, true, nrm2);
       let px = c.x + (k2.x - nx), pz = c.z + (k2.z - nz);
       for (const nn of [nrm, nrm2]) if (nn.lengthSq() > 0) { const vn = this.vel.x * nn.x + this.vel.z * nn.z; if (vn < 0) { this.vel.x -= vn * nn.x; this.vel.z -= vn * nn.z; } }
       // ¿cabe de pie o agachado en la nueva posición?
       const room = this.clearance(px, base, pz);
-      if (room < EYE_CROUCH - 0.2 + 0.12) { px = this.pos.x; pz = this.pos.z; this.vel.x = this.vel.z = 0; base = footY; }
+      if (room < 0.78) { px = this.pos.x; pz = this.pos.z; this.vel.x = this.vel.z = 0; base = footY; }
       if (base > footY) { this.stepOffset -= base - footY; footY = base; }
       this.pos.x = px; this.pos.z = pz;
       // vertical
@@ -213,8 +219,17 @@ export class Controller {
       }
     }
     this.onGround = landed || (!this.climbing && footY - this.groundAt(this.pos.x, footY + 0.02, this.pos.z, 0.05) < 0.03);
-    // --- altura de ojos: agacharse voluntario o forzado por el techo
-    const room = this.clearance(this.pos.x, footY, this.pos.z);
+    // --- altura de ojos: agacharse voluntario, forzado por el techo o anticipado (escotillas por delante)
+    let room = this.clearance(this.pos.x, footY, this.pos.z);
+    if (wl > 0.05 && !this.climbing) {
+      for (const ahead of [0.3, 0.55]) {
+        const ax = this.pos.x + (wx / wl) * ahead, az = this.pos.z + (wz / wl) * ahead;
+        const ga = this.groundAt(ax, footY + 0.02, az);
+        const fa = ga > footY && ga <= footY + STEP ? ga : footY;
+        const ra = this.clearance(ax, fa, az) + (fa - footY);
+        if (ra > EYE_CROUCH - 0.35) room = Math.min(room, ra);
+      }
+    }
     const target = Math.min(wantCrouch && !this.climbing ? EYE_CROUCH : EYE_STAND, room - 0.14);
     this.eyeH = damp(this.eyeH, Math.max(0.6, target), 9, dt);
     if (this.eyeH > room - 0.12) this.eyeH = Math.max(0.6, room - 0.12);
@@ -251,7 +266,7 @@ export class Controller {
   }
 
   /** ¿Punto libre (para puntos de aparición y validación)? */
-  free(p: THREE.Vector3, r = R_HEAD) { return !this.grid || !Number.isFinite(this.grid.nearest(p, r, this.tmp)); }
+  free(p: THREE.Vector3, r = R_HEAD) { return !this.grid || !Number.isFinite(this.grid.nearest(p, r, this.tmp, this.mask)); }
 
   serialize() { return { pos: this.pos.toArray(), yaw: this.yaw, pitch: this.pitch, loco: this.locomotion }; }
   deserialize(o: any) { if (!o?.pos) return; this.pos.fromArray(o.pos); this.yaw = o.yaw ?? 0; this.pitch = o.pitch ?? 0; if (o.loco === 'walk' || o.loco === 'float') this.locomotion = o.loco; }

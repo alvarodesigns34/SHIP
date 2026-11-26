@@ -202,6 +202,22 @@ const canvasStats = (p) => p.evaluate(() => {
   ok('Rendimiento: sin mecanismos en movimiento no se reescriben matrices de toda la nave', perf.mwStatic < 200, `${perf.mwStatic} escrituras`);
   ok('Rendimiento: exterior completo ≤ 260 llamadas incluidas sombras', perf.ext.calls <= 260, JSON.stringify(perf.ext));
 
+  // ------------------------------------------------------------------ 6b. EVA por la esclusa
+  const eva = await p.evaluate(() => {
+    const e = window.__engine; const r = {};
+    e.enterInterior('nodo');
+    const hin = e.interior.mech('hatch:alk_in'); if (hin) { hin.target = hin.rest; hin.value = hin.rest; }
+    e.cycleAirlock(); e.tick(7);
+    r.vac = e.airlock;
+    e.player.pos.set(11.05, -3.16 + 1.66, 0); e.player.vel.set(0, 0, 0); e.tick(0.2);
+    r.modeOut = e.mode; r.eva = e.player.eva;
+    e.evaBody.pos.set(11.05, -5.0, 0); e.tick(0.1); e.evaBody.pos.set(11.05, -3.55, 0); e.evaBody.vel.set(0, 0, 0); e.tick(0.1);
+    r.modeIn = e.mode;
+    e.cycleAirlock(); e.tick(7); r.pres = e.airlock;
+    return r;
+  });
+  ok('EVA: ciclo de esclusa → salida al exterior → regreso → represurización', eva.vac === 'vac' && eva.modeOut === 'EVA' && eva.modeIn === 'INTERIOR' && eva.pres === 'pres', JSON.stringify(eva));
+
   // ------------------------------------------------------------------ 7. persistencia
   await p.evaluate(() => { const e = window.__engine; e.enterInterior('lab'); e.systems.toggle('BAT'); e.save(); });
   const saved = await p.evaluate(() => ({ pos: window.__engine.player.pos.toArray().map((v) => +v.toFixed(2)), bat: window.__engine.systems.sw.BAT }));
