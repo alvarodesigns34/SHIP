@@ -100,6 +100,44 @@ export class VoxelGrid {
   }
 }
 
+export interface RoomProbeBounds {
+  min: THREE.Vector3;
+  max: THREE.Vector3;
+  center: THREE.Vector3;
+}
+
+/**
+ * Volúmenes de proyección de caja (espacio local de nave en coordenadas Three.js)
+ * derivados de ROOMS[r] y los límites físicos de cabina/nodo (A ajustada al cono de proa).
+ */
+export const ROOM_PROBE_BOUNDS: Record<string, RoomProbeBounds> = {
+  D: {
+    min: new THREE.Vector3(ROOMS.D.x0 + 0.45, -1.18, -1.92),
+    max: new THREE.Vector3(ROOMS.D.x1, 1.92, 1.92),
+    center: new THREE.Vector3(1.6, 0.35, 0),
+  },
+  C: {
+    min: new THREE.Vector3(ROOMS.C.x0, -1.18, -1.92),
+    max: new THREE.Vector3(ROOMS.C.x1, 1.92, 1.92),
+    center: new THREE.Vector3(3.68, 0.35, 0),
+  },
+  B: {
+    min: new THREE.Vector3(ROOMS.B.x0, -1.18, -1.92),
+    max: new THREE.Vector3(ROOMS.B.x1, 1.92, 1.92),
+    center: new THREE.Vector3(5.72, 0.35, 0),
+  },
+  A: {
+    min: new THREE.Vector3(ROOMS.A.x0, -1.18, -1.85),
+    max: new THREE.Vector3(ROOMS.A.x1, 1.80, 1.85),
+    center: new THREE.Vector3(7.95, 0.35, 0),
+  },
+  N: {
+    min: new THREE.Vector3(ROOMS.N.x0, -0.65, -1.25),
+    max: new THREE.Vector3(ROOMS.N.x1 - 0.05, 1.25, 1.25),
+    center: new THREE.Vector3(11.05, 0.25, 0),
+  },
+};
+
 export class Interior {
   root = new THREE.Group();
   parts = new Map<string, IPart>();
@@ -114,6 +152,10 @@ export class Interior {
   loaded = false;
   stats: { meshes: number; tris: number; voxelMs: number; merged?: number } = { meshes: 0, tris: 0, voxelMs: 0 };
   private probes = new Map<string, THREE.Texture>();
+  probeRes = 0;
+  private probeMats: THREE.MeshStandardMaterial[] = [];
+  private tmpEuler = new THREE.Euler();
+  private tmpShipQ = new THREE.Quaternion();
 
   async load(base: string, onProgress?: (p: number) => void) {
     const loader = new GLTFLoader();
@@ -366,35 +408,115 @@ export class Interior {
     if (instant) { m.value = m.target; this.applyMech(p); }
   }
 
-  /** Sondas de reflexión por estancia capturadas del propio interior iluminado. */
-  captureProbes(renderer: THREE.WebGLRenderer, scene: THREE.Scene, shipRoot: THREE.Object3D) {
+  /**
+   * Sondas de reflexión por estancia capturadas del propio interior iluminado en el marco
+   * local de la nave (para que los reflejos y la proyección de caja permanezcan alineados
+   * cuando la nave gira en órbita).
+   */
+  captureProbes(renderer: THREE.WebGLRenderer, scene: THREE.Scene, shipRoot: THREE.Object3D, resolution = 128) {
+    const res = Math.max(32, Math.min(512, resolution | 0));
     const pm = new THREE.PMREMGenerator(renderer);
-    const cubeRT = new THREE.WebGLCubeRenderTarget(128, { type: THREE.HalfFloatType });
+    pm.compileCubemapShader();
+    const cubeRT = new THREE.WebGLCubeRenderTarget(res, { type: THREE.HalfFloatType });
     const cam = new THREE.CubeCamera(0.05, 30, cubeRT);
-    const centers: Record<string, [number, number, number]> = { A: [7.8, 0.35, 0], B: [5.7, 0.35, 0], C: [3.7, 0.35, 0], D: [1.6, 0.35, 0], N: [11.0, 0.2, 0] };
+
+    // Guardar estado de escena/renderer para no contaminar el render principal ni provocar realimentación
     const prevEnv = scene.environment;
+    const prevAutoClear = renderer.autoClear;
+    const prevRootVis = this.root.visible;
+    const prevShadowUpdate = renderer.shadowMap.needsUpdate;
+    const prevMatsEnv = new Map<THREE.MeshStandardMaterial, THREE.Texture | null>();
+    for (const m of this.materials) {
+      const std = m as THREE.MeshStandardMaterial;
+      if (std.isMeshStandardMaterial && std.envMap) {
+        prevMatsEnv.set(std, std.envMap);
+        std.envMap = null;
+      }
+    }
+
     scene.environment = null;
-    for (const [room, c] of Object.entries(centers)) {
+    this.root.visible = true;
+    renderer.autoClear = true;
+    renderer.shadowMap.needsUpdate = false;
+    renderer.setClearColor(0x000000, 1);
+
+    shipRoot.updateMatrixWorld(true);
+    shipRoot.getWorldQuaternion(this.tmpShipQ);
+
+    for (const [room, bounds] of Object.entries(ROOM_PROBE_BOUNDS)) {
       if (!this.lightmaps.has(room) && room !== 'N') continue;
-      cam.position.set(...c).applyMatrix4(shipRoot.matrixWorld);
+      // Posicionar y orientar la CubeCamera en el sistema de referencia local de la nave
+      cam.position.copy(bounds.center).applyMatrix4(shipRoot.matrixWorld);
+      cam.quaternion.copy(this.tmpShipQ);
+      cam.updateMatrixWorld(true);
       cam.update(renderer, scene);
       const env = pm.fromCubemap(cubeRT.texture).texture;
       this.probes.get(room)?.dispose();
       this.probes.set(room, env);
     }
+
+    // Restaurar estado previo
+    for (const [std, prev] of prevMatsEnv) std.envMap = prev;
     scene.environment = prevEnv;
+    this.root.visible = prevRootVis;
+    renderer.autoClear = prevAutoClear;
+    renderer.shadowMap.needsUpdate = prevShadowUpdate;
+    renderer.setRenderTarget(null);
     cubeRT.dispose();
     pm.dispose();
+
+    this.probeRes = res;
+    const seen = new Set<THREE.MeshStandardMaterial>();
+    this.probeMats.length = 0;
+
     this.root.traverse((o) => {
       const mesh = o as THREE.Mesh;
       if (!mesh.isMesh) return;
       let r: string | null = null;
       for (let p: THREE.Object3D | null = mesh; p; p = p.parent) { const rr = (p.userData as any)?.room; if (rr) { r = rr; break; } }
-      const env = this.probes.get(r ?? 'A');
+      const room = r ?? 'A';
+      const env = this.probes.get(room);
+      const bounds = ROOM_PROBE_BOUNDS[room] ?? ROOM_PROBE_BOUNDS.A;
       for (const m of (Array.isArray(mesh.material) ? mesh.material : [mesh.material]) as any[]) {
-        if (m.isMeshStandardMaterial && env) { m.envMap = env; m.envMapIntensity = m.lightMap ? 1.0 : 0.8; m.needsUpdate = true; }
+        if (!m?.isMeshStandardMaterial || !env) continue;
+        m.envMap = env;
+        m.envMapIntensity = m.name === 'R_Glass' ? 0.35 : (m.lightMap ? 1.0 : 0.8);
+        // Contrato acordado con H1 (RMaterials.ts): rellenar boxProbe si el shader lo expone,
+        // o almacenar boxProbeBounds de forma segura si aún no está presente.
+        if (m.userData?.boxProbe) {
+          m.userData.boxProbe.min.value.copy(bounds.min);
+          m.userData.boxProbe.max.value.copy(bounds.max);
+          m.userData.boxProbe.center.value.copy(bounds.center);
+          m.userData.boxProbe.enabled.value = 1.0;
+        } else {
+          m.userData.boxProbeBounds = {
+            min: bounds.min.clone(),
+            max: bounds.max.clone(),
+            center: bounds.center.clone(),
+          };
+        }
+        m.needsUpdate = true;
+        if (!seen.has(m)) { seen.add(m); this.probeMats.push(m); }
       }
     });
+    this.syncProbeRotation(this.tmpShipQ);
+  }
+
+  /**
+   * Mantiene la orientación del mapa de entorno alineada con la nave para materiales que
+   * muestrean el cubemap vía envMapRotation estándar de Three.js (p.ej. R_Glass o antes de
+   * activar boxProbe en RMaterials).
+   */
+  syncProbeRotation(shipQuat: THREE.Quaternion) {
+    if (this.probeMats.length === 0) return;
+    // Three.js niega (x,y,z) de envMapRotation al construir la matriz: Euler ZYX → XYZ produce R(q^-1) exacto.
+    this.tmpEuler.setFromQuaternion(shipQuat, 'ZYX');
+    const ex = this.tmpEuler.x, ey = this.tmpEuler.y, ez = this.tmpEuler.z;
+    for (let i = 0; i < this.probeMats.length; i++) {
+      const m = this.probeMats[i];
+      if ((m.userData as any)?.boxProbe?.enabled?.value > 0.5) continue;
+      m.envMapRotation.set(ex, ey, ez, 'XYZ');
+    }
   }
 
   roomAt(p: THREE.Vector3): string {
