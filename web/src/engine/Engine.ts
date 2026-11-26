@@ -24,6 +24,7 @@ import { Cockpit, Telemetry } from './ship/Cockpit';
 import { Flight } from './sim/Flight';
 import { Player } from './player/Player';
 import { Controller } from './player/Controller';
+import { Hands } from './player/Hands';
 import { Input } from './Input';
 import { Audio, type AcousticZone } from './Audio';
 import { Crew, ACTIVITIES, type ActivityId } from './sim/Crew';
@@ -102,6 +103,7 @@ export class Engine {
   player = new Controller() as Controller & { eva: boolean; jetFuel: number };
   /** cuerpo EVA (colisión con el exterior) */
   evaBody = new Player(this.model);
+  hands = new Hands();
   missions = new MissionRunner();
   sandbox = new Sandbox();
   objects: WorldObject[] = [];
@@ -230,6 +232,7 @@ export class Engine {
     this.lighting = new SceneLighting(this.near);
     this.fx = new EffectsManager(this.near, this.model.root, this.labelsLayer);
     for (const o of [this.station.obj, this.satellite.obj, this.canister]) { this.objects.push(o); this.near.add(o.group); }
+    this.near.add(this.hands.group);
 
     this.player.eva = false;
     this.player.jetFuel = 1;
@@ -563,6 +566,16 @@ export class Engine {
       if (moved > 6 || !quick) return;
       if (this.mode === 'ENGINEERING') {
         const hit = this.pickAt(e.clientX, e.clientY);
+        // el interior Rebirth también es inspeccionable (pieza con identidad propia)
+        if (this.interior.root.visible) {
+          this.ray.setFromCamera(this.ndc(e.clientX, e.clientY), this.camera); this.ray.far = 1000;
+          const ih = this.ray.intersectObject(this.interior.root, true).find((h) => !((h.object as THREE.Mesh).material as THREE.Material).transparent);
+          if (ih && (!hit || ih.distance < hit.dist - 0.01)) {
+            const part = this.interior.partOf(ih.object);
+            if (part) { this.select(null); this.inspect = { label: part.label, desc: `${part.desc} · ${part.code}` }; this.emitSnap(); return; }
+          }
+        }
+        this.inspect = null;
         const n = hit?.node ?? null;
         if (n && this.model.selected === n && n.parent && n.parent.depth > 0) this.select(n.parent);
         else this.select(n);
@@ -626,6 +639,13 @@ export class Engine {
     if (!c) return;
     const [k, v] = c.ctl.split(':');
     this.audio.start();
+    // la mano viaja al punto real del objeto (no una animación genérica)
+    if (k !== 'act' && k !== 'seat') {
+      this.ray.setFromCamera(this.ndc(cx, cy), this.camera);
+      this.ray.far = 2.3;
+      const hit = this.ray.intersectObject(c.part?.obj ?? this.interior.root, true)[0];
+      if (hit) this.hands.reach(this.camera.worldToLocal(hit.point.clone()), 0.55);
+    }
     switch (k) {
       case 'sw': {
         const on = this.systems.toggle(v as SwitchId);
@@ -987,6 +1007,7 @@ export class Engine {
     this.updateCamera(dt);
     this.camera.updateMatrixWorld();
     this.updateVisibility();
+    this.updateHands(dt);
     // iluminación
     const indoor = this.mode === 'INTERIOR' || this.seated;
     this.lighting.update({
@@ -1004,6 +1025,24 @@ export class Engine {
     const camKm = this.shipKm().add(this.camera.position.clone().divideScalar(1000));
     this.astro.update(dt, camKm, this.camera.getWorldQuaternion(new THREE.Quaternion()), this.camera.fov, this.camera.aspect, 1, this.renderer.getPixelRatio());
     this.fx.updateLabels(this.mode as any, this.labels, this.model, this.camera, this.renderer.domElement.clientWidth, this.renderer.domElement.clientHeight, (n) => this.select(n, true));
+  }
+
+  /** Manos: ancladas a los controladores físicos al pilotar; alcance real al interactuar; ocultas el resto del tiempo. */
+  private updateHands(dt: number) {
+    const fp = this.mode === 'INTERIOR' || this.seated || this.mode === 'EVA';
+    this.hands.group.visible = fp;
+    if (!fp) return;
+    this.hands.setEVA(this.mode === 'EVA');
+    this.hands.hideAll();
+    if (this.seated) {
+      const s = Math.sign(this.seatSide);
+      const root = this.model.root;
+      const L = root.localToWorld(b2t(7.80, s * 0.78 + 0.30, -0.24));
+      const R = root.localToWorld(b2t(7.80, s * 0.78 - 0.30, -0.24));
+      this.hands.anchor(0, this.camera.worldToLocal(L.clone()), 0.82);
+      this.hands.anchor(1, this.camera.worldToLocal(R.clone()), 0.9);
+    }
+    this.hands.update(dt, this.camera, this.reducedMotion);
   }
 
   /** Perfil de visibilidad explícito por modo (sin herencias entre modos). */
@@ -1327,6 +1366,7 @@ export class Engine {
     cancelAnimationFrame(this.raf);
     this.ac.abort();
     this.input.dispose();
+    this.hands.dispose();
     this.lighting.dispose();
     this.interior.dispose();
     this.listeners.clear();

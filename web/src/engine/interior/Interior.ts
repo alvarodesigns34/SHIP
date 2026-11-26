@@ -122,7 +122,7 @@ export class Interior {
     gltf.scene.traverse((o) => { const r = (o.userData as any)?.room; if (r) rooms.add(r); });
     const tl = new THREE.TextureLoader();
     await Promise.all([...rooms].map((r) => new Promise<void>((res) => {
-      tl.load(`${base}textures/lm/lm_${r}.png`, (t) => {
+      tl.load(`${base}textures/lm/lm_${r}.webp`, (t) => {
         t.colorSpace = THREE.SRGBColorSpace;
         t.flipY = false;
         t.channel = 1;

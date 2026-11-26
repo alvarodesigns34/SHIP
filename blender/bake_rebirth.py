@@ -45,6 +45,8 @@ sc.cycles.samples = SAMPLES
 sc.cycles.use_denoising = False
 sc.cycles.max_bounces = 6
 sc.cycles.diffuse_bounces = 4
+sc.cycles.sample_clamp_indirect = 4.0
+sc.cycles.sample_clamp_direct = 0.0
 sc.render.bake.margin = 12
 sc.render.bake.use_clear = True
 if not sc.world:
@@ -163,22 +165,28 @@ def bake_room(key, obs, res):
 
 
 def denoise(px, mask):
-    """Filtro bilateral ligero restringido a los texeles válidos (reduce ruido de Monte Carlo)."""
-    rgb = px[..., :3]
+    """Dos etapas: (1) mediana 3×3 contra puntos calientes; (2) bilateral 9×9 con tolerancia
+    relativa amplia (preserva discontinuidades reales de iluminación entre islas)."""
+    rgb = px[..., :3].copy()
+    lum = rgb.mean(-1)
+    stack = np.stack([np.roll(np.roll(lum, dy, 0), dx, 1) for dy in (-1, 0, 1) for dx in (-1, 0, 1)])
+    med = np.median(stack, axis=0)
+    hot = lum > med * 1.6 + 0.02
+    scale = np.where(hot, med / np.maximum(lum, 1e-6), 1.0)[..., None]
+    rgb = rgb * scale
     lum = rgb.mean(-1, keepdims=True)
     acc = np.zeros_like(rgb)
     wsum = np.zeros_like(lum)
-    for dy in (-2, -1, 0, 1, 2):
-        for dx in (-2, -1, 0, 1, 2):
+    for dy in range(-4, 5):
+        for dx in range(-4, 5):
             sh = np.roll(np.roll(rgb, dy, 0), dx, 1)
             shl = np.roll(np.roll(lum, dy, 0), dx, 1)
-            shm = np.roll(np.roll(mask, dy, 0), dx, 1)
-            ws = math.exp(-(dx * dx + dy * dy) / 4.5)
-            wr = np.exp(-((shl - lum) ** 2) / (2 * (0.12 * (lum + 0.02)) ** 2))
-            w = ws * wr * shm
+            ws = math.exp(-(dx * dx + dy * dy) / (2 * 2.2 ** 2))
+            rel = (shl - lum) / (0.45 * (lum + shl) * 0.5 + 0.01)
+            w = ws * np.exp(-0.5 * rel * rel)
             acc += sh * w
             wsum += w
-    return np.where(wsum > 0, acc / np.maximum(wsum, 1e-6), rgb)
+    return acc / np.maximum(wsum, 1e-6)
 
 
 def save_png(key, px):
@@ -187,8 +195,8 @@ def save_png(key, px):
     # lineal -> sRGB
     srgb = np.where(rgb <= 0.0031308, rgb * 12.92, 1.055 * np.power(rgb, 1 / 2.4) - 0.055)
     im = Image.fromarray((np.flipud(srgb) * 255 + 0.5).astype(np.uint8), 'RGB')
-    path = os.path.join(OUT_TEX, f'lm_{key}.png')
-    im.save(path, optimize=True)
+    path = os.path.join(OUT_TEX, f'lm_{key}.webp')
+    im.save(path, 'WEBP', quality=90, method=6)
     print('[bake] guardado', path, os.path.getsize(path) // 1024, 'KiB', 'max', float(px[..., :3].max()), 'p99', float(np.percentile(px[..., :3], 99)))
 
 

@@ -141,6 +141,12 @@ export class Controller {
   }
 
   private walkStep(dt: number, move: THREE.Vector3, opts: { run?: boolean; crouch?: boolean; up?: boolean; jump?: boolean }) {
+    // pies por debajo de una superficie (teletransporte, cambio de modo): recolocarlos encima
+    if (!this.ladder()) {
+      const f0 = this.pos.y - this.eyeH;
+      const gUp = this.groundAt(this.pos.x, f0 + 0.02, this.pos.z, 0.45);
+      if (gUp > f0 + 0.004) { this.pos.y += gUp - f0; if (this.vel.y < 0) this.vel.y = 0; }
+    }
     const feet = this.pos.y - this.eyeH;
     const lad = this.ladder(new THREE.Vector3(this.pos.x, feet + 0.4, this.pos.z)) ?? this.ladder(this.pos);
     const sinY = Math.sin(this.yaw), cosY = Math.cos(this.yaw);
@@ -235,7 +241,7 @@ export class Controller {
     this.vel.set(0, 0, 0);
     if (!this.grid || this.locomotion !== 'walk') return;
     if (this.ladder()) { this.climbing = true; return; }
-    const g = this.groundAt(this.pos.x, this.pos.y, this.pos.z, 0.2);
+    const g = this.groundAt(this.pos.x, this.pos.y - 1.3, this.pos.z, 1.2);
     if (Number.isFinite(g)) {
       const room = this.clearance(this.pos.x, g, this.pos.z);
       this.eyeH = Math.min(EYE_STAND, room - 0.14);

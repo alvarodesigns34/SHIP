@@ -48,11 +48,11 @@ RMAT = {
     "R_LiningDark": ((0.085, 0.09, 0.10), 0.0, 0.60, None, "Revestimiento inferior: polímero grafito resistente a rozaduras"),
     "R_Fabric":     ((0.16, 0.155, 0.15), 0.0, 0.95, None, "Tejido acústico de lana técnica en espiga, gris cálido"),
     "R_FabricBlue": ((0.030, 0.060, 0.080), 0.0, 0.92, None, "Tejido técnico petróleo (tapizados, sacos de dormir)"),
-    "R_Leather":    ((0.11, 0.105, 0.10), 0.0, 0.55, None, "Tapizado de piel técnica perforada, grafito cálido"),
+    "R_Leather":    ((0.055, 0.06, 0.068), 0.0, 0.55, None, "Tapizado de piel técnica perforada, grafito cálido"),
     "R_Frame":      ((0.045, 0.047, 0.052), 0.9, 0.38, None, "Aluminio 6061 anodizado grafito (marcos, nervios, pozos)"),
     "R_Alu":        ((0.80, 0.80, 0.79), 1.0, 0.30, None, "Aluminio satinado"),
     "R_Steel":      ((0.62, 0.62, 0.62), 1.0, 0.26, None, "Acero inoxidable cepillado"),
-    "R_Floor":      ((0.030, 0.032, 0.036), 0.0, 0.78, None, "Pavimento de caucho técnico con relieve antideslizante"),
+    "R_Floor":      ((0.085, 0.086, 0.09), 0.0, 0.78, None, "Pavimento de caucho técnico con relieve antideslizante"),
     "R_Worktop":    ((0.40, 0.33, 0.24), 0.0, 0.48, None, "Encimera de compuesto de fibra de lino y resina bio"),
     "R_Rubber":     ((0.018, 0.018, 0.02), 0.0, 0.82, None, "Elastómero negro"),
     "R_Accent":     ((0.62, 0.11, 0.03), 0.0, 0.42, None, "Bermellón ALCIÓN (agarres y seguridad)"),
@@ -564,10 +564,10 @@ def bake_lights():
         for s in (1, -1):
             w = arc_pt(R_L, D(63.0), s)
             # cornisa: emite hacia el techo curvo
-            area(f"L_cove_{key}_{s}", (xc, w.y - s * 0.045, w.z + 0.03), L - 0.1, 0.03, (D(180) - s * D(35), 0, 0) if False else (0, 0, 0), 32.0 * L, (1.0, 0.86, 0.72), key)
+            area(f"L_cove_{key}_{s}", (xc, w.y - s * 0.045, w.z + 0.03), L - 0.1, 0.03, (D(180) - s * D(35), 0, 0) if False else (0, 0, 0), 34.0 * L, (1.0, 0.92, 0.84), key)
             made[-1].rotation_euler = (PI + s * D(40), 0, 0)
             # zócalo
-            area(f"L_toe_{key}_{s}", (xc, s * (FACE + 0.054), FLOOR + TOE - 0.012), L - 0.1, 0.01, (0, 0, 0), 3.0 * L, (1.0, 0.86, 0.72), key)
+            area(f"L_toe_{key}_{s}", (xc, s * (FACE + 0.054), FLOOR + TOE - 0.012), L - 0.1, 0.01, (0, 0, 0), 3.0 * L, (1.0, 0.92, 0.84), key)
         # canal cenital (difusor)
         area(f"L_chan_{key}", (xc, 0, R_L + 0.02), L - 0.04, 0.24, (0, 0, 0), 45.0 * L, (1.0, 0.93, 0.85), key)
     # luminarias específicas declaradas por las estancias (marcadores LMARK_*)

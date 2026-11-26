@@ -172,6 +172,15 @@ export class Hands {
     if (this.loaded) this.applyEVAMode();
   }
 
+  /** Ancla la mano i a un punto en espacio de cámara (p. ej. un controlador físico). */
+  anchor(i: number, pCam: THREE.Vector3, curl = 0.85) {
+    const t = this.target[i];
+    t.visible = true; t.wrist.copy(pCam); t.curl = curl; t.point = 0; t.prop = null as any;
+    t.aim.set(-0.35, i === 0 ? 0.18 : -0.18, i === 0 ? 0.25 : -0.25);
+  }
+  /** Oculta ambas manos (salvo un alcance en curso). */
+  hideAll() { for (const t of this.target) t.visible = false; }
+
   /** Alcanzar un punto (espacio de cámara) con el dedo índice extendido y volver. */
   reach(pCam: THREE.Vector3, dur = 0.58) {
     const i = pCam.x < 0 ? 0 : 1;

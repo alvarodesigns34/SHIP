@@ -217,22 +217,22 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.B.SHL.WALL,Revestimiento,part,R_Lining,2.042x2.791x1.902,2016,Paneles curvos de PPSU con juntas y compartimentos altos.
 4,HAB.INT.B.VEG,Cámara de cultivo,part,R_Lining;R_LightPanel;R_Black;R_Plant;R_Rubber,0.8x0.444x0.52,13968,Cámara de crecimiento con iluminación LED de espectro completo y riego por mecha capilar.
 4,HAB.INT.B.VEGG,Puerta acristalada de la cámara,part,R_Glass,0.75x0.006x0.44,12,
-3,HAB.INT.C,Habitáculos (bahía C),group,,3.228x3.97x3.98,,"Cuatro cabinas privadas (dos por costado) con aislamiento acústico, ventilación individual e iluminación regulable."
+3,HAB.INT.C,Habitáculos (bahía C),group,,2.1x3.97x3.98,,"Cuatro cabinas privadas (dos por costado) con aislamiento acústico, ventilación individual e iluminación regulable."
 4,HAB.INT.C.Q1,Cabina privada 1 (Comandante),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
 4,HAB.INT.C.Q1.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.706,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
-4,HAB.INT.C.Q1.CRT,Cortina,part,R_FabricBlue,2.223x0.22x0.05,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q1.CRT,Cortina,part,R_FabricBlue,0.26x0.05x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q1.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
 4,HAB.INT.C.Q2,Cabina privada 2 (Piloto),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
 4,HAB.INT.C.Q2.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.703,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
-4,HAB.INT.C.Q2.CRT,Cortina,part,R_FabricBlue,2.223x0.22x0.044,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q2.CRT,Cortina,part,R_FabricBlue,0.26x0.044x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q2.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
 4,HAB.INT.C.Q3,Cabina privada 3 (Especialista 1),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
 4,HAB.INT.C.Q3.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.706,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
-4,HAB.INT.C.Q3.CRT,Cortina,part,R_FabricBlue,2.223x0.22x0.048,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q3.CRT,Cortina,part,R_FabricBlue,0.26x0.048x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q3.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
 4,HAB.INT.C.Q4,Cabina privada 4 (Especialista 2),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
 4,HAB.INT.C.Q4.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.145x1.707,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
-4,HAB.INT.C.Q4.CRT,Cortina,part,R_FabricBlue,2.223x0.22x0.048,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q4.CRT,Cortina,part,R_FabricBlue,0.26x0.049x2.223,656,Cortina de tejido técnico ignífugo recogida.
 4,HAB.INT.C.Q4.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
 4,HAB.INT.C.SHL.FRM,Nervios y perfiles,part,R_Lining;R_Frame;R_Alu;R_Backing,2.1x3.877x3.241,5348,"Nervios grafito, cornisas, raíles de anclaje."
 4,HAB.INT.C.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x1.703x0.245,84,
