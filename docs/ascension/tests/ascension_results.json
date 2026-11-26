@@ -1,0 +1,368 @@
+{
+  "date": "2026-11-26T20:07:33.131Z",
+  "url": "http://127.0.0.1:4173/",
+  "durationSec": 228.98,
+  "pass": 29,
+  "total": 29,
+  "metrics": {
+    "desktopBootMs": 20043,
+    "longSession": {
+      "min1": {
+        "geometries": 352,
+        "textures": 217,
+        "programs": 75,
+        "calls": 92,
+        "tris": 127368,
+        "heapMB": 149.73,
+        "metSeconds": 981008
+      },
+      "min10": {
+        "geometries": 352,
+        "textures": 217,
+        "programs": 76,
+        "calls": 92,
+        "tris": 127368,
+        "heapMB": 149.73,
+        "metSeconds": 1017214
+      },
+      "st10m": {
+        "mean": 81.19,
+        "black": 0.0092,
+        "white": 0,
+        "magenta": 0
+      },
+      "dGeo": 0,
+      "dTex": 0,
+      "dProgs": 1,
+      "dCalls": 0,
+      "dMet": 36206
+    },
+    "modes": {
+      "CINEMATIC": {
+        "mode": "CINEMATIC",
+        "mean": 85.18,
+        "black": 0.0098,
+        "white": 0,
+        "magenta": 0
+      },
+      "FLIGHT": {
+        "mode": "FLIGHT",
+        "mean": 69.31,
+        "black": 0.0418,
+        "white": 0,
+        "magenta": 0
+      },
+      "INTERIOR": {
+        "mode": "INTERIOR",
+        "mean": 81.19,
+        "black": 0.0092,
+        "white": 0,
+        "magenta": 0
+      },
+      "EVA": {
+        "mode": "EVA",
+        "mean": 51.52,
+        "black": 0.4974,
+        "white": 0,
+        "magenta": 0
+      },
+      "ENGINEERING": {
+        "mode": "ENGINEERING",
+        "mean": 77.23,
+        "black": 0.323,
+        "white": 0,
+        "magenta": 0
+      },
+      "MISSIONS": {
+        "mode": "MISSIONS",
+        "mean": 69.3,
+        "black": 0.0419,
+        "white": 0,
+        "magenta": 0
+      },
+      "SANDBOX": {
+        "mode": "SANDBOX",
+        "mean": 69.32,
+        "black": 0.0419,
+        "white": 0,
+        "magenta": 0
+      }
+    },
+    "profiles": {
+      "baja": {
+        "quality": "baja",
+        "bloom": false,
+        "ao": false,
+        "msaa": 0,
+        "autoExposure": false,
+        "ms": 6056,
+        "mean": 81.21,
+        "black": 0.0092,
+        "white": 0,
+        "magenta": 0
+      },
+      "media": {
+        "quality": "media",
+        "bloom": true,
+        "ao": false,
+        "msaa": 2,
+        "autoExposure": true,
+        "ms": 20501,
+        "mean": 96.59,
+        "black": 0.0026,
+        "white": 0,
+        "magenta": 0
+      },
+      "alta": {
+        "quality": "alta",
+        "bloom": true,
+        "ao": true,
+        "msaa": 4,
+        "autoExposure": true,
+        "ms": 6380,
+        "mean": 96.37,
+        "black": 0.0026,
+        "white": 0,
+        "magenta": 0
+      },
+      "ultra": {
+        "quality": "ultra",
+        "bloom": true,
+        "ao": true,
+        "msaa": 4,
+        "autoExposure": true,
+        "ms": 23418,
+        "mean": 96.47,
+        "black": 0.0026,
+        "white": 0,
+        "magenta": 0
+      }
+    },
+    "engineering": {
+      "engCheck": {
+        "hasImm": true,
+        "roomCodes": [
+          "HAB.INT.IMM.A",
+          "HAB.INT.IMM.B",
+          "HAB.INT.IMM.C",
+          "HAB.INT.IMM.D",
+          "HAB.INT.IMM.N"
+        ],
+        "totalParts": 127,
+        "selectedCode": "HAB.INT.B.GBX",
+        "explodeDisp": 2.379,
+        "modelExplodeAfter": 0,
+        "intExplodeAfter": 0,
+        "intExplodedModeAfter": false,
+        "residualDisp": 0
+      },
+      "labelCheck": {
+        "total": 8,
+        "visible": 5,
+        "overlaps": []
+      }
+    },
+    "contextLoss": {
+      "stBeforeLoss": {
+        "mean": 80.97,
+        "black": 0.0092,
+        "white": 0,
+        "magenta": 0
+      },
+      "duringLoss": {
+        "contextLost": true,
+        "glLost": true
+      },
+      "restoredOk": true,
+      "restoreMs": 20100,
+      "afterRestore": {
+        "contextLost": false,
+        "glLost": false,
+        "st": {
+          "mean": 80.97,
+          "black": 0.0093,
+          "white": 0,
+          "magenta": 0
+        }
+      },
+      "ignoredContextLostLogs": 0
+    },
+    "mobileBootMs": 18631
+  },
+  "results": [
+    {
+      "name": "1a. Sesión 10 min (600 s): memoria WebGL estable (Δ ≤ 3, sin fugas)",
+      "pass": true,
+      "info": "geo 352→352, tex 217→217, progs 75→76, heap 149.73→149.73 MB",
+      "elapsedSec": 60.5
+    },
+    {
+      "name": "1b. Sesión 10 min (600 s): draw calls estables en la misma vista",
+      "pass": true,
+      "info": "calls 92→92 (Δ=0), tris 127368→127368",
+      "elapsedSec": 60.5
+    },
+    {
+      "name": "1c. Sesión 10 min (600 s): reloj maestro avanzó coherentemente (≥ 500 s)",
+      "pass": true,
+      "info": "ΔmetSeconds=36206 s (total desde inicio: 39814 s)",
+      "elapsedSec": 60.5
+    },
+    {
+      "name": "1d. Sesión 10 min (600 s): lienzo válido tras 10 minutos",
+      "pass": true,
+      "info": "{\"mean\":81.19,\"black\":0.0092,\"white\":0,\"magenta\":0}",
+      "elapsedSec": 60.5
+    },
+    {
+      "name": "2. Modo CINEMATIC: activo y píxeles válidos",
+      "pass": true,
+      "info": "{\"mode\":\"CINEMATIC\",\"mean\":85.18,\"black\":0.0098,\"white\":0,\"magenta\":0}",
+      "elapsedSec": 81.3
+    },
+    {
+      "name": "2. Modo FLIGHT: activo y píxeles válidos",
+      "pass": true,
+      "info": "{\"mode\":\"FLIGHT\",\"mean\":69.31,\"black\":0.0418,\"white\":0,\"magenta\":0}",
+      "elapsedSec": 81.3
+    },
+    {
+      "name": "2. Modo INTERIOR: activo y píxeles válidos",
+      "pass": true,
+      "info": "{\"mode\":\"INTERIOR\",\"mean\":81.19,\"black\":0.0092,\"white\":0,\"magenta\":0}",
+      "elapsedSec": 81.3
+    },
+    {
+      "name": "2. Modo EVA: activo y píxeles válidos",
+      "pass": true,
+      "info": "{\"mode\":\"EVA\",\"mean\":51.52,\"black\":0.4974,\"white\":0,\"magenta\":0}",
+      "elapsedSec": 81.3
+    },
+    {
+      "name": "2. Modo ENGINEERING: activo y píxeles válidos",
+      "pass": true,
+      "info": "{\"mode\":\"ENGINEERING\",\"mean\":77.23,\"black\":0.323,\"white\":0,\"magenta\":0}",
+      "elapsedSec": 81.3
+    },
+    {
+      "name": "2. Modo MISSIONS: activo y píxeles válidos",
+      "pass": true,
+      "info": "{\"mode\":\"MISSIONS\",\"mean\":69.3,\"black\":0.0419,\"white\":0,\"magenta\":0}",
+      "elapsedSec": 81.3
+    },
+    {
+      "name": "2. Modo SANDBOX: activo y píxeles válidos",
+      "pass": true,
+      "info": "{\"mode\":\"SANDBOX\",\"mean\":69.32,\"black\":0.0419,\"white\":0,\"magenta\":0}",
+      "elapsedSec": 81.3
+    },
+    {
+      "name": "2h. Retorno a INTERIOR tras los 7 modos: limpio y píxeles válidos",
+      "pass": true,
+      "info": "{\"mode\":\"INTERIOR\",\"xray\":false,\"section\":false,\"explode\":0,\"intExplode\":0,\"clipped\":false,\"profile\":\"immersive\"} {\"mean\":81.23,\"black\":0.0093,\"white\":0,\"magenta\":0}",
+      "elapsedSec": 81.3
+    },
+    {
+      "name": "3. Perfil gráfico «baja»: render válido sin NaN/magenta",
+      "pass": true,
+      "info": "bloom=false ao=false msaa=0 (6056 ms) mean=81.21 black=0.0092 mag=0",
+      "elapsedSec": 147.7
+    },
+    {
+      "name": "3. Perfil gráfico «media»: render válido sin NaN/magenta",
+      "pass": true,
+      "info": "bloom=true ao=false msaa=2 (20501 ms) mean=96.59 black=0.0026 mag=0",
+      "elapsedSec": 147.7
+    },
+    {
+      "name": "3. Perfil gráfico «alta»: render válido sin NaN/magenta",
+      "pass": true,
+      "info": "bloom=true ao=true msaa=4 (6380 ms) mean=96.37 black=0.0026 mag=0",
+      "elapsedSec": 147.7
+    },
+    {
+      "name": "3. Perfil gráfico «ultra»: render válido sin NaN/magenta",
+      "pass": true,
+      "info": "bloom=true ao=true msaa=4 (23418 ms) mean=96.47 black=0.0026 mag=0",
+      "elapsedSec": 147.7
+    },
+    {
+      "name": "3e. Perfiles gráficos: baja desactiva bloom y AO frente a alta/ultra",
+      "pass": true,
+      "info": "baja(bloom=false,ao=false) vs alta(true,true) ultra(true,true)",
+      "elapsedSec": 147.7
+    },
+    {
+      "name": "4a. Ingeniería interior: HAB.INT.IMM con 5 estancias (A..N) y ≥ 100 piezas",
+      "pass": true,
+      "info": "estancias=5 (HAB.INT.IMM.A,HAB.INT.IMM.B,HAB.INT.IMM.C,HAB.INT.IMM.D,HAB.INT.IMM.N), piezas=127",
+      "elapsedSec": 147.7
+    },
+    {
+      "name": "4b. Ingeniería interior: selectCode(HAB.INT.B.GBX) + explosión interior > 0.5 m",
+      "pass": true,
+      "info": "selected=HAB.INT.B.GBX, disp=2.379 m",
+      "elapsedSec": 147.7
+    },
+    {
+      "name": "4c. Ingeniería interior: retorno a INTERIOR resetea explosión a 0 sin residuo",
+      "pass": true,
+      "info": "modelEx=0, intEx=0, residuo=0 m",
+      "elapsedSec": 147.7
+    },
+    {
+      "name": "4d. Ingeniería (01_ext_general): etiquetas 3D visibles con 0 solapamientos 2D",
+      "pass": true,
+      "info": "visibles=5/8, solapes=0",
+      "elapsedSec": 147.7
+    },
+    {
+      "name": "6a. WEBGL_lose_context: contexto perdido detectado y 0 pageerror",
+      "pass": true,
+      "info": "hasExt=true, contextLost=true, glLost=true, pageErr=0",
+      "elapsedSec": 148.2
+    },
+    {
+      "name": "6b. WEBGL_lose_context: restauración completa y fotograma válido sin pageerror",
+      "pass": true,
+      "info": "restored=true (20100 ms), before={\"mean\":80.97,\"black\":0.0092,\"white\":0,\"magenta\":0}, after={\"mean\":80.97,\"black\":0.0093,\"white\":0,\"magenta\":0}, pageErr=0",
+      "elapsedSec": 179.4
+    },
+    {
+      "name": "Escritorio: 0 errores de página, consola y HTTP",
+      "pass": true,
+      "info": "page=0, console=0, http=0",
+      "elapsedSec": 179.4
+    },
+    {
+      "name": "5a. Móvil vertical (390×844): 0 desbordamiento horizontal en portada",
+      "pass": true,
+      "info": "scrollW=390 <= innerW=390 (CINEMATIC)",
+      "elapsedSec": 203.4
+    },
+    {
+      "name": "5b. Móvil vertical (390×844): 0 desbordamiento y palanca táctil visible en interior",
+      "pass": true,
+      "info": "mode=INTERIOR, scrollW=390/390, stick=true",
+      "elapsedSec": 203.4
+    },
+    {
+      "name": "5c. Móvil horizontal (844×390): interior sin desbordamiento y palanca usable",
+      "pass": true,
+      "info": "scrollW=844/844, stick=true, moved=1.18 m, drift=0 m",
+      "elapsedSec": 203.9
+    },
+    {
+      "name": "5d. Móvil horizontal (844×390): vuelo sin desbordamiento y palanca usable",
+      "pass": true,
+      "info": "mode=FLIGHT, scrollW=844/844, stick=true, speed=0.24 m/s",
+      "elapsedSec": 203.9
+    },
+    {
+      "name": "Móvil: 0 errores de página, consola y HTTP",
+      "pass": true,
+      "info": "page=0, console=0, http=0",
+      "elapsedSec": 203.9
+    }
+  ]
+}

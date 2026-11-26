@@ -1,0 +1,62 @@
+{
+ "01_ext_general": {
+  "calls": 122,
+  "tris": 680332
+ },
+ "02_ext_closeup": {
+  "calls": 171,
+  "tris": 569844
+ },
+ "03_ext_engines": {
+  "calls": 129,
+  "tris": 659696
+ },
+ "04_cockpit_seated": {
+  "calls": 190,
+  "tris": 357462
+ },
+ "05_cockpit_overview": {
+  "calls": 222,
+  "tris": 396010
+ },
+ "06_lab": {
+  "calls": 243,
+  "tris": 519934
+ },
+ "07_crew_quarters": {
+  "calls": 146,
+  "tris": 309164
+ },
+ "08_galley_services": {
+  "calls": 111,
+  "tris": 204080
+ },
+ "09_corridor_aft": {
+  "calls": 279,
+  "tris": 674308
+ },
+ "10_cupola": {
+  "calls": 66,
+  "tris": 83896
+ },
+ "11_node": {
+  "calls": 105,
+  "tris": 218002
+ },
+ "12_airlock_well": {
+  "calls": 117,
+  "tris": 281152
+ },
+ "13_earth_orbit": {
+  "calls": 99,
+  "tris": 543354
+ },
+ "14_earth_window": {
+  "calls": 70,
+  "tris": 309692
+ },
+ "15_exploded": {
+  "calls": 594,
+  "tris": 966248
+ }
+}

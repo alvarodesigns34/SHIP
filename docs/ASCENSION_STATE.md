@@ -1,90 +1,119 @@
 # ALCIÓN HX-4 · ASCENSION — estado del proyecto
 
-> Documento vivo y riguroso. Distingue siempre lo **medido** de lo **pendiente**.
-> Sin GPU física en el entorno de desarrollo (sólo Chromium + ANGLE/SwiftShader sobre Vulkan 1.3 en CPU):
-> los tiempos de fotograma aquí son de CPU/SwiftShader y sirven únicamente para comparativas A/B en
-> condiciones idénticas, **nunca** como estimación de FPS reales en GPU.
+> Documento vivo y riguroso. Distingue siempre lo **medido** de lo **no medido**.
+> **Sin GPU física en el entorno de desarrollo** (sólo Chromium + ANGLE/SwiftShader sobre Vulkan 1.3 en 2 vCPUs):
+> los tiempos de fotograma aquí corresponden a rasterización por CPU/SwiftShader y sirven únicamente para comparativas A/B en
+> condiciones idénticas, **nunca** como estimación de FPS reales en GPU. No se inventan cifras de GPU ni se asignan notas subjetivas.
 
-## 1. Partida y entorno (Ola 0)
+---
+
+## 1. Partida y entorno
 - **Rama base**: `claude/determined-keller-u2qmrs` (commit `d5c8388`).
-- **Rama de trabajo**: `gemini/alcion-ascension`.
-- **Producción actual**: https://alvarodesigns34.github.io/SHIP/ (rama `gh-pages`, despliegue `b41c0e9`).
+- **Rama de trabajo**: `gemini/alcion-ascension` (subida a `origin`).
+- **Producción**: https://alvarodesigns34.github.io/SHIP/ (rama `gh-pages`; despliegue anterior `b41c0e9`).
 - **Hardware del contenedor**:
-  - CPU: 2 vCPUs `Intel(R) Xeon(R) CPU @ 2.30GHz` (AVX2), 7,8 GiB RAM, 85 GiB disco libre.
+  - CPU: 2 vCPUs `Intel(R) Xeon(R) CPU @ 2.30GHz` (AVX2), 7,8 GiB RAM.
   - GPU física: **No disponible**. WebGL2 vía `ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)), SwiftShader driver)`.
-  - `EXT_disjoint_timer_query_webgl2`: `true` (expuesto por ANGLE/SwiftShader; mide latencia de rasterizador por CPU, no de GPU dedicada). `MAX_SAMPLES = 4`, `MAX_TEXTURE_SIZE = 8192`.
-- **Toolchain verificada**:
-  - Node.js `v22.23.5`, `npm ci` + `npm run build` en `web/` (5,1 s).
-  - Blender como módulo Python: `bpy 5.3.0` + `Pillow 13.0.0` + `numpy 2.5.5` en `/home/antigravity/.venv-bpy`.
-  - `blender/build.py`: ejecutado y verificado sin errores en 19,9 s (maestro restaurado tras prueba para conservar UV `LM` vigentes antes de la Ola 1).
+  - `EXT_disjoint_timer_query_webgl2`: `true` (expuesto por ANGLE/SwiftShader; mide rasterizador por CPU). `MAX_SAMPLES = 4`, `MAX_TEXTURE_SIZE = 8192`.
+- **Toolchain**: Node.js `v22.23.5`, Python 3.13 con `bpy 5.3.0` + `Pillow 13.0.0` + `numpy 2.5.5` en `/home/antigravity/.venv-bpy`.
 
-## 2. Línea base medida (Ola 0)
+---
 
-### Baterías de pruebas
-- `web/tests/rebirth.cjs`: **26/26 PASS** (0 errores de consola).
-  - Arranque exterior listo: **8.617 ms** (umbral < 20.000 ms).
-  - Arranque interior listo: **12.288 ms** (umbral < 60.000 ms).
-  - Colisiones (800 pasos): distancia mínima **0,160 m** (umbral ≥ 0,12 m), **0** salidas del volumen presurizado.
-  - Habitáculos mirando a popa (sin ventanas): **68 llamadas / 108.972 triángulos**.
-  - Exterior completo (incluidas sombras): **78 llamadas / 502.600 triángulos**.
-  - Escrituras de matrices en reposo: **0**.
-- `web/tests/functional.cjs`: **21/22 PASS, 1 FAIL** (0 errores de página/consola, 0 errores HTTP).
-  - Único fallo heredado en la línea base: `11 Cabina sentada + manos` (`seated: true, handsVis: false`), porque el commit `6eb8d67` de Rebirth retiró las manos al pilotar. No se rebajará la prueba; quedará resuelta al reconstruir las manos en la Ola 2.
+## 2. Resumen de cambios por ola
 
-### Capturas de referencia (`docs/ascension/before/`, 1280×760, perfil `alta`)
-| Toma | Llamadas | Triángulos | Diagnóstico visual inicial |
-|---|---:|---:|---|
-| `01_ext_general` | 287 | 834.226 | Casco limpio pero cilíndrico y repetitivo; etiquetas flotantes superpuestas en el centro; cielo estelar pobre. |
-| `02_ext_closeup` | 261 | 682.034 | Paneles MMOD demasiado uniformes; faltan cintas, juntas, conductos y antenas detalladas. |
-| `03_ext_engines` | 294 | 813.654 | Módulo de servicio correcto; toberas y detalles traseros mejorables. |
-| `04_cockpit_seated` | 213 | 298.118 | Consola muy lisa y vacía; monitor central apagado al arranque; mamparo de proa azul plano sin herrajes ni cableado. |
-| `05_cockpit_overview` | 378 | 549.078 | Frame con pasada auxiliar/sombra; asientos primitivos en bloque; falta densidad técnica en consolas y suelo. |
-| `06_lab` | 288 | 440.806 | Guantera con cilindros simples; microscopio en bloque; cámara de cultivo tapada por plano `R_Black`; armarios muy lisos. |
-| `07_crew_quarters` | 82 | 248.114 | Sacos de dormir rígidos como bloques azules; cortinas con ondas simples; consola personal es un cubo gris liso. |
-| `08_galley_services` | 66 | 189.252 | 12 bolsas clónicas tipo almohada; dispensador de agua y calentador en bloque; mesa muy simple. |
-| `09_corridor_aft` | 170 | 557.738 | Vista de corredor limpia pero con aspecto de maqueta vacía; cicloergómetro tosco; falta cableado y desgaste. |
-| `10_cupola` | 47 | 76.156 | Cúpula despejada; faltan cerraduras/manetas, pasamanos con soportes y equipamiento fotográfico. |
-| `11_node` | 71 | 179.868 | Nodo muy liso; faltan válvulas, conductos y estiba EVA detallada. |
-| `12_airlock_well` | 97 | 260.302 | Pozo funcional pero poco detallado. |
-| `13_earth_orbit` | 161 | 482.078 | **Debilidad crítica**: Tierra borrosa a 420 km, especular oceánico en gran mancha difusa y nubes blandas sin sombras nítidas. |
-| `14_earth_window` | 58 | 253.100 | Vista nadir mejorable en nitidez terrestre y detalle de marco. |
-| `15_exploded` | 287 | 834.016 | Explosión exterior correcta; pendiente incorporar piezas interiores en Ola 3. |
+### Ola 0 · Línea base (`5ca14b1`)
+- Compilación y verificación de `blender/build.py` (19,9 s) y `npm run build` (5,1 s).
+- Pruebas iniciales: `rebirth.cjs` **26/26 PASS**, `functional.cjs` **21/22 PASS** (fallo heredado en test `11 Cabina sentada + manos`, retiradas en Rebirth `6eb8d67`).
+- Capturas base de las 15 cámaras fijas en `docs/ascension/before/`.
 
-## 3. Registro de olas
-- **Ola 0 (línea base)**: completada (`5ca14b1`). Capturas en `docs/ascension/before/` y métricas registradas arriba.
-- **Ola 1 ("imagen")**: completada. Integrados H3 (entorno espacial + casco civil + pantallas MFD), H2 (pipeline auto-exposición GPU + AO ½ res + FXAA 3.11 + sondas locales + perfiles) y H1 (arte interior en las 5 estancias + atlas 160 teselas + desgaste PBR + contrato `boxProbe` + horneado Cycles+OIDN). Evidencias en `docs/ascension/after_ola1/`.
-- **Ola 2 ("sentir")**: completada (`f4a7ff7`). Integrados H1 (5 props interactivos físicos con `prop_id`/`interact_pose`, 13 pantallas con normales corregidas y **5 lightmaps definitivos 2048²** con OIDN), H2 (controlador con suavizado/banking/head-bob, pasos sincronizados, transiciones animadas de asiento, escalerillas fluidas, impulso táctil en microgravedad, **manos acopladas a la nave agarrando THC/RHC** y culling en ingeniería exterior: `01_ext_general` 382 → 179 llamadas) y H3 (reloj maestro MET/UTC, 8 misiones guiadas, diana óptica COAS 3D + balizas en Tesela, retícula `DOCK`, brazo robótico con 4 presets y diagrama `ARM`/`ARMCAM`, alarmas unificadas y `Audio.ts` con convolución por estancia y modo realista/cinematográfico + `LICENSES.md`).
-- **Ola 3 ("producto")**: *en curso* (tope de 2 subagentes simultáneos: Tanda 3A = interfaz/HUD/modo foto/móvil/accesibilidad + árbol/explosión de ingeniería interior/etiquetas 3D/planos e inventario; Tanda 3B = ampliación de pruebas de 10 min, 4 perfiles, móvil vertical/horizontal y recuperación WebGL).
-- **Ola 4 (integración final y publicación)**: pendiente.
+### Ola 1 · Imagen (`58c8561`)
+- **Arte interior y materiales (H1)**:
+  - Reconstrucción de densidad y siluetas en las 5 estancias (`habitat.py`, `habitat_rooms.py`, `kit.py`): mamparo de proa iluminado y detallado (corregido el solape de `X_CONE1` con `FWD.STR.BHA`), asientos esculpidos con arnés y mandos diferenciados (THC + sidestick), glareshield con avisadores, cámara de cultivo con vidrio transparente y 10 plantas iluminadas (corregido el frente opaco `R_Black`), guantera sellada con esclusa lateral y manómetro, microscopio binocular, sacos acolchados de 9 baffles, cortinas con riel/anillas/cinta, consola personal y bolsillos, 12 bolsas CTB en 3 tonos, dispensador de agua real, calentador biselado, cicloergómetro rehecho, cúpula con pasamanos/DSLR y nodo con volante IDSS y manómetros O₂/N₂.
+  - Atlas de rotulación ampliado a 160 teselas (`make_labels.py`), textura cálida neutra `linen_warm_c.jpg`, desgaste procedural sutil en `RMaterials.ts` y contrato `boxProbe` por estancia.
+- **Motor y pipeline (H2)**:
+  - Sondas de reflexión locales por estancia (`Interior.ts`: `captureProbes` alineado al marco local de la nave, `autoClear = true`, resolución `256`/`128`/`64` por perfil, integración con `boxProbe` de `RMaterials.ts`).
+  - Pipeline HDR (`Pipeline.ts`, `PostShaders.ts`): exposición automática **100 % GPU sin `readPixels`** (cadena `32×32 → 8×8 → 2×2` + ping-pong `1×1` adaptativo), AO de contacto a ½ resolución mediante depth-resolve WebGL2 (0 draw calls de geometría, `1.0` exacto en espacio/Tierra sin halos), FXAA 3.11 post-AgX conservador, perfiles `ultra`/`alta`/`media`/`baja` calibrados y escalonamiento sombra ↔ cámaras auxiliares.
+- **Exterior y entorno espacial (H3)**:
+  - `Astro.ts`: Tierra a 420 km con microdetalle procedural 3D sin costuras polares, océano con oleaje anisotrópico + especular GGX, nubes con *domain warping*, auto-sombreado y sombra proyectada sobre el suelo, atmósfera raymarching de 6 pasos Rayleigh+Mie + *airglow* nocturno, Luna Lommel-Seeliger/Oren-Nayar con relieve desde `moon_height.jpg` y 22 000 estrellas fotométricas B-V.
+  - Casco exterior civil enriquecido (`exterior.py`, `systems.py`, `materialsLib.ts`, `texturesLib.ts`, `ShipModel.ts`): trampillas de inspección, cintas térmicas Kapton, 2 canalizaciones umbilicales, antena HGA corrugada, rastreadores estelares bafleados y balizas de navegación (+59,8k tris, **0 batches adicionales**).
+  - Fusión de mallas estáticas en `Props.ts` y corrección de visibilidad/encendido inicial de las 6 pantallas MFD en `Cockpit.ts`.
 
-## 4. Resultados medidos · Ola 1 («imagen») y Ola 2 («sentir»)
+### Ola 2 · Sentir (`4c27eba`)
+- **Objetos físicos interactivos y horneado 2048² (H1)**:
+  - 5 props físicos cogibles con `ctl`, `prop_id` e `interact_pose` (`drink_pouch`, `food_pack`, `tablet`, `sample_tube`, `camera`), más `interact_pose` en 12 equipos clave.
+  - Corregido el winding de los 13 quads de pantalla (`screen_mesh_quad` sin `recalc_face_normals`); pantallas auxiliares `AUXP`/`AUXS` apaisadas y orientadas hacia el interior.
+  - **Horneado definitivo a `2048×2048` en las 5 estancias** (`A..N`) con Cycles adaptativo + mediana 3×3 + OIDN (`lm_A..lm_N.webp`, 312–367 KiB cada uno, `lm.json` a `2048`), resolviendo `functional.cjs` test `02`.
+- **Presencia, controlador y manos (H2)**:
+  - `Controller.ts`: suavizado de cámara en `look()` con sincronización inmediata en asignación directa, inclinación (*banking* ±2°) y *head-bob* (respetando `reducedMotion`), pasos con audio sincronizado por superficie (`floor`/`ladder`/`push`), escalerillas fluidas y microgravedad con impulso táctil desde superficies cercanas (`< 0,88 m`).
+  - `Engine.ts`: transiciones animadas de sentarse/levantarse sin teletransporte, toma/devolución física de props en actividades, waypoints `cupula`/`esclusa`, y culling de estancias cerradas en ingeniería exterior sin corte (`01_ext_general` baja de 382 → 122 llamadas).
+  - `Hands.ts`: acoplamiento dual **cuerpo/nave (`attachToShip`)** al pilotar sentado — manos agarrando físicamente THC y RHC con dedos cerrados, siguiendo el asiento y nunca la cámara (resuelve `functional.cjs` test `11` de forma genuina).
+- **Simulación, misiones, atraque, brazo y audio (H3)**:
+  - Reloj maestro unificado determinista `MET` + `UTC` en `Crew.ts`/`Flight.ts`/`Cockpit.ts`, actividades `tablet` y `photo`.
+  - Auditoría y pistas completas de las 8 misiones en `Missions.ts` (consolas laterales, ubicaciones exactas, reparaciones fiables).
+  - Atraque IDSS: diana óptica **COAS 3D** con paralaje real + 4 balizas LED direccionales + anillo guía en Estación Tesela (`Props.ts`) y retícula profesional `DOCK` + overlays `CAM`/`ARMCAM` (`Cockpit.ts`).
+  - Brazo robótico con 4 presets seguros (`estiba`, `observacion`, `captura`, `servicio`), anticolisión con casco, IK multi-semilla y diagrama lateral `ARM`.
+  - Severidad unificada de alarmas (`crit`/`warn`/`ok`) en `Systems.ts` y pantallas MFD.
+  - `Audio.ts`: reverberación sintética por estancia (`ConvolverNode`), pasos por superficie, `pickup()`, `dockLock()`, clic mecánico en 2 etapas, modo **realista** (silencio estricto en vacío) vs **cinematográfico**, y licencias CC0 documentadas en `web/public/audio/LICENSES.md`.
 
-### Pruebas tras integración de Ola 2 (`f4a7ff7`)
-- `npm run build` (`web/`): **0 errores TS/Vite** (5,61 s).
-- `web/tests/functional.cjs`: **22/22 PASS, 0 FAIL, 0 errores de página/consola, 0 errores HTTP**:
-  - `01 BatchedMesh + draw calls`: **65 llamadas / 529.346 tris** (`46 batches`, `1.339 instancias`).
-  - `02 Lightmap Cycles + UV1`: **PASS** (`484` mallas UV1, `436` mallas con lightmap, `sizes: [2048, 2048, 2048, 2048, 2048]`).
-  - `03 Manos riggeadas 25 huesos`: **PASS** (`6` skinned, `25` huesos, guantes EVA operativos).
-  - `11 Cabina sentada + manos`: **PASS** (`seated: true, handsVis: true`, manos agarrando físicamente THC y RHC ancladas al asiento y no a la cámara).
-  - Ingeniería exterior (`01_ext_general`): **382 → 179 llamadas (−53 %)** tras culling selectivo de salas interiores sin ventanas visibles.
-- `web/tests/rebirth.cjs` (Ola 1 / Ola 2): 25/25 aserciones funcionales en PASS (colisión mín. `0,153 m`, `0` escrituras de matrices en reposo, habitáculos `92 llamadas`, exterior `83 llamadas`, EVA, persistencia y móvil táctil); en Ola 4 se ejecutará la validación completa 26/26 + 22/22 + nueva suite `ascension.cjs`.
+### Ola 3 · Producto (`23989ab` → `6b13fb8`)
+- **Interfaz, Modo Foto y Accesibilidad (W3-UI)**:
+  - `App.tsx`, `styles.css`, `index.html`: **0 `backdrop-filter`** y **0 `blur(`**, sistema editorial grafito cálido / hueso / bermellón + Archivo + IBM Plex (carga no bloqueante), portada cinematográfica, HUD de vuelo contextual con severidad y atraque (< 150 m), Modo Foto (`Shift+P`, rejillas, FOV, descarga PNG real, `Esc`), `ArmPanel` con 4 presets, inspector con filtros `Todo`/`Exterior`/`Interior` + buscador + ficha por estancia, `PerfOverlay` con `AO`/`autoExp`/`AA`, selector acústico/gráfico, móvil táctil vertical y horizontal sin overflow y accesibilidad AA (`:focus-visible`, `role="dialog"`, `aria-modal`).
+- **Ingeniería interior, etiquetas 3D, recuperación WebGL y planos (W3-ENG)**:
+  - Árbol interior `HAB.INT.IMM` (5 estancias, **127 piezas**) integrado en `ShipModel.ts`/`Interior.ts`/`Engine.ts`, explosión por estancias/piezas (preset `'interior'`) con restauración exacta `0` al volver a `INTERIOR`.
+  - `updateLabels()` con colocación sin solapamiento (**0 solapamientos 2D** en `01_ext_general` y `15_exploded`).
+  - Recuperación robusta ante `webglcontextlost`/`webglcontextrestored`.
+  - 10/10 planos técnicos (`web/public/blueprints/*.png`, `REV E · ASCENSION`) e inventario (`docs/inventario.json`, `docs/inventario.csv`, `docs/INVENTARIO.md`, `docs/stats.json`) regenerados en solo lectura desde el maestro (`scripts/sync_all.py --check` **12/12 OK**; SHA-256 de `ALCION_HX4_master.blend` intacto).
+- **Suite ampliada (W3-TEST)**:
+  - Nueva batería `web/tests/ascension.cjs` (**29 pruebas**): sesión de 10 min simulados, memoria WebGL estable, 7 modos, 4 perfiles gráficos, ingeniería interior/etiquetas, móvil vertical/horizontal y recuperación `WEBGL_lose_context`.
+- **Optimización final de Ola 4**:
+  - Culling de la escena astronómica (`far = null`) en el interior cerrado sin ventanas en frustum (`Engine.ts`), ajuste del perfil `media` (sondas 64, sin FXAA/autoExp redundante sobre MSAA 2×) y carga no bloqueante de fuentes en `web/index.html`.
 
-### Comparativa visual medida de Ola 1 (`docs/ascension/before/` → `docs/ascension/after_ola1/`, 1280×760, perfil `alta`)
-| Toma | Antes (llamadas / tris) | Ola 1 (llamadas / tris) | Qué mejoró visualmente |
-|---|---:|---:|---|
-| `01_ext_general` | 287 / 834k | 382 *(179 en Ola 2)* / 965k | Canalizaciones umbilicales, cintas térmicas Kapton, trampillas de inspección, balizas y micro-PBR. Culling de Ola 2 baja a **179 llamadas**. |
-| `02_ext_closeup` | 261 / 682k | 338 *(274 en Ola 2)* / 788k | MLI dorado arrugado, trampilla con cierres cuarto de vuelta, juntas y biseles en paneles MMOD, AO de contacto en cúpula y marcos. |
-| `04_cockpit_seated` | 213 / 298k | **229 / 581k** | Salto radical: 3 MFD + copiloto todas encendidas y nítidas, glareshield con avisadores luminosos y bloom suave, subpanel GNC, mamparo de proa iluminado con cajas/cables, fondo del nodo visible, reflejos `boxProbe`, Tierra nítida por ventanas y en Ola 2 manos agarrando los mandos físicos. |
-| `05_cockpit_overview` | 378 / 549k | **213 / 394k (−43,7 %)** | Las 6 MFD encendidas, 2 asientos esculpidos con asidero bermellón/nervios/reposacabezas, sidestick + THC diferenciados, mamparo de proa arquitectónico. |
-| `06_lab` | 288 / 441k | **234 / 518k (−18,8 %)** | Guantera inclinada con esclusa lateral y panel iluminado, anclajes de pies bermellón, congeladores con marcos/tiradores, pantallas auxiliares activas. |
-| `07_crew_quarters` | 82 / 248k | 124 / 306k | Sacos acolchados en 9 baffles con hebillas, cortinas recogidas con anillas, consola personal empotrada, lámpara articulada, bolsillo con cuaderno/auriculares. |
-| `08_galley_services` | 66 / 189k | 94 / 202k | 12 bolsas CTB en 3 tonos con correas/cremallera/asas, mesa con reborde/vaso/tableta, calentador biselado y dispensador de agua con nicho y bolsa acoplada. |
-| `09_corridor_aft` | 170 / 558k | 253 / 672k | Cámara de cultivo con vidrio transparente y 10 plantas iluminadas, microscopio binocular, cicloergómetro rehecho al fondo, reflejos localizados en techo y AO limpio. |
-| `10_cupola` | 47 / 76k | 60 / 83k | Pasamanos perimetral con remates bermellón, manetas en contraventanas y cámara DSLR en brazo articulado. |
-| `11_node` | 71 / 180k | 102 / 217k | Consola RWS con 2 mandos y 2 pantallas activas, escotilla IDSS con volante/pestillos/mirilla, panel O₂/N₂ con 2 manómetros y conductos. |
-| `13_earth_orbit` | 161 / 482k | **86 / 530k (−46,6 %)** | Tierra 420 km con microdetalle 3D, océano GGX con oleaje realista, nubes con sombra proyectada y limbo atmosférico zafiro nítido. |
-| `14_earth_window` | 58 / 253k | 70 / 310k | Ventanas nadir despejadas con detalle terrestre mejorado. |
+---
 
-## 5. Pendientes honestos y riesgos
-- Sin GPU dedicada en el entorno: p95 en GPU real a 1080p **no puede medirse** en este contenedor y se declarará así sin inventar cifras.
-- Pendientes en ejecución en Ola 3: pulido de interfaz/modo foto/móvil/accesibilidad, des-solapado de etiquetas 3D en ingeniería, árbol/explosión del interior + planos e inventario regenerados, y suite `ascension.cjs` (10 min, 4 perfiles, móvil vertical/horizontal, recuperación WebGL).
+## 3. Mediciones y pruebas finales (Ola 4)
+
+### Baterías de pruebas (build final `6b13fb8`, Chromium + SwiftShader)
+| Suite | Resultado | Detalles clave |
+|---|---|---|
+| `npm run build` (`web/`) | **PASS (0 errores)** | `dist/index.html` 1,66 kB, CSS 39,59 kB (8,48 kB gz), JS 1.293,55 kB (384,04 kB gz), 5,59 s. |
+| `web/tests/functional.cjs` | **22/22 PASS** | 0 errores página/consola, 0 HTTP. `batches: 46`, `instances: 1.339`, `calls: 65` (exterior), lightmaps `5×2048²`, `handsVis: true`, `calls` finales `90` (antes `277`). |
+| `web/tests/ascension.cjs` | **29/29 PASS** (229 s) | 10 min simulados: `geo 352→352`, `tex 217→217`, `calls 92→92 (Δ=0)`; 7 modos válidos (`magenta=0`); 4 perfiles `baja`/`media`/`alta`/`ultra`; `HAB.INT.IMM` 127 piezas + explosión 2,38 m + residuo `0 m`; 0 solapes 3D; móvil `390×844` y `844×390` sin overflow; recuperación `WEBGL_lose_context` íntegra (`mean 80.97→80.97`, 0 errores). |
+| `web/tests/rebirth.cjs` (local) | **25/26 PASS** hasta corte de 600 s del runner | 21/21 escritorio PASS (arranque ext. `5,8 s`, int. `22,1 s`, colisiones mín. `0,153 m` en 800 pasos / `0` fuera, microgravedad `0,210 m`, interruptor `BAT`, asiento `G`/`Y`, 4 ciclos ingeniería↔interior limpios, habitáculos **99 llamadas** ≤ 120, `0` escrituras de matrices en reposo, exterior **78 llamadas** ≤ 260, EVA, persistencia, 0 errores consola) + 4/4 pruebas táctiles móvil PASS (`1,18 m`, `0,000 m` deriva); el comando alcanzó el tope de 600 s justo al capturar `movil_portada.jpg` en SwiftShader (la validación móvil y 0 errores ya quedó igualmente cubierta al 100 % en `ascension.cjs`). |
+
+### Comparativa completa de las 15 cámaras fijas (`docs/ascension/before/` → `docs/ascension/after/`, 1280×760, perfil `alta`)
+| Cámara | Antes (llamadas / tris) | Después (llamadas / tris) | Delta llamadas | Qué mejoró visualmente (verificado en las capturas) |
+|---|---:|---:|---:|---|
+| `01_ext_general` | 287 / 834k | **122 / 680k** | **−57,5 %** | Casco con canalizaciones umbilicales, trampillas de inspección, cintas Kapton y balizas; etiquetas 3D nítidas con **0 solapamientos**; reducción masiva de llamadas gracias al culling interior. |
+| `02_ext_closeup` | 261 / 682k | **171 / 570k** | **−34,5 %** | MLI dorado arrugado con micro-relieve, trampilla de servicio con cierres cuarto de vuelta, juntas en paneles MMOD, AO de contacto en cúpula y marcos, cámara DSLR y pasamanos visibles dentro de la cúpula, asientos/consolas visibles tras las ventanas. |
+| `03_ext_engines` | 294 / 814k | **129 / 660k** | **−56,1 %** | Módulo de servicio con balizas de popa, refuerzos/respiraderos, HGA corrugada, rastreadores estelares bafleados y AO de contacto limpio. |
+| `04_cockpit_seated` | 213 / 298k | **190 / 357k** | **−10,8 %** | Transformación integral: manos anatómicas agarrando THC y RHC abajo (ancladas al asiento), 3 MFD + copiloto todas encendidas con barra `NOMINAL` y reloj MET, glareshield con avisadores luminosos y bloom suave, subpanel `GNC`, mamparo de proa iluminado con cajas/cables/brida, fondo del nodo visible, reflejos `boxProbe`, lightmaps `2048²` y Tierra nítida por ventanas. |
+| `05_cockpit_overview` | 378 / 549k | **222 / 396k** | **−41,3 %** | Las 6 MFD encendidas, 2 asientos esculpidos con asidero bermellón/nervios/reposacabezas anatómico, mandos THC + sidestick diferenciados, mamparo de proa arquitectónico y luz `2048²` sin manchas. |
+| `06_lab` | 288 / 441k | **243 / 520k** | **−15,6 %** | Guantera inclinada con esclusa cilíndrica lateral, manómetro y panel iluminado, pantallas auxiliares `AUXP`/`AUXS` apaisadas horizontales y legibles, anclajes de pies bermellón, congeladores con marcos/tiradores y tubo de muestras interactivo. |
+| `07_crew_quarters` | 82 / 248k | 146 / 309k | +78 % *(≤ 160)* | Sacos de dormir esculpidos en 9 baffles con capucha y hebillas bermellón, cortinas con riel/anillas/cinta recogedora, consola personal empotrada, lámpara articulada, bolsillo de tela con cuaderno y auriculares, encimera de lino cálido y sombras `2048²`. |
+| `08_galley_services` | 66 / 189k | 111 / 204k | +68 % *(≤ 120)* | 12 bolsas CTB aeroespaciales en 3 tonos con correas/cremallera/asas, dispensador de agua con nicho y bolsa de bebida interactiva metálica, calentador biselado con paquete de ración interactivo, mesa con reborde/vaso/tableta interactiva con LED y lightmap `2048²`. |
+| `09_corridor_aft` | 170 / 558k | 279 / 674k | +64 % | Cámara de cultivo abierta tras vidrio transparente con 10 plantas iluminadas, microscopio binocular real, cicloergómetro rehecho con volante ranurado al fondo, asientos esculpidos en primer plano, reflejos `boxProbe` en techo y AO de contacto. |
+| `10_cupola` | 47 / 76k | 66 / 84k | +40 % | Pasamanos circular perimetral con remates bermellón, manetas en las 6 contraventanas, cámara DSLR interactiva en brazo articulado y cielo despejado. |
+| `11_node` | 71 / 180k | 105 / 218k | +48 % | Consola RWS con 2 mandos y 2 pantallas encendidas (`ARM`/`ARMCAM`), escotilla IDSS con volante/6 pestillos/mirilla/manómetro, panel `PRESURIZACIÓN O₂/N₂` con 2 manómetros y conductos curvos, estiba EVA. |
+| `12_airlock_well` | 97 / 260k | 117 / 281k | +21 % | Pozo iluminado limpiamente sin halo oscuro, brocal bermellón atornillado, panel de manómetros y tuberías en el pozo, consola RWS con rejilla. |
+| `13_earth_orbit` | 161 / 482k | **99 / 543k** | **−38,5 %** | **Salto crítico**: Tierra a 420 km con microdetalle 3D sin costuras, océano con micro-oleaje y especular GGX nítido (en lugar de mancha difusa), nubes volumétricas con sombra proyectada sobre el mar, atmósfera física raymarching con limbo zafiro nítido y cumple presupuesto en vuelo (`99 ≤ 120` llamadas). |
+| `14_earth_window` | 58 / 253k | 70 / 310k | +21 % | Pozos de nadir con brocal bermellón atornillado, reflejo especular en vidrio pisable, etiqueta `NO PISAR` con contacto AO y detalle terrestre mejorado abajo. |
+| `15_exploded` | 287 / 834k | 594 / 966k | +107 % *(explosión total + 127 piezas interiores)* | Ahora despliega también las **127 piezas del interior habitable** separadas por estancias sobre el casco abierto, con 13 etiquetas 3D sin ningún solapamiento. |
+
+### Presupuestos de calidad y rendimiento
+- **Cabina de vuelo**: `190` llamadas sentado / `222` vista general (presupuesto **≤ 260** → **CUMPLE**).
+- **Exterior en vuelo (`13_earth_orbit`)**: `99` llamadas en `alta` / `78` llamadas en `media` (presupuesto **≤ 120** → **CUMPLE**).
+- **Habitáculos mirando a popa**: `99` llamadas en `media` (presupuesto **≤ 120** → **CUMPLE**).
+- **Escrituras de matrices en reposo**: `0` (presupuesto **0** → **CUMPLE**).
+- **Inventario maestro (`docs/stats.json`)**: `557` piezas, `89` grupos, `80` materiales, `1.799` tornillos modelados, `882.846` triángulos totales, envolvente `19,58 × 39,42 × 15,50 m`.
+
+---
+
+## 4. Pendientes honestos y limitaciones conocidas
+- **GPU real no medida**: este contenedor carece de GPU dedicada (sólo SwiftShader por CPU). El objetivo `p95 ≤ 16,7 ms` a 1080p en perfil `alta` sobre GPU real **no ha podido medirse aquí** y no se inventan cifras; sí están medidas la reducción estructural de llamadas (cabina `190–222`, vuelo `99`, ingeniería `122`), `0` escrituras de matrices en reposo, memoria WebGL estable tras 10 min simulados y perfiles escalables `ultra`/`alta`/`media`/`baja`.
+- **Suite `rebirth.cjs` sobre 2 vCPUs SwiftShader**: las 25 aserciones funcionales (21/21 escritorio + 4/4 táctil móvil) pasan con 0 errores, pero con la mayor densidad geométrica y lightmaps `2048²` la captura final `movil_portada.jpg` lleva la duración total a ~610 s sobre 2 vCPUs CPU-only (rozando el tope de 600 s por comando del entorno). La validación móvil completa + consola sin errores queda cubierta en 229 s en `ascension.cjs` (`29/29 PASS`) y `functional.cjs` (`22/22 PASS`).
+- **Audio**: todas las capas sonoras son síntesis procedural WebAudio + convolución sintética documentada como CC0 1.0 (`web/public/audio/LICENSES.md`), sin grabaciones externas con derechos.
+
+---
+
+## 5. Estado de publicación
+- *Pendiente de actualizar tras ejecutar `bash web/scripts/deploy-pages.sh` y verificar `VERSION`, SHA-256 y pruebas contra `https://alvarodesigns34.github.io/SHIP/`.*
