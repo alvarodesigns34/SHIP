@@ -78,7 +78,8 @@ bash scripts/deploy-pages.sh                               # commit nuevo sobre 
 ```
 
 ## Estado de publicación
-- Publicado en https://alvarodesigns34.github.io/SHIP/ — commit de despliegue `0c0b0d3` en `gh-pages` (origen `9231f41`), creado **encima** del despliegue anterior `153b05a` (Singularity) sin reescribir historial.
-- Verificación en producción: `VERSION` = `9231f41`; SHA-256 idénticos entre `web/dist` y lo servido (index, JS, GLB exterior e interior, lightmap); `tests/rebirth.cjs` contra la URL pública: **26/26**.
-- Reversión: `git revert 0c0b0d3` en `gh-pages` (o republicar `153b05a`).
+- Publicado en https://alvarodesigns34.github.io/SHIP/ — último despliegue `b41c0e9` en `gh-pages` (origen `4f84792`), encima de `0c0b0d3` (Rebirth 1) y `153b05a` (Singularity), sin reescribir historial.
+- Segunda iteración: Tierra visible desde la cabina (actitud por defecto), OIDN en lightmaps, rotulación por atlas, focos sobre superficies de trabajo, mamparo de proa iluminado, sacos acolchados, detalle de nubes; manos retiradas al pilotar.
+- Verificación en producción: `VERSION` = `4f84792`; SHA-256 idénticos entre `web/dist` y lo servido (index, JS, GLB exterior e interior, lightmap); `tests/rebirth.cjs` contra la URL pública: **26/26**.
+- Reversión: `git revert b41c0e9` en `gh-pages` (o republicar `0c0b0d3` / `153b05a`).
 - Es una versión validada por las pruebas descritas, **no** un producto terminado: ver «Pendiente / limitaciones conocidas».
