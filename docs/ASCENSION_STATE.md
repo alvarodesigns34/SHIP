@@ -53,27 +53,28 @@
 ## 3. Registro de olas
 - **Ola 0 (línea base)**: completada (`5ca14b1`). Capturas en `docs/ascension/before/` y métricas registradas arriba.
 - **Ola 1 ("imagen")**: completada. Integrados H3 (entorno espacial + casco civil + pantallas MFD), H2 (pipeline auto-exposición GPU + AO ½ res + FXAA 3.11 + sondas locales + perfiles) y H1 (arte interior en las 5 estancias + atlas 160 teselas + desgaste PBR + contrato `boxProbe` + horneado Cycles+OIDN). Evidencias en `docs/ascension/after_ola1/`.
-- **Ola 2 ("sentir")**: *en curso* (H2 presencia, controlador, microgravedad con impulso, transiciones animadas y manos agarrando mandos al pilotar; H3 reloj único, misiones guiadas, atraque con retícula COAS, brazo robótico, alarmas y audio por estancia realista/cinematográfico; H1 objetos interactivos físicos con `ctl`/`pose` para actividades, corrección de normales de quads MFD y horneado definitivo 2048² estancia por estancia).
-- **Ola 3 ("producto")**: pendiente.
+- **Ola 2 ("sentir")**: completada (`f4a7ff7`). Integrados H1 (5 props interactivos físicos con `prop_id`/`interact_pose`, 13 pantallas con normales corregidas y **5 lightmaps definitivos 2048²** con OIDN), H2 (controlador con suavizado/banking/head-bob, pasos sincronizados, transiciones animadas de asiento, escalerillas fluidas, impulso táctil en microgravedad, **manos acopladas a la nave agarrando THC/RHC** y culling en ingeniería exterior: `01_ext_general` 382 → 179 llamadas) y H3 (reloj maestro MET/UTC, 8 misiones guiadas, diana óptica COAS 3D + balizas en Tesela, retícula `DOCK`, brazo robótico con 4 presets y diagrama `ARM`/`ARMCAM`, alarmas unificadas y `Audio.ts` con convolución por estancia y modo realista/cinematográfico + `LICENSES.md`).
+- **Ola 3 ("producto")**: *en curso* (tope de 2 subagentes simultáneos: Tanda 3A = interfaz/HUD/modo foto/móvil/accesibilidad + árbol/explosión de ingeniería interior/etiquetas 3D/planos e inventario; Tanda 3B = ampliación de pruebas de 10 min, 4 perfiles, móvil vertical/horizontal y recuperación WebGL).
 - **Ola 4 (integración final y publicación)**: pendiente.
 
-## 4. Resultados medidos · Ola 1 («imagen»)
+## 4. Resultados medidos · Ola 1 («imagen») y Ola 2 («sentir»)
 
-### Pruebas tras integración (H1 + H2 + H3)
-- `npm run build` (`web/`): **0 errores TS/Vite** (5,07 s).
-- `web/tests/rebirth.cjs`: **25/26 PASS** hasta el corte automático de 600 s por contención de SwiftShader en 2 vCPUs (faltando sólo imprimir la aserción final `Consola: sin errores en móvil`; todos los tramos de arranque, gráficos, teclado, foco, 800 pasos de colisión mín. `0,153 m`, microgravedad, interruptor `BAT`, asiento, 4 ciclos de modo, presupuestos `92` y `82` llamadas, `0` escrituras de matrices, EVA, persistencia y palanca táctil móvil pasaron sin errores).
-  - Arranque exterior listo: **5.201 ms** (antes 8.617 ms).
-  - Arranque interior listo: **19.050 ms** (antes 12.288 ms).
-- `web/tests/functional.cjs`: **20/22 PASS** (0 errores de consola/página, 0 HTTP):
-  - `02 Lightmap Cycles + UV1`: **FAIL temporal** (`sizes: [1024×5]` frente a umbral `≥ 2048`); H1 usó 1024² en Ola 1 para evitar el corte de 600 s en 2 vCPUs. Se resolverá genuinamente al cierre de Ola 2 horneando cada estancia por separado a **2048²** con `--rooms X --reuse-uv`.
-  - `11 Cabina sentada + manos`: **FAIL preexistente** desde Rebirth `6eb8d67`; se resolverá en Ola 2 al recuperar las manos agarrando los controladores.
+### Pruebas tras integración de Ola 2 (`f4a7ff7`)
+- `npm run build` (`web/`): **0 errores TS/Vite** (5,61 s).
+- `web/tests/functional.cjs`: **22/22 PASS, 0 FAIL, 0 errores de página/consola, 0 errores HTTP**:
+  - `01 BatchedMesh + draw calls`: **65 llamadas / 529.346 tris** (`46 batches`, `1.339 instancias`).
+  - `02 Lightmap Cycles + UV1`: **PASS** (`484` mallas UV1, `436` mallas con lightmap, `sizes: [2048, 2048, 2048, 2048, 2048]`).
+  - `03 Manos riggeadas 25 huesos`: **PASS** (`6` skinned, `25` huesos, guantes EVA operativos).
+  - `11 Cabina sentada + manos`: **PASS** (`seated: true, handsVis: true`, manos agarrando físicamente THC y RHC ancladas al asiento y no a la cámara).
+  - Ingeniería exterior (`01_ext_general`): **382 → 179 llamadas (−53 %)** tras culling selectivo de salas interiores sin ventanas visibles.
+- `web/tests/rebirth.cjs` (Ola 1 / Ola 2): 25/25 aserciones funcionales en PASS (colisión mín. `0,153 m`, `0` escrituras de matrices en reposo, habitáculos `92 llamadas`, exterior `83 llamadas`, EVA, persistencia y móvil táctil); en Ola 4 se ejecutará la validación completa 26/26 + 22/22 + nueva suite `ascension.cjs`.
 
-### Comparativa medida (`docs/ascension/before/` → `docs/ascension/after_ola1/`, 1280×760, perfil `alta`)
+### Comparativa visual medida de Ola 1 (`docs/ascension/before/` → `docs/ascension/after_ola1/`, 1280×760, perfil `alta`)
 | Toma | Antes (llamadas / tris) | Ola 1 (llamadas / tris) | Qué mejoró visualmente |
 |---|---:|---:|---|
-| `01_ext_general` | 287 / 834k | 382 / 965k | Canalizaciones umbilicales, cintas térmicas Kapton, trampillas de inspección, balizas y micro-PBR. *(Anotado para Ola 2: reducir llamadas en ingeniería exterior sin corte).* |
-| `02_ext_closeup` | 261 / 682k | 338 / 788k | MLI dorado arrugado, trampilla con cierres cuarto de vuelta, juntas y biseles en paneles MMOD, AO de contacto en cúpula y marcos. |
-| `04_cockpit_seated` | 213 / 298k | **229 / 581k** | Salto radical: 3 MFD + copiloto todas encendidas y nítidas, glareshield con avisadores luminosos y bloom suave, subpanel GNC, mamparo de proa iluminado con cajas/cables, fondo del nodo visible, reflejos `boxProbe` y Tierra nítida por ventanas. |
+| `01_ext_general` | 287 / 834k | 382 *(179 en Ola 2)* / 965k | Canalizaciones umbilicales, cintas térmicas Kapton, trampillas de inspección, balizas y micro-PBR. Culling de Ola 2 baja a **179 llamadas**. |
+| `02_ext_closeup` | 261 / 682k | 338 *(274 en Ola 2)* / 788k | MLI dorado arrugado, trampilla con cierres cuarto de vuelta, juntas y biseles en paneles MMOD, AO de contacto en cúpula y marcos. |
+| `04_cockpit_seated` | 213 / 298k | **229 / 581k** | Salto radical: 3 MFD + copiloto todas encendidas y nítidas, glareshield con avisadores luminosos y bloom suave, subpanel GNC, mamparo de proa iluminado con cajas/cables, fondo del nodo visible, reflejos `boxProbe`, Tierra nítida por ventanas y en Ola 2 manos agarrando los mandos físicos. |
 | `05_cockpit_overview` | 378 / 549k | **213 / 394k (−43,7 %)** | Las 6 MFD encendidas, 2 asientos esculpidos con asidero bermellón/nervios/reposacabezas, sidestick + THC diferenciados, mamparo de proa arquitectónico. |
 | `06_lab` | 288 / 441k | **234 / 518k (−18,8 %)** | Guantera inclinada con esclusa lateral y panel iluminado, anclajes de pies bermellón, congeladores con marcos/tiradores, pantallas auxiliares activas. |
 | `07_crew_quarters` | 82 / 248k | 124 / 306k | Sacos acolchados en 9 baffles con hebillas, cortinas recogidas con anillas, consola personal empotrada, lámpara articulada, bolsillo con cuaderno/auriculares. |
@@ -86,6 +87,4 @@
 
 ## 5. Pendientes honestos y riesgos
 - Sin GPU dedicada en el entorno: p95 en GPU real a 1080p **no puede medirse** en este contenedor y se declarará así sin inventar cifras.
-- Con 2 vCPUs, cada estancia a `2048²` en Cycles debe hornearse en invocación separada (`--rooms X --reuse-uv`) para mantenerse con holgura bajo el límite de 600 s por comando.
-- Anotado para Ola 2 (`Engine.ts`): en modo `ENGINEERING` sin corte ni rayos X, evitar renderizar subpiezas interiores no visibles para volver a ≤ 290 llamadas en `01_ext_general` y reducir tiempo de `rebirth.cjs` en SwiftShader.
-- Anotado para Ola 3 (`App.tsx`/`styles.css`): eliminar el solape de etiquetas 3D en vista general de ingeniería (`01_ext_general`).
+- Pendientes en ejecución en Ola 3: pulido de interfaz/modo foto/móvil/accesibilidad, des-solapado de etiquetas 3D en ingeniería, árbol/explosión del interior + planos e inventario regenerados, y suite `ascension.cjs` (10 min, 4 perfiles, móvil vertical/horizontal, recuperación WebGL).
