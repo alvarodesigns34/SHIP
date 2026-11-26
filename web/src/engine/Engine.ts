@@ -336,7 +336,7 @@ export class Engine {
     this.pipeline.configure({
       msaa: q === 'ultra' ? 4 : q === 'alta' ? 4 : q === 'media' ? 2 : 0,
       bloom: q !== 'baja',
-      autoExposure: q !== 'baja',
+      autoExposure: q === 'ultra' || q === 'alta',
       ao: q === 'ultra' || q === 'alta',
       fxaa: q !== 'media',
     });
@@ -1809,7 +1809,8 @@ export class Engine {
     }
     this.pipeline.accumulate();
     const camsMs = performance.now() - tc;
-    this.pipeline.render({ scene: this.astro.scene, camera: this.astro.camera }, { scene: this.near, camera: this.camera }, dt);
+    const needFar = this.mode !== 'INTERIOR' || this.model.root.visible;
+    this.pipeline.render(needFar ? { scene: this.astro.scene, camera: this.astro.camera } : null, { scene: this.near, camera: this.camera }, dt);
     const p = this.statsCache.passes;
     p.shadow = damp(p.shadow, shadowMs, 5, 0.1); p.cams = damp(p.cams, camsMs, 5, 0.1);
     this.camsMs = camsMs;
