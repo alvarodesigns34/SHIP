@@ -71,16 +71,9 @@ def shell(key, g, x0, x1, sides, lower=True, worktop=True, upper=True, floor=Tru
 
 
 def screen_quad(name, M, w, h, room, parent, ident=None, label="Pantalla"):
-    scr = MB(name)
-    bm = scr.bm
-    uv = bm.loops.layers.uv.new("UVMap")
-    corners = [(-w / 2, -h / 2), (w / 2, -h / 2), (w / 2, h / 2), (-w / 2, h / 2)]
-    vv = [bm.verts.new(M @ Vector((0.0, u, v))) for (u, v) in corners]
-    f = bm.faces.new(vv)
-    f.material_index = scr.mi("R_Screen")
-    for loop, (u, v) in zip(f.loops, corners):
-        loop[uv].uv = (u / w + 0.5, v / h + 0.5)
-    ob = H.P(name, label, scr, parent, room, "Pantalla.", smooth=None)
+    me = H.screen_mesh_quad(name, M, w, h, x_off=0.0, flip_u=False)
+    ob = part(name, label, me, parent, desc="Pantalla.")
+    ob["room"] = room
     if ident:
         ctl(ob, ident)
     return ob
@@ -307,6 +300,7 @@ def build_lab(intg):
                 place(pc, vs_l, Matrix.Translation((lx, ly, lz)) @ Rlf)
     ob = H.P("HAB.INT.B.VEG", "Cámara de cultivo", pc, g, key, "Cámara hidropónica acristalada con iluminación LED, bandejas escalonadas y cultivos de hoja.", bevel=0.003)
     ctl(ob, "act:plants")
+    H.set_interact_pose(ob, (xb - 0.085, s * 1.406, WT + 0.28), (0.0, 0.0, PI / 2))
     pg = MB("b_plants_glass")
     pg.box("R_Glass", pw - 0.13, 0.006, 0.395, center=(xm_p - 0.025, s * 1.440, WT + 0.275))
     H.P("HAB.INT.B.VEGG", "Puerta acristalada de la cámara", pg, g, key, smooth=None)
@@ -379,6 +373,37 @@ def build_lab(intg):
             fz.cyl("R_Alu", 0.007, 0.007, 0.032, 8, center=(xa_f + 0.008, s * (FACE - 0.016), zh), axis='Z')
     ob = H.P("HAB.INT.B.FRZ", "Congelador de muestras −80 °C", fz, g, key, "Cuatro cajones de congelación criogénica con registro y tiradores térmicos.", bevel=0.003)
     ctl(ob, "act:sample")
+    H.set_interact_pose(ob, (5.50, s * (FACE - 0.035), WT - 0.12), (0.0, 0.0, PI / 2))
+
+    # --- Prop interactivo: contenedor/tubo de muestras biológicas (sobre encimera de babor junto al congelador y frente a la guantera)
+    pos_smp = Vector((5.56, s * 1.48, WT + 0.082))
+    rot_smp = (0.0, 0.0, D(-12))
+    sm = MB("b_prop_sample")
+    # base de anclaje magnético + anillo de goma inferior
+    sm.cyl("R_Frame", 0.028, 0.029, 0.018, 20, center=(0, 0, -0.073))
+    sm.cyl("R_Rubber", 0.030, 0.030, 0.005, 20, center=(0, 0, -0.079))
+    sm.cyl("R_Alu", 0.027, 0.027, 0.007, 20, center=(0, 0, -0.061))
+    # cilindro exterior de policarbonato transparente (R_Glass)
+    sm.cyl("R_Glass", 0.025, 0.025, 0.114, 24, center=(0, 0, -0.002))
+    # cuerpo interno de muestra biológica (cápsula vegetal + soporte de acero)
+    sm.cyl("R_Steel", 0.017, 0.017, 0.006, 16, center=(0, 0, -0.052))
+    sm.cyl("R_Plant", 0.014, 0.013, 0.076, 16, center=(0, 0, -0.008))
+    sm.cyl("R_Indicator", 0.007, 0.007, 0.016, 12, center=(0, 0, 0.035))
+    sm.cyl("R_Steel", 0.004, 0.004, 0.092, 10, center=(0, 0, -0.004))
+    # etiqueta identificativa lateral en la zona baja del cilindro
+    sm.box("R_Label", 0.003, 0.028, 0.038, center=(0, -0.0245, -0.026))
+    sm.box("R_Frame", 0.0035, 0.024, 0.008, center=(0, -0.0248, -0.014))
+    # cuello metálico + tapón roscado bermellón + anilla abatible superior
+    sm.cyl("R_Alu", 0.0265, 0.0265, 0.010, 20, center=(0, 0, 0.058))
+    sm.cyl("R_Accent", 0.0275, 0.0255, 0.024, 20, center=(0, 0, 0.073))
+    sm.torus("R_Steel", 0.012, 0.0025, 14, 6, center=(0, 0, 0.091), axis='Y')
+    me_smp = sm.mesh(smooth=35)
+    ob_smp = part("HAB.INT.B.PROP.SAMPLE", "Contenedor de muestras biológicas", me_smp, g,
+                  loc=tuple(pos_smp), rot=rot_smp,
+                  desc="Tubo presurizado de policarbonato con muestra biológica interna, tapón roscado bermellón y etiqueta de registro.")
+    ob_smp["room"] = key
+    ctl(ob_smp, "act:science")
+    H.set_prop(ob_smp, "sample_tube", pos_smp, rot_smp)
 
     # --- estribor: guantera sellada profesional (marco biselado, vidrio inclinado, bridas de bayoneta, esclusa lateral, interior equipado)
     s = -1
@@ -481,6 +506,7 @@ def build_lab(intg):
     ob = H.P("HAB.INT.B.GBX", "Guantera estanca", gb, g, key,
              "Guantera científica con vidrio inclinado, bridas de bayoneta, esclusa de transferencia, viales y panel de control.", bevel=None)
     ctl(ob, "act:science")
+    H.set_interact_pose(ob, (gxm, s * (gy0 + 0.045), WT + 0.275), (0.0, 0.0, -PI / 2))
     gg = MB("b_glovebox_glass")
     vs_gg = gg.box("R_Glass", 0.008, gw - 0.11, 0.49, center=(0, 0, 0))
     place(gg, vs_gg, M_gf)
@@ -647,6 +673,7 @@ def crew_pod(g, key, idx, s, xa, xb, name_tag):
     ob = H.P(f"HAB.INT.C.Q{idx}.BAG", "Saco de dormir", sb, g, key,
              "Saco de dormir acolchado en cámaras horizontales con capucha, cremallera y hebillas de liberación rápida.", smooth=60)
     ctl(ob, "act:sleep")
+    H.set_interact_pose(ob, (x_bag, s * 1.49, 0.08), (0.0, 0.0, s * PI / 2))
 
     # --- Cortina con pliegues naturales, riel superior con anillas y cinta recogedora
     ct = MB(f"c_curtain{idx}")
@@ -729,9 +756,6 @@ def build_services(intg):
         gl.box("R_Black", 0.18, 0.008, 0.004, center=(gx, gy - s * (0.03 + sl * 0.022), WT + 0.057))
     gl.cyl("R_Steel", 0.012, 0.009, 0.065, 14, center=(gx, gy - s * 0.07, WT + 0.238))      # boquilla
     gl.cyl("R_Alu", 0.018, 0.018, 0.014, 14, center=(gx, gy - s * 0.07, WT + 0.265))
-    # bolsa de bebida acoplada bajo la boquilla
-    cushion(gl, "R_Bag", 0.085, 0.036, 0.13, center=(gx, gy - s * 0.07, WT + 0.125), puff=0.008, round_=0.012, sub=1, seed=91)
-    gl.cyl("R_Accent", 0.010, 0.010, 0.016, 10, center=(gx, gy - s * 0.07, WT + 0.195))
     # frente superior del dispensador: marco, pantalla de temperatura/dosis, botones fría/caliente y selector
     M_gp = Matrix.Translation((gx, gy - s * 0.172, WT + 0.375)) @ rot_to((0, -s, 0), up=(0, 0, 1))
     beveled_frame(gl, "R_Frame", 0.26, 0.16, 0.010, 0.012, M=M_gp)
@@ -740,8 +764,34 @@ def build_services(intg):
     for k, col in enumerate(("R_Indicator", "R_Alarm", "R_Warning")):
         gl.cyl(col, 0.013, 0.013, 0.012, 12, center=(gx - 0.075 + k * 0.055, gy - s * 0.174, WT + 0.330), axis='Y')
     knob(gl, "R_Frame", "R_Alu", (gx + 0.085, gy - s * 0.172, WT + 0.330), (0, -s, 0), r=0.014, h=0.014)
-    ob = H.P("HAB.INT.D.H2O", "Dispensador de agua", gl, g, key, "Dispensador de agua fría y caliente con boquilla dosificadora, bandeja antigoteo y bolsa acoplada.", bevel=0.003)
+    ob = H.P("HAB.INT.D.H2O", "Dispensador de agua", gl, g, key, "Dispensador de agua fría y caliente con boquilla dosificadora y bandeja antigoteo.", bevel=0.003)
     ctl(ob, "act:drink")
+    H.set_interact_pose(ob, (gx, gy - s * 0.19, WT + 0.33), (0.0, 0.0, PI / 2))
+
+    # --- Prop interactivo: bolsa de bebida moldeada en el nicho del dispensador
+    pos_drk = Vector((gx, gy - s * 0.07, WT + 0.128))
+    rot_drk = (0.0, 0.0, -PI / 2)
+    dp = MB("d_prop_drink")
+    # cuerpo moldeado plateado/Nomex con bordes termosellados
+    cushion(dp, "R_Alu", 0.084, 0.036, 0.128, center=(0, 0, -0.004), puff=0.009, round_=0.012, sub=1, seed=91)
+    dp.box("R_Bag", 0.090, 0.006, 0.132, center=(0, 0, -0.004))  # costura termosellada perimetral
+    # etiqueta técnica frontal con franja de identificación
+    dp.box("R_Label", 0.058, 0.004, 0.052, center=(0, -0.020, -0.002))
+    dp.box("R_FabricBlue", 0.054, 0.0045, 0.014, center=(0, -0.0205, 0.014))
+    dp.box("R_Accent", 0.054, 0.0045, 0.006, center=(0, -0.0205, -0.016))
+    # cuello metálico, válvula de cierre bermellón y pajita curva
+    dp.cyl("R_Steel", 0.011, 0.010, 0.018, 12, center=(0, 0, 0.068))
+    dp.cyl("R_Accent", 0.0135, 0.0125, 0.016, 12, center=(0, 0, 0.082))
+    dp.box("R_Accent", 0.024, 0.008, 0.006, center=(0.012, 0, 0.082))  # clip/válvula lateral
+    dp.tube("R_Alu", [(0, 0, 0.088), (0, -0.004, 0.114), (0, -0.028, 0.130)], 0.0038, 8, round_r=0.012)
+    dp.cyl("R_Rubber", 0.0048, 0.0042, 0.012, 8, center=(0, -0.032, 0.132), rot=Matrix.Rotation(D(58), 4, 'X'))
+    me_drk = dp.mesh(smooth=40)
+    ob_drk = part("HAB.INT.D.PROP.DRINK", "Bolsa de bebida", me_drk, g,
+                  loc=tuple(pos_drk), rot=(0.0, 0.0, 0.0),
+                  desc="Bolsa presurizada plateada de bebida con válvula bermellón, pajita curva y etiqueta de hidratación.")
+    ob_drk["room"] = key
+    ctl(ob_drk, "act:drink")
+    H.set_prop(ob_drk, "drink_pouch", pos_drk, rot_drk)
 
     # calentador de alimentos (puerta biselada, tirador térmico, pantalla de temperatura, ranuras superiores)
     fw = MB("d_warmer")
@@ -767,6 +817,34 @@ def build_services(intg):
         fw.box("R_Black", 0.34, 0.008, 0.006, center=(wx - 0.03, wy - s * (0.04 + sl * 0.024), WT + 0.361))
     ob = H.P("HAB.INT.D.OVN", "Calentador de alimentos", fw, g, key, "Calentador por conducción con puerta aislada, control de temperatura y ventilación.", bevel=0.003)
     ctl(ob, "act:eat")
+    H.set_interact_pose(ob, (wx - 0.035, wy - s * 0.22, WT + 0.268), (0.0, 0.0, PI / 2))
+
+    # --- Prop interactivo: paquete/bandeja de ración junto al calentador
+    pos_fd = Vector((1.66, s * 1.39, WT + 0.020))
+    rot_fd = (0.0, 0.0, D(-10))
+    fp = MB("d_prop_food")
+    # envase termoformado de comida espacial con reborde perimetral
+    prism(fp, "R_Lining", rrect(0.148, 0.108, 0.014, seg=3), -0.016, 0.008, 'Z')
+    prism(fp, "R_Alu", rrect(0.160, 0.120, 0.016, seg=3), 0.006, 0.010, 'Z')
+    # tapa sellada metalizada abombada + lengüeta bermellón de apertura
+    cushion(fp, "R_Alu", 0.142, 0.102, 0.009, center=(0, 0, 0.012), puff=0.004, round_=0.004, sub=1, seed=92)
+    fp.box("R_Accent", 0.024, 0.016, 0.003, center=(0.072, -0.044, 0.010), rot=Matrix.Rotation(D(-18), 4, 'Z'))
+    # banda de velcro negra inferior y etiqueta nutricional
+    fp.box("R_Rubber", 0.115, 0.022, 0.004, center=(0, 0, -0.018))
+    fp.box("R_Label", 0.078, 0.044, 0.0025, center=(-0.018, 0.010, 0.0175))
+    fp.box("R_FabricBlue", 0.072, 0.010, 0.003, center=(-0.018, 0.024, 0.018))
+    # sobre auxiliar acoplado + cuchara espacial de acero sujeta con clip
+    cushion(fp, "R_Bag", 0.052, 0.076, 0.010, center=(0.046, 0.004, 0.020), puff=0.002, round_=0.004, sub=1, seed=93)
+    fp.box("R_Steel", 0.110, 0.010, 0.003, center=(-0.010, -0.032, 0.020))  # mango de cuchara
+    fp.sphere("R_Steel", 0.016, 10, 6, center=(0.052, -0.032, 0.020), scale=(1.35, 0.80, 0.25))  # cazo
+    fp.box("R_Accent", 0.014, 0.018, 0.006, center=(-0.018, -0.032, 0.020))  # clip de sujeción
+    me_fd = fp.mesh(smooth=35)
+    ob_fd = part("HAB.INT.D.PROP.FOOD", "Paquete de ración espacial", me_fd, g,
+                 loc=tuple(pos_fd), rot=rot_fd,
+                 desc="Envase termoformado de ración orbital con tapa sellada, banda de velcro, sobre y cuchara de acero sujeta.")
+    ob_fd["room"] = key
+    ctl(ob_fd, "act:eat")
+    H.set_prop(ob_fd, "food_pack", pos_fd, rot_fd)
 
     # envases y utensilios sobre la encimera
     cn = MB("d_containers")
@@ -816,16 +894,32 @@ def build_services(intg):
         tb.beam("R_Frame", (1.55, 0.0, -0.42), (1.55, sy_f * 0.27, -0.42), 0.024, 0.022)
     H.P("HAB.INT.D.TBL", "Mesa de comidas", tb, g, key, "Mesa con reborde perimetral, bandas elásticas de retención, vaso y barra apoyapiés.", bevel=0.003)
 
-    # tableta detallada (conserva HAB.INT.D.TAB y ctl='act:read')
+    # --- Prop interactivo: tableta de tripulación detallada (pieza dinámica individual con origen centrado)
+    pos_tab = Vector((1.70, 0.07, -0.055))
+    M_tab = Matrix.Translation(pos_tab) @ Matrix.Rotation(D(14), 4, 'Z') @ Matrix.Rotation(D(-8), 4, 'Y')
+    e_tab = M_tab.to_euler('XYZ')
     tbl = MB("d_tablet")
-    M_tab = Matrix.Translation((1.70, 0.07, -0.062)) @ Matrix.Rotation(D(14), 4, 'Z') @ Matrix.Rotation(D(-8), 4, 'Y')
-    vs_t = tbl.box("R_Frame", 0.245, 0.175, 0.010, center=(0, 0, 0))
-    vs_t += tbl.box("R_Black", 0.232, 0.162, 0.003, center=(0, 0, 0.0055))
-    vs_t += tbl.box("R_Screen", 0.214, 0.144, 0.002, center=(0, 0, 0.0072))
-    vs_t += tbl.box("R_Alu", 0.14, 0.07, 0.014, center=(0.04, 0, -0.012))  # soporte trasero antideslizante
-    place(tbl, vs_t, M_tab)
-    ob = H.P("HAB.INT.D.TAB", "Tableta del plan del día", tbl, g, key, "Tableta táctica con pantalla iluminada sobre soporte antideslizante.", bevel=0.002)
-    ctl(ob, "act:read")
+    # cuerpo biselado en aluminio anodizado grafito con esquinas redondeadas
+    prism(tbl, "R_Frame", rrect(0.246, 0.176, 0.012, seg=3), -0.005, 0.005, 'Z')
+    tbl.box("R_Black", 0.232, 0.162, 0.0025, center=(0, 0, 0.0056))
+    tbl.box("R_Screen", 0.214, 0.144, 0.0020, center=(0, 0, 0.0072))
+    # piloto de actividad / cámara frontal + botones laterales + puerto USB-C
+    tbl.box("R_Indicator", 0.006, 0.006, 0.0022, center=(0.112, 0.0, 0.0072))
+    tbl.box("R_Accent", 0.016, 0.005, 0.0045, center=(0.068, 0.089, 0.0))      # botón lateral encendido
+    for dx_v in (0.032, 0.012):
+        tbl.box("R_Alu", 0.012, 0.004, 0.0040, center=(dx_v, 0.089, 0.0))     # botones de volumen
+    tbl.box("R_Steel", 0.005, 0.014, 0.004, center=(-0.123, 0.0, 0.0))        # puerto lateral
+    # soporte plegable trasero y tiras antideslizantes
+    tbl.box("R_Alu", 0.138, 0.072, 0.012, center=(0.040, 0, -0.011))
+    for dy_r in (-0.065, 0.065):
+        tbl.box("R_Rubber", 0.16, 0.012, 0.003, center=(-0.01, dy_r, -0.006))
+    me_tab = tbl.mesh(smooth=35)
+    ob = part("HAB.INT.D.TAB", "Tableta del plan del día", me_tab, g,
+              desc="Tableta táctica con bisel grafito, pantalla iluminada, botón lateral y soporte antideslizante.")
+    ob.matrix_basis = M_tab
+    ob["room"] = key
+    ctl(ob, "act:tablet")
+    H.set_prop(ob, "tablet", pos_tab, (e_tab.x, e_tab.y, e_tab.z))
 
     for i, x in enumerate((1.42, 1.95)):
         spot(f"galspot{i}", (x, 1.45, 1.62), 50, 1, 'D')
@@ -922,6 +1016,7 @@ def build_services(intg):
     ob = H.P("HAB.INT.D.CEV", "Cicloergómetro", cy, g, key,
              "Cicloergómetro CEVIS con aislamiento de vibraciones, volante ranurado, pedales con correas, arnés de cintura y consola.", bevel=0.003)
     ctl(ob, "act:exercise")
+    H.set_interact_pose(ob, (p_head.x - 0.02, cy_y, p_head.z + 0.05), (0.0, 0.0, -PI / 2))
 
     # --- pared de popa: 12 bolsas CTB aeroespaciales con variación orgánica de forma, tono, asas y etiquetas limpias
     bg = MB("d_bags")
@@ -1039,7 +1134,7 @@ def build_node(fwd):
         vs_l += wl.cyl("R_Steel", 0.010, 0.010, 0.028, 10, center=(0.016, 0, 0), axis='X')
         vs_l += wl.box("R_Accent", 0.012, 0.068, 0.014, center=(0.026, 0.020, 0.004), rot=Matrix.Rotation(D(12), 4, 'X'))
         place(wl, vs_l, M_lk)
-    # cámara DSLR con teleobjetivo montada en brazo articulado en la cúpula (ángulo 150°, despejada de la entrada)
+    # brazo articulado con zapata de acople rápido en la cúpula (ángulo 150°, despejado de la entrada)
     ac = D(150)
     p_c0 = Vector((xc + 0.562 * math.cos(ac), 0.562 * math.sin(ac), 1.24))
     p_c1 = Vector((xc + 0.48 * math.cos(ac), 0.48 * math.sin(ac), 1.42))
@@ -1048,13 +1143,9 @@ def build_node(fwd):
     wl.tube("R_Frame", [p_c0, p_c1, p_c2], 0.010, 8, round_r=0.02)
     wl.sphere("R_Alu", 0.016, 10, 6, center=p_c1)
     M_cam = Matrix.Translation(p_c2) @ rot_to((math.cos(ac), math.sin(ac), 0.55), up=(0, 0, 1))
-    vs_cm = wl.box("R_Black", 0.078, 0.138, 0.098, center=(0, 0, 0))
-    vs_cm += wl.box("R_Black", 0.055, 0.062, 0.028, center=(0.005, 0, 0.060))      # pentaprisma
-    vs_cm += wl.box("R_Screen", 0.004, 0.075, 0.052, center=(-0.041, -0.012, -0.008))
-    vs_cm += wl.cyl("R_Frame", 0.038, 0.044, 0.145, 18, center=(0.110, 0, 0), axis='X')  # teleobjetivo
-    vs_cm += wl.torus("R_Accent", 0.044, 0.0035, 18, 6, center=(0.165, 0, 0), axis='X')
-    vs_cm += wl.cyl("R_Glass", 0.034, 0.034, 0.006, 16, center=(0.184, 0, 0), axis='X')
-    place(wl, vs_cm, M_cam)
+    vs_mnt = wl.box("R_Alu", 0.044, 0.052, 0.012, center=(0, 0, -0.055))
+    vs_mnt += wl.box("R_Accent", 0.012, 0.026, 0.008, center=(-0.018, 0.030, -0.055))
+    place(wl, vs_mnt, M_cam)
 
     # pozo de esclusa: brocal limpio en aluminio + bermellón (sin halo negro), escalerilla mejorada y válvulas/manómetros
     ring(0.56, 0.62, -3.15, zf - 0.02, "R_Lining")
@@ -1083,7 +1174,35 @@ def build_node(fwd):
     # suelo de la esclusa
     wl.cyl("R_Floor", 0.6, 0.6, 0.03, 48, center=(xc, 0, -3.16))
     H.P("FWD.INT.WEL", "Pozos de cúpula y esclusa", wl, g, key,
-        "Brocales, pasamanos y contraventanas de cúpula, cámara montada, escalerilla y válvulas del pozo.", smooth=40)
+        "Brocales, pasamanos y contraventanas de cúpula, brazo de cámara, escalerilla y válvulas del pozo.", smooth=40)
+
+    # --- Prop interactivo: cámara DSLR científica separada en la cúpula
+    cam = MB("n_prop_cam")
+    # cuerpo grafito/negro con empuñadura derecha moldeada, disparador y pentaprisma
+    cam.box("R_Frame", 0.076, 0.138, 0.096, center=(0, 0, 0))
+    cam.cyl("R_Rubber", 0.024, 0.022, 0.092, 14, center=(0.022, -0.058, -0.002))      # empuñadura derecha
+    cam.cyl("R_Accent", 0.007, 0.007, 0.008, 12, center=(0.028, -0.056, 0.050))       # disparador bermellón
+    cam.cyl("R_Alu", 0.013, 0.013, 0.012, 14, center=(0.004, 0.044, 0.053))           # dial de modos
+    cam.box("R_Frame", 0.056, 0.062, 0.030, center=(0.006, 0, 0.060))                 # pentaprisma
+    cam.box("R_Steel", 0.022, 0.024, 0.004, center=(0.006, 0, 0.076))                 # zapata flash
+    cam.box("R_Rubber", 0.014, 0.028, 0.020, center=(-0.042, 0, 0.054))               # ocular visor
+    cam.box("R_Black", 0.005, 0.082, 0.058, center=(-0.039, -0.012, -0.008))
+    cam.box("R_Screen", 0.004, 0.074, 0.050, center=(-0.041, -0.012, -0.008))         # pantalla LCD trasera
+    # teleobjetivo con anillo de enfoque engomado, aro bermellón y lente frontal
+    cam.cyl("R_Alu", 0.036, 0.036, 0.012, 20, center=(0.044, 0, 0), axis='X')         # bayoneta
+    cam.cyl("R_Frame", 0.038, 0.044, 0.138, 22, center=(0.114, 0, 0), axis='X')       # barril teleobjetivo
+    cam.cyl("R_Rubber", 0.043, 0.044, 0.042, 22, center=(0.118, 0, 0), axis='X')      # anillo de enfoque
+    cam.torus("R_Accent", 0.0445, 0.0038, 22, 6, center=(0.164, 0, 0), axis='X')      # anillo bermellón
+    cam.cyl("R_Black", 0.044, 0.046, 0.022, 22, center=(0.186, 0, 0), axis='X')       # parasol corto
+    cam.cyl("R_Glass", 0.036, 0.036, 0.006, 20, center=(0.184, 0, 0), axis='X')       # lente frontal
+    me_cam = cam.mesh(smooth=35)
+    e_cam = M_cam.to_euler('XYZ')
+    ob_cam = part("HAB.INT.N.PROP.CAM", "Cámara DSLR científica", me_cam, g,
+                  desc="Cámara réflex científica con teleobjetivo, anillo bermellón, empuñadura ergonómica y pantalla trasera.")
+    ob_cam.matrix_basis = M_cam
+    ob_cam["room"] = key
+    ctl(ob_cam, "act:photo")
+    H.set_prop(ob_cam, "camera", p_c2, (e_cam.x, e_cam.y, e_cam.z))
 
     # --- mamparos del nodo con nervios, válvulas de presurización O2/N2 y asideros
     bh = MB("n_bulkheads")
@@ -1150,6 +1269,7 @@ def build_node(fwd):
              "Escotilla de paso de 0,80 m con volante de 3 radios, mirilla óptica, seis pestillos y válvula de ecualización.", bevel=None)
     ctl(ob, "hatch:idss")
     mech(ob, "hinge", (xb - 0.03, 0.44, 0), (0, 0, 1), -1.6, 0.0, 0.0, ident="hatch:idss", speed=0.9)
+    H.set_interact_pose(ob, (xb - 0.11, 0.0, -0.02), (0.0, 0.0, 0.0))
 
     # --- estación de trabajo robótica RWS (babor) enriquecida con subpanel, reposamuñecas y viseras de pantalla
     s = 1
@@ -1216,3 +1336,5 @@ def build_node(fwd):
     for o in bpy.data.objects:
         if o.name.startswith("FWD.ALK.INT"):
             o["room"] = key
+            if o.name == "FWD.ALK.INT.HI":
+                H.set_interact_pose(o, (xc, 0.0, -1.16), (0.0, PI / 2, 0.0))

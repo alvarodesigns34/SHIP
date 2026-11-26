@@ -164,6 +164,42 @@ def P(code, label, mb, parent, room, desc="", bevel=None, smooth=35, explode=Non
     return ob
 
 
+def set_interact_pose(ob, pos, rot=(0.0, 0.0, 0.0)):
+    """Guarda extra glTF `interact_pose` = [px, py, pz, rx, ry, rz] en coordenadas Blender."""
+    ob["interact_pose"] = [round(float(v), 4) for v in (*pos, *rot)]
+    return ob
+
+
+def set_prop(ob, prop_id, pos, rot=(0.0, 0.0, 0.0)):
+    """Marca un objeto interactivo físico (prop_id + interact_pose) para el contrato H1 ↔ H2."""
+    ob["prop_id"] = prop_id
+    return set_interact_pose(ob, pos, rot)
+
+
+def screen_mesh_quad(name, M, w, h, x_off=0.0, flip_u=False):
+    """Construye un quad de pantalla con winding determinista (sin recalc_face_normals)
+    para que la normal apunte siempre hacia el observador y las UVs queden al derecho."""
+    bm = bmesh.new()
+    uv = bm.loops.layers.uv.new("UVMap")
+    corners = [(-w / 2, -h / 2), (w / 2, -h / 2), (w / 2, h / 2), (-w / 2, h / 2)]
+    s_u = -1.0 if flip_u else 1.0
+    vv = [bm.verts.new(M @ Vector((x_off, s_u * u, v))) for (u, v) in corners]
+    f = bm.faces.new(vv)
+    f.material_index = 0
+    for loop, (u, v) in zip(f.loops, corners):
+        loop[uv].uv = (u / w + 0.5, v / h + 0.5)
+    bm.normal_update()
+    expected = (M.to_3x3() @ Vector((-1.0 if flip_u else 1.0, 0.0, 0.0))).normalized()
+    if f.normal.dot(expected) < 0.99:
+        bm.free()
+        raise ValueError(f"Normal invertida en pantalla {name}: {tuple(f.normal)} vs {tuple(expected)}")
+    me = bpy.data.meshes.new(name)
+    bm.to_mesh(me)
+    bm.free()
+    me.materials.append(MATS["R_Screen"])
+    return me
+
+
 def side_y(y, s):
     return y * s
 
@@ -766,38 +802,21 @@ def build_cockpit(intg, hab_parent):
                 vs += pnl.box("R_Frame", 0.008, 0.022, 0.013, center=(-0.012, -0.12 + bb * 0.06, -0.136))
                 vs += pnl.box("R_Alu", 0.004, 0.014, 0.005, center=(-0.015, -0.12 + bb * 0.06, -0.136))
             place(pnl, vs, M)
-            scr = MB(f"a_scr_{cid}D{k+1}")
-            bm = scr.bm
-            uv = bm.loops.layers.uv.new("UVMap")
-            w, hh = 0.278, 0.212
-            corners = [(-w / 2, -hh / 2), (w / 2, -hh / 2), (w / 2, hh / 2), (-w / 2, hh / 2)]
-            vv = [bm.verts.new(M @ Vector((-0.0115, -u, v))) for (u, v) in corners]
-            f = bm.faces.new(vv)
-            f.material_index = scr.mi("R_Screen")
-            for loop, (u, v) in zip(f.loops, corners):
-                loop[uv].uv = (u / w + 0.5, v / hh + 0.5)
-            screens.append((f"{cid}D{k+1}", scr))
+            me_scr = screen_mesh_quad(f"a_scr_{cid}D{k+1}", M, 0.278, 0.212, x_off=-0.0115, flip_u=True)
+            screens.append((f"{cid}D{k+1}", me_scr))
 
-    # --- pantallas auxiliares en la pared alta
+    # --- pantallas auxiliares en la pared alta (orientadas horizontalmente con normal hacia el interior de cabina)
     for s, sid in ((1, "AUXP"), (-1, "AUXS")):
         a = D(20)
         c = arc_pt(R_L - 0.03, a, s)
         nrm = -Vector((0, s * math.cos(a), math.sin(a)))
-        M = Matrix.Translation((7.55, c.y, c.z)) @ rot_to(nrm, up=(1, 0, 0))
+        up_w = Vector((0, -s * math.sin(a), math.cos(a)))
+        M = Matrix.Translation((7.55, c.y, c.z)) @ rot_to(nrm, up=up_w)
         vs = prism(pnl, "R_Black", rrect(0.40, 0.26, 0.012), -0.025, 0.0, 'X')
         vs += beveled_frame(pnl, "R_Frame", 0.406, 0.266, 0.008, 0.014, M=Matrix.Translation((-0.008, 0, 0)))
         place(pnl, vs, M)
-        scr = MB(f"a_scr_{sid}")
-        bm = scr.bm
-        uv = bm.loops.layers.uv.new("UVMap")
-        w, h = 0.37, 0.23
-        corners = [(-w / 2, -h / 2), (w / 2, -h / 2), (w / 2, h / 2), (-w / 2, h / 2)]
-        vv = [bm.verts.new(M @ Vector((0.0015, u, v))) for (u, v) in corners]
-        f = bm.faces.new(vv)
-        f.material_index = scr.mi("R_Screen")
-        for loop, (u, v) in zip(f.loops, corners):
-            loop[uv].uv = (u / w + 0.5, v / h + 0.5)
-        screens.append((sid, scr))
+        me_scr = screen_mesh_quad(f"a_scr_{sid}", M, 0.37, 0.23, x_off=0.0015, flip_u=False)
+        screens.append((sid, me_scr))
 
     # --- asientos esculpidos (conservan HAB.INT.A.ST1/ST2 y ctl='seat:1'/'seat:2')
     seats = []
@@ -854,8 +873,9 @@ def build_cockpit(intg, hab_parent):
     P("HAB.INT.A.PNL", "Panel de instrumentos", pnl, g, room, "Dos cuerpos con seis pantallas multifunción, visera antideslumbrante, avisadores y subpaneles.", bevel=None)
     P("HAB.INT.A.HC", "Controladores manuales", hc, g, room, "Controladores ergonómicos de traslación y rotación en los reposabrazos.")
     P("HAB.INT.A.SWB", "Bases de interruptores", swb, g, room, "Bases y guardas de los 24 interruptores repartidos en las consolas laterales.", bevel=0.002)
-    for sid, scr in screens:
-        ob = P(f"HAB.INT.A.SCR.{sid}", f"Pantalla {sid}", scr, g, room, "Pantalla multifunción táctil.", smooth=None)
+    for sid, me_scr in screens:
+        ob = part(f"HAB.INT.A.SCR.{sid}", f"Pantalla {sid}", me_scr, g, desc="Pantalla multifunción táctil.")
+        ob["room"] = room
         ctl(ob, f"scr:{sid}")
     for k, s, mb in seats:
         ob = P(f"HAB.INT.A.ST{k}", "Asiento del comandante" if k == 1 else "Asiento del piloto", mb, g, room,

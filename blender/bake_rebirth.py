@@ -30,6 +30,7 @@ def arg(name, default):
 
 SAMPLES = int(arg('--samples', '96'))
 RES = int(arg('--res', '2048'))
+ADAPTIVE = float(arg('--adaptive', '0.035'))
 ROOMS = arg('--rooms', '')
 DO_BAKE = '--no-bake' not in argv
 DO_EXPORT = '--no-export' not in argv
@@ -52,12 +53,12 @@ sc.render.engine = 'CYCLES'
 sc.cycles.device = 'CPU'
 sc.cycles.samples = SAMPLES
 sc.cycles.use_adaptive_sampling = True
-sc.cycles.adaptive_threshold = 0.025
-sc.cycles.adaptive_min_samples = 16
+sc.cycles.adaptive_threshold = ADAPTIVE
+sc.cycles.adaptive_min_samples = min(8, SAMPLES)
 sc.cycles.use_denoising = False
 sc.cycles.use_light_tree = True
-sc.cycles.max_bounces = 4
-sc.cycles.diffuse_bounces = 3
+sc.cycles.max_bounces = 3
+sc.cycles.diffuse_bounces = 2
 sc.cycles.glossy_bounces = 0
 sc.cycles.transmission_bounces = 1
 sc.cycles.volume_bounces = 0
@@ -92,16 +93,19 @@ ADJ = {
     'N': {'A', 'N'},
 }
 
-# Ocultar geometría exterior lejana durante el horneado interior para reducir el BVH a la mitad
+# Ocultar geometría exterior lejana y props dinámicos cogibles durante el horneado interior
+# (reduce BVH y evita sombras estáticas grabadas bajo objetos que el tripulante puede coger)
 hidden_ext = []
 for ob in bpy.data.objects:
-    if ob.type == 'MESH' and 'room' not in ob and not ob.name.startswith('FWD.CUP'):
+    if ob.type == 'MESH' and (('room' not in ob and not ob.name.startswith('FWD.CUP')) or 'prop_id' in ob):
         if not ob.hide_render:
             ob.hide_render = True
             hidden_ext.append(ob)
 
 
 def lm_eligible(ob):
+    if 'prop_id' in ob:
+        return False      # objeto interactivo cogible: iluminación dinámica por sonda IBL
     mats = {m.name for m in ob.data.materials if m}
     if mats and mats <= NO_LM:
         return False
@@ -297,7 +301,7 @@ def save_png(key, px):
 
 lm_json_path = os.path.join(OUT_TEX, 'lm.json')
 report = {}
-if ROOMS and os.path.exists(lm_json_path):
+if os.path.exists(lm_json_path):
     try:
         with open(lm_json_path) as f:
             report = json.load(f).get('rooms', {})
@@ -322,7 +326,7 @@ for key in wanted:
         save_png(key, px)
         report[key] = {'objects': len(obs), 'res': res, 'samples': SAMPLES, 'bake_s': round(dt, 1), 'max': float(px[..., :3].max())}
 
-# Restaurar visibilidad de objetos exteriores y luces antes de guardar/exportar
+# Restaurar visibilidad de objetos exteriores, props cogibles y luces antes de guardar/exportar
 for ob in hidden_ext:
     ob.hide_render = False
 for l_ob in lights:
@@ -347,5 +351,6 @@ if DO_EXPORT:
                               export_image_format='NONE')
     print('[bake] exportado', glb, os.path.getsize(glb) // 1024, 'KiB', flush=True)
     bpy.ops.wm.save_as_mainfile(filepath=os.path.join(HERE, 'ALCION_HX4_master.blend'), compress=True)
-with open(lm_json_path, 'w') as f:
-    json.dump({'scale': LM_SCALE, 'rooms': report}, f, indent=1)
+if DO_BAKE:
+    with open(lm_json_path, 'w') as f:
+        json.dump({'scale': LM_SCALE, 'rooms': report}, f, indent=1)
