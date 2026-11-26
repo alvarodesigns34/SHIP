@@ -303,7 +303,7 @@ export class ShipModel {
       const node = nodeOf(mesh);
       if (!node) continue;
       // Interior sector + inner pressure shells receive Cycles baked lightmap via uv1!
-      const wantLM = (sector === 'int' || INNER_SHELL_CODES.has(node.code) || node.code.startsWith('FWD.ALK.INT')) && !!(mesh.geometry.attributes.uv1);
+      const wantLM = false as boolean;
       const mat = enhanceMaterial(mesh.material as THREE.Material, wantLM) as THREE.MeshStandardMaterial;
       mesh.material = mat;
       mesh.visible = false;
@@ -440,19 +440,61 @@ export class ShipModel {
   }
 
   markDirty() { this.dirty = true; }
+  /** Invalida sólo la rama de `n` (mecanismos, brazo, radiadores). */
+  markNodeDirty(n: PartNode | undefined | null) { if (n) this.dirtyNodes.add(n); }
+  private dirtyNodes = new Set<PartNode>();
+  private subtreeInsts = new Map<PartNode, Inst[]>();
+  private subtreeStandalone = new Map<PartNode, { mesh: THREE.Mesh; src: THREE.Mesh; node: PartNode }[]>();
+  /** número de matrices de instancia escritas en el último fotograma (instrumentación) */
+  lastMatrixWrites = 0;
+  private instsUnder(n: PartNode) {
+    let l = this.subtreeInsts.get(n);
+    if (!l) {
+      const set = new Set<THREE.Mesh>();
+      n.obj.traverse((o) => { if ((o as THREE.Mesh).isMesh) set.add(o as THREE.Mesh); });
+      l = [];
+      for (const m of set) for (const it of this.instByMesh.get(m) ?? []) l.push(it);
+      this.subtreeInsts.set(n, l);
+      this.subtreeStandalone.set(n, this.standalone.filter((s) => set.has(s.src)));
+    }
+    return l;
+  }
   markVisDirty() { this.visDirty = true; }
 
   applyTransforms(force = false) {
+    this.lastMatrixWrites = 0;
+    if (!this.dirty && !force && this.dirtyNodes.size) {
+      // actualización parcial: sólo las ramas invalidadas (sin recorrer las ~800 piezas)
+      const roots = [...this.dirtyNodes].filter((n) => { for (let p = n.parent; p; p = p.parent) if (this.dirtyNodes.has(p)) return false; return true; });
+      for (const n of roots) {
+        n.obj.traverse((o) => { const c = (o.userData as any)?.code; const nn = c ? this.nodes.get(c) : null; if (nn && nn.obj === o) this.composeLocal(nn); });
+        n.obj.updateMatrixWorld(true);
+        for (const it of this.instsUnder(n)) { it.batch.bm.setMatrixAt(it.id, it.mesh.matrixWorld); this.lastMatrixWrites++; }
+        for (const st of this.subtreeStandalone.get(n) ?? []) st.mesh.matrix.copy(st.src.matrixWorld);
+      }
+      for (const p of this.proxies.children as THREE.Mesh[]) p.matrix.copy((p.userData.src as THREE.Mesh).matrixWorld);
+      this.dirtyNodes.clear();
+      return true;
+    }
+    this.dirtyNodes.clear();
     if (!this.dirty && !force) return false;
     for (const n of this.nodes.values()) this.composeLocal(n);
     this.rig.updateMatrixWorld(true);
     for (const b of this.batches) {
-      for (const it of b.insts) if (it) b.bm.setMatrixAt(it.id, it.mesh.matrixWorld);
+      for (const it of b.insts) if (it) { b.bm.setMatrixAt(it.id, it.mesh.matrixWorld); this.lastMatrixWrites++; }
     }
     for (const s of this.standalone) s.mesh.matrix.copy(s.src.matrixWorld);
     for (const p of this.proxies.children as THREE.Mesh[]) p.matrix.copy((p.userData.src as THREE.Mesh).matrixWorld);
     this.dirty = false;
     return true;
+  }
+
+  /** Fija una transformación adicional (brazo, radiadores) invalidando sólo si cambia. */
+  setExtra(code: string, m: THREE.Matrix4) {
+    const cur = this.extra.get(code);
+    if (cur && cur.equals(m)) return;
+    if (cur) cur.copy(m); else this.extra.set(code, m.clone());
+    this.markNodeDirty(this.nodes.get(code));
   }
 
   setExplode(t: number, preset?: ExplodePreset) {
@@ -471,10 +513,10 @@ export class ShipModel {
     for (const n of this.mechs.values()) {
       const m = n.mech!;
       const d = m.target - m.value;
-      if (Math.abs(d) < 1e-4) { if (m.value !== m.target) { m.value = m.target; this.dirty = true; } continue; }
+      if (Math.abs(d) < 1e-4) { if (m.value !== m.target) { m.value = m.target; this.markNodeDirty(n); } continue; }
       const step = Math.sign(d) * Math.min(Math.abs(d), m.speed * dt);
       m.value += step;
-      this.dirty = true;
+      this.markNodeDirty(n);
       if (!n.code.includes('TGL') && !n.code.includes('.L')) act = Math.max(act, 1);
       else act = Math.max(act, 0.25);
     }
@@ -486,7 +528,7 @@ export class ShipModel {
     const m = this.mech(id);
     if (!m) return;
     m.target = Math.min(m.max, Math.max(m.min, target));
-    if (instant) { m.value = m.target; this.dirty = true; }
+    if (instant) { m.value = m.target; this.markNodeDirty(this.mechs.get(id)); }
   }
   toggleMech(id: string) {
     const m = this.mech(id);
@@ -497,8 +539,13 @@ export class ShipModel {
   }
 
   // ------------------------------------------------------------ visibilidad (sólo se recalcula cuando cambia!)
-  private skinPrefixes = ['HAB.MMOD', 'HAB.MLI', 'FWD.MMOD', 'SVC.SKN', 'PRP', 'SVC.PRP', 'SVC.STR'];
-  private isSkin(n: PartNode) { return this.skinPrefixes.some((p) => n.code === p || n.code.startsWith(p + '.')); }
+  /** Estructura oculta bajo la piel exterior (casco presurizado, isogrid, MLI, soportes): sólo en ingeniería. */
+  private innerPrefixes = ['HAB.STR', 'HAB.MLI', 'HAB.MMOD.R1.STO', 'HAB.MMOD.R2.STO', 'HAB.MMOD.R3.STO', 'HAB.MMOD.R4.STO'];
+  private isInner(n: PartNode) { return this.innerPrefixes.some((p) => n.code === p || n.code.startsWith(p + '.')); }
+  profile: 'immersive' | 'engineering' = 'immersive';
+  setProfile(p: 'immersive' | 'engineering') { if (p !== this.profile) { this.profile = p; this.visDirty = true; } }
+  /** visibilidad global del exterior (p. ej. interior sin ventanas a la vista) */
+  setShown(v: boolean) { for (const b of this.batches) b.bm.visible = v && (b.sector === 'ext' || this.showInterior); for (const s of this.standalone) s.mesh.visible = v; }
 
   /** Sincroniza visibilidad exterior/interior sin ensuciar cada fotograma. */
   setInteriorVisibility(hideSkin: boolean, showInt: boolean) {
@@ -523,7 +570,7 @@ export class ShipModel {
       for (const it of b.insts) {
         if (!it) continue;
         let v = !hiddenBy(it.node) && (!keep || keep.has(it.mesh));
-        if (this.hideExteriorSkin && this.isSkin(it.node)) v = false;
+        if (this.profile === 'immersive' && this.isInner(it.node)) v = false;
         if (selected && selected.has(it.mesh)) v = false;
         b.bm.setVisibleAt(it.id, v);
       }

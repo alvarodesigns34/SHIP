@@ -4,9 +4,10 @@
  * lightmap horneado en Cycles (`BAY_LIGHTS`).
  */
 import * as THREE from 'three';
-import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
 import { b2t } from '../util';
-import { BAY_LIGHTS, type ShipModel, type PartNode } from './ShipModel';
+import type { ShipModel } from './ShipModel';
+import { BAY_GAIN } from '../interior/RMaterials';
+import type { Interior, IPart } from '../interior/Interior';
 import type { Systems, SwitchId } from './Systems';
 import { SWITCH_ORDER, SWITCH_LABEL } from './Systems';
 
@@ -32,7 +33,7 @@ export interface Telemetry {
 }
 
 interface Screen {
-  id: string; node: PartNode; mesh: THREE.Mesh; canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D;
+  id: string; mesh: THREE.Mesh; canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D;
   tex: THREE.CanvasTexture; mat: THREE.MeshBasicMaterial; pages: Page[]; page: number; w: number; h: number; lastDraw: number;
 }
 
@@ -45,119 +46,66 @@ export class Cockpit {
   noseCam = new THREE.PerspectiveCamera(40, 16 / 9, 0.1, 2e5);
   armCam = new THREE.PerspectiveCamera(55, 16 / 10, 0.05, 2e5);
   leds!: THREE.InstancedMesh;
-  private ledNodes: { id: SwitchId; node: PartNode }[] = [];
+  private ledNodes: { id: SwitchId; node: IPart }[] = [];
   lights = new THREE.Group();
-  bayLights: { bay: 'A' | 'B' | 'C' | 'D' | 'N' | 'L'; rect?: THREE.RectAreaLight; spot?: THREE.SpotLight; point?: THREE.PointLight; base: number; pos: THREE.Vector3 }[] = [];
   floods: THREE.SpotLight[] = [];
-  airlockLight = new THREE.PointLight(0xfff1e0, 0, 3.2, 2);
+  private tmpP = new THREE.Vector3();
   wantsCam = false;
   wantsArmCam = false;
   model: ShipModel;
 
   constructor(model: ShipModel) {
     this.model = model;
-    RectAreaLightUniformsLib.init();
     this.buildLights();
   }
 
-  setup() {
-    for (const s of this.model.standalone) {
-      const id = s.node.ctl;
-      if (!id || !PAGES[id]) continue;
-      if (this.screens.some((x) => x.id === id)) continue;
-      s.mesh.geometry.computeBoundingBox();
-      const sz = s.mesh.geometry.boundingBox!.getSize(new THREE.Vector3());
+  /** Enlaza las pantallas y los interruptores del interior Rebirth. */
+  setup(interior: Interior, parent: THREE.Object3D) {
+    for (const [id, mesh] of interior.screens) {
+      const key = id;
+      if (!PAGES[key] || this.screens.some((x) => x.id === key)) continue;
+      mesh.geometry.computeBoundingBox();
+      const sz = mesh.geometry.boundingBox!.getSize(new THREE.Vector3());
       const dims = [sz.x, sz.y, sz.z].sort((a, b) => b - a);
       const aspect = dims[0] / Math.max(1e-3, dims[1]);
-      const portrait = sz.y > sz.x * 1.05;
-      // Alta densidad 768 px para tipografía de instrumentos cristalina!
-      const baseRes = 768;
+      const baseRes = 640;
       const canvas = document.createElement('canvas');
-      canvas.width = portrait ? Math.round(baseRes / aspect) : baseRes;
-      canvas.height = portrait ? baseRes : Math.round(baseRes / aspect);
+      canvas.width = baseRes;
+      canvas.height = Math.round(baseRes / aspect);
       const ctx = canvas.getContext('2d')!;
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
       tex.anisotropy = 8;
-      this.fixHandedness(s.mesh);
-      const mat = new THREE.MeshBasicMaterial({ map: tex, toneMapped: true, color: new THREE.Color(1.45, 1.45, 1.45) });
-      s.mesh.material = mat;
-      this.screens.push({ id, node: s.node, mesh: s.mesh, canvas, ctx, tex, mat, pages: PAGES[id], page: 0, w: canvas.width, h: canvas.height, lastDraw: -1 });
+      tex.flipY = false;
+      const mat = new THREE.MeshBasicMaterial({ map: tex, toneMapped: true, color: new THREE.Color(1.3, 1.3, 1.3) });
+      mesh.material = mat;
+      mesh.castShadow = false;
+      this.screens.push({ id: key, mesh, canvas, ctx, tex, mat, pages: PAGES[key], page: 0, w: canvas.width, h: canvas.height, lastDraw: -1 });
     }
-    const nodes: { id: SwitchId; node: PartNode }[] = [];
-    for (const id of SWITCH_ORDER) { const n = this.model.mechs.get('sw:' + id); if (n) nodes.push({ id, node: n }); }
+    const nodes: { id: SwitchId; node: IPart }[] = [];
+    for (const id of SWITCH_ORDER) { const n = interior.mechs.get('sw:' + id); if (n) nodes.push({ id, node: n }); }
     this.ledNodes = nodes;
     if (!this.leds && nodes.length) {
-      const g = new THREE.SphereGeometry(0.0065, 10, 6);
+      const g = new THREE.SphereGeometry(0.005, 10, 6);
       const m = new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false });
       this.leds = new THREE.InstancedMesh(g, m, nodes.length);
       this.leds.frustumCulled = false;
       const M = new THREE.Matrix4();
       nodes.forEach(({ node }, i) => {
         const mech = node.mech!;
-        const n = new THREE.Vector3(0, -1, 0);
-        const ly = n.clone().cross(mech.axis).normalize();
-        const p = mech.pivot.clone().addScaledVector(ly, 0.045).addScaledVector(n, -0.006);
+        const up = new THREE.Vector3(0, 1, 0);
+        const side = up.clone().cross(mech.axis).normalize();
+        const p = mech.pivot.clone().addScaledVector(side, 0.04).addScaledVector(up, 0.004);
         M.makeTranslation(p.x, p.y, p.z);
         this.leds.setMatrixAt(i, M);
         this.leds.setColorAt(i, new THREE.Color(0, 0, 0));
       });
-      this.model.root.add(this.leds);
-    }
-  }
-
-  private fixHandedness(mesh: THREE.Mesh) {
-    const g = mesh.geometry;
-    const uv = g.attributes.uv as THREE.BufferAttribute, pos = g.attributes.position as THREE.BufferAttribute, nor = g.attributes.normal as THREE.BufferAttribute;
-    if (!uv || pos.count < 3) return;
-    const P = (i: number) => new THREE.Vector3(pos.getX(i), pos.getY(i), pos.getZ(i));
-    const U = (i: number) => new THREE.Vector2(uv.getX(i), uv.getY(i));
-    const [a, b, c] = [0, 1, 2];
-    const e1 = P(b).sub(P(a)), e2 = P(c).sub(P(a));
-    const d1 = U(b).sub(U(a)), d2 = U(c).sub(U(a));
-    const r = 1 / (d1.x * d2.y - d2.x * d1.y || 1);
-    const T = e1.clone().multiplyScalar(d2.y).sub(e2.clone().multiplyScalar(d1.y)).multiplyScalar(r);
-    const B = e2.clone().multiplyScalar(d1.x).sub(e1.clone().multiplyScalar(d2.x)).multiplyScalar(r);
-    const N = new THREE.Vector3(nor.getX(0), nor.getY(0), nor.getZ(0));
-    if (T.cross(B).dot(N) < 0) {
-      const g2 = g.clone();
-      const u2 = g2.attributes.uv as THREE.BufferAttribute;
-      for (let i = 0; i < u2.count; i++) u2.setX(i, 1 - u2.getX(i));
-      mesh.geometry = g2;
+      parent.add(this.leds);
     }
   }
 
   private buildLights() {
-    const xs = [0.6, 2.65, 4.7, 6.75, 8.8];
-    const bays: ('D' | 'C' | 'B' | 'A')[] = ['D', 'C', 'B', 'A'];
-    // Temperatura de color calibrada en armonía con el lightmap horneado en Cycles!
-    // Intensidades moderadas para aportar reflejos especulares en tiempo real y sombras dinámicas
-    // sobre manos/objetos móviles SIN aplastar el contraste GI y AO de contacto del lightmap!
-    const tint = { D: 0xffe8d2, C: 0xffd2a4, B: 0xf4f8ff, A: 0xe6f0ff } as const;
-    for (let i = 0; i < 4; i++) {
-      const xc = (xs[i] + xs[i + 1]) / 2;
-      for (const sy of [1, -1]) {
-        const r = new THREE.RectAreaLight(tint[bays[i]], 0, 1.5, 0.10);
-        r.position.copy(b2t(xc, sy * 1.03, 1.03));
-        r.lookAt(b2t(xc, sy * 0.2, 0.2));
-        this.lights.add(r);
-        this.bayLights.push({ bay: bays[i], rect: r, base: 3.0, pos: r.position.clone() });
-      }
-      const sp = new THREE.SpotLight(tint[bays[i]], 0, 6.5, 1.15, 0.78, 1.9);
-      sp.position.copy(b2t(xc, 0, 1.08));
-      sp.target.position.copy(b2t(xc, 0, -1.1));
-      sp.shadow.mapSize.set(512, 512); sp.shadow.bias = -0.0008; sp.shadow.normalBias = 0.02; sp.shadow.camera.near = 0.05; sp.shadow.camera.far = 6;
-      this.lights.add(sp, sp.target);
-      this.bayLights.push({ bay: bays[i], spot: sp, base: 5.5, pos: sp.position.clone() });
-    }
-    for (const x of [10.5, 11.6]) {
-      const p = new THREE.PointLight(0xeef5ff, 0, 4.2, 2);
-      p.position.copy(b2t(x, 0, 0.75));
-      this.lights.add(p);
-      this.bayLights.push({ bay: 'N', point: p, base: 1.5, pos: p.position.clone() });
-    }
-    this.airlockLight.position.copy(b2t(11.05, 0, -2.2));
-    this.lights.add(this.airlockLight);
+    // focos exteriores (LT_EXT): iluminan el casco y la zona de atraque
     for (const [p, t] of [[b2t(8.6, 2.0, 1.0), b2t(12, 0, 0)], [b2t(8.6, -2.0, 1.0), b2t(12, 0, 0)], [b2t(11.5, 0, -3.3), b2t(11.0, 0, -5)], [b2t(0.8, 1.6, 1.7), b2t(4, 0, 4)]]) {
       const s = new THREE.SpotLight(0xf2f4ff, 0, 40, 0.5, 0.5, 1.5);
       s.position.copy(p); s.target.position.copy(t);
@@ -166,46 +114,12 @@ export class Cockpit {
     }
   }
 
-  updateLights(sys: Systems, viewerLocal: THREE.Vector3 | null, interiorActive: boolean, airlockState: 'pres' | 'depress' | 'vac' | 'repress') {
-    const lvl = (b: string) => (b === 'L' ? 1 : sys.lightLevel(b as any));
-    // Sincronizar en tiempo real los 5 uniformes del lightmap horneado en Cycles con los interruptores LT_A..LT_N!
-    BAY_LIGHTS.value[0] = lvl('A');
-    BAY_LIGHTS.value[1] = lvl('B');
-    BAY_LIGHTS.value[2] = lvl('C');
-    BAY_LIGHTS.value[3] = lvl('D');
-    BAY_LIGHTS.value[4] = lvl('N');
-
-    const shadowCandidates: { l: THREE.SpotLight; d: number }[] = [];
-    for (const bl of this.bayLights) {
-      const k = interiorActive ? lvl(bl.bay) : 0;
-      if (bl.rect) bl.rect.intensity = bl.base * k;
-      if (bl.point) bl.point.intensity = bl.base * k;
-      if (bl.spot) {
-        bl.spot.intensity = bl.base * k;
-        bl.spot.visible = k > 0;
-        shadowCandidates.push({ l: bl.spot, d: viewerLocal ? viewerLocal.distanceTo(bl.pos) : 99 });
-      }
-    }
-    shadowCandidates.sort((a, b) => a.d - b.d);
-    shadowCandidates.forEach((c, i) => (c.l.castShadow = interiorActive && i < 2 && c.l.intensity > 0));
-
+  /** Luces de bahía (modulan los lightmaps), focos exteriores y LED de estado de los interruptores. */
+  updateLights(sys: Systems) {
+    const lvl = (b: 'A' | 'B' | 'C' | 'D' | 'N') => sys.lightLevel(b as any);
+    BAY_GAIN.value[0] = lvl('A'); BAY_GAIN.value[1] = lvl('B'); BAY_GAIN.value[2] = lvl('C'); BAY_GAIN.value[3] = lvl('D'); BAY_GAIN.value[4] = lvl('N');
     const ext = sys.on('LT_EXT') ? 1 : 0;
-    for (const f of this.floods) f.intensity = 220 * ext;
-
-    this.airlockLight.intensity = interiorActive ? (sys.lightLevel('N') ? 1.5 : 0.15) : 0;
-    this.airlockLight.color.set(airlockState === 'pres' ? 0xf4f8ff : airlockState === 'vac' ? 0xff4a30 : 0xffb030);
-    if (airlockState !== 'pres') this.airlockLight.intensity = Math.max(this.airlockLight.intensity, 1.4);
-
-    for (let k = 1; k <= 8; k++) {
-      const n = this.model.nodes.get(`HAB.INT.LGT.L${k}`);
-      if (!n) continue;
-      const bay = (['D', 'C', 'B', 'A'] as const)[Math.floor((k - 1) / 2)];
-      const v = lvl(bay);
-      this.model.setNodeColor(n, new THREE.Color(v, v, v));
-    }
-    const nl = this.model.nodes.get('FWD.INT.LGT');
-    if (nl) { const v = lvl('N'); this.model.setNodeColor(nl, new THREE.Color(v, v, v)); }
-
+    for (const f of this.floods) { f.intensity = 220 * ext; f.visible = ext > 0; }
     if (this.leds) {
       const col = new THREE.Color();
       this.ledNodes.forEach(({ id }, i) => {
@@ -234,7 +148,7 @@ export class Cockpit {
     this.wantsCam = false; this.wantsArmCam = false;
     for (const s of this.screens) {
       const pg = s.pages[s.page];
-      const d = viewerLocal ? viewerLocal.distanceTo(s.mesh.getWorldPosition(new THREE.Vector3())) : 99;
+      const d = viewerLocal ? viewerLocal.distanceTo(this.tmpP.setFromMatrixPosition(s.mesh.matrixWorld)) : 99;
       const live = on && (pg === 'CAM' || pg === 'ARMCAM');
       if (live) {
         if (d < 12) { if (pg === 'CAM') this.wantsCam = true; else this.wantsArmCam = true; }

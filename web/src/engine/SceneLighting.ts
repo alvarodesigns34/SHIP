@@ -128,24 +128,15 @@ export class SceneLighting {
     const earthPhase = clamp(0.5 + 0.5 * sunDir.dot(earthDir.clone().negate()), 0, 1);
     const altK = earthAngRad / (Math.PI / 2);
     this.earthLight.position.copy(earthDir);
-    this.earthLight.intensity = indoor ? 0.04 : (0.06 + 0.95 * altK * earthPhase * (isLunar ? 0.25 : 1));
+    this.earthLight.intensity = indoor ? 0.0 : (0.06 + 0.95 * altK * earthPhase * (isLunar ? 0.25 : 1));
 
-    // Cambiar limpiamente entre sonda de reflexión interior y exterior
-    if (indoor && !this.usingInteriorEnv) {
-      near.environment = this.buildInteriorEnv(renderer);
-      this.usingInteriorEnv = true;
-    } else if (!indoor && this.usingInteriorEnv && this.extEnv) {
-      near.environment = this.extEnv;
-      this.usingInteriorEnv = false;
-    } else if (!near.environment && this.extEnv) {
-      near.environment = this.extEnv;
-    }
-
-    const targetEnvInt = indoor ? 0.48 : 0.88;
+    // La sonda global es siempre la exterior: los materiales del interior llevan su propia sonda capturada por estancia.
+    if (!near.environment && this.extEnv) near.environment = this.extEnv;
+    const targetEnvInt = 0.88;
     (near as any).environmentIntensity = damp((near as any).environmentIntensity ?? 0.8, targetEnvInt, 4, dt);
 
     // Exposición fotográfica adaptativa (calibrada con el lightmap horneado en Cycles!)
-    const targetExp = indoor ? 1.18 : eclipse > 0.5 ? 2.4 : 1.02;
+    const targetExp = indoor ? 1.0 : eclipse > 0.5 ? 2.4 : 1.0;
     this.exposure = damp(this.exposure, targetExp, reducedMotion ? 20 : 1.8, dt);
     return this.exposure;
   }

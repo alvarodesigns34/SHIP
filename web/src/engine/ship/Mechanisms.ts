@@ -110,7 +110,7 @@ export class Mechanisms {
       }
     }
     this.armBusy = moving;
-    for (const [code, k] of this.armParts) model.extra.set(code, this.chain(k));
+    for (const [code, k] of this.armParts) model.setExtra(code, this.chain(k));
     // --- radiadores (acordeón)
     const dr = this.radiatorTarget - this.radiatorDeploy;
     if (Math.abs(dr) > 1e-4) { this.radiatorDeploy += Math.sign(dr) * Math.min(Math.abs(dr), 0.12 * dt); moving = 1; }
@@ -122,11 +122,11 @@ export class Mechanisms {
       const R0 = rotAbout(b2t(xm, 0, zRoot), X, sg * s * Math.PI / 2 * 0.98);
       const R1 = R0.clone().multiply(rotAbout(b2t(xm, 0.045, z1), X, -sg * s * Math.PI * 0.98));
       const R2 = R1.clone().multiply(rotAbout(b2t(xm, -0.045, z2), X, sg * s * Math.PI * 0.98));
-      model.extra.set(`${w}.PNL.P1`, R0);
-      model.extra.set(`${w}.HNG1`, R1);
-      model.extra.set(`${w}.PNL.P2`, R1);
-      model.extra.set(`${w}.HNG2`, R2);
-      model.extra.set(`${w}.PNL.P3`, R2);
+      model.setExtra(`${w}.PNL.P1`, R0);
+      model.setExtra(`${w}.HNG1`, R1);
+      model.setExtra(`${w}.PNL.P2`, R1);
+      model.setExtra(`${w}.HNG2`, R2);
+      model.setExtra(`${w}.PNL.P3`, R2);
     }
     // --- seguimiento solar (alas giran sobre su eje Y de Blender)
     if (this.sunTracking) {
@@ -136,7 +136,6 @@ export class Mechanisms {
     }
     // --- antena de alta ganancia: descenso de coordenadas sobre acimut/elevación
     if (this.hgaTracking) this.trackHGA();
-    model.markDirty();
     return moving;
   }
 

@@ -51,9 +51,9 @@ hab = lib.group("HAB", "Módulo Habitable Presurizado", root, explode=(0, 0, 0),
                 desc="Módulo presurizado principal de Ø4,20 m y 8,2 m de barril cilíndrico; volumen presurizado total del vehículo ≈ 150 m³.",
                 func="Alojar a la tripulación, la cabina de vuelo, el laboratorio y el soporte vital")
 ext.build_hab_exterior(hab)
-inter.build_interior(hab)
-expn.build_lived_in(hab)
-dens.build_density(hab)
+import alcion.habitat as habitat
+importlib.reload(habitat)
+habitat.build(hab, fwd)
 sysm.build_service(root)
 sysm.build_propulsion(root)
 sysm.build_power(root)

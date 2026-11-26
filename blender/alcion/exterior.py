@@ -461,7 +461,9 @@ def _node_exterior(fwd):
 # ---------------------------------------------------------------------------
 
 def build_hab_exterior(hab):
+    from . import canopy
     _hab_structure(hab)
+    canopy.build_exterior_windows(hab)
     _hab_mli(hab)
     panels = _hab_shield(hab)
     _hab_rcs(hab)
@@ -535,8 +537,9 @@ def _hab_structure(hab):
     mb = MB("hab_cone")
     lathe_x(mb, "M_AlLi", [(S.R_P - 0.03, S.X_HAB_F), (S.R_P, S.X_HAB_F), (S.R_CONE_F, S.X_CONE_F), (S.R_CONE_F - 0.03, S.X_CONE_F), (S.R_P - 0.03, S.X_HAB_F)], 72)
     mb.bolts("M_Bolt", bolt_circle((S.X_CONE_F - 0.02, 0, 0), (1, 0, 0), S.R_CONE_F - 0.05, 48))
-    part("HAB.STR.CON", "Cono adaptador HAB–nodo", mb.mesh(), g, explode=(0.6, 0, 0),
-         desc="Tronco de cono de Al-Li que transita de Ø4,20 m a Ø2,80 m.")
+    from . import canopy
+    part("HAB.STR.CON", "Cono adaptador HAB–nodo", boolean_cut(mb.mesh(), canopy.cutters(), "hab_cone_win"), g, explode=(0.6, 0, 0),
+         desc="Tronco de cono de Al-Li que transita de Ø4,20 m a Ø2,80 m, con nueve huecos de ventana panorámica para la cabina de vuelo.")
     # mamparo de popa elipsoidal
     prof = []
     n = 14
@@ -577,7 +580,8 @@ def _hab_mli(hab):
              desc="Manta de 20 capas con cara exterior de Kapton aluminizado y velcro de unión.")
     mb = MB("mli_cone")
     lathe_x(mb, "M_MLI_Gold", [(S.R_P + 0.004, S.X_HAB_F), (S.R_MLI, S.X_HAB_F), (S.R_CONE_F + 0.035, S.X_CONE_F - 0.02), (S.R_CONE_F + 0.005, S.X_CONE_F - 0.02), (S.R_P + 0.004, S.X_HAB_F)], 64)
-    part("HAB.MLI.CON", "Manta MLI del cono", mb.mesh(), g, explode=(0.4, 0, 0.0))
+    from . import canopy
+    part("HAB.MLI.CON", "Manta MLI del cono", boolean_cut(mb.mesh(), canopy.cutters(grow=0.01), "mli_cone_win"), g, explode=(0.4, 0, 0.0))
     prof = []
     for i in range(13):
         t = (PI / 2) * i / 12
@@ -687,8 +691,10 @@ def _hab_shield(hab):
             c = p0.lerp(p1, s)
             mb.bolt("M_Bolt", c + (b[1] - b[0]).normalized() * (0.03 if p0 is b[0] else -0.03) * 1.0, nrm, 0.009, 0.006)
     me = mb.mesh(smooth=None)
+    from . import canopy
+    me_win = boolean_cut(me.copy(), [canopy.wedge(0, 1.6, 2.8, grow=0.012)], "cone_panel_win")
     for i in range(S.N_FACETS):
-        part(f"HAB.MMOD.CN.P{i+1:02d}", f"Panel MMOD cónico {i+1:02d}", me, cg, rot=(S.facet_angle(i), 0, 0),
+        part(f"HAB.MMOD.CN.P{i+1:02d}", f"Panel MMOD cónico {i+1:02d}", me_win if i in canopy.WIN_FACETS else me, cg, rot=(S.facet_angle(i), 0, 0),
              explode=("radial", 0.8), desc="Panel trapezoidal del cono.")
     hab["_panels"] = len(panels)
     return panels

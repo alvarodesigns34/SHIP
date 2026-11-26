@@ -21,7 +21,8 @@ const log = { debug(){}, info(){}, warn(){}, error: console.error };
 const io = new NodeIO().setLogger(log).registerExtensions(ALL_EXTENSIONS).registerDependencies({
   'meshopt.encoder': MeshoptEncoder, 'meshopt.decoder': MeshoptDecoder,
 });
-for (const name of ['alcion_hx4_exterior', 'alcion_hx4_interior']) {
+const only = process.argv.slice(2);
+for (const name of (only.length ? only : ['alcion_hx4_exterior', 'alcion_interior_rt'])) {
   const doc = await io.read(path.join(src, name + '.glb'));
   await doc.transform(
     dedup(),
