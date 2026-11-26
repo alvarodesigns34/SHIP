@@ -468,12 +468,14 @@ function TouchControls({ eng, mode, onMenu }: { eng: Engine; mode: Mode; onMenu:
   const T = eng.input.touch as Record<string, number>;
   const fly = mode === 'FLIGHT' || mode === 'SANDBOX';
   // palanca virtual: captura de puntero, liberación garantizada en pointerup/pointercancel/lostpointercapture
+  // estado del gesto guardado en el propio elemento: sobrevive a los re-renderizados de React
+  type G = { o: [number, number] | null; id: number; last: [number, number] | null };
+  const st = (el: Element): G => ((el as any).__g ??= { o: null, id: -1, last: null });
   const stick = (onMove: (x: number, y: number) => void) => {
-    let o: [number, number] | null = null; let id = -1;
-    const end = (e: React.PointerEvent) => { if (e.pointerId !== id) return; o = null; id = -1; onMove(0, 0); (e.currentTarget as HTMLElement).classList.remove('active'); };
+    const end = (e: React.PointerEvent) => { const g = st(e.currentTarget); if (e.pointerId !== g.id) return; g.o = null; g.id = -1; onMove(0, 0); (e.currentTarget as HTMLElement).classList.remove('active'); };
     return {
-      onPointerDown: (e: React.PointerEvent) => { e.preventDefault(); try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); } catch { /* puntero sintético */ } o = [e.clientX, e.clientY]; id = e.pointerId; (e.currentTarget as HTMLElement).classList.add('active'); },
-      onPointerMove: (e: React.PointerEvent) => { if (!o || e.pointerId !== id) return; const k = 46; const x = Math.max(-1, Math.min(1, (e.clientX - o[0]) / k)), y = Math.max(-1, Math.min(1, (e.clientY - o[1]) / k)); (e.currentTarget as HTMLElement).style.setProperty('--sx', `${x * 22}px`); (e.currentTarget as HTMLElement).style.setProperty('--sy', `${y * 22}px`); onMove(x, y); },
+      onPointerDown: (e: React.PointerEvent) => { e.preventDefault(); const g = st(e.currentTarget); try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); } catch { /* puntero sintético */ } g.o = [e.clientX, e.clientY]; g.id = e.pointerId; (e.currentTarget as HTMLElement).classList.add('active'); },
+      onPointerMove: (e: React.PointerEvent) => { const g = st(e.currentTarget); if (!g.o || e.pointerId !== g.id) return; const k = 46; const x = Math.max(-1, Math.min(1, (e.clientX - g.o[0]) / k)), y = Math.max(-1, Math.min(1, (e.clientY - g.o[1]) / k)); (e.currentTarget as HTMLElement).style.setProperty('--sx', `${x * 22}px`); (e.currentTarget as HTMLElement).style.setProperty('--sy', `${y * 22}px`); onMove(x, y); },
       onPointerUp: end, onPointerCancel: end, onLostPointerCapture: end,
     };
   };
@@ -483,18 +485,17 @@ function TouchControls({ eng, mode, onMenu }: { eng: Engine; mode: Mode; onMenu:
   });
   // mirar arrastrando en cualquier parte del lado derecho (más natural que una palanca)
   const look = (() => {
-    let last: [number, number] | null = null; let id = -1;
-    const end = (e: React.PointerEvent) => { if (e.pointerId === id) { last = null; id = -1; } };
+    const end = (e: React.PointerEvent) => { const g = st(e.currentTarget); if (e.pointerId === g.id) { g.last = null; g.id = -1; if (fly) { T.yawRight = T.yawLeft = T.pitchUp = T.pitchDown = 0; } } };
     return {
-      onPointerDown: (e: React.PointerEvent) => { try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); } catch { /* */ } last = [e.clientX, e.clientY]; id = e.pointerId; },
+      onPointerDown: (e: React.PointerEvent) => { const g = st(e.currentTarget); try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); } catch { /* */ } g.last = [e.clientX, e.clientY]; g.id = e.pointerId; },
       onPointerMove: (e: React.PointerEvent) => {
-        if (!last || e.pointerId !== id) return;
-        const dx = e.clientX - last[0], dy = e.clientY - last[1]; last = [e.clientX, e.clientY];
+        const g = st(e.currentTarget);
+        if (!g.last || e.pointerId !== g.id) return;
+        const dx = e.clientX - g.last[0], dy = e.clientY - g.last[1]; g.last = [e.clientX, e.clientY];
         if (fly) { T.yawRight = Math.max(0, dx / 8); T.yawLeft = Math.max(0, -dx / 8); T.pitchUp = Math.max(0, dy / 8); T.pitchDown = Math.max(0, -dy / 8); }
         else { eng.input.touchLook.x += dx * 0.0045 * eng.input.sensitivity; eng.input.touchLook.y += dy * 0.0045 * eng.input.sensitivity; }
       },
-      onPointerUp: (e: React.PointerEvent) => { end(e); if (fly) { T.yawRight = T.yawLeft = T.pitchUp = T.pitchDown = 0; } },
-      onPointerCancel: end, onLostPointerCapture: end,
+      onPointerUp: end, onPointerCancel: end, onLostPointerCapture: end,
     };
   })();
   return (

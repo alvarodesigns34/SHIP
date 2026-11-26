@@ -68,7 +68,7 @@ export class Cockpit {
       const sz = mesh.geometry.boundingBox!.getSize(new THREE.Vector3());
       const dims = [sz.x, sz.y, sz.z].sort((a, b) => b - a);
       const aspect = dims[0] / Math.max(1e-3, dims[1]);
-      const baseRes = 640;
+      const baseRes = 768;
       const canvas = document.createElement('canvas');
       canvas.width = baseRes;
       canvas.height = Math.round(baseRes / aspect);

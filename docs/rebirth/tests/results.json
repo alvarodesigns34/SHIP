@@ -1,17 +1,17 @@
 {
- "date": "2026-11-26T03:38:56.499Z",
- "pass": 26,
+ "date": "2026-11-26T04:23:39.689Z",
+ "pass": 24,
  "total": 26,
  "results": [
   {
    "name": "Arranque: exterior listo < 20 s (SwiftShader)",
    "pass": true,
-   "info": "2642 ms"
+   "info": "2842 ms"
   },
   {
    "name": "Arranque: interior listo < 60 s (SwiftShader)",
    "pass": true,
-   "info": "11789 ms"
+   "info": "12155 ms"
   },
   {
    "name": "Interfaz: «Subir a bordo» lleva al modo interior",
@@ -21,7 +21,7 @@
   {
    "name": "Gráficos: interior sin NaN (magenta) ni negro total",
    "pass": true,
-   "info": "{\"mean\":81.93715252778011,\"black\":0.009097222222222222,\"white\":0,\"magenta\":0}"
+   "info": "{\"mean\":81.77132375000208,\"black\":0.009027777777777777,\"white\":0,\"magenta\":0}"
   },
   {
    "name": "Teclado: W desplaza al tripulante (aceleración suave)",
@@ -76,7 +76,7 @@
   {
    "name": "Gráficos: tras 4 ciclos ingeniería↔interior la imagen sigue siendo válida",
    "pass": true,
-   "info": "{\"mean\":74.40088736111191,\"black\":0.0001388888888888889,\"white\":0,\"magenta\":0}"
+   "info": "{\"mean\":74.33148587500041,\"black\":0.0002777777777777778,\"white\":0,\"magenta\":0}"
   },
   {
    "name": "Rendimiento: habitáculos mirando a popa (sin ventanas en vista) ≤ 120 llamadas",
@@ -95,8 +95,8 @@
   },
   {
    "name": "EVA: ciclo de esclusa → salida al exterior → regreso → represurización",
-   "pass": true,
-   "info": "{\"vac\":\"vac\",\"modeOut\":\"EVA\",\"eva\":true,\"modeIn\":\"INTERIOR\",\"pres\":\"pres\"}"
+   "pass": false,
+   "info": "{\"vac\":\"vac\",\"modeOut\":\"INTERIOR\",\"eva\":false,\"modeIn\":\"INTERIOR\",\"pres\":\"pres\"}"
   },
   {
    "name": "Persistencia: modo, posición y sistemas se restauran tras recargar",
@@ -125,8 +125,8 @@
   },
   {
    "name": "Móvil: pointercancel libera el control (sin deriva)",
-   "pass": true,
-   "info": "0.000 m"
+   "pass": false,
+   "info": "1.118 m"
   },
   {
    "name": "Consola: sin errores en móvil",

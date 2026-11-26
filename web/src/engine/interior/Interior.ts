@@ -284,7 +284,8 @@ export class Interior {
     const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
     for (const mesh of meshes) {
       const mats = (Array.isArray(mesh.material) ? mesh.material : [mesh.material]) as THREE.Material[];
-      if (mats.every((m) => m.name === 'R_LED' || m.name === 'R_LightPanel')) continue;
+      // el trasdós queda fuera del revestimiento: no participa en la colisión
+      if (mats.every((m) => m.name === 'R_LED' || m.name === 'R_LightPanel' || m.name === 'R_Backing')) continue;
       const code = this.codeOf(mesh);
       // los mecanismos móviles (interruptores) no bloquean el paso
       if (code && /\.TGL\./.test(code)) continue;

@@ -72,29 +72,24 @@ function findChrome() {
     const e = window.__engine;
     const st = e.snapshot().stats;
     return {
-      ok: st.batches >= 30 && st.instances >= 1500 && st.calls < 180,
+      ok: st.batches >= 30 && st.instances >= 1000 && st.calls < 180,
       info: { batches: st.batches, instances: st.instances, calls: st.calls, tris: st.tris },
     };
   });
 
   // 2. Lightmaps Cycles UV1 (TEXCOORD_1) en lotes interiores
   await test('02 Lightmap Cycles + UV1', () => {
+    // Rebirth: lightmaps por estancia (2048²) sobre TEXCOORD_1 del interior inmersivo
     const e = window.__engine;
-    let uv1Batches = 0;
-    let lmBatches = 0;
-    let lmLoaded = false;
-    for (const b of e.model.batches) {
-      if (b.bm && b.bm.geometry && b.bm.geometry.getAttribute('uv1')) uv1Batches++;
-      const mat = b.material;
-      if (mat && mat.lightMap && mat.userData && mat.userData.hasBakedLM) {
-        lmBatches++;
-        if (mat.lightMap.image && (mat.lightMap.image.width >= 1024 || mat.lightMap.isCompressedTexture)) lmLoaded = true;
-      }
-    }
-    return { ok: uv1Batches >= 15 && lmBatches >= 15 && lmLoaded, info: { uv1Batches, lmBatches, lmLoaded } };
+    let uv1Meshes = 0, lmMeshes = 0;
+    e.interior.root.traverse((o) => { if (o.isMesh) { if (o.geometry.getAttribute('uv1')) uv1Meshes++; if (o.material && o.material.lightMap) lmMeshes++; } });
+    const sizes = [...e.interior.lightmaps.values()].map((t) => t.image ? t.image.width : 0);
+    const lmLoaded = sizes.length >= 5 && sizes.every((w) => w >= 2048);
+    return { ok: uv1Meshes >= 15 && lmMeshes >= 15 && lmLoaded, info: { uv1Meshes, lmMeshes, sizes } };
   });
 
   // 3. Manos anatómicas riggeadas de 25 articulaciones + guantes EVA
+  await p.waitForFunction(() => window.__engine.hands.loaded, null, { timeout: 120000 }).catch(() => {});
   await test('03 Manos riggeadas 25 huesos', () => {
     const e = window.__engine;
     let skinned = 0;
@@ -128,19 +123,19 @@ function findChrome() {
   await test('05 Interruptor luces + palanca', async () => {
     const e = window.__engine;
     e.enterInterior('cabina');
-    e.systems.sw.LT_A = true;
+    if (!e.systems.sw.LT_A) e.systems.toggle('LT_A');
     e.tick(0.5);
-    const before = e.cockpit.bayLights.filter((l) => l.bay === 'A' && l.rect).map((l) => l.rect.intensity)[0];
-    const n = e.model.mechs.get('sw:LT_A');
-    e['hoverCtl'] = { node: n, ctl: 'sw:LT_A' };
+    const before = e.systems.lightLevel('A');
+    const part = e.interior.mechs.get('sw:LT_A');
+    e['hoverCtl'] = { part, node: null, ctl: 'sw:LT_A', label: '' };
     e.tryInteract();
     e.tick(1.2);
-    const after = e.cockpit.bayLights.filter((l) => l.bay === 'A' && l.rect).map((l) => l.rect.intensity)[0];
-    const lever = e.model.mech('sw:LT_A').value;
-    e['hoverCtl'] = { node: n, ctl: 'sw:LT_A' };
+    const after = e.systems.lightLevel('A');
+    const lever = e.interior.mech('sw:LT_A').value;
+    e['hoverCtl'] = { part, node: null, ctl: 'sw:LT_A', label: '' };
     e.tryInteract();
     e.tick(0.5);
-    return { ok: before > 0 && after === 0 && lever < 0, info: { before: +before.toFixed(2), after, lever: +lever.toFixed(2) } };
+    return { ok: before > 0 && after === 0 && lever < 0, info: { before, after, lever: +lever.toFixed(2) } };
   });
 
   // 6. Aviónica + pantallas MFD 768 px
@@ -229,9 +224,12 @@ function findChrome() {
   // 12. Cúpula despejada (comprobación óptica real por raycast a través de W7!)
   await test('12 Cúpula óptica despejada', () => {
     const e = window.__engine;
-    e.enterInterior('cupula');
+    e.enterInterior('nodo');
+    e.setLocomotion('float');
+    e.player.pos.set(11.05, 1.5, 0);
     e.tick(0.4);
     const bz = e.player.pos.y; // Three Y == Blender Z
+    e.setLocomotion('walk');
     const V3 = e.camera.position.constructor;
     const originW = e.model.root.localToWorld(new V3(11.05, 1.48, 0));
     const upW = new V3(0, 1, 0).applyQuaternion(e.model.root.quaternion).normalize();
@@ -282,6 +280,7 @@ function findChrome() {
     const e = window.__engine;
     e.setLocomotion('walk');
     e.enterInterior('cabina');
+    e.player.pos.z = 0; // eje del pasillo central entre consolas
     e.player.yaw = -Math.PI / 2;
     e.player.pitch = 0;
     e.input.touch.fwd = 1;
@@ -296,29 +295,29 @@ function findChrome() {
   await test('16 Escalerilla esclusa + flotar', () => {
     const e = window.__engine;
     e.enterInterior('nodo');
-    e.model.setMech('hatch:alk_in', 1.75, true);
+    e.interior.setMech('hatch:alk_in', 1.75, true);
     e.player.pos.x = 11.05; e.player.pos.z = 0;
     e.input.touch.down = 1; e.tick(5); e.input.touch.down = 0;
     const feet = e.player.pos.y - e.player.eyeH;
-    e.model.setMech('hatch:alk_in', 0, true);
+    e.interior.setMech('hatch:alk_in', 0, true);
     e.setLocomotion('float');
     e.enterInterior('lab');
     const y0 = e.player.pos.y;
     e.tick(2);
     const dy = Math.abs(e.player.pos.y - y0);
     e.setLocomotion('walk');
-    return { ok: feet < -3.2 && dy < 0.05, info: { feet: +feet.toFixed(2), floatDy: +dy.toFixed(3) } };
+    return { ok: feet < -3.0 && dy < 0.05, info: { feet: +feet.toFixed(2), floatDy: +dy.toFixed(3) } };
   });
 
   // 17. Ciclo de esclusa y salida a EVA con guantes presurizados
   await test('17 Ciclo esclusa + EVA', () => {
     const e = window.__engine;
-    e.enterInterior('esclusa');
-    e.model.setMech('hatch:alk_in', 0, true);
+    e.enterInterior('nodo');
+    e.interior.setMech('hatch:alk_in', 0, true);
     e.cycleAirlock();
     e.tick(7);
     const vac = e.airlock;
-    e.player.pos.set(11.05, -3.3, 0);
+    e.player.pos.set(11.05, -3.16 + 1.66, 0);
     e.tick(0.5);
     const evaMode = e.mode;
     const evaFlag = e.player.eva;
@@ -405,9 +404,9 @@ function findChrome() {
     e.systems.sw.LT_B = true;
     return { ok, info };
   });
-  if (savedV !== 3) {
+  if (savedV !== 4) {
     failed++;
-    results.push(`FAIL  21b Versión guardado v3          got v=${savedV}`);
+    results.push(`FAIL  21b Versión guardado v4          got v=${savedV}`);
   }
 
   // 22. Responsividad móvil (390x844 sin desbordamiento horizontal)

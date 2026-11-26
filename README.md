@@ -1,13 +1,16 @@
-# ALCIÓN HX-4 — PROJECT SINGULARITY
-### Vehículo Tripulado Cislunar de Ciencia y Servicio · Simulación Espacial Interactiva
+# ALCIÓN HX-4 — REBIRTH
+### Nave civil conceptual explorable en tiempo real · interior, pilotaje, misiones e ingeniería
 
-> **Aviso de alcance:** ALCIÓN HX-4 es un vehículo espacial **conceptual original** desarrollado por el fabricante ficticio *Varro-Lindqvist Astronautics* para visualización técnica, educación y simulación interactiva. **No** constituye un diseño calificado para vuelo ni planos de fabricación (ver [`docs/INGENIERIA_CONCEPTUAL.md`](docs/INGENIERIA_CONCEPTUAL.md) y [`docs/VALIDACION.md`](docs/VALIDACION.md)).
+> **Aviso de alcance:** ALCIÓN HX-4 es un vehículo espacial **conceptual original** del fabricante ficticio *Varro-Lindqvist Astronautics*, para visualización, educación y simulación recreativa. **No** es un diseño calificado para vuelo ni planos de fabricación.
 
-**Aplicación web publicada en vivo:** https://alvarodesigns34.github.io/SHIP/
+**Aplicación web:** https://alvarodesigns34.github.io/SHIP/ · **Estado de esta versión:** [`docs/REBIRTH_STATE.md`](docs/REBIRTH_STATE.md)
 
-![Render principal ALCIÓN HX-4](renders/hero_final.png)
+Rebirth reconstruye el producto sobre una estrategia distinta: interior inmersivo **cerrado** con iluminación horneada por estancia, **ventanas reales en la cabina**, pipeline de render propio y medible, controlador en primera persona con colisión contra la geometría real, interfaz nueva y pruebas de producto con entradas reales.
 
----
+<p>
+<img src="docs/rebirth/compare/05_cockpit_overview.jpg" width="49%"> <img src="docs/rebirth/compare/09_corridor_aft.jpg" width="49%">
+</p>
+<sub>Izquierda de cada par: Singularity · derecha: Rebirth. Misma cámara, FOV y resolución; renderizado real de la aplicación (no Cycles).</sub>
 
 ## Resumen Técnico (Medido sobre el Modelo Maestro)
 

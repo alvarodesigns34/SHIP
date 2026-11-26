@@ -414,8 +414,9 @@ def build_node(fwd):
     me = boolean_cut(lw.mesh(smooth=35, bevel=0.003), [cutter(0.64, 1.0, (xc, 0, 1.3)), cutter(0.60, 1.2, (xc, 0, -1.2))], "n_lining_cut")
     ob = part("FWD.INT.LIN", "Revestimiento del nodo", me, g, desc="Paneles curvos del nodo con huecos de cúpula y esclusa."); ob["room"] = key
     bk = MB("n_backing")
-    secs = [[Vector((x, (RN + 0.08) * math.cos(2 * PI * k / 64), (RN + 0.08) * math.sin(2 * PI * k / 64))) for k in range(64)] for x in (xa - 0.05, xb + 0.02)]
-    loft(bk, "R_Backing", secs, closed=True, cap=False)
+    # trasdós como sólidos cerrados por sectores: la booleana exacta sobre superficies abiertas dejaba tapas espurias
+    for q in range(8):
+        arc_panel(bk, "R_Backing", RN + 0.07, RN + 0.085, q * PI / 4, (q + 1) * PI / 4, xa - 0.05, xb + 0.02, 6)
     me = boolean_cut(bk.mesh(smooth=None), [cutter(0.64, 1.6, (xc, 0, 1.5)), cutter(0.60, 2.0, (xc, 0, -1.4))], "n_back_cut")
     ob = part("FWD.INT.BCK", "Trasdós del nodo", me, g); ob["room"] = key
     # suelo con hueco de la esclusa: dos mitades con muesca semicircular (sin booleanas, que fallaban en silencio)
