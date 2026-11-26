@@ -36,6 +36,8 @@ export class Flight {
   /** propulsores RCS que disparan en este paso (para efectos visuales) */
   rcsFiring = new THREE.Vector3();
   rotFiring = new THREE.Vector3();
+  /** reloj físico determinista de vuelo en segundos (paso fijo STEP = 1/120 s) */
+  simSeconds = 0;
   private acc = 0;
   input: FlightInput = { t: new THREE.Vector3(), r: new THREE.Vector3(), throttle: 0, brake: false };
 
@@ -46,6 +48,7 @@ export class Flight {
     while (this.acc >= STEP && n < 24) {
       this.copyState(this.prev, this.state);
       this.step(STEP);
+      this.simSeconds += STEP;
       this.acc -= STEP; n++;
     }
     return this.acc / STEP;
@@ -56,7 +59,7 @@ export class Flight {
   private step(h: number) {
     const s = this.state;
     const inp = this.input;
-    if (this.docked) { s.vel.set(0, 0, 0); s.w.set(0, 0, 0); this.rcsActivity = 0; return; }
+    if (this.docked) { s.vel.set(0, 0, 0); s.w.set(0, 0, 0); this.rcsActivity = 0; this.rcsFiring.set(0, 0, 0); this.rotFiring.set(0, 0, 0); return; }
     const k = this.thrustScale;
     // ---- rotación (cuerpo)
     const rotCmd = inp.r.clone();

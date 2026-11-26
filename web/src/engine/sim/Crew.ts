@@ -14,7 +14,9 @@ export const NEED_LABEL: Record<NeedId, string> = {
   hydration: 'Hidratación', nutrition: 'Nutrición', energy: 'Descanso', hygiene: 'Higiene', morale: 'Ánimo',
 };
 
-export type ActivityId = 'drink' | 'eat' | 'sleep' | 'exercise' | 'hygiene' | 'plants' | 'science' | 'sample' | 'read';
+export type ActivityId =
+  | 'drink' | 'eat' | 'sleep' | 'exercise' | 'hygiene'
+  | 'plants' | 'science' | 'sample' | 'read' | 'tablet' | 'photo';
 
 export interface Activity {
   id: ActivityId;
@@ -42,16 +44,51 @@ export const ACTIVITIES: Record<ActivityId, Activity> = {
   plants: { id: 'plants', prompt: 'Cuidar el cultivo (riego y revisión)', doing: 'Regando por mecha capilar y revisando hojas…', dur: 4, minutes: 10, effects: { morale: 7 }, sound: 'water', result: 'Cultivo revisado: crecimiento normal.' },
   science: { id: 'science', prompt: 'Realizar experimento en la guantera', doing: 'Manipulando la muestra a través de los guantes…', dur: 8, minutes: 45, effects: { energy: -5, morale: 3 }, sound: 'wipe', result: 'Experimento completado: 1 muestra lista para congelar.' },
   sample: { id: 'sample', prompt: 'Guardar muestra en el congelador (−80 °C)', doing: 'Abriendo el cajón y registrando la muestra…', dur: 3, minutes: 5, effects: {}, sound: 'zip', result: 'Muestra almacenada a −80 °C.' },
-  read: { id: 'read', prompt: 'Leer el registro y el plan del día', doing: 'Revisando el plan de actividades…', dur: 3, minutes: 10, effects: { morale: 2 }, result: 'Plan del día revisado.' },
+  read: { id: 'read', prompt: 'Leer el registro y el plan del día', doing: 'Revisando el plan de actividades…', dur: 3, minutes: 10, effects: { morale: 2 }, sound: 'wipe', result: 'Plan del día revisado.' },
+  tablet: { id: 'tablet', prompt: 'Consultar la tableta (diario y plan de vuelo)', doing: 'Revisando el diario de a bordo y el plan de vuelo…', dur: 3, minutes: 10, effects: { morale: 3 }, sound: 'wipe', result: 'Diario y plan de vuelo consultados en la tableta.' },
+  photo: { id: 'photo', prompt: 'Fotografía científica desde la cúpula', doing: 'Encuadrando la superficie terrestre y tomando capturas…', dur: 4, minutes: 12, effects: { morale: 6 }, sound: 'zip', result: 'Secuencia de fotografía científica registrada.' },
 };
 
 /** Ritmos de cambio por minuto de misión en vigilia */
 const RATE: Record<NeedId, number> = { hydration: -0.10, nutrition: -0.07, energy: -0.07, hygiene: -0.04, morale: 0 };
 
+/** Segundos iniciales de misión desde lanzamiento (Día 12, 07:30:00 → MET 11+07:30). */
+export const INITIAL_MET_SECONDS = (11 * 24 + 7.5) * 3600;
+
+/** Formatea segundos de misión deterministas como "MET D+HH:MM". */
+export function formatMET(metSeconds: number): string {
+  const totalMin = Math.floor(Math.max(0, metSeconds) / 60);
+  const d = Math.floor(totalMin / 1440);
+  const rem = totalMin % 1440;
+  const hh = String(Math.floor(rem / 60)).padStart(2, '0');
+  const mm = String(rem % 60).padStart(2, '0');
+  return `MET ${d}+${hh}:${mm}`;
+}
+
+/** Formatea la hora UTC a bordo derivada deterministamente del mismo reloj maestro. */
+export function formatUTC(metSeconds: number, withSeconds = false): string {
+  const daySec = Math.floor(Math.max(0, metSeconds)) % 86400;
+  const hh = String(Math.floor(daySec / 3600)).padStart(2, '0');
+  const mm = String(Math.floor((daySec % 3600) / 60)).padStart(2, '0');
+  if (!withSeconds) return `${hh}:${mm} UTC`;
+  const ss = String(daySec % 60).padStart(2, '0');
+  return `${hh}:${mm}:${ss} UTC`;
+}
+
+/**
+ * Lectura compartida del reloj maestro determinista (actualizada sólo desde Crew),
+ * para que las pantallas MFD (NAV, MISSION, ECLSS, SYS) muestren exactamente el mismo reloj.
+ */
+export const MASTER_CLOCK = {
+  metSeconds: INITIAL_MET_SECONDS,
+  metText(): string { return formatMET(this.metSeconds); },
+  utcText(withSeconds = false): string { return formatUTC(this.metSeconds, withSeconds); },
+};
+
 export class Crew {
   needs: Record<NeedId, number> = { hydration: 72, nutrition: 60, energy: 78, hygiene: 70, morale: 75 };
-  /** minutos de misión desde el lanzamiento (día 12, 07:30) */
-  clock = (11 * 24 + 7.5) * 60;
+  /** reloj maestro determinista en segundos de misión (avanzado únicamente por paso fijo dt) */
+  private _metSeconds = INITIAL_MET_SECONDS;
   timeScale = 60;
   samples = 0;
   stored = 0;
@@ -61,10 +98,25 @@ export class Crew {
   log = new Set<ActivityId | 'earth'>();
   private warned = new Set<string>();
 
-  /** avance continuo (dt real) */
+  constructor() {
+    MASTER_CLOCK.metSeconds = this._metSeconds;
+  }
+
+  get metSeconds(): number { return this._metSeconds; }
+  set metSeconds(sec: number) {
+    this._metSeconds = Math.max(0, Number.isFinite(sec) ? sec : INITIAL_MET_SECONDS);
+    MASTER_CLOCK.metSeconds = this._metSeconds;
+  }
+
+  /** minutos de misión desde el lanzamiento (sincronizado con metSeconds) */
+  get clock(): number { return this._metSeconds / 60; }
+  set clock(min: number) { this.metSeconds = min * 60; }
+
+  /** avance continuo determinista (dt de paso fijo 60 Hz, sin Date.now()) */
   step(dt: number, ctx: { inCupolaLookingAtEarth: boolean }, warn: (msg: string) => void) {
-    const min = dt * this.timeScale / 60;
-    this.clock += min;
+    const dSec = dt * this.timeScale;
+    this.metSeconds = this._metSeconds + dSec;
+    const min = dSec / 60;
     if (this.freeExplore) {
       if (ctx.inCupolaLookingAtEarth) this.log.add('earth');
       return;
@@ -103,25 +155,46 @@ export class Crew {
     for (const [k, v] of Object.entries(a.effects) as [NeedId, number][]) {
       this.needs[k] = id === 'sleep' && k === 'energy' ? 100 : clamp(this.needs[k] + v, 0, 100);
     }
-    this.clock += a.minutes;
+    this.metSeconds = this._metSeconds + a.minutes * 60;
     if (id === 'science') this.samples++;
     if (id === 'sample') { this.samples--; this.stored++; }
     if (id === 'sleep') this.log.clear();
     this.log.add(id);
+    if (id === 'tablet') this.log.add('read');
+    if (id === 'read') this.log.add('tablet');
   }
 
-  /** "Día 12 · 07:30" */
+  /** "MET 11+07:30" */
+  metText() { return formatMET(this._metSeconds); }
+
+  /** "07:30 UTC" o "07:30:00 UTC" */
+  utcText(withSeconds = false) { return formatUTC(this._metSeconds, withSeconds); }
+
+  /** "Día 12 · 07:30" (derivado del mismo reloj maestro metSeconds) */
   clockText() {
-    const d = Math.floor(this.clock / 1440) + 1;
-    const m = Math.floor(this.clock % 1440);
+    const totalMin = Math.floor(this._metSeconds / 60);
+    const d = Math.floor(totalMin / 1440) + 1;
+    const m = totalMin % 1440;
     return `Día ${d} · ${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
   }
 
-  serialize() { return { needs: this.needs, clock: this.clock, samples: this.samples, stored: this.stored, log: [...this.log], freeExplore: this.freeExplore }; }
+  serialize() {
+    return {
+      needs: this.needs,
+      clock: this.clock,
+      metSeconds: this._metSeconds,
+      samples: this.samples,
+      stored: this.stored,
+      log: [...this.log],
+      freeExplore: this.freeExplore,
+    };
+  }
   deserialize(o: any) {
     if (!o) return;
     Object.assign(this.needs, o.needs ?? {});
-    this.clock = o.clock ?? this.clock; this.samples = o.samples ?? 0; this.stored = o.stored ?? 0;
+    if (typeof o.metSeconds === 'number') this.metSeconds = o.metSeconds;
+    else if (typeof o.clock === 'number') this.clock = o.clock;
+    this.samples = o.samples ?? 0; this.stored = o.stored ?? 0;
     this.log = new Set(o.log ?? []);
     this.freeExplore = !!o.freeExplore;
   }
