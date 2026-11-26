@@ -414,7 +414,6 @@ def build_node(fwd):
     me = boolean_cut(lw.mesh(smooth=35, bevel=0.003), [cutter(0.64, 1.0, (xc, 0, 1.3)), cutter(0.60, 1.2, (xc, 0, -1.2))], "n_lining_cut")
     ob = part("FWD.INT.LIN", "Revestimiento del nodo", me, g, desc="Paneles curvos del nodo con huecos de cúpula y esclusa."); ob["room"] = key
     bk = MB("n_backing")
-    H.backing_shell(bk, xa - 0.05, xb + 0.02)
     secs = [[Vector((x, (RN + 0.08) * math.cos(2 * PI * k / 64), (RN + 0.08) * math.sin(2 * PI * k / 64))) for k in range(64)] for x in (xa - 0.05, xb + 0.02)]
     loft(bk, "R_Backing", secs, closed=True, cap=False)
     me = boolean_cut(bk.mesh(smooth=None), [cutter(0.64, 1.6, (xc, 0, 1.5)), cutter(0.60, 2.0, (xc, 0, -1.4))], "n_back_cut")
@@ -491,8 +490,9 @@ def build_node(fwd):
     for a in (D(60), D(120)):
         arc_panel(led, "R_LED", RN - 0.01, RN - 0.004, a - D(2), a + D(2), xa + 0.1, xb - 0.1, 2)
     H.P("FWD.INT.LGT", "Luminarias del nodo", led, g, key)
-    lmark("node1", "area", ((xa + xb) / 2, 0.6, 1.0), 90, (1.0, 0.93, 0.85), (1.6, 0.06), (PI - D(35), 0, 0), 'N')
-    lmark("node2", "area", ((xa + xb) / 2, -0.6, 1.0), 90, (1.0, 0.93, 0.85), (1.6, 0.06), (PI + D(35), 0, 0), 'N')
+    lmark("node1", "area", ((xa + xb) / 2, 0.62, 1.0), 70, (1.0, 0.93, 0.85), (1.6, 0.08), (D(-30), 0, 0), 'N')
+    lmark("node2", "area", ((xa + xb) / 2, -0.62, 1.0), 70, (1.0, 0.93, 0.85), (1.6, 0.08), (D(30), 0, 0), 'N')
+    lmark("node3", "area", (10.5, 0.0, 1.12), 30, (1.0, 0.93, 0.85), (0.4, 0.4), (0, 0, 0), 'N')
     lmark("alk", "point", (xc, 0, -2.2), 25, (0.95, 0.97, 1.0), (0.1, 0.1), (0, 0, 0), 'N')
     # la esclusa (interior conservado de Beyond Orbit) pertenece a esta estancia
     for o in bpy.data.objects:

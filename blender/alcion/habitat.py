@@ -158,6 +158,21 @@ def lining_module(mb_wall, mb_dark, mb_frame, mb_led, x0, x1, s, lower=True, upp
         prism(top, "R_Worktop", prof, x0 + g, x1 - g, 'X')
         # canto de aluminio
         prism(mb_frame, "R_Alu", rrect(0.006, 0.03, 0.002, cx=s * (FACE - 0.043), cy=WT - 0.017), x0 + g, x1 - g, 'X')
+    if upper:
+        # pasamanos de microgravedad (grafito con remates bermellón) y rejilla de impulsión de aire
+        a = D(12)
+        c = arc_pt(R_L - 0.075, a, s)
+        L = (x1 - x0) * 0.7
+        xm = (x0 + x1) / 2
+        mb_frame.cyl("R_Frame", 0.014, 0.014, L, 16, center=(xm, c.y, c.z), axis='X')
+        for xe in (xm - L / 2, xm + L / 2):
+            b0 = arc_pt(R_L - 0.005, a, s)
+            mb_frame.beam("R_Frame", (xe, b0.y, b0.z), (xe, c.y, c.z), 0.02, 0.02)
+            mb_frame.cyl("R_Accent", 0.016, 0.016, 0.03, 16, center=(xe + (0.015 if xe < xm else -0.015), c.y, c.z), axis='X')
+        for k in range(7):
+            av = D(58.5)
+            cc = arc_pt(R_L - 0.013, av, s)
+            mb_frame.box("R_Black", 0.012, 0.05, 0.004, center=(xm - 0.15 + k * 0.05, cc.y, cc.z), rot=Matrix.Rotation(mirror_a(av, s) - PI / 2, 4, 'X'))
     if lower:
         # frentes de armario con uñero superior
         n = max(1, round((x1 - x0) / 0.5))
@@ -166,8 +181,9 @@ def lining_module(mb_wall, mb_dark, mb_frame, mb_led, x0, x1, s, lower=True, upp
             xa, xb = x0 + k * w + g, x0 + (k + 1) * w - g
             prof = rrect(0.022, (WT - 0.04) - (FLOOR + TOE + 0.004) - 0.05, 0.004, cx=s * (FACE + 0.011), cy=(WT - 0.04 + FLOOR + TOE) / 2 - 0.025)
             prism(mb_dark, "R_LiningDark", prof, xa, xb, 'X')
-            # uñero (franja grafito profunda)
+            # uñero (franja grafito profunda) y placa de inventario
             prism(mb_frame, "R_Frame", rrect(0.03, 0.03, 0.004, cx=s * (FACE + 0.02), cy=WT - 0.06), xa, xb, 'X')
+            prism(mb_frame, "R_Label", rrect(0.004, 0.035, 0.002, cx=s * (FACE - 0.001), cy=WT - 0.16), xa + 0.05, xa + 0.16, 'X')
         # zócalo retranqueado con luz rasante
         prism(mb_dark, "R_Backing", [(s * (FACE + 0.06), FLOOR), (s * (FACE + 0.07), FLOOR), (s * (FACE + 0.07), FLOOR + TOE + 0.01), (s * (FACE + 0.06), FLOOR + TOE + 0.01)], x0, x1, 'X')
         prism(mb_led, "R_LED", [(s * (FACE + 0.05), FLOOR + TOE - 0.01), (s * (FACE + 0.058), FLOOR + TOE - 0.01), (s * (FACE + 0.058), FLOOR + TOE), (s * (FACE + 0.05), FLOOR + TOE)], x0 + 0.03, x1 - 0.03, 'X')
@@ -401,7 +417,7 @@ def build_cockpit(intg, hab_parent):
             uv = bm.loops.layers.uv.new("UVMap")
             w, hh = 0.278, 0.212
             corners = [(-w / 2, -hh / 2), (w / 2, -hh / 2), (w / 2, hh / 2), (-w / 2, hh / 2)]
-            vv = [bm.verts.new(M @ Vector((-0.0115, -sd * u * 0 + u, v))) for (u, v) in corners]
+            vv = [bm.verts.new(M @ Vector((-0.0115, -u, v))) for (u, v) in corners]
             f = bm.faces.new(vv)
             f.material_index = scr.mi("R_Screen")
             for loop, (u, v) in zip(f.loops, corners):

@@ -315,9 +315,9 @@ export class Engine {
     this.flight.teleport(new THREE.Vector3(0, 0, 0), q);
     this.flight.docked = null;
     const P = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z).applyQuaternion(q);
-    this.station.obj.pos.copy(P(260, 15, -60));
+    this.station.obj.pos.copy(P(2600, 150, -700));
     this.station.obj.group.quaternion.copy(q).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI));
-    this.satellite.obj.pos.copy(P(-120, 40, 160));
+    this.satellite.obj.pos.copy(P(-1400, 400, 1900));
     this.canister.pos.copy(P(40, 22, 18));
     this.canister.group.visible = true;
     this.near.environment = this.lighting.rebuildExteriorEnv(this.renderer, this.earthDirWorld(), this.earthAngularRadius(), this.astro.sunDir, id === 'lunar');
@@ -511,8 +511,11 @@ export class Engine {
       if (!/^HAB\.INT\.[A-D]$|^FWD\.INT$/.test(code)) continue;
       const room = code.endsWith('A') ? 'A' : code.endsWith('B') ? 'B' : code.endsWith('C') ? 'C' : code.endsWith('D') ? 'D' : 'N';
       const off = { A: [1.2, 1.6, 0], B: [0.4, 2.6, 0], C: [-0.4, 3.4, 0], D: [-1.2, 4.2, 0], N: [2.6, 1.0, 0] }[room]!;
-      p.obj.matrix.copy(p.base).premultiply(new THREE.Matrix4().makeTranslation(off[0] * k * 2.2, off[1] * k * 1.6, off[2]));
+      const T = new THREE.Matrix4().makeTranslation(off[0] * k * 2.2, off[1] * k * 1.6, off[2]);
+      p.obj.matrix.copy(p.base).premultiply(T);
       p.obj.matrixWorldNeedsUpdate = true;
+      const mg = this.interior.roomMerged.get(room);
+      if (mg) { mg.matrix.copy(T); mg.matrixWorldNeedsUpdate = true; }
     }
   }
 
@@ -569,7 +572,8 @@ export class Engine {
         // el interior Rebirth también es inspeccionable (pieza con identidad propia)
         if (this.interior.root.visible) {
           this.ray.setFromCamera(this.ndc(e.clientX, e.clientY), this.camera); this.ray.far = 1000;
-          const ih = this.ray.intersectObject(this.interior.root, true).find((h) => !((h.object as THREE.Mesh).material as THREE.Material).transparent);
+          this.ray.layers.enableAll();
+          const ih = this.ray.intersectObject(this.interior.root, true).find((h) => !h.object.userData.mergedRoom && !((h.object as THREE.Mesh).material as THREE.Material).transparent);
           if (ih && (!hit || ih.distance < hit.dist - 0.01)) {
             const part = this.interior.partOf(ih.object);
             if (part) { this.select(null); this.inspect = { label: part.label, desc: `${part.desc} · ${part.code}` }; this.emitSnap(); return; }
@@ -609,7 +613,8 @@ export class Engine {
     if (!this.interiorReady) return null;
     this.ray.setFromCamera(this.ndc(cx, cy), this.camera);
     this.ray.far = 2.3;
-    const hits = this.ray.intersectObject(this.interior.root, true);
+    this.ray.layers.enableAll();
+    const hits = this.ray.intersectObject(this.interior.root, true).filter((h) => !h.object.userData.mergedRoom && !h.object.parent?.userData.mergedRoomGroup);
     for (const h of hits) {
       const mats = (Array.isArray((h.object as THREE.Mesh).material) ? (h.object as THREE.Mesh).material : [(h.object as THREE.Mesh).material]) as THREE.Material[];
       if (mats.every((m) => m.transparent)) continue;
@@ -643,7 +648,8 @@ export class Engine {
     if (k !== 'act' && k !== 'seat') {
       this.ray.setFromCamera(this.ndc(cx, cy), this.camera);
       this.ray.far = 2.3;
-      const hit = this.ray.intersectObject(c.part?.obj ?? this.interior.root, true)[0];
+      this.ray.layers.enableAll();
+      const hit = this.ray.intersectObject(c.part?.obj ?? this.interior.root, true).filter((h) => !h.object.userData.mergedRoom)[0];
       if (hit) this.hands.reach(this.camera.worldToLocal(hit.point.clone()), 0.55);
     }
     switch (k) {

@@ -12,6 +12,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'meshoptimizer';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { makeMaterial, LM_SCALE } from './RMaterials';
 import { b2tv } from '../util';
 
@@ -111,7 +112,7 @@ export class Interior {
   lightmaps = new Map<string, THREE.Texture>();
   voxels = new VoxelGrid();
   loaded = false;
-  stats = { meshes: 0, tris: 0, voxelMs: 0 };
+  stats: { meshes: number; tris: number; voxelMs: number; merged?: number } = { meshes: 0, tris: 0, voxelMs: 0 };
   private probes = new Map<string, THREE.Texture>();
 
   async load(base: string, onProgress?: (p: number) => void) {
@@ -187,7 +188,81 @@ export class Interior {
     const t0 = performance.now();
     this.buildVoxels(meshes);
     this.stats.voxelMs = performance.now() - t0;
+    this.mergeStatic(meshes, roomOf);
     this.loaded = true;
+  }
+
+  /** Grupos de geometría fusionada por estancia (se desplazan juntos en la vista explosionada). */
+  roomMerged = new Map<string, THREE.Group>();
+  /** Capa de las piezas originales: no se dibujan, pero conservan identidad para selección. */
+  static PICK_LAYER = 1;
+
+  /**
+   * Fusión estática: todas las piezas sin control ni mecanismo se agrupan por (estancia, material)
+   * en una sola malla. Reduce las llamadas de dibujo (y las de la pasada de sombras) ~4×.
+   */
+  private mergeStatic(meshes: THREE.Mesh[], roomOf: (o: THREE.Object3D | null) => string | null) {
+    const groups = new Map<string, { room: string; mat: THREE.Material; geos: THREE.BufferGeometry[]; cast: boolean; recv: boolean; order: number }>();
+    const dynamic = (o: THREE.Object3D | null) => { for (; o; o = o.parent) { const u = o.userData as any; if (u?.ctl || u?.mech) return true; } return false; };
+    this.root.updateMatrixWorld(true);
+    const inv = new THREE.Matrix4().copy(this.root.matrixWorld).invert();
+    for (const mesh of meshes) {
+      if (dynamic(mesh)) continue;
+      const room = roomOf(mesh) ?? 'A';
+      const mats = (Array.isArray(mesh.material) ? mesh.material : [mesh.material]) as THREE.Material[];
+      const M = new THREE.Matrix4().multiplyMatrices(inv, mesh.matrixWorld);
+      const src = mesh.geometry;
+      const geoGroups = src.groups.length ? src.groups : [{ start: 0, count: src.index ? src.index.count : src.attributes.position.count, materialIndex: 0 }];
+      for (const gg of geoGroups) {
+        const mat = mats[gg.materialIndex ?? 0];
+        const key = `${room}|${mat.uuid}`;
+        let g = groups.get(key);
+        if (!g) { g = { room, mat, geos: [], cast: mesh.castShadow, recv: mesh.receiveShadow, order: mesh.renderOrder }; groups.set(key, g); }
+        const part = new THREE.BufferGeometry();
+        for (const name of ['position', 'normal', 'uv', 'uv1']) if (src.attributes[name]) part.setAttribute(name, src.attributes[name]);
+        if (src.index) part.setIndex(src.index);
+        let sub = src.index ? part : part;
+        if (geoGroups.length > 1 || src.groups.length) {
+          // extraer sólo el rango del grupo
+          const idx = src.index!;
+          const arr = (idx.array as ArrayLike<number>);
+          const slice = new Uint32Array(gg.count);
+          for (let i = 0; i < gg.count; i++) slice[i] = arr[gg.start + i];
+          sub = part.clone(); sub.setIndex(new THREE.BufferAttribute(slice, 1));
+        }
+        const ni = sub.index ? sub.toNonIndexed() : sub.clone();
+        // atributos homogéneos (uv1 opcional): rellenar si falta
+        if (!ni.attributes.uv1 && mat && (mat as any).lightMap) continue;
+        for (const name of Object.keys(ni.attributes)) {
+          const a = ni.attributes[name] as THREE.BufferAttribute;
+          if ((a as any).normalized || !(a.array instanceof Float32Array)) {
+            const f = new Float32Array(a.count * a.itemSize);
+            for (let i = 0; i < a.count; i++) for (let c = 0; c < a.itemSize; c++) f[i * a.itemSize + c] = a.getComponent(i, c);
+            ni.setAttribute(name, new THREE.BufferAttribute(f, a.itemSize));
+          }
+        }
+        ni.applyMatrix4(M);
+        g.geos.push(ni);
+        g.cast = g.cast || mesh.castShadow;
+      }
+      mesh.layers.set(Interior.PICK_LAYER);
+    }
+    for (const g of groups.values()) {
+      const want = ['position', 'normal', 'uv', ...((g.mat as any).lightMap ? ['uv1'] : [])];
+      const geos = g.geos.map((x) => { for (const n of Object.keys(x.attributes)) if (!want.includes(n)) x.deleteAttribute(n); if (!x.attributes.uv) x.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(x.attributes.position.count * 2), 2)); return x; });
+      const merged = mergeGeometries(geos, false);
+      for (const x of geos) x.dispose();
+      if (!merged) continue;
+      merged.computeBoundingSphere(); merged.computeBoundingBox();
+      const m = new THREE.Mesh(merged, g.mat);
+      m.castShadow = g.cast; m.receiveShadow = g.recv; m.renderOrder = g.order;
+      m.matrixAutoUpdate = false;
+      m.userData.mergedRoom = g.room;
+      let grp = this.roomMerged.get(g.room);
+      if (!grp) { grp = new THREE.Group(); grp.matrixAutoUpdate = false; grp.userData.room = g.room; this.roomMerged.set(g.room, grp); this.root.add(grp); }
+      grp.add(m);
+      this.stats.merged = (this.stats.merged ?? 0) + 1;
+    }
   }
 
   private buildVoxels(meshes: THREE.Mesh[]) {

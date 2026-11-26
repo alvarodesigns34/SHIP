@@ -90,13 +90,25 @@ def ensure_lm_uv(obs):
             me.uv_layers.new(name='LM')
     bm = bmesh.new()
     spans = []
+    SKIP = {'R_Backing', 'R_LED', 'R_LightPanel', 'R_Glass', 'R_Screen'}
     for ob in obs:
         n0 = len(bm.faces)
         tmp = ob.data.copy()
         tmp.transform(ob.matrix_world)
-        bm.from_mesh(tmp)
+        names = [m.name if m else '' for m in ob.data.materials]
+        keep = [p.index for p in tmp.polygons if (names[p.material_index] if p.material_index < len(names) else '') not in SKIP]
+        tb = bmesh.new()
+        tb.from_mesh(tmp)
+        tb.faces.ensure_lookup_table()
+        kept = set(keep)
+        bmesh.ops.delete(tb, geom=[f for f in tb.faces if f.index not in kept], context='FACES_ONLY')
+        t2 = bpy.data.meshes.new('_t2')
+        tb.to_mesh(t2)
+        tb.free()
+        bm.from_mesh(t2)
+        bpy.data.meshes.remove(t2)
         bpy.data.meshes.remove(tmp)
-        spans.append((ob, n0, len(bm.faces)))
+        spans.append((ob, n0, len(bm.faces), keep))
     comb = bpy.data.meshes.new('_lm_comb')
     bm.to_mesh(comb)
     bm.free()
@@ -114,14 +126,18 @@ def ensure_lm_uv(obs):
     # copia por bucles (loops): mismo orden de caras y bucles que el bmesh combinado
     li = 0
     loop_start = [p.loop_start for p in comb.polygons]
-    for ob, f0, f1 in spans:
+    for ob, f0, f1, keep in spans:
         dst = ob.data.uv_layers['LM'].data
-        k = 0
-        for fi in range(f0, f1):
+        for poly in ob.data.polygons:
+            for li in poly.loop_indices:
+                dst[li].uv = (0.0004, 0.0004)
+        fi = f0
+        for pi in keep:
+            poly = ob.data.polygons[pi]
             ls = loop_start[fi]
-            for j in range(comb.polygons[fi].loop_total):
-                dst[k].uv = src[ls + j].uv
-                k += 1
+            for j, li in enumerate(poly.loop_indices):
+                dst[li].uv = src[ls + j].uv
+            fi += 1
         ob.data.uv_layers.active = ob.data.uv_layers['UVMap']
         ob.data.uv_layers['UVMap'].active_render = True
     bpy.data.objects.remove(co)

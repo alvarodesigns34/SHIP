@@ -7,7 +7,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,COM.DSH.REF,"Reflector parabólico de Ø1,6 m",part,M_Dish;M_AlBare;M_CFRP,1.422x1.278x1.278,4960,Reflector de CFRP con nervios traseros; superficie pintada en blanco térmico.
 2,COM.GMB,Cardán de elevación,part,M_AlAnodBlack;M_AlBare,0.3x0.231x0.231,104,Actuador de elevación con codificador absoluto.
 2,COM.MST,Mástil de CFRP,part,M_CFRP;M_Cable,0.137x0.735x0.735,88,Mástil tubular con guía de ondas y mazo de control.
-1,FWD,Módulo Nodo de Proa,group,,3.373x3.97x6.292,,Nodo presurizado de proa con puerto de atraque IDSS activo y cúpula de observación de 7 ventanas. Aloja la estación de trabajo robótica y la estiba de acceso rápido.
+1,FWD,Módulo Nodo de Proa,group,,3.373x3.04x6.292,,Nodo presurizado de proa con puerto de atraque IDSS activo y cúpula de observación de 7 ventanas. Aloja la estación de trabajo robótica y la estiba de acceso rápido.
 2,FWD.ALK,Esclusa EVA (nadir del nodo),group,,2.233x2.11x2.54,,"Esclusa de tripulación de Ø1,72 m y 2,2 m de altura bajo el nodo, con escotilla interior IDSS de 1,0 m y escotilla exterior de 1,0 m. Aloja 2 trajes EVA conceptuales."
 3,FWD.ALK.EXT,Equipos exteriores de la esclusa,group,,2.233x2.11x1.964,,
 4,FWD.ALK.EXT.APFR,Plataforma de sujeción de pies,part,M_AlBare;M_EVAYellow,0.487x0.3x0.347,52,Restricción de pies orientable para trabajos junto a la escotilla.
@@ -73,9 +73,9 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,FWD.EXT.LGA2,Antena de baja ganancia banda S 2,part,M_Teflon;M_AlBare;M_Cable,0.207x0.216x0.133,212,Antena de parche omnidireccional de banda S para enlace de emergencia.
 3,FWD.EXT.NAV1,Baliza de navegación babor (roja),part,M_AlAnodBlack;M_LEDRed,0.08x0.09x0.08,284,Baliza LED de navegación para identificación visual de orientación.
 3,FWD.EXT.NAV2,Baliza de navegación estribor (verde),part,M_AlAnodBlack;M_LEDGreen,0.08x0.09x0.08,284,Baliza LED de navegación para identificación visual de orientación.
-2,FWD.INT,Interior del nodo,group,,2.08x3.97x5.16,,"Nodo de proa: estación de trabajo robótica, acceso a la cúpula de observación, escotilla de atraque y pozo de la esclusa."
+2,FWD.INT,Interior del nodo,group,,2.08x2.6x4.555,,"Nodo de proa: estación de trabajo robótica, acceso a la cúpula de observación, escotilla de atraque y pozo de la esclusa."
 3,FWD.INT.BAG,Estiba de acceso rápido,part,R_Bag,1.604x0.308x0.408,5076,
-3,FWD.INT.BCK,Trasdós del nodo,part,R_Backing;M_AlBare,2.07x3.97x3.97,1108,
+3,FWD.INT.BCK,Trasdós del nodo,part,R_Backing;M_AlBare,2.07x2.6x2.6,592,
 3,FWD.INT.BHD,Mamparos del nodo,part,R_Lining,2.06x2.44x2.44,2384,
 3,FWD.INT.FLR,Suelo del nodo,part,R_Floor;R_LiningDark;M_AlBare,1.2x1.2x1.4,376,Pavimento sobre el pozo de la esclusa.
 3,FWD.INT.HF,Escotilla de atraque (IDSS),part,R_Lining;R_Accent;R_Black;R_Steel,0.095x0.88x0.88,3268,"Escotilla de paso de 0,80 m hacia el vehículo atracado; cerrada sin vehículo."
@@ -162,7 +162,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.A.SCR.C2D1,Pantalla C2D1,part,R_Screen,0.146x0.284x0.202,2,Pantalla multifunción táctil.
 4,HAB.INT.A.SCR.C2D2,Pantalla C2D2,part,R_Screen,0.067x0.279x0.202,2,Pantalla multifunción táctil.
 4,HAB.INT.A.SCR.C2D3,Pantalla C2D3,part,R_Screen,0.15x0.284x0.202,2,Pantalla multifunción táctil.
-4,HAB.INT.A.SHL.FRM,"Nervios, cornisas y perfiles",part,R_Frame;R_Lining;R_Alu;R_Backing,2.475x3.877x3.241,6188,"Nervios grafito, cornisas de luz indirecta, raíles de anclaje."
+4,HAB.INT.A.SHL.FRM,"Nervios, cornisas y perfiles",part,R_Frame;R_Lining;R_Accent;R_Black;R_Alu;R_Backing,2.475x3.877x3.241,11660,"Nervios grafito, cornisas de luz indirecta, raíles de anclaje."
 4,HAB.INT.A.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x1.703x0.245,84,"Tiras LED de cornisa, zócalo y canal cenital."
 4,HAB.INT.A.SHL.LOW,"Zócalos, consolas y suelo de cabina",part,R_Floor;R_Backing;R_LiningDark,2.456x3.97x3.97,2032,"Consolas laterales, zócalos y pavimento de caucho."
 4,HAB.INT.A.SHL.WALL,Revestimiento de la cabina,part,R_Lining;R_Fabric;R_LiningDark,2.05x3.883x3.129,4032,Paneles curvos de PPSU con juntas de 4 mm y compartimentos altos.
@@ -210,7 +210,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.B.SCR1,Pantalla de experimento,part,R_Screen,0.36x0.113x0.189,2,Pantalla.
 4,HAB.INT.B.SCR2,Pantalla de experimento,part,R_Screen,0.36x0.113x0.189,2,Pantalla.
 4,HAB.INT.B.SCR3,Monitor de la guantera,part,R_Screen,0.43x0.127x0.238,2,Pantalla.
-4,HAB.INT.B.SHL.FRM,Nervios y perfiles,part,R_Lining;R_Frame;R_Alu,2.1x3.877x3.241,7896,"Nervios grafito, cornisas, raíles de anclaje."
+4,HAB.INT.B.SHL.FRM,Nervios y perfiles,part,R_Lining;R_Frame;R_Alu;R_Label;R_Accent;R_Black,2.1x3.877x3.242,12920,"Nervios grafito, cornisas, raíles de anclaje."
 4,HAB.INT.B.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x2.676x3.008,132,
 4,HAB.INT.B.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing,2.05x3.97x3.97,2328,Frentes de armario grafito y pavimento de caucho.
 4,HAB.INT.B.SHL.TOP,Encimeras,part,R_Worktop,2.042x3.87x0.034,512,Encimera de compuesto de lino.
@@ -248,7 +248,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.INT.D.H2O,Dispensador de agua,part,R_Lining;R_Black;R_Indicator;R_Accent;R_Steel,0.3x0.352x0.46,680,Dispensador de agua caliente y fría con dosificación en bolsas de bebida.
 4,HAB.INT.D.HYG,Compartimento de higiene,part,R_Lining;R_Frame;R_LiningDark;R_Accent;R_Black,1.0x0.77x3.04,884,"Cabina cerrada con lavado por toallitas, aspiración de residuos y ventilación propia."
 4,HAB.INT.D.OVN,Calentador de alimentos,part,R_Lining;R_Frame;R_Accent;R_Indicator,0.46x0.365x0.34,408,Calentador por conducción para raciones y bolsas termoestabilizadas.
-4,HAB.INT.D.SHL.FRM,Nervios y perfiles,part,R_Frame;R_Lining;R_Alu;R_Backing,2.08x3.877x3.241,7132,"Nervios grafito, cornisas, raíles de anclaje."
+4,HAB.INT.D.SHL.FRM,Nervios y perfiles,part,R_Frame;R_Lining;R_Alu;R_Accent;R_Black;R_Label;R_Backing,2.08x3.877x3.242,14252,"Nervios grafito, cornisas, raíles de anclaje."
 4,HAB.INT.D.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.01x2.19x3.008,108,
 4,HAB.INT.D.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing;R_Floor,2.03x3.97x3.97,2452,Frentes de armario grafito y pavimento de caucho.
 4,HAB.INT.D.SHL.TOP,Encimeras,part,R_Worktop,2.022x0.695x0.034,256,Encimera de compuesto de lino.
