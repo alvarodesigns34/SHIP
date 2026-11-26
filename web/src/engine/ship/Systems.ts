@@ -32,6 +32,14 @@ const LOAD: Partial<Record<SwitchId, number>> = {
 export type AnomalyId = 'cdra_fan' | 'mmod_panel' | 'pump_b';
 export interface Anomaly { id: AnomalyId; label: string; where: string; fixed: boolean; progress: number; }
 export interface Alert { id: string; level: 'info' | 'warn' | 'alarm'; text: string; t: number; }
+export type AlarmSeverity = 'ok' | 'warn' | 'crit';
+export interface SystemAlarm { id: string; severity: 'warn' | 'crit'; code: string; label: string; }
+export interface SystemStatus {
+  severity: AlarmSeverity;
+  code: string;
+  label: string;
+  active: SystemAlarm[];
+}
 
 export class Systems {
   sw: Record<SwitchId, boolean>;
@@ -66,7 +74,7 @@ export class Systems {
   }
 
   bus(b: 'A' | 'B' | 'F') {
-    if (!this.sw.BAT || this.soc <= 0.001 && this.solarKW < 0.1) return false;
+    if (!this.sw.BAT || (this.soc <= 0.001 && this.solarKW < 0.1)) return false;
     if (b === 'A') return this.sw.BUSA;
     if (b === 'B') return this.sw.BUSB;
     return this.sw.FWD && (this.sw.BUSA || this.sw.BUSB);
@@ -88,8 +96,8 @@ export class Systems {
   raise(anom: AnomalyId) {
     if (this.anomalies.some((a) => a.id === anom && !a.fixed)) return;
     const meta: Record<AnomalyId, [string, string]> = {
-      cdra_fan: ['Ventilador de eliminación de CO₂ detenido', 'Bahía D · bastidor cenital (CO₂)'],
-      mmod_panel: ['Impacto MMOD en panel R2-F14: fuga térmica', 'Exterior · anillo 2, faceta 14'],
+      cdra_fan: ['Ventilador de eliminación de CO₂ detenido', 'Bahía D · CDRA (o reiniciar interruptor FANS en consola estribor, Bahía A)'],
+      mmod_panel: ['Impacto MMOD en panel R2-F14: fuga térmica', 'Exterior · anillo 2, faceta 14 (marca ámbar)'],
       pump_b: ['Bomba de amoníaco B con caudal bajo', 'Módulo de servicio · módulo de bombeo'],
     };
     this.anomalies.push({ id: anom, label: meta[anom][0], where: meta[anom][1], fixed: false, progress: 0 });
@@ -115,6 +123,43 @@ export class Systems {
   }
 
   /**
+   * Evaluación unificada de severidad (crit = Master Warning rojo,
+   * warn = Master Caution ámbar, ok = nominal) compartida por todas las pantallas MFD.
+   */
+  status(ctx?: { airlock?: string; dockClosing?: number }): SystemStatus {
+    const active: SystemAlarm[] = [];
+    // --- Master Warning (crit)
+    if (this.co2 > 0.53) active.push({ id: 'co2_crit', severity: 'crit', code: 'CO2', label: `CO₂ CRÍTICO (${this.co2.toFixed(2)} kPa)` });
+    if (this.o2 < 19.5) active.push({ id: 'o2_low', severity: 'crit', code: 'O2', label: `O₂ BAJO (${this.o2.toFixed(1)} kPa)` });
+    if (this.sw.BAT && this.soc < 0.12) active.push({ id: 'bat_crit', severity: 'crit', code: 'BAT', label: `BATERÍA CRÍTICA (${Math.round(this.soc * 100)} %)` });
+    if (this.active('cdra_fan')) active.push({ id: 'cdra_fan', severity: 'crit', code: 'CDRA', label: 'FALLO VENTILADOR CO₂ (CDRA)' });
+    if (this.active('mmod_panel')) active.push({ id: 'mmod_panel', severity: 'crit', code: 'MMOD', label: 'DAÑO MMOD · FUGA TÉRMICA' });
+    if (ctx?.dockClosing !== undefined && ctx.dockClosing > 0.40) {
+      active.push({ id: 'dock_vel', severity: 'crit', code: 'DOCK', label: `VEL. CIERRE EXCESIVA (${ctx.dockClosing.toFixed(2)} m/s)` });
+    }
+    // --- Master Caution (warn)
+    if (this.co2 > 0.45 && this.co2 <= 0.53) active.push({ id: 'co2_warn', severity: 'warn', code: 'CO2', label: `CO₂ EN AUMENTO (${this.co2.toFixed(2)} kPa)` });
+    if (this.sw.BAT && this.soc < 0.20 && this.soc >= 0.12) active.push({ id: 'bat_low', severity: 'warn', code: 'BAT', label: `BATERÍA BAJA (${Math.round(this.soc * 100)} %)` });
+    if (this.sw.BAT && (!this.bus('A') || !this.bus('B'))) {
+      const which = !this.bus('A') && !this.bus('B') ? 'A y B' : !this.bus('A') ? 'A' : 'B';
+      active.push({ id: 'bus_off', severity: 'warn', code: 'BUS', label: `BUS ${which} DESCONECTADO` });
+    }
+    if (this.active('pump_b')) active.push({ id: 'pump_b', severity: 'warn', code: 'THERM', label: 'BOMBA TÉRMICA B CAUDAL BAJO' });
+    if (ctx?.airlock === 'vac' || ctx?.airlock === 'depress') {
+      active.push({ id: 'airlock_vac', severity: 'warn', code: 'ALK', label: ctx.airlock === 'depress' ? 'ESCLUSA DESPRESURIZANDO' : 'ESCLUSA DESPRESURIZADA' });
+    }
+    if (ctx?.dockClosing !== undefined && ctx.dockClosing > 0.25 && ctx.dockClosing <= 0.40) {
+      active.push({ id: 'dock_fast', severity: 'warn', code: 'DOCK', label: `CIERRE ALTO (${ctx.dockClosing.toFixed(2)} m/s)` });
+    }
+    if (this.avionicsTemp > 48) active.push({ id: 'avx_temp', severity: 'warn', code: 'AVX', label: `AVIÓNICA ALTA (${this.avionicsTemp.toFixed(0)} °C)` });
+    if (this.temp < 15) active.push({ id: 'cab_cold', severity: 'warn', code: 'TEMP', label: `CABINA FRÍA (${this.temp.toFixed(1)} °C)` });
+
+    if (active.length === 0) return { severity: 'ok', code: 'NOM', label: 'SISTEMAS NOMINALES', active };
+    const top = active[0];
+    return { severity: top.severity, code: top.code, label: top.label, active };
+  }
+
+  /**
    * sunFactor: iluminación solar sobre las alas (0..1: eclipse y orientación).
    * thrust: 0..1 motores; sep: 0..1 propulsión eléctrica; crewInside: ocupación.
    */
@@ -131,7 +176,11 @@ export class Systems {
     this.loadKW = this.sw.BAT ? load : 0;
     const net = this.solarKW - this.loadKW;
     this.soc = Math.min(1, Math.max(0, this.soc + (net * dt * k / 3600) / this.capacityKWh));
-    if (this.soc < 0.2 && this.sw.BAT) this.alert('soc', 'warn', 'Batería por debajo del 20 %');
+    if (this.soc < 0.12 && this.sw.BAT) this.alert('soc_crit', 'alarm', 'Batería crítica (< 12 %)');
+    else if (this.soc < 0.2 && this.sw.BAT) this.alert('soc', 'warn', 'Batería por debajo del 20 %');
+    if (this.sw.BAT && this.booted && (!this.bus('A') || !this.bus('B'))) {
+      this.alert('bus_off', 'warn', `Bus ${!this.bus('A') ? 'A' : 'B'} desconectado`);
+    }
     // arranque de aviónica
     if (this.on('AVX')) { this.bootT += dt; if (this.bootT > 3.2 && !this.booted) { this.booted = true; this.alert('boot', 'info', 'Aviónica en línea'); } }
     else { this.bootT = 0; this.booted = false; }
