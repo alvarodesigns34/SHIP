@@ -1,17 +1,17 @@
 {
- "date": "2026-11-26T05:18:26.642Z",
+ "date": "2026-11-26T07:00:38.813Z",
  "pass": 26,
  "total": 26,
  "results": [
   {
    "name": "Arranque: exterior listo < 20 s (SwiftShader)",
    "pass": true,
-   "info": "2830 ms"
+   "info": "3147 ms"
   },
   {
    "name": "Arranque: interior listo < 60 s (SwiftShader)",
    "pass": true,
-   "info": "13201 ms"
+   "info": "15399 ms"
   },
   {
    "name": "Interfaz: «Subir a bordo» lleva al modo interior",
@@ -21,7 +21,7 @@
   {
    "name": "Gráficos: interior sin NaN (magenta) ni negro total",
    "pass": true,
-   "info": "{\"mean\":83.54570872222384,\"black\":0.00798611111111111,\"white\":0,\"magenta\":0}"
+   "info": "{\"mean\":90.20763806944969,\"black\":0.005625,\"white\":0,\"magenta\":0}"
   },
   {
    "name": "Teclado: W desplaza al tripulante (aceleración suave)",
@@ -76,12 +76,12 @@
   {
    "name": "Gráficos: tras 4 ciclos ingeniería↔interior la imagen sigue siendo válida",
    "pass": true,
-   "info": "{\"mean\":74.3408832500008,\"black\":0.0004861111111111111,\"white\":0,\"magenta\":0}"
+   "info": "{\"mean\":90.43337334722499,\"black\":0.01951388888888889,\"white\":0.00006944444444444444,\"magenta\":0}"
   },
   {
    "name": "Rendimiento: habitáculos mirando a popa (sin ventanas en vista) ≤ 120 llamadas",
    "pass": true,
-   "info": "{\"calls\":70,\"tris\":155902}"
+   "info": "{\"calls\":68,\"tris\":108972}"
   },
   {
    "name": "Rendimiento: sin mecanismos en movimiento no se reescriben matrices de toda la nave",
@@ -91,7 +91,7 @@
   {
    "name": "Rendimiento: exterior completo ≤ 260 llamadas incluidas sombras",
    "pass": true,
-   "info": "{\"calls\":82,\"tris\":505824}"
+   "info": "{\"calls\":76,\"tris\":500668}"
   },
   {
    "name": "EVA: ciclo de esclusa → salida al exterior → regreso → represurización",
