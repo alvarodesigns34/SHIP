@@ -8,7 +8,7 @@
  * - Asignación automática del lightmap horneado en Cycles (`lm_interior`, canal UV1) a materiales interiores
  */
 import * as THREE from 'three';
-import { roughNoise, solarColor, radiatorRough, grimeMap, paintNormal, photo, getInteriorLightmap } from './texturesLib';
+import { roughNoise, solarColor, solarNormal, radiatorRough, grimeMap, paintNormal, hullPanelNormal, hullPanelRough, photo, getInteriorLightmap } from './texturesLib';
 
 const cache = new Map<string, THREE.Material>();
 const lightmappedMats = new Set<THREE.MeshStandardMaterial>();
@@ -59,19 +59,36 @@ export function enhanceMaterial(src: THREE.Material, useLightmap = false): THREE
     m.roughness = has('M_CrewAtlas') ? 0.30 : 0.56;
     m.metalness = 0.0;
   } else if (has('M_MLI')) {
-    m.normalMap = tile(photo('mli', 'n'), 0.95);
-    m.normalScale = new THREE.Vector2(0.45, 0.45);
-    m.roughnessMap = tile(roughNoise(3), 1.3);
-    m.roughness = n.includes('Black') ? 0.52 : 0.36;
-    m.metalness = n.includes('Black') ? 0.32 : 0.98;
-    m.envMapIntensity = 1.35;
-  } else if (has('M_Shield') || has('M_Accent') || has('M_Graphite') || has('M_Dish') || has('M_Decal')) {
     const p = toPhysical(m);
-    p.normalMap = tile(paintNormal(), 0.65);
-    p.normalScale = new THREE.Vector2(0.16, 0.16);
-    p.roughnessMap = tile(grimeMap(), 3.2);
-    p.clearcoat = 0.08;
-    p.clearcoatRoughness = 0.52;
+    const isBlack = n.includes('Black');
+    const isGold = n.includes('Gold');
+    p.normalMap = tile(photo('mli', 'n'), 0.78);
+    p.normalScale = new THREE.Vector2(isBlack ? 0.58 : 0.78, isBlack ? 0.58 : 0.78);
+    p.roughnessMap = tile(roughNoise(3), 1.05);
+    p.roughness = isBlack ? 0.48 : isGold ? 0.30 : 0.26;
+    p.metalness = isBlack ? 0.38 : 0.98;
+    p.clearcoat = isBlack ? 0.14 : 0.30;
+    p.clearcoatRoughness = 0.26;
+    p.iridescence = isGold ? 0.22 : isBlack ? 0.0 : 0.10;
+    p.iridescenceIOR = 1.45;
+    p.envMapIntensity = 1.48;
+    m = p as unknown as THREE.MeshStandardMaterial;
+  } else if (has('M_Shield')) {
+    const p = toPhysical(m);
+    p.normalMap = tile(hullPanelNormal(), 1.45);
+    p.normalScale = new THREE.Vector2(0.30, 0.30);
+    p.roughnessMap = tile(hullPanelRough(), 1.45);
+    p.roughness = Math.max(m.roughness, 0.56);
+    p.clearcoat = 0.12;
+    p.clearcoatRoughness = 0.44;
+    m = p as unknown as THREE.MeshStandardMaterial;
+  } else if (has('M_Accent') || has('M_Graphite') || has('M_Dish') || has('M_Decal')) {
+    const p = toPhysical(m);
+    p.normalMap = tile(paintNormal(), 0.60);
+    p.normalScale = new THREE.Vector2(0.18, 0.18);
+    p.roughnessMap = tile(hullPanelRough(), 2.2);
+    p.clearcoat = 0.14;
+    p.clearcoatRoughness = 0.38;
     m = p as unknown as THREE.MeshStandardMaterial;
   } else if (has('M_Interior')) {
     m.normalMap = tile(photo('polymer', 'n'), 0.48);
@@ -115,14 +132,15 @@ export function enhanceMaterial(src: THREE.Material, useLightmap = false): THREE
     m = p as unknown as THREE.MeshStandardMaterial;
   } else if (has('M_BetaCloth') || has('M_Fabric') || has('M_Kevlar') || has('M_Nextel')) {
     const p = toPhysical(m);
-    p.normalMap = tile(photo('fabric', 'n'), 0.14);
-    p.normalScale = new THREE.Vector2(0.75, 0.75);
-    p.roughnessMap = tile(photo('fabric', 'r'), 0.14);
-    p.roughness = 0.95;
+    const scale = has('M_BetaCloth') ? 0.18 : 0.14;
+    p.normalMap = tile(photo('fabric', 'n'), scale);
+    p.normalScale = new THREE.Vector2(has('M_BetaCloth') ? 0.85 : 0.75, has('M_BetaCloth') ? 0.85 : 0.75);
+    p.roughnessMap = tile(photo('fabric', 'r'), scale);
+    p.roughness = 0.94;
     p.metalness = 0.0;
-    p.sheen = 0.55;
-    p.sheenRoughness = 0.78;
-    p.sheenColor = has('M_FabricBlue') ? new THREE.Color(0x7c9ec2) : new THREE.Color(0xded9cf);
+    p.sheen = has('M_BetaCloth') ? 0.62 : 0.55;
+    p.sheenRoughness = 0.74;
+    p.sheenColor = has('M_FabricBlue') ? new THREE.Color(0x7c9ec2) : new THREE.Color(0xe2ddd2);
     m = p as unknown as THREE.MeshStandardMaterial;
   } else if (has('M_CFRP') || has('M_COPV')) {
     const p = toPhysical(m);
@@ -137,11 +155,15 @@ export function enhanceMaterial(src: THREE.Material, useLightmap = false): THREE
   } else if (has('M_SolarCell')) {
     const p = toPhysical(m);
     p.map = tile(solarColor(), 0.64);
+    p.normalMap = tile(solarNormal(), 0.64);
+    p.normalScale = new THREE.Vector2(0.34, 0.34);
     p.color.set(0xffffff);
-    p.roughness = 0.28;
-    p.metalness = 0.18;
-    p.clearcoat = 0.90;
-    p.clearcoatRoughness = 0.06;
+    p.roughness = 0.24;
+    p.metalness = 0.22;
+    p.clearcoat = 0.94;
+    p.clearcoatRoughness = 0.05;
+    p.iridescence = 0.26;
+    p.iridescenceIOR = 1.55;
     m = p as unknown as THREE.MeshStandardMaterial;
   } else if (has('M_Radiator')) {
     m.roughnessMap = tile(radiatorRough(), 1.6);

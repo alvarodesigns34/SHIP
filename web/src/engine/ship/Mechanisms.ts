@@ -128,11 +128,14 @@ export class Mechanisms {
       model.setExtra(`${w}.HNG2`, R2);
       model.setExtra(`${w}.PNL.P3`, R2);
     }
-    // --- seguimiento solar (alas giran sobre su eje Y de Blender)
+    // --- seguimiento solar (alas giran sobre su eje Y de Blender, con banda muerta de 0,3° para evitar vibración)
     if (this.sunTracking) {
       const sl = this.sunLocal;
       const ang = Math.atan2(sl.x, sl.y);
-      for (const w of ['wing:1', 'wing:2']) model.setMech(w, ang);
+      for (const w of ['wing:1', 'wing:2']) {
+        const cur = model.mech(w);
+        if (cur && Math.abs(ang - cur.target) > 0.005) model.setMech(w, ang);
+      }
     }
     // --- antena de alta ganancia: descenso de coordenadas sobre acimut/elevación
     if (this.hgaTracking) this.trackHGA();
@@ -153,7 +156,8 @@ export class Mechanisms {
       a = clamp(a + ga * 0.6, az.min, az.max);
       e = clamp(e + ge * 0.6, el.min, el.max);
     }
-    az.target = a; el.target = e;
+    if (Math.abs(a - az.target) > 0.005) az.target = a;
+    if (Math.abs(e - el.target) > 0.005) el.target = e;
   }
 
   /** Error de apuntamiento de la antena (rad) para el enlace de comunicaciones. */

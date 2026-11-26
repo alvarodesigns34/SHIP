@@ -351,7 +351,9 @@ export class ShipModel {
         bm.setMatrixAt(id, it.mesh.matrixWorld);
         if (variant) {
           const h = hash(it.node.code);
-          col.setRGB(0.95 + 0.05 * h, 0.95 + 0.05 * hash(it.node.code + 'g') * 0.9 + 0.05 * h * 0.1, 0.94 + 0.06 * hash(it.node.code + 'b') * 0.8);
+          const warm = hash(it.node.code + 'w') - 0.5;
+          const lum = 0.92 + 0.09 * h;
+          col.setRGB(lum + warm * 0.025, lum + warm * 0.010, lum - warm * 0.022);
         } else col.setRGB(1, 1, 1);
         bm.setColorAt(id, col);
         const inst: Inst = { batch, id, mesh: it.mesh, node: it.node };

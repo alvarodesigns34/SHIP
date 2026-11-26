@@ -94,6 +94,53 @@ export const paintNormal = () => cached('paintN', () => {
   return heightToNormal(fbm(S, [16, 32, 64, 128], 7), S, 1.15);
 });
 
+/** Normales de panel aeroespacial MMOD: micro-grano térmico, ligera ondulación de chapa, juntas de subpanel y remaches discretos. */
+export const hullPanelNormal = () => cached('hullPanelN', () => {
+  const S = 512;
+  const grain = fbm(S, [16, 32, 64, 128], 21);
+  const wave = fbm(S, [4, 8], 43);
+  const h = new Float32Array(S * S);
+  const half = S / 2;
+  for (let y = 0; y < S; y++) {
+    for (let x = 0; x < S; x++) {
+      let v = grain[y * S + x] * 0.24 + wave[y * S + x] * 0.14;
+      const lx = x % half, ly = y % half;
+      const dx = Math.min(lx, half - 1 - lx);
+      const dy = Math.min(ly, half - 1 - ly);
+      const edge = Math.min(dx, dy);
+      // Junta fina biselada entre subpaneles
+      if (edge === 0) v -= 0.42;
+      else if (edge === 1) v -= 0.22;
+      else if (edge === 2) v -= 0.06;
+      // Remaches avellanados muy discretos junto a las juntas (paso 32 px)
+      if ((dx === 7 && (ly % 32) === 16) || (dy === 7 && (lx % 32) === 16)) {
+        v -= 0.14;
+      } else if ((Math.abs(dx - 7) <= 1 && Math.abs((ly % 32) - 16) <= 1) || (Math.abs(dy - 7) <= 1 && Math.abs((lx % 32) - 16) <= 1)) {
+        v -= 0.05;
+      }
+      h[y * S + x] = v;
+    }
+  }
+  return heightToNormal(h, S, 1.85);
+});
+
+/** Rugosidad diferenciada por subpanel MMOD con juntas ligeramente más mates y grano fino limpio. */
+export const hullPanelRough = () => cached('hullPanelR', () => {
+  const S = 512;
+  const f = fbm(S, [4, 8, 24, 64], 59);
+  const half = S / 2;
+  const cellBias = [142, 162, 154, 134];
+  return toTexture(S, (x, y) => {
+    const cx = Math.floor(x / half), cy = Math.floor(y / half);
+    const lx = x % half, ly = y % half;
+    const edge = Math.min(Math.min(lx, half - 1 - lx), Math.min(ly, half - 1 - ly));
+    let v = cellBias[(cy * 2 + cx) & 3] + (f[y * S + x] - 0.5) * 42;
+    if (edge <= 2) v += (3 - edge) * 26;
+    v = Math.max(96, Math.min(238, v));
+    return [v, v, v];
+  });
+});
+
 export const solarColor = () => cached('solarC', () => {
   const S = 512;
   const r = rng(5);
@@ -110,6 +157,25 @@ export const solarColor = () => cached('solarC', () => {
     if (corner) return [38, 40, 48];
     return [9 * k, 18 * k, 48 * k];
   }, true);
+});
+
+/** Normales de la rejilla fotovoltaica (surcos entre células, busbars y esquinas recortadas). */
+export const solarNormal = () => cached('solarN', () => {
+  const S = 512;
+  const h = new Float32Array(S * S);
+  const cw = S / 8, ch = S / 16;
+  const busStep = Math.floor(ch / 3);
+  for (let y = 0; y < S; y++) {
+    for (let x = 0; x < S; x++) {
+      const lx = x % cw, ly = y % ch;
+      let v = 0.5;
+      if (lx < 2 || ly < 2) v = 0.08;
+      else if ((ly % busStep) === 0) v = 0.62;
+      else if ((lx < 6 && ly < 6) || (lx > cw - 6 && ly < 6)) v = 0.32;
+      h[y * S + x] = v;
+    }
+  }
+  return heightToNormal(h, S, 1.5);
 });
 
 export const radiatorRough = () => cached('radR', () => {
