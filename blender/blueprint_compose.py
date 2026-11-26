@@ -139,8 +139,8 @@ def title_block(img, d, title, sheet, subtitle, scale_ppm=None, out_w=None):
     d.text((x0 + 20, y0 + 152), "Proyección ortográfica del modelo maestro · unidades: metros", font=font(20), fill=DIM)
     d.text((x0 + 900, y0 + 14), "LÁMINA", font=font(18, mono=True), fill=DIM)
     d.text((x0 + 900, y0 + 36), sheet, font=font(30, mono=True, bold=True), fill=ACC)
-    d.text((x0 + 900, y0 + 86), "REV  D · REBIRTH", font=font(18, mono=True), fill=INK)
-    d.text((x0 + 900, y0 + 118), "2026-11-25", font=font(20, mono=True), fill=INK)
+    d.text((x0 + 900, y0 + 86), "REV  E · ASCENSION", font=font(18, mono=True), fill=INK)
+    d.text((x0 + 900, y0 + 118), "2026-11-26", font=font(20, mono=True), fill=INK)
     d.text((x0 + 900, y0 + 150), "CONCEPTUAL · NO FABRICACIÓN", font=font(14, mono=True), fill=ACC)
     if scale_ppm:
         # escala gráfica (5 m)
