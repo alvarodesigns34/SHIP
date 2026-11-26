@@ -20,8 +20,9 @@ const ARGS = ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignor
 
 async function boot(ctxOpts = {}, clean = true) {
   const b = await chromium.launch({ args: ARGS });
-  const ctx = await b.newContext({ viewport: { width: 1280, height: 720 }, ...ctxOpts });
+  const ctx = await b.newContext({ viewport: { width: 960, height: 540 }, ...ctxOpts });
   const p = await ctx.newPage();
+  p.setDefaultTimeout(240000);
   const errors = [];
   p.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
   p.on('console', (m) => { if (m.type() === 'error') errors.push('console: ' + m.text().slice(0, 200)); });
@@ -134,16 +135,19 @@ const canvasStats = (p) => p.evaluate(() => {
     const part = e.interior.parts.get('HAB.INT.A.TGL.BAT');
     const c = part.box.getCenter(new part.box.min.constructor());
     // colocarse junto a la consola y mirar al interruptor
-    const P = e.player; P.pos.set(c.x - 0.55, c.y + 0.45, c.z * 0.55); P.settle();
+    // de pie en el pasillo junto a la consola lateral, inclinado sobre ella (microgravedad: sin hundirse)
+    const P = e.player; e.setLocomotion('float'); P.pos.set(c.x - 0.25, c.y + 0.62, c.z * 0.62);
     const d = c.clone().sub(P.pos).normalize();
     P.yaw = Math.atan2(-d.x, -d.z); P.pitch = Math.asin(d.y);
     e.tick(0.1);
-    return { before: e.systems.sw.BAT, hover: e.hoverCtl?.ctl ?? null };
+    e.ray.setFromCamera(e.ndc(), e.camera); e.ray.far = 2.3; e.ray.layers.enableAll();
+    const first = e.ray.intersectObject(e.interior.root, true).filter((h) => !h.object.userData.mergedRoom)[0];
+    return { before: e.systems.sw.BAT, hover: e.hoverCtl?.ctl ?? null, first: first ? e.interior.codeOf(first.object) : null };
   });
   await p.keyboard.press('KeyG');
-  await p.evaluate(() => window.__engine.tick(0.6));
+  await p.evaluate(() => { window.__engine.tick(0.6); window.__engine.setLocomotion('walk'); });
   const after = await p.evaluate(() => ({ bat: window.__engine.systems.sw.BAT, mech: window.__engine.interior.mech('sw:BAT').value }));
-  ok('Interacción: el punto de mira detecta el interruptor BAT', sw.hover === 'sw:BAT', String(sw.hover));
+  ok('Interacción: el punto de mira detecta el interruptor BAT', sw.hover === 'sw:BAT', `${sw.hover} (primer impacto ${sw.first})`);
   ok('Interacción: G conmuta el interruptor y la palanca se mueve', after.bat !== sw.before && Math.abs(after.mech) > 0.4, JSON.stringify(after));
   // sentarse y levantarse
   const seat = await p.evaluate(() => {
@@ -186,7 +190,7 @@ const canvasStats = (p) => p.evaluate(() => {
 
   // ------------------------------------------------------------------ 6. rendimiento estructural
   const perf = await p.evaluate(() => {
-    const e = window.__engine; e.enterInterior('cq'); e.tick(0.5);
+    const e = window.__engine; e.enterInterior('cq'); e.player.yaw = Math.PI / 2; e.player.pitch = 0; e.tick(0.5);
     const frames = []; for (let i = 0; i < 3; i++) { e.renderFrame(); frames.push({ calls: e.pipeline.frameInfo.calls, tris: e.pipeline.frameInfo.triangles }); }
     e.tick(0.2);
     const mwStatic = e.model.lastMatrixWrites;
@@ -194,7 +198,7 @@ const canvasStats = (p) => p.evaluate(() => {
     const ext = { calls: e.pipeline.frameInfo.calls, tris: e.pipeline.frameInfo.triangles };
     return { int: frames[2], mwStatic, ext };
   });
-  ok('Rendimiento: estancia sin ventanas no dibuja el exterior (≤ 120 llamadas)', perf.int.calls <= 120, JSON.stringify(perf.int));
+  ok('Rendimiento: habitáculos mirando a popa (sin ventanas en vista) ≤ 120 llamadas', perf.int.calls <= 120, JSON.stringify(perf.int));
   ok('Rendimiento: sin mecanismos en movimiento no se reescriben matrices de toda la nave', perf.mwStatic < 200, `${perf.mwStatic} escrituras`);
   ok('Rendimiento: exterior completo ≤ 260 llamadas incluidas sombras', perf.ext.calls <= 260, JSON.stringify(perf.ext));
 

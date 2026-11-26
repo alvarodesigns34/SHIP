@@ -41,7 +41,7 @@ export function readSave(): (Partial<SavePayloadV3> & { v: number }) | null {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) return null;
     const o = JSON.parse(raw);
-    if (o && (o.v === 3 || o.v === 2)) return o;
+    if (o && (o.v === 4 || o.v === 3 || o.v === 2)) return o;
     return null;
   } catch {
     return null;

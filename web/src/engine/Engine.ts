@@ -186,6 +186,8 @@ export class Engine {
     new THREE.Sphere(b2t(11.05, 0, 1.75), 0.85),   // cúpula
     new THREE.Sphere(b2t(5.72, 0, -1.7), 0.9),     // ventanas de nadir del laboratorio
   ];
+  /** distancia máxima desde la que cada ventana deja ver el exterior de la nave */
+  private windowReach = [7, 4, 2.6];
   private frustum = new THREE.Frustum();
   private projM = new THREE.Matrix4();
 
@@ -615,6 +617,21 @@ export class Engine {
     this.ray.far = 2.3;
     this.ray.layers.enableAll();
     const hits = this.ray.intersectObject(this.interior.root, true).filter((h) => !h.object.userData.mergedRoom && !h.object.parent?.userData.mergedRoomGroup);
+    // tolerancia de puntería para controles pequeños (palancas, botones): esfera de selección de 4 cm
+    const firstD = hits.find((h) => !((Array.isArray((h.object as THREE.Mesh).material) ? (h.object as THREE.Mesh).material : [(h.object as THREE.Mesh).material]) as THREE.Material[]).every((m) => m.transparent))?.distance ?? 2.3;
+    let best: IPart | null = null, bestD = 0.045;
+    const sph = new THREE.Sphere(), tmp = new THREE.Vector3();
+    for (const p of this.interior.controls) {
+      if (!p.ctl || !p.obj.visible || p.meshes.length === 0) continue;
+      p.box.getBoundingSphere(sph);
+      if (sph.radius > 0.2) continue;
+      sph.applyMatrix4(this.interior.root.matrixWorld);
+      const along = tmp.copy(sph.center).sub(this.ray.ray.origin).dot(this.ray.ray.direction);
+      if (along < 0 || along > firstD + 0.06) continue;
+      const d = this.ray.ray.distanceToPoint(sph.center) - sph.radius;
+      if (d < bestD) { bestD = d; best = p; }
+    }
+    if (best) return { part: best, node: null, ctl: best.ctl!, label: this.ctlLabel(best.ctl!, best.label) };
     for (const h of hits) {
       const mats = (Array.isArray((h.object as THREE.Mesh).material) ? (h.object as THREE.Mesh).material : [(h.object as THREE.Mesh).material]) as THREE.Material[];
       if (mats.every((m) => m.transparent)) continue;
@@ -858,11 +875,10 @@ export class Engine {
       this.player.look(lx + pl.x * dt * 2.4, ly + pl.y * dt * 2.4);
       if (this.seated) { this.player.yaw = clamp(this.player.yaw, -Math.PI / 2 - 1.9, -Math.PI / 2 + 1.9); }
       I.touchLook.x = 0; I.touchLook.y = 0;
-      this.hoverCtl = this.ctlAt();
       if (I.hit('interact') && !this.activity) this.tryInteract();
       if (this.seated && I.hit('exit')) this.standUp();
       if (this.mode === 'INTERIOR' && I.hit('grab')) this.player.crouchToggle = !this.player.crouchToggle;
-    } else this.hoverCtl = null;
+    }
     if (this.mode === 'EVA') {
       const pl = I.padLook();
       const lx = I.locked ? I.mouseDX * 0.0021 : I.touchLook.x;
@@ -1013,6 +1029,7 @@ export class Engine {
     this.updateCamera(dt);
     this.camera.updateMatrixWorld();
     this.updateVisibility();
+    if (this.mode === 'INTERIOR' || this.seated) this.hoverCtl = this.ctlAt(); else this.hoverCtl = null;
     this.updateHands(dt);
     // iluminación
     const indoor = this.mode === 'INTERIOR' || this.seated;
@@ -1057,19 +1074,19 @@ export class Engine {
     const eng = this.mode === 'ENGINEERING';
     const camLocal = this.viewerLocal();
     // interior: siempre en primera persona; desde fuera sólo si la cámara está cerca (se ve por las ventanas)
-    const intOn = this.interiorReady && (firstPerson || eng || camLocal.length() < 40 || this.mode === 'EVA');
+    this.projM.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse);
+    this.frustum.setFromProjectionMatrix(this.projM);
+    const sph = new THREE.Sphere();
+    const winInView = (reachScale: number) => this.windows.some((w, i) => {
+      sph.copy(w).applyMatrix4(this.model.root.matrixWorld);
+      return w.center.distanceTo(camLocal) < this.windowReach[i] * reachScale && this.frustum.intersectsSphere(sph);
+    });
+    // interior: siempre en primera persona y en ingeniería; desde fuera sólo si se ve por una ventana cercana
+    const intOn = this.interiorReady && (firstPerson || eng || this.mode === 'EVA' || (camLocal.length() < 30 && winInView(4)));
     this.interior.root.visible = intOn;
+    if (intOn) this.interior.cullSmall(camLocal, firstPerson ? 4.0 : eng ? 1e9 : 12);
     // exterior desde dentro: sólo si alguna ventana cercana está dentro del campo de visión
-    let extOn = true;
-    if (firstPerson) {
-      this.projM.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse);
-      this.frustum.setFromProjectionMatrix(this.projM);
-      const s = new THREE.Sphere();
-      extOn = this.windows.some((w) => {
-        s.copy(w).applyMatrix4(this.model.root.matrixWorld);
-        return w.center.distanceTo(camLocal) < 7 && this.frustum.intersectsSphere(s);
-      });
-    }
+    const extOn = firstPerson ? winInView(1) : true;
     if (extOn !== this.extVisible) { this.extVisible = extOn; this.model.setShown(extOn); this.renderer.shadowMap.needsUpdate = true; }
     this.model.setInteriorVisibility(false, true);
     this.model.updateVisibility();
@@ -1188,13 +1205,27 @@ export class Engine {
     // cámaras de instrumentos (cada 3 fotogramas) — sin bucle de realimentación: las pantallas se ocultan
     const tc = performance.now();
     this.camFrame = (this.camFrame + 1) % 3;
-    if (this.camFrame === 0 && (this.cockpit.wantsCam || this.cockpit.wantsArmCam)) this.renderScreenCams();
+    if (this.camFrame === 0 && (this.cockpit.wantsCam || this.cockpit.wantsArmCam) && this.liveScreenInView()) this.renderScreenCams();
     this.pipeline.accumulate();
     const camsMs = performance.now() - tc;
     this.pipeline.render({ scene: this.astro.scene, camera: this.astro.camera }, { scene: this.near, camera: this.camera });
     const p = this.statsCache.passes;
     p.shadow = damp(p.shadow, shadowMs, 5, 0.1); p.cams = damp(p.cams, camsMs, 5, 0.1);
     this.camsMs = camsMs;
+  }
+
+  /** ¿Hay alguna pantalla con imagen de cámara cerca y dentro del campo de visión? */
+  private liveScreenInView() {
+    if (!this.interior.root.visible) return false;
+    const sph = new THREE.Sphere();
+    const camW = this.camera.position;
+    return this.cockpit.screens.some((sc) => {
+      const pg = sc.pages[sc.page];
+      if (pg !== 'CAM' && pg !== 'ARMCAM') return false;
+      if (!sc.mesh.geometry.boundingSphere) sc.mesh.geometry.computeBoundingSphere();
+      sph.copy(sc.mesh.geometry.boundingSphere!).applyMatrix4(sc.mesh.matrixWorld);
+      return sph.center.distanceTo(camW) < 4.5 && this.frustum.intersectsSphere(sph);
+    });
   }
 
   private renderScreenCams() {

@@ -192,6 +192,21 @@ export class Interior {
     this.loaded = true;
   }
 
+  private small: IPart[] | null = null;
+  /** Oculta piezas móviles pequeñas (palancas, indicadores) más allá de `dist` metros. */
+  cullSmall(viewer: THREE.Vector3, dist: number) {
+    if (!this.small) {
+      const sz = new THREE.Vector3();
+      this.small = [...this.parts.values()].filter((p) => (p.ctl || p.mech) && p.meshes.length && p.box.getSize(sz).length() < 0.25 && p.obj.layers.test(new THREE.Layers()));
+    }
+    const d2 = dist * dist;
+    for (const p of this.small) {
+      const c = p.box.getCenter(this.tmpV);
+      p.obj.visible = c.distanceToSquared(viewer) < d2;
+    }
+  }
+  private tmpV = new THREE.Vector3();
+
   /** Grupos de geometría fusionada por estancia (se desplazan juntos en la vista explosionada). */
   roomMerged = new Map<string, THREE.Group>();
   /** Capa de las piezas originales: no se dibujan, pero conservan identidad para selección. */
