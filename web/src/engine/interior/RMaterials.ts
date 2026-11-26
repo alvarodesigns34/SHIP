@@ -126,7 +126,7 @@ varying float vShipX;
 
     let frag = fragHeader + sh.fragmentShader;
 
-    // Helper de proyección por caja para sondas de entorno (contrato H2)
+    // Helpers de sonda de entorno en marco local de nave (contrato H2 boxProbe + IBL equilibrado para props dinámicos)
     frag = frag.replace(
       '#include <envmap_physical_pars_fragment>',
       `#include <envmap_physical_pars_fragment>
@@ -150,6 +150,20 @@ varying float vShipX;
           // Las sondas de Interior.captureProbes() se capturan en el marco local de la nave
           vec4 envMapColor = textureCubeUV( envMap, corrLocal, roughness );
           return envMapColor.rgb * envMapIntensity;
+        }
+        vec3 alcGetIBLIrradiance( const in vec3 normal ) {
+          if ( uBoxEnabled < 0.5 ) {
+            return getIBLIrradiance( normal );
+          }
+          vec3 worldN = inverseTransformDirection( normal, viewMatrix );
+          vec3 localN = normalize( mat3( uShipInv ) * worldN );
+          // Muestreo hemisférico + rebote suave opuesto y compresión HDR para piezas dinámicas sin lightmap
+          vec3 directEnv = textureCubeUV( envMap, localN, 1.0 ).rgb;
+          vec3 bounceEnv = textureCubeUV( envMap, -localN, 1.0 ).rgb;
+          vec3 irr = mix( directEnv, bounceEnv, 0.18 );
+          irr = irr / ( 1.0 + irr * 0.30 );
+          irr = max( irr, vec3( 0.035 ) );
+          return PI * irr * envMapIntensity;
         }
       #endif
       `);
@@ -181,20 +195,21 @@ varying float vShipX;
       '#include <lights_fragment_maps>',
       `
       float alcSpecOcc = 1.0;
+      float wD = 1.0 - smoothstep(2.45, 2.85, vShipX);
+      float wC = smoothstep(2.45, 2.85, vShipX) * (1.0 - smoothstep(4.50, 4.90, vShipX));
+      float wB = smoothstep(4.50, 4.90, vShipX) * (1.0 - smoothstep(6.55, 6.95, vShipX));
+      float wA = smoothstep(6.55, 6.95, vShipX) * (1.0 - smoothstep(9.80, 10.05, vShipX));
+      float wN = smoothstep(9.80, 10.05, vShipX);
+      float alcBay = wD * uBayGain[3] + wC * uBayGain[2] + wB * uBayGain[1] + wA * uBayGain[0] + wN * uBayGain[4];
       #if defined( RE_IndirectDiffuse )
         #ifdef USE_LIGHTMAP
           vec4 lightMapTexel = texture2D( lightMap, vLightMapUv );
-          float wD = 1.0 - smoothstep(2.45, 2.85, vShipX);
-          float wC = smoothstep(2.45, 2.85, vShipX) * (1.0 - smoothstep(4.50, 4.90, vShipX));
-          float wB = smoothstep(4.50, 4.90, vShipX) * (1.0 - smoothstep(6.55, 6.95, vShipX));
-          float wA = smoothstep(6.55, 6.95, vShipX) * (1.0 - smoothstep(9.80, 10.05, vShipX));
-          float wN = smoothstep(9.80, 10.05, vShipX);
-          float bay = wD * uBayGain[3] + wC * uBayGain[2] + wB * uBayGain[1] + wA * uBayGain[0] + wN * uBayGain[4];
-          vec3 lightMapIrradiance = lightMapTexel.rgb * lightMapIntensity * mix(0.06, 1.0, bay);
+          vec3 lightMapIrradiance = lightMapTexel.rgb * lightMapIntensity * mix(0.06, 1.0, alcBay);
           irradiance += lightMapIrradiance;
           alcSpecOcc = clamp(dot(lightMapIrradiance, vec3(0.2126, 0.7152, 0.0722)) * 0.9, 0.08, 1.0);
         #elif defined( USE_ENVMAP ) && defined( STANDARD ) && defined( ENVMAP_TYPE_CUBE_UV )
-          iblIrradiance += getIBLIrradiance( geometryNormal );
+          iblIrradiance += alcGetIBLIrradiance( geometryNormal ) * mix(0.08, 1.0, alcBay);
+          alcSpecOcc = mix(0.14, 0.85, alcBay);
         #endif
       #endif
       #if defined( USE_ENVMAP ) && defined( RE_IndirectSpecular )
@@ -214,7 +229,7 @@ varying float vShipX;
 
     sh.fragmentShader = frag;
   };
-  m.customProgramCacheKey = () => `alc-rb2-${m.lightMap ? 'lm' : 'nolm'}-${wearKind}`;
+  m.customProgramCacheKey = () => `alc-rb3-${m.lightMap ? 'lm' : 'nolm'}-${wearKind}`;
 }
 
 /** El lightmap se guarda en WebP sRGB (lineal = L/escala) y se decodifica en hardware (SRGB8). */
