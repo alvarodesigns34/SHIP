@@ -401,7 +401,9 @@ def build_cockpit(intg, hab_parent):
         p0, p1 = Vector((X_CONE1 - 0.002, (HATCH_R + 0.14) * math.cos(a), (HATCH_R + 0.14) * math.sin(a))), Vector((X_CONE1 - 0.002, (R_CONE_L1 - 0.03) * math.cos(a), (R_CONE_L1 - 0.03) * math.sin(a)))
         bh.beam("R_Frame", p0, p1, 0.012, 0.006, up=(1, 0, 0))
     from .habitat_rooms import lmark as _lm
-    _lm("bulk", "area", (9.55, 0.0, 1.05), 28, (1.0, 0.92, 0.84), (0.9, 0.3), (0, D(-55), 0), 'A')
+    for s_ in (1, -1):
+        _lm(f"bulkwash{s_}", "area", (9.45, s_ * 0.55, -0.45), 35, (1.0, 0.92, 0.84), (0.25, 0.25), (0, D(-120), 0), 'A')
+    _lm("bulk", "area", (9.55, 0.0, 1.05), 60, (1.0, 0.92, 0.84), (0.9, 0.3), (0, D(-55), 0), 'A')
     _lm("hatchring", "point", (X_CONE1 - 0.08, 0.0, 0.0), 6, (1.0, 0.92, 0.84), (0.1, 0.1), (0, 0, 0), 'A')
     loft(bh, "R_Frame", secs[1:3], closed=True, cap=False)
     # escalones centrales hacia la escotilla

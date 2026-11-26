@@ -1082,21 +1082,14 @@ export class Engine {
     this.fx.updateLabels(this.mode as any, this.labels, this.model, this.camera, this.renderer.domElement.clientWidth, this.renderer.domElement.clientHeight, (n) => this.select(n, true));
   }
 
-  /** Manos: ancladas a los controladores físicos al pilotar; alcance real al interactuar; ocultas el resto del tiempo. */
+  /** Manos: sólo durante el alcance real a un control (el resto del tiempo, ocultas). */
   private updateHands(dt: number) {
     const fp = this.mode === 'INTERIOR' || this.seated || this.mode === 'EVA';
     this.hands.group.visible = fp;
     if (!fp) return;
     this.hands.setEVA(this.mode === 'EVA');
     this.hands.hideAll();
-    if (this.seated) {
-      const s = Math.sign(this.seatSide);
-      const root = this.model.root;
-      const L = root.localToWorld(b2t(7.80, s * 0.78 + 0.30, -0.24));
-      const R = root.localToWorld(b2t(7.80, s * 0.78 - 0.30, -0.24));
-      this.hands.anchor(0, this.camera.worldToLocal(L.clone()), 0.82);
-      this.hands.anchor(1, this.camera.worldToLocal(R.clone()), 0.9);
-    }
+    // al pilotar no se muestran manos: su pose sobre los controladores no alcanzaba calidad suficiente
     this.hands.update(dt, this.camera, this.reducedMotion);
   }
 
