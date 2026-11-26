@@ -5,6 +5,7 @@
  * Estación «Tesela», Observatorio «Halo-7», Cápsula de muestras y Dianas de entrenamiento.
  */
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { solarColor, paintNormal, photo, roughNoise } from '../ship/texturesLib';
 
 export interface WorldObject {
@@ -16,6 +17,45 @@ export interface WorldObject {
   vel: THREE.Vector3;
   spin: THREE.Vector3;
   radius: number;
+}
+
+/** Fusiona todas las mallas estáticas de un grupo por material para minimizar draw calls en vuelo. */
+function mergeByMaterial(g: THREE.Group): THREE.Group {
+  g.updateMatrixWorld(true);
+  const buckets = new Map<THREE.Material, { geos: THREE.BufferGeometry[]; cast: boolean; recv: boolean }>();
+  const keep: THREE.Object3D[] = [];
+  for (const ch of [...g.children]) {
+    const m = ch as THREE.Mesh;
+    if (!m.isMesh || Array.isArray(m.material) || m.userData?.beacon) { keep.push(ch); continue; }
+    let geo = m.geometry.index ? m.geometry.toNonIndexed() : m.geometry.clone();
+    geo.applyMatrix4(m.matrix);
+    // Normalizar atributos comunes (position, normal, uv) para garantizar fusión limpia
+    for (const k of Object.keys(geo.attributes)) {
+      if (k !== 'position' && k !== 'normal' && k !== 'uv') geo.deleteAttribute(k);
+    }
+    if (!geo.attributes.normal) geo.computeVertexNormals();
+    if (!geo.attributes.uv) geo.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(geo.attributes.position.count * 2), 2));
+    let b = buckets.get(m.material);
+    if (!b) { b = { geos: [], cast: false, recv: false }; buckets.set(m.material, b); }
+    b.geos.push(geo);
+    b.cast = b.cast || m.castShadow;
+    b.recv = b.recv || m.receiveShadow;
+    m.geometry.dispose();
+    g.remove(ch);
+  }
+  for (const [mat, { geos, cast, recv }] of buckets) {
+    const merged = mergeGeometries(geos, false);
+    for (const geo of geos) geo.dispose();
+    if (!merged) continue;
+    merged.computeBoundingBox();
+    merged.computeBoundingSphere();
+    const mesh = new THREE.Mesh(merged, mat);
+    mesh.castShadow = cast;
+    mesh.receiveShadow = recv;
+    g.add(mesh);
+  }
+  for (const k of keep) if (!k.parent) g.add(k);
+  return g;
 }
 
 function tile(t: THREE.Texture, repX: number, repY = repX) {
@@ -155,6 +195,7 @@ export function buildStation(): { obj: WorldObject; dockLocal: THREE.Vector3; do
   const label = new THREE.Mesh(new THREE.PlaneGeometry(4, 1), new THREE.MeshStandardMaterial({ map: lt, roughness: 0.55 }));
   label.position.set(0, 2.12, 0); label.rotation.x = -Math.PI / 2; g.add(label);
 
+  mergeByMaterial(g);
   const obj: WorldObject = { id: 'tesela', label: 'Estación Tesela', group: g, pos: new THREE.Vector3(), vel: new THREE.Vector3(), spin: new THREE.Vector3(), radius: 26 };
   return { obj, dockLocal: new THREE.Vector3(8.55, 0, 0), dockAxis: new THREE.Vector3(1, 0, 0) };
 }
@@ -186,6 +227,7 @@ export function buildSatellite(): { obj: WorldObject; inspect: THREE.Vector3[] }
     const b = new THREE.Mesh(new THREE.SphereGeometry(0.065, 12, 8), mats.green);
     b.position.copy(p); b.userData.beacon = true; g.add(b);
   }
+  mergeByMaterial(g);
   return { obj: { id: 'halo7', label: 'Observatorio Halo-7', group: g, pos: new THREE.Vector3(), vel: new THREE.Vector3(), spin: new THREE.Vector3(0.0, 0.04, 0.01), radius: 5 }, inspect };
 }
 
@@ -200,6 +242,7 @@ export function buildCanister(): WorldObject {
   const pin = cyl(0.032, 0.26, mats.silver, 14); pin.position.y = 0.44; g.add(pin);
   const knob = new THREE.Mesh(new THREE.SphereGeometry(0.062, 14, 10), mats.dark); knob.position.y = 0.58; g.add(knob);
   const led = new THREE.Mesh(new THREE.SphereGeometry(0.042, 10, 6), mats.green); led.position.set(0.22, 0.2, 0); g.add(led);
+  mergeByMaterial(g);
   return { id: 'canister', label: 'Cápsula de muestras', group: g, pos: new THREE.Vector3(), vel: new THREE.Vector3(0.0, 0.0, 0.0), spin: new THREE.Vector3(0.05, 0.1, 0.02), radius: 0.5 };
 }
 
