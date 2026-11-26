@@ -35,6 +35,7 @@ export interface Telemetry {
 interface Screen {
   id: string; mesh: THREE.Mesh; canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D;
   tex: THREE.CanvasTexture; mat: THREE.MeshBasicMaterial; pages: Page[]; page: number; w: number; h: number; lastDraw: number;
+  center: THREE.Vector3;
 }
 
 const C = { bg: '#04080e', panel: '#0a1522', grid: '#142638', cy: '#5ed0ff', am: '#ffb248', gr: '#58eb8c', wh: '#e4ecf4', rd: '#ff5644', dim: '#4b6880' };
@@ -50,6 +51,7 @@ export class Cockpit {
   lights = new THREE.Group();
   floods: THREE.SpotLight[] = [];
   private tmpP = new THREE.Vector3();
+  private lastPowerState = '';
   wantsCam = false;
   wantsArmCam = false;
   model: ShipModel;
@@ -65,7 +67,9 @@ export class Cockpit {
       const key = id;
       if (!PAGES[key] || this.screens.some((x) => x.id === key)) continue;
       mesh.geometry.computeBoundingBox();
-      const sz = mesh.geometry.boundingBox!.getSize(new THREE.Vector3());
+      const bb = mesh.geometry.boundingBox!;
+      const sz = bb.getSize(new THREE.Vector3());
+      const center = bb.getCenter(new THREE.Vector3());
       const dims = [sz.x, sz.y, sz.z].sort((a, b) => b - a);
       const aspect = dims[0] / Math.max(1e-3, dims[1]);
       const baseRes = 768;
@@ -77,10 +81,11 @@ export class Cockpit {
       tex.colorSpace = THREE.SRGBColorSpace;
       tex.anisotropy = 8;
       tex.flipY = false;
-      const mat = new THREE.MeshBasicMaterial({ map: tex, toneMapped: true, color: new THREE.Color(1.3, 1.3, 1.3) });
+      // DoubleSide garantiza visibilidad en quads cuya normal haya quedado invertida al exportar glTF
+      const mat = new THREE.MeshBasicMaterial({ map: tex, toneMapped: true, color: new THREE.Color(1.3, 1.3, 1.3), side: THREE.DoubleSide });
       mesh.material = mat;
       mesh.castShadow = false;
-      this.screens.push({ id: key, mesh, canvas, ctx, tex, mat, pages: PAGES[key], page: 0, w: canvas.width, h: canvas.height, lastDraw: -1 });
+      this.screens.push({ id: key, mesh, canvas, ctx, tex, mat, pages: PAGES[key], page: 0, w: canvas.width, h: canvas.height, lastDraw: -1, center });
     }
     const nodes: { id: SwitchId; node: IPart }[] = [];
     for (const id of SWITCH_ORDER) { const n = interior.mechs.get('sw:' + id); if (n) nodes.push({ id, node: n }); }
@@ -145,22 +150,32 @@ export class Cockpit {
   draw(now: number, sys: Systems, tel: Telemetry, viewerLocal: THREE.Vector3 | null) {
     const on = sys.screensOn();
     const booting = sys.on('AVX') && !sys.booted;
+    const powerState = `${sys.sw.BAT ? 1 : 0}:${on ? 1 : 0}:${booting ? 1 : 0}`;
+    if (powerState !== this.lastPowerState) {
+      this.lastPowerState = powerState;
+      for (const s of this.screens) s.lastDraw = -1;
+    }
     this.wantsCam = false; this.wantsArmCam = false;
-    for (const s of this.screens) {
+    for (let idx = 0; idx < this.screens.length; idx++) {
+      const s = this.screens[idx];
       const pg = s.pages[s.page];
-      const d = viewerLocal ? viewerLocal.distanceTo(this.tmpP.setFromMatrixPosition(s.mesh.matrixWorld)) : 99;
+      const posLocal = this.tmpP.copy(s.center).applyMatrix4(s.mesh.matrix);
+      const d = viewerLocal ? viewerLocal.distanceTo(posLocal) : 99;
       const live = on && (pg === 'CAM' || pg === 'ARMCAM');
       if (live) {
         if (d < 12) { if (pg === 'CAM') this.wantsCam = true; else this.wantsArmCam = true; }
         const rt = pg === 'CAM' ? this.camRT : this.armRT;
         if (s.mat.map !== rt.texture) { s.mat.map = rt.texture; s.mat.needsUpdate = true; }
         s.mat.color.setScalar(1.15);
+        s.lastDraw = now;
         continue;
       }
       if (s.mat.map !== s.tex) { s.mat.map = s.tex; s.mat.needsUpdate = true; }
+      const firstDraw = s.lastDraw < 0;
       const period = d < 4 ? 0.12 : d < 12 ? 0.5 : 2.0;
-      if (now - s.lastDraw < period) continue;
-      s.lastDraw = now;
+      if (!firstDraw && now - s.lastDraw < period) continue;
+      // Tras el primer pintado inmediato, escalonamos ligeramente la fase para repartir carga entre fotogramas
+      s.lastDraw = firstDraw ? now - (idx % 4) * 0.025 : now;
       const g = s.ctx;
       const W = s.w, H = s.h;
       const sc = W / 512;
@@ -186,7 +201,7 @@ export class Cockpit {
         case 'ARM': this.drawARM(g, vW, vH, tel); break;
       }
       // Sutil marco de borde de cristal MFD
-      g.strokeStyle = '#162b40'; g.lineWidth = 2; g.strokeRect(1, 1, vW - 2, vH - 2);
+      g.strokeStyle = '#1b3550'; g.lineWidth = 2; g.strokeRect(1, 1, vW - 2, vH - 2);
       g.restore();
       s.tex.needsUpdate = true;
     }
@@ -221,26 +236,49 @@ export class Cockpit {
 
   private drawPFD(g: CanvasRenderingContext2D, W: number, H: number, t: Telemetry) {
     const e = new THREE.Euler().setFromQuaternion(t.q, 'YXZ');
-    const cx = W / 2, cy = 40 + (H - 40) * 0.43, R = Math.min(W, H) * 0.30;
+    const cx = W / 2, cy = 40 + (H - 40) * 0.42, R = Math.min(W, H) * 0.29;
+    // Cintas laterales compactas de velocidad relativa y altitud orbital
+    g.fillStyle = '#07111c';
+    g.fillRect(12, cy - R, 74, R * 2);
+    g.fillRect(W - 86, cy - R, 74, R * 2);
+    g.strokeStyle = C.grid; g.lineWidth = 1;
+    g.strokeRect(12, cy - R, 74, R * 2);
+    g.strokeRect(W - 86, cy - R, 74, R * 2);
+    this.txt(g, 'VREL', 20, cy - R + 16, C.dim, 11, 600);
+    this.txt(g, `${t.vel.length().toFixed(1)}`, 18, cy + 5, C.gr, 18, 600);
+    this.txt(g, 'm/s', 20, cy + 22, C.dim, 11);
+    this.txt(g, 'ALT', W - 78, cy - R + 16, C.dim, 11, 600);
+    this.txt(g, `${t.altKm.toFixed(0)}`, W - 80, cy + 5, C.cy, 18, 600);
+    this.txt(g, 'km', W - 78, cy + 22, C.dim, 11);
+
     // Horizonte artificial con degradado atmosférico y escala de cabeceo numerada
     g.save(); g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.clip();
     g.translate(cx, cy); g.rotate(-e.z);
     const off = (e.x / (Math.PI / 2)) * R;
     const sky = g.createLinearGradient(0, -R, 0, off);
-    sky.addColorStop(0, '#0a1f3a'); sky.addColorStop(1, '#1d4d82');
+    sky.addColorStop(0, '#07182e'); sky.addColorStop(1, '#1d538c');
     g.fillStyle = sky; g.fillRect(-R * 2, -R * 2 + off, R * 4, R * 2);
     const grd = g.createLinearGradient(0, off, 0, R);
-    grd.addColorStop(0, '#5a3a1e'); grd.addColorStop(1, '#26170b');
+    grd.addColorStop(0, '#5c3b1e'); grd.addColorStop(1, '#221409');
     g.fillStyle = grd; g.fillRect(-R * 2, off, R * 4, R * 2);
     g.strokeStyle = C.wh; g.lineWidth = 2; g.beginPath(); g.moveTo(-R * 2, off); g.lineTo(R * 2, off); g.stroke();
-    g.lineWidth = 1.5;
+    g.lineWidth = 1.4;
+    g.font = '600 10px "IBM Plex Mono", monospace';
+    g.fillStyle = C.wh;
     for (let deg = -30; deg <= 30; deg += 10) {
       if (deg === 0) continue;
       const y = off - (deg / 90) * R;
-      const hw = deg % 20 === 0 ? R * 0.32 : R * 0.18;
+      const hw = deg % 20 === 0 ? R * 0.34 : R * 0.18;
       g.beginPath(); g.moveTo(-hw, y); g.lineTo(hw, y); g.stroke();
+      if (deg % 20 === 0) {
+        g.textAlign = 'right'; g.fillText(`${Math.abs(deg)}`, -hw - 4, y + 3);
+        g.textAlign = 'left'; g.fillText(`${Math.abs(deg)}`, hw + 4, y + 3);
+      }
     }
+    // Puntero de alabeo rotando con el horizonte
+    g.fillStyle = C.cy; g.beginPath(); g.moveTo(0, -R + 3); g.lineTo(-5, -R + 12); g.lineTo(5, -R + 12); g.closePath(); g.fill();
     g.restore();
+
     // Arco graduado de alabeo (bank angle scale)
     g.strokeStyle = C.cy; g.lineWidth = 2; g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.stroke();
     for (const a of [-60, -45, -30, -15, 0, 15, 30, 45, 60]) {
@@ -255,34 +293,47 @@ export class Cockpit {
     g.stroke();
     g.fillStyle = C.am; g.fillRect(cx - 2.5, cy - 2.5, 5, 5);
 
-    const yb = cy + R + 32;
+    const yb = cy + R + 28;
     const v = t.vel.length();
-    this.txt(g, `Vrel ${v.toFixed(2)} m/s`, 16, yb, C.gr, 17, 600);
-    if (t.orbit) this.txt(g, `Vorb ${t.orbit.vOrbKmS.toFixed(2)} km/s`, 16, yb + 24, C.cy, 15);
-    else this.txt(g, `ω  ${(t.w.length() * 57.3).toFixed(2)} °/s`, 16, yb + 24, C.wh, 15);
-    this.txt(g, `EMP ${(t.throttle * 100).toFixed(0)} %`, W / 2 + 12, yb, t.throttle > 0 ? C.am : C.dim, 17, 600);
-    this.txt(g, t.assist ? 'GNC ASISTIDO' : 'GNC MANUAL', W / 2 + 12, yb + 24, t.assist ? C.cy : C.am, 15);
-    this.txt(g, `RCS ${t.rcsArmed ? 'ARM' : 'SAFE'} · MOT ${t.mainArmed ? 'ARM' : 'SAFE'} · ω ${(t.w.length() * 57.3).toFixed(1)}°/s`, 16, yb + 48, t.rcsArmed ? C.gr : C.rd, 13);
+    this.txt(g, `Vrel ${v.toFixed(2)} m/s`, 16, yb, C.gr, 16, 600);
+    if (t.orbit) this.txt(g, `Vorb ${t.orbit.vOrbKmS.toFixed(2)} km/s`, 16, yb + 22, C.cy, 14);
+    else this.txt(g, `ω ${(t.w.length() * 57.3).toFixed(2)} °/s`, 16, yb + 22, C.wh, 14);
+    this.txt(g, `EMP ${(t.throttle * 100).toFixed(0)} %`, W / 2 + 12, yb, t.throttle > 0 ? C.am : C.dim, 16, 600);
+    this.txt(g, t.assist ? 'GNC ASISTIDO' : 'GNC MANUAL', W / 2 + 12, yb + 22, t.assist ? C.cy : C.am, 14);
+    this.txt(g, `RCS ${t.rcsArmed ? 'ARM' : 'SAFE'} · MOT ${t.mainArmed ? 'ARM' : 'SAFE'} · ω ${(t.w.length() * 57.3).toFixed(1)}°/s`, 16, yb + 46, t.rcsArmed ? C.gr : C.rd, 13);
   }
 
   private drawNAV(g: CanvasRenderingContext2D, W: number, H: number, t: Telemetry) {
-    const cx = W / 2, cy = 40 + (H - 40) * 0.44, R = Math.min(W, H - 40) * 0.38;
+    const cx = W / 2, cy = 40 + (H - 40) * 0.43, R = Math.min(W, H - 40) * 0.36;
     g.strokeStyle = C.grid; g.lineWidth = 1;
     for (const r of [0.33, 0.66, 1]) { g.beginPath(); g.arc(cx, cy, R * r, 0, Math.PI * 2); g.stroke(); }
     g.beginPath(); g.moveTo(cx - R, cy); g.lineTo(cx + R, cy); g.moveTo(cx, cy - R); g.lineTo(cx, cy + R); g.stroke();
-    g.fillStyle = C.am; g.beginPath(); g.moveTo(cx, cy - 10); g.lineTo(cx - 7, cy + 8); g.lineTo(cx + 7, cy + 8); g.fill();
+    // Marcas cardinales de rumbo relativo
+    g.fillStyle = C.dim; g.font = '600 10px "IBM Plex Mono", monospace'; g.textAlign = 'center';
+    g.fillText('000°', cx, cy - R - 5);
+    g.fillText('180°', cx, cy + R + 12);
+    g.textAlign = 'left'; g.fillText('090°', cx + R + 5, cy + 3);
+    g.textAlign = 'right'; g.fillText('270°', cx - R - 5, cy + 3);
+    g.textAlign = 'left';
+    // Icono de la nave en el centro
+    g.fillStyle = C.am; g.beginPath(); g.moveTo(cx, cy - 10); g.lineTo(cx - 7, cy + 8); g.lineTo(cx + 7, cy + 8); g.closePath(); g.fill();
     const maxR = Math.max(200, ...t.targets.map((x) => x.range)) * 1.1;
+    this.txt(g, `RNG ${maxR < 1000 ? maxR.toFixed(0) + 'm' : (maxR / 1000).toFixed(1) + 'km'}`, 14, 58, C.dim, 12);
+    this.txt(g, t.eclipse > 0.5 ? 'ECLIPSE' : 'SOLAR', W - 78, 58, t.eclipse > 0.5 ? C.am : C.gr, 12, 600);
     for (const tg of t.targets) {
       const b = tg.bearing;
       const k = Math.min(1, tg.range / maxR) * R;
       const x = cx + b.z * k, y = cy - b.x * k;
-      g.fillStyle = C.gr; g.beginPath(); g.arc(x, y, 5, 0, Math.PI * 2); g.fill();
-      this.txt(g, `${tg.label} ${tg.range < 1000 ? tg.range.toFixed(0) + 'm' : (tg.range / 1000).toFixed(2) + 'km'}`, x + 8, y + 4, C.wh, 12);
+      g.strokeStyle = C.gr; g.lineWidth = 1.5; g.beginPath(); g.arc(x, y, 6, 0, Math.PI * 2); g.stroke();
+      g.fillStyle = C.gr; g.beginPath(); g.arc(x, y, 2.5, 0, Math.PI * 2); g.fill();
+      this.txt(g, `${tg.label} ${tg.range < 1000 ? tg.range.toFixed(0) + 'm' : (tg.range / 1000).toFixed(2) + 'km'}`, x + 9, y + 4, C.wh, 12);
     }
     const o = t.orbit;
-    this.txt(g, `${t.body.toUpperCase()} · ALT ${t.altKm.toFixed(0)} km${o ? ` · INC ${o.inclinationDeg.toFixed(1)}°` : ''}`, 14, H - 38, C.cy, 14, 600);
-    if (o) this.txt(g, `APO ${o.apogeeKm.toFixed(0)} km · PER ${o.perigeeKm.toFixed(0)} km · T ${o.periodMin.toFixed(1)} min`, 14, H - 16, C.wh, 13);
-    else this.txt(g, t.eclipse > 0.5 ? 'EN SOMBRA ORBITAL' : 'ILUMINADO POR SOL', 14, H - 16, t.eclipse > 0.5 ? C.am : C.dim, 13);
+    g.fillStyle = '#07111c'; g.fillRect(10, H - 54, W - 20, 44);
+    g.strokeStyle = C.grid; g.strokeRect(10, H - 54, W - 20, 44);
+    this.txt(g, `${t.body.toUpperCase()} · ALT ${t.altKm.toFixed(0)} km${o ? ` · INC ${o.inclinationDeg.toFixed(1)}°` : ''}`, 18, H - 34, C.cy, 14, 600);
+    if (o) this.txt(g, `APO ${o.apogeeKm.toFixed(0)} km · PER ${o.perigeeKm.toFixed(0)} km · T ${o.periodMin.toFixed(1)} min`, 18, H - 16, C.wh, 13);
+    else this.txt(g, t.eclipse > 0.5 ? 'EN SOMBRA ORBITAL' : 'ILUMINADO POR SOL', 18, H - 16, t.eclipse > 0.5 ? C.am : C.dim, 13);
   }
 
   private drawDOCK(g: CanvasRenderingContext2D, W: number, H: number, t: Telemetry) {
@@ -305,19 +356,43 @@ export class Cockpit {
   }
 
   private drawSYS(g: CanvasRenderingContext2D, W: number, H: number, s: Systems) {
-    let y = 66;
-    this.txt(g, `GENERACIÓN SOLAR   ${s.solarKW.toFixed(1)} kW`, 16, y, C.gr, 15, 600); this.bar(g, 16, y + 8, W - 32, 11, s.solarKW / 48, C.gr); y += 46;
-    this.txt(g, `CARGA DE BUS 120V  ${s.loadKW.toFixed(1)} kW`, 16, y, C.am, 15, 600); this.bar(g, 16, y + 8, W - 32, 11, s.loadKW / 30, C.am); y += 46;
-    this.txt(g, `BATERÍA Li-Ion     ${(s.soc * 100).toFixed(0)} %`, 16, y, s.soc > 0.25 ? C.wh : C.rd, 15, 600); this.bar(g, 16, y + 8, W - 32, 11, s.soc, s.soc > 0.25 ? C.cy : C.rd); y += 46;
+    const netKW = s.solarKW - s.loadKW;
+    const busV = s.sw.BAT ? (118.2 + s.soc * 3.4) : 0;
+    let y = 62;
+    // Resumen superior de barra 120 V y balance neto
+    g.fillStyle = '#07111c'; g.fillRect(16, 46, W - 32, 26);
+    g.strokeStyle = C.grid; g.strokeRect(16, 46, W - 32, 26);
+    this.txt(g, `BUS ${busV.toFixed(1)} V CC`, 24, 64, C.cy, 13, 600);
+    this.txt(g, `NETO ${netKW >= 0 ? '+' : ''}${netKW.toFixed(1)} kW`, W - 160, 64, netKW >= 0 ? C.gr : C.am, 13, 600);
+
+    y = 96;
+    this.txt(g, 'GENERACIÓN SOLAR', 16, y, C.dim, 13, 600);
+    this.txt(g, `${s.solarKW.toFixed(1)} kW`, W - 98, y, C.gr, 16, 600);
+    this.bar(g, 16, y + 7, W - 32, 11, s.solarKW / 48, C.gr); y += 42;
+
+    this.txt(g, 'CARGA DE BUS 120 V', 16, y, C.dim, 13, 600);
+    this.txt(g, `${s.loadKW.toFixed(1)} kW`, W - 98, y, C.am, 16, 600);
+    this.bar(g, 16, y + 7, W - 32, 11, s.loadKW / 30, C.am); y += 42;
+
+    this.txt(g, 'BATERÍA Li-Ion (24 kWh)', 16, y, C.dim, 13, 600);
+    this.txt(g, `${(s.soc * 100).toFixed(0)} %`, W - 76, y, s.soc > 0.25 ? C.wh : C.rd, 16, 600);
+    this.bar(g, 16, y + 7, W - 32, 11, s.soc, s.soc > 0.25 ? C.cy : C.rd); y += 40;
+
     const buses: [string, boolean][] = [['BUS A', s.bus('A')], ['BUS B', s.bus('B')], ['NODO', s.bus('F')]];
     buses.forEach(([l, v], i) => {
       const bx = 16 + i * ((W - 32) / 3), bw = (W - 32) / 3 - 8;
-      g.fillStyle = v ? '#164d2b' : '#4a1510'; g.fillRect(bx, y, bw, 28);
+      g.fillStyle = v ? '#103b22' : '#421410'; g.fillRect(bx, y, bw, 28);
       g.strokeStyle = v ? C.gr : C.rd; g.lineWidth = 1.5; g.strokeRect(bx, y, bw, 28);
-      this.txt(g, `${l} ${v ? 'ON' : 'OFF'}`, bx + 10, y + 19, v ? C.gr : C.rd, 14, 600);
+      g.fillStyle = v ? C.gr : C.rd; g.beginPath(); g.arc(bx + 12, y + 14, 4, 0, Math.PI * 2); g.fill();
+      this.txt(g, `${l} ${v ? 'ON' : 'OFF'}`, bx + 22, y + 19, v ? C.gr : C.rd, 13, 600);
     });
-    y += 54;
-    this.txt(g, `MMH/MON-3 ${s.biprop.toFixed(0)} kg   Xe ${s.xenon.toFixed(0)} kg`, 16, Math.min(H - 16, y), C.dim, 14);
+    y += 46;
+    // Reservas de propulsante con barras compactas
+    const halfW = (W - 44) / 2;
+    this.txt(g, `MMH/MON ${s.biprop.toFixed(0)} kg`, 16, Math.min(H - 22, y), C.wh, 12);
+    this.bar(g, 16, Math.min(H - 15, y + 6), halfW, 7, s.biprop / 2400, C.am);
+    this.txt(g, `XENÓN ${s.xenon.toFixed(0)} kg`, 28 + halfW, Math.min(H - 22, y), C.wh, 12);
+    this.bar(g, 28 + halfW, Math.min(H - 15, y + 6), halfW, 7, s.xenon / 2600, C.cy);
   }
 
   private drawECLSS(g: CanvasRenderingContext2D, W: number, H: number, s: Systems) {
