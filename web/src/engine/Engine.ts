@@ -54,7 +54,7 @@ export const WAYPOINTS: Record<string, { label: string; pos: [number, number, nu
 export interface FrameStats {
   fps: number; ms: number; p50: number; p95: number; p99: number; cpu: number; gpu: number;
   calls: number; tris: number; dpr: number; batches: number; instances: number; matrixWrites: number;
-  passes: { far: number; near: number; bloom: number; final: number; shadow: number; cams: number; sim: number; ui: number };
+  passes: { far: number; near: number; ao: number; autoExp: number; bloom: number; final: number; aa: number; shadow: number; cams: number; sim: number; ui: number };
   mem: { geo: number; tex: number; progs: number };
 }
 
@@ -172,7 +172,7 @@ export class Engine {
   private frameHistN = 0;
   private statsCache: FrameStats = {
     fps: 0, ms: 0, p50: 0, p95: 0, p99: 0, cpu: 0, gpu: -1, calls: 0, tris: 0, dpr: 1, batches: 0, instances: 0, matrixWrites: 0,
-    passes: { far: 0, near: 0, bloom: 0, final: 0, shadow: 0, cams: 0, sim: 0, ui: 0 }, mem: { geo: 0, tex: 0, progs: 0 },
+    passes: { far: 0, near: 0, ao: 0, autoExp: 0, bloom: 0, final: 0, aa: 0, shadow: 0, cams: 0, sim: 0, ui: 0 }, mem: { geo: 0, tex: 0, progs: 0 },
   };
   private fpsAcc = { n: 0, t: performance.now() };
   private cpuMs = 0;
@@ -254,17 +254,32 @@ export class Engine {
   }
 
   // ------------------------------------------------------------------ calidad
+  private probeResolution(q: Quality) {
+    return q === 'ultra' ? 256 : q === 'baja' ? 64 : 128;
+  }
+
   applyQuality(q: Quality) {
     this.quality = q;
     const dpr = window.devicePixelRatio || 1;
     this.dpr = q === 'ultra' ? Math.min(dpr, 2) : q === 'alta' ? Math.min(dpr, 1.5) : q === 'media' ? Math.min(dpr, 1.25) : Math.min(dpr, 1);
-    this.pipeline.configure({ msaa: q === 'ultra' ? 4 : q === 'alta' ? 4 : q === 'media' ? 2 : 0, bloom: q !== 'baja' });
-    this.renderer.shadowMap.enabled = q !== 'baja';
-    const ms = q === 'ultra' ? 4096 : q === 'alta' ? 2048 : 1536;
+    this.pipeline.configure({
+      msaa: q === 'ultra' ? 4 : q === 'alta' ? 4 : q === 'media' ? 2 : 0,
+      bloom: q !== 'baja',
+      autoExposure: q !== 'baja',
+      ao: q === 'ultra' || q === 'alta',
+      fxaa: true,
+    });
+    this.renderer.shadowMap.enabled = true;
+    const ms = q === 'ultra' ? 2048 : q === 'baja' ? 512 : 1024;
     const sh = this.lighting.sunLight.shadow;
     if (sh.mapSize.x !== ms) { sh.mapSize.set(ms, ms); sh.map?.dispose(); (sh as any).map = null; }
     this.renderer.shadowMap.needsUpdate = true;
     this.resize();
+    const probeRes = this.probeResolution(q);
+    if (this.interiorReady && this.interior.probeRes !== probeRes) {
+      this.model.root.updateMatrixWorld(true);
+      this.interior.captureProbes(this.renderer, this.near, this.model.root, probeRes);
+    }
   }
 
   resize = () => {
@@ -296,7 +311,7 @@ export class Engine {
       this.player.grid = this.interior.voxels;
       this.evaBody.buildColliders();
       this.model.root.updateMatrixWorld(true);
-      this.interior.captureProbes(this.renderer, this.near, this.model.root);
+      this.interior.captureProbes(this.renderer, this.near, this.model.root, this.probeResolution(this.quality));
       this.interiorReady = true;
       this.restore();
     } catch (e) {
@@ -331,6 +346,7 @@ export class Engine {
     this.canister.group.visible = true;
     this.near.environment = this.lighting.rebuildExteriorEnv(this.renderer, this.earthDirWorld(), this.earthAngularRadius(), this.astro.sunDir, id === 'lunar');
     this.renderer.shadowMap.needsUpdate = true;
+    this.pipeline.resetExposure();
     if (!initial) this.toast(`Escenario: ${sc.label}`);
   }
 
@@ -446,6 +462,7 @@ export class Engine {
     this.camera.updateProjectionMatrix();
     this.model.setProfile(m === 'ENGINEERING' ? 'engineering' : 'immersive');
     this.renderer.shadowMap.needsUpdate = true;
+    if (prev !== m) this.pipeline.resetExposure();
     this.audio.start();
     this.save();
     this.emitSnap();
@@ -471,6 +488,7 @@ export class Engine {
     this.activity = null;
     if (this.mode !== 'INTERIOR' && !silent) this.setMode('INTERIOR');
     else if (this.mode !== 'INTERIOR') { this.mode = 'INTERIOR'; this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix(); this.model.setProfile('immersive'); }
+    this.pipeline.resetExposure();
   }
 
   flyOrbit(posLocal: THREE.Vector3, tgtLocal: THREE.Vector3, dur = 1200) {
@@ -750,6 +768,7 @@ export class Engine {
     this.model.setProfile('immersive');
     this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix();
     this.player.yaw = -Math.PI / 2; this.player.pitch = -0.12;
+    this.pipeline.resetExposure();
     this.audio.thud(0.3);
     this.save();
     this.emitSnap();
@@ -761,6 +780,7 @@ export class Engine {
     this.player.settle();
     this.mode = 'INTERIOR';
     this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix();
+    this.pipeline.resetExposure();
     this.emitSnap();
   }
 
@@ -827,7 +847,7 @@ export class Engine {
     this.simMs = damp(this.simMs, t1 - t0, 5, dt);
     this.updateScene(dt);
     this.gpu.begin();
-    this.renderFrame();
+    this.renderFrame(dt);
     this.gpu.end();
     if (this.pendingPhoto) { this.pendingPhoto = false; this.capturePhoto(); }
     this.input.endFrame();
@@ -1071,6 +1091,10 @@ export class Engine {
     });
     this.fitShadow(indoor);
     this.pipeline.exposure = this.lighting.exposure;
+    this.pipeline.aoStrength = indoor ? (this.quality === 'ultra' ? 0.24 : 0.20) : (this.quality === 'ultra' ? 0.40 : 0.34);
+    this.pipeline.aoRadius = indoor ? 0.38 : 0.90;
+    this.pipeline.aoFarFade = indoor ? 18.0 : 65.0;
+    if (this.interiorReady && this.interior.root.visible) this.interior.syncProbeRotation(this.interp.q);
     this.cockpit.updateLights(this.systems);
     const viewer = this.viewerLocal();
     if (this.interiorReady && (this.interior.root.visible)) this.cockpit.draw(performance.now() / 1000, this.systems, this.telemetry(), viewer);
@@ -1109,7 +1133,7 @@ export class Engine {
     // interior: siempre en primera persona y en ingeniería; desde fuera sólo si se ve por una ventana cercana
     const intOn = this.interiorReady && (firstPerson || eng || this.mode === 'EVA' || (camLocal.length() < 30 && winInView(4)));
     this.interior.root.visible = intOn;
-    if (intOn) this.interior.cullSmall(camLocal, firstPerson ? 4.0 : eng ? 1e9 : 12);
+    if (intOn) this.interior.cullSmall(camLocal, firstPerson ? 2.6 : eng ? 1e9 : 12);
     // exterior desde dentro: sólo si alguna ventana cercana está dentro del campo de visión
     const extOn = firstPerson ? winInView(1) : true;
     if (extOn !== this.extVisible) { this.extVisible = extOn; this.model.setShown(extOn); this.renderer.shadowMap.needsUpdate = true; }
@@ -1219,43 +1243,52 @@ export class Engine {
     this.camera.lookAt(root.localToWorld(t0.clone().lerp(t1, k)));
   }
 
-  private renderFrame() {
+  private renderFrame(dt = SIM_DT) {
     if (this.section.on) this.clipPlane.copy(this.clipPlaneLocal).applyMatrix4(this.model.root.matrixWorld);
     else { this.clipPlane.normal.set(0, 1, 0); this.clipPlane.constant = 1e9; }
     this.pipeline.debug = this.debug;
     this.pipeline.beginFrame();
     const r = this.renderer;
     // las sombras se regeneran dentro de la pasada cercana sólo si shadowMap.needsUpdate (ver fitShadow)
-    const shadowMs = r.shadowMap.needsUpdate ? 1 : 0;
-    // cámaras de instrumentos (cada 3 fotogramas) — sin bucle de realimentación: las pantallas se ocultan
+    const shadowDue = r.shadowMap.needsUpdate;
+    const shadowMs = shadowDue ? 1 : 0;
+    // cámaras de instrumentos (escalonadas para nunca coincidir con una regeneración de sombras)
     const tc = performance.now();
-    // cámaras de instrumentos alternadas (nariz en un fotograma, brazo en otro; cada una a ~10 Hz)
-    this.camFrame = (this.camFrame + 1) % 6;
-    if ((this.camFrame === 0 || this.camFrame === 3) && (this.cockpit.wantsCam || this.cockpit.wantsArmCam) && this.liveScreenInView()) this.renderScreenCams(this.camFrame === 0 ? 'nose' : 'arm');
+    if (!shadowDue && this.systems.booted) {
+      const period = this.quality === 'baja' ? 12 : this.quality === 'media' ? 8 : 6;
+      const half = period >> 1;
+      this.camFrame = (this.camFrame + 1) % period;
+      const which = this.camFrame === 0 ? 'nose' : this.camFrame === half ? 'arm' : null;
+      if (which && ((which === 'nose' && this.cockpit.wantsCam) || (which === 'arm' && this.cockpit.wantsArmCam)) && this.liveScreenInView(which)) {
+        this.renderScreenCams(which);
+      }
+    }
     this.pipeline.accumulate();
     const camsMs = performance.now() - tc;
-    this.pipeline.render({ scene: this.astro.scene, camera: this.astro.camera }, { scene: this.near, camera: this.camera });
+    this.pipeline.render({ scene: this.astro.scene, camera: this.astro.camera }, { scene: this.near, camera: this.camera }, dt);
     const p = this.statsCache.passes;
     p.shadow = damp(p.shadow, shadowMs, 5, 0.1); p.cams = damp(p.cams, camsMs, 5, 0.1);
     this.camsMs = camsMs;
   }
 
-  /** ¿Hay alguna pantalla con imagen de cámara cerca y dentro del campo de visión? */
-  private liveScreenInView() {
+  /** ¿Hay alguna pantalla con imagen de la cámara `which` cerca y dentro del campo de visión? */
+  private liveScreenInView(which: 'nose' | 'arm') {
     if (!this.interior.root.visible) return false;
+    const targetPg = which === 'nose' ? 'CAM' : 'ARMCAM';
     const sph = new THREE.Sphere();
     const camW = this.camera.position;
     return this.cockpit.screens.some((sc) => {
-      const pg = sc.pages[sc.page];
-      if (pg !== 'CAM' && pg !== 'ARMCAM') return false;
+      if (sc.pages[sc.page] !== targetPg) return false;
       if (!sc.mesh.geometry.boundingSphere) sc.mesh.geometry.computeBoundingSphere();
       sph.copy(sc.mesh.geometry.boundingSphere!).applyMatrix4(sc.mesh.matrixWorld);
-      return sph.center.distanceTo(camW) < 4.5 && this.frustum.intersectsSphere(sph);
+      return sph.center.distanceTo(camW) < 3.6 && this.frustum.intersectsSphere(sph);
     });
   }
 
   private renderScreenCams(which: 'nose' | 'arm') {
     const r = this.renderer;
+    const prevShadowUpdate = r.shadowMap.needsUpdate;
+    r.shadowMap.needsUpdate = false;
     const armTip = this.mech.tip().clone().add(b2t(0.25, 0, 0.18));
     this.cockpit.placeCams(this.model.root, armTip);
     const hidden: THREE.Object3D[] = [];
@@ -1263,7 +1296,10 @@ export class Engine {
     const intVis = this.interior.root.visible;
     this.interior.root.visible = false;
     const extShown = this.extVisible;
-    if (!extShown) this.model.setShown(true);
+    // noseCam está en x=13.3 mirando hacia +X (delante del puerto de atraque 13.23): el casco queda detrás
+    const needOwnShip = which !== 'nose';
+    if (needOwnShip && !extShown) this.model.setShown(true);
+    else if (!needOwnShip && extShown) this.model.setShown(false);
     for (const [cam, rt, want, id] of [[this.cockpit.noseCam, this.cockpit.camRT, this.cockpit.wantsCam, 'nose'], [this.cockpit.armCam, this.cockpit.armRT, this.cockpit.wantsArmCam, 'arm']] as const) {
       if (!want || id !== which) continue;
       const camKm = this.shipKm().add(cam.position.clone().divideScalar(1000));
@@ -1277,7 +1313,8 @@ export class Engine {
     r.setRenderTarget(null);
     for (const o of hidden) o.visible = true;
     this.interior.root.visible = intVis;
-    if (!extShown) this.model.setShown(false);
+    this.model.setShown(extShown);
+    r.shadowMap.needsUpdate = prevShadowUpdate;
     const camKm = this.shipKm().add(this.camera.position.clone().divideScalar(1000));
     this.astro.update(0, camKm, this.camera.getWorldQuaternion(new THREE.Quaternion()), this.camera.fov, this.camera.aspect, 1, this.renderer.getPixelRatio());
   }
@@ -1329,7 +1366,8 @@ export class Engine {
     st.instances = this.model.stats.instances;
     st.matrixWrites = this.model.lastMatrixWrites;
     const t = this.pipeline.timings;
-    st.passes.far = t.far; st.passes.near = t.near; st.passes.bloom = t.bloom; st.passes.final = t.final; st.passes.sim = this.simMs;
+    st.passes.far = t.far; st.passes.near = t.near; st.passes.ao = t.ao; st.passes.autoExp = t.autoExp;
+    st.passes.bloom = t.bloom; st.passes.final = t.final; st.passes.aa = t.aa; st.passes.sim = this.simMs;
     const mem = this.renderer.info.memory;
     st.mem.geo = mem.geometries; st.mem.tex = mem.textures; st.mem.progs = this.renderer.info.programs?.length ?? 0;
     return st;
