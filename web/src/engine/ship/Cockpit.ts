@@ -18,8 +18,8 @@ export const PAGE_LABEL: Record<Page, string> = {
 };
 
 const PAGES: Record<string, Page[]> = {
-  'scr:C1D1': ['PFD', 'NAV', 'DOCK'], 'scr:C1D2': ['SYS', 'ECLSS', 'CHECK'], 'scr:C1D3': ['CAM', 'NAV', 'DOCK'],
-  'scr:C2D1': ['CAM', 'PFD'], 'scr:C2D2': ['CHECK', 'SYS', 'ECLSS'], 'scr:C2D3': ['MISSION', 'NAV', 'PFD'],
+  'scr:C1D1': ['PFD', 'NAV', 'DOCK'], 'scr:C1D2': ['SYS', 'ECLSS', 'CHECK'], 'scr:C1D3': ['NAV', 'CAM', 'DOCK'],
+  'scr:C2D1': ['PFD', 'CAM'], 'scr:C2D2': ['CHECK', 'SYS', 'ECLSS'], 'scr:C2D3': ['MISSION', 'NAV', 'PFD'],
   'scr:AUXP': ['ECLSS', 'SYS'], 'scr:AUXS': ['NAV', 'MISSION'], 'scr:RWS1': ['ARMCAM', 'CAM'], 'scr:RWS2': ['ARM', 'MISSION'],
 };
 

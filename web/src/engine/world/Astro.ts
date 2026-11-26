@@ -134,6 +134,15 @@ void main() {
   vec3 L = normalize(sunDir);
   vec2 cuv = vec2(fract(vUv.x + cloudShift), vUv.y);
   float c = texture2D(cloudMap, cuv).r;
+  // detalle procedural multiescala (la textura de 4K se ve blanda desde órbita baja): rompe contornos y da textura
+  vec2 q = cuv * vec2(2400.0, 1200.0);
+  float n = 0.0, amp = 0.5;
+  for (int i = 0; i < 4; i++) { vec2 ip = floor(q), fp = fract(q); fp = fp * fp * (3.0 - 2.0 * fp);
+    float a = fract(sin(dot(ip, vec2(127.1, 311.7))) * 43758.5453), b = fract(sin(dot(ip + vec2(1.0, 0.0), vec2(127.1, 311.7))) * 43758.5453);
+    float c2 = fract(sin(dot(ip + vec2(0.0, 1.0), vec2(127.1, 311.7))) * 43758.5453), d = fract(sin(dot(ip + vec2(1.0, 1.0), vec2(127.1, 311.7))) * 43758.5453);
+    n += amp * mix(mix(a, b, fp.x), mix(c2, d, fp.x), fp.y); q *= 2.07; amp *= 0.5; }
+  float near = clamp(1.0 - length(vW) / 2500.0, 0.0, 1.0);
+  c = mix(c, smoothstep(0.08, 0.85, c * (0.55 + 0.9 * n)), near * 0.85);
   if (c < 0.015) discard;
 
   // Micro self-shadowing across cloud tops toward the Sun for 3D volumetric puffiness!

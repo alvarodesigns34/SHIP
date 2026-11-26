@@ -318,6 +318,9 @@ export class Engine {
     const right = fwd.clone().cross(upAway).normalize();
     const m = new THREE.Matrix4().makeBasis(fwd, upAway, right);
     const q = new THREE.Quaternion().setFromRotationMatrix(m);
+    // actitud por defecto con el morro 40° hacia la Tierra: el horizonte terrestre llena las ventanas laterales
+    // de la cabina y las de nadir siguen mirando a la superficie (decisión de composición, no de misión)
+    if (id !== 'lunar') q.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), -0.70));
     this.flight.teleport(new THREE.Vector3(0, 0, 0), q);
     this.flight.docked = null;
     const P = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z).applyQuaternion(q);

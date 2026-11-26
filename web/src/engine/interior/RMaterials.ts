@@ -36,7 +36,7 @@ function tex(name: string, srgb: boolean, repeat: number, aniso = 8) {
 type Def = {
   color: number | [number, number, number]; rough: number; metal: number;
   maps?: { c?: string; n?: string; r?: string; rep: number; ns?: number };
-  emissive?: [number, number, number]; kind?: 'std' | 'glass' | 'emit' | 'backing' | 'screen'; doubleSide?: boolean; clearcoat?: number; sheen?: number;
+  emissive?: [number, number, number]; kind?: 'std' | 'glass' | 'emit' | 'backing' | 'screen' | 'decal'; doubleSide?: boolean; clearcoat?: number; sheen?: number;
 };
 
 const lin = (r: number, g: number, b: number): [number, number, number] => [r, g, b];
@@ -65,6 +65,7 @@ export const RDEF: Record<string, Def> = {
   R_Bag: { color: lin(0.48, 0.44, 0.37), rough: 0.9, metal: 0, maps: { c: 'linen_c', n: 'linen_n', rep: 5, ns: 0.6 }, sheen: 0.3 },
   R_Plant: { color: lin(0.06, 0.2, 0.04), rough: 0.55, metal: 0 },
   R_Label: { color: lin(0.5, 0.49, 0.46), rough: 0.5, metal: 0 },
+  R_Decal: { color: lin(1, 1, 1), rough: 0.62, metal: 0, kind: 'decal' },
 };
 
 function patch(m: THREE.MeshStandardMaterial) {
@@ -130,6 +131,16 @@ export function makeMaterial(name: string, lightMap: THREE.Texture | null): THRE
       specularIntensity: 1, ior: 1.46,
     });
     m.name = name;
+    return m;
+  }
+  if (d.kind === 'decal') {
+    const m = new THREE.MeshStandardMaterial({ roughness: d.rough, metalness: 0, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
+    m.name = name;
+    const t = loader.load('textures/labels_atlas.jpg');
+    t.flipY = false; t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+    m.map = t;
+    if (lightMap) { m.lightMap = lightMap; m.lightMapIntensity = Math.PI * LM_SCALE; }
+    patch(m);
     return m;
   }
   const physical = !!(d.clearcoat || d.sheen);
