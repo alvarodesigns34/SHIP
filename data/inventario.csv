@@ -18,14 +18,14 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,FWD.ALK.HO,Escotilla exterior EVA,group,,1.2x1.2x0.135,,
 4,FWD.ALK.HO.DOOR,Escotilla exterior (puerta),part,M_AlLi;M_Rubber;M_EVAYellow;M_AlAnodBlack;M_Glass;M_AlBare;M_Steel;M_Handrail,1.0x1.046x0.135,3628,"Puerta de 1,0 m con mirilla, válvula de ecualización y cierre de 6 pestillos; abre hacia el interior de la esclusa."
 4,FWD.ALK.HO.RNG,Marco de la escotilla exterior,part,M_AlBare;M_Rubber;M_EVAYellow,1.2x1.2x0.095,1136,
-3,FWD.ALK.INT,Interior de la esclusa,group,,1.605x1.711x2.075,,
+3,FWD.ALK.INT,Interior de la esclusa,group,,1.605x1.826x2.075,,
 4,FWD.ALK.INT.HI,Escotilla interior nodo–esclusa,part,M_AlLi;M_Rubber;M_EVAYellow;M_AlAnodBlack;M_Glass;M_AlBare;M_Steel;M_Handrail,1.0x1.046x0.135,3628,"Escotilla de 1,0 m en el suelo del nodo; se abre hacia el nodo."
 4,FWD.ALK.INT.HR,Pasamanos y luminarias interiores,part,M_Handrail;M_LED,1.59x1.042x1.5,136,
 4,FWD.ALK.INT.PNL,Panel de control de despresurización,part,M_InteriorGrey;M_InteriorDark;M_CrewAtlas;M_LEDRed;M_LEDGreen;M_DecalRed,0.066x0.44x0.56,122,"Panel con esquema de procedimiento EVA, manómetro digital, válvulas de despresurización y luz de estado."
 4,FWD.ALK.INT.SUITA,Traje EVA A,part,M_ShieldWhite;M_AlBare;M_InteriorDark;M_ScreenAmber;M_DecalRed;M_Steel;M_BetaCloth;M_GoldPlate;M_AlAnodBlack;M_LED;M_Fabric,0.869x0.946x1.624,10044,Traje EVA conceptual de torso rígido con mochila de soporte vital; representación estilizada.
 4,FWD.ALK.INT.SUITB,Traje EVA B,part,M_ShieldWhite;M_AlBare;M_InteriorDark;M_ScreenAmber;M_DecalRed;M_Steel;M_FabricBlue;M_BetaCloth;M_GoldPlate;M_AlAnodBlack;M_LED;M_Fabric,0.869x0.946x1.624,10044,Traje EVA conceptual de torso rígido con mochila de soporte vital; representación estilizada.
-3,FWD.ALK.MMOD,Manta MMOD y MLI de la esclusa,part,M_BetaCloth;M_Fabric,1.908x1.908x2.468,3480,"Manta Whipple flexible (beta cloth, Nextel, Kevlar) sobre MLI de 20 capas, con costuras de unión."
-3,FWD.ALK.STR,Casco presurizado (unión en silla al nodo),part,M_AlLi,1.72x1.72x2.466,3554,"Cilindro de Al-Li soldado en silla al barril del nodo, con 3 marcos y cúpula inferior."
+3,FWD.ALK.MMOD,Manta MMOD y MLI de la esclusa,part,M_BetaCloth;M_Fabric;M_AlBare,1.908x1.908x2.468,3480,"Manta Whipple flexible (beta cloth, Nextel, Kevlar) sobre MLI de 20 capas, con costuras de unión."
+3,FWD.ALK.STR,Casco presurizado (unión en silla al nodo),part,M_AlLi;M_AlBare,1.72x1.72x2.466,3554,"Cilindro de Al-Li soldado en silla al barril del nodo, con 3 marcos y cúpula inferior."
 2,FWD.CUP,Cúpula de observación,group,,1.933x1.86x1.378,,Cúpula hexagonal de 7 ventanas para observación directa durante operaciones de proximidad y robótica.
 3,FWD.CUP.FRM,Estructura de la cúpula (forja de aluminio),part,M_AlBare;M_Handrail;M_AlAnodBlack;M_Bolt,1.5x1.5x0.717,4128,Forja de aluminio 2219 con seis montantes y anillo superior hueco de ventana cenital.
 3,FWD.CUP.HRL,Pasamanos EVA perimetral de la cúpula,part,M_EVAYellow,1.665x1.665x0.093,936,
@@ -73,48 +73,36 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,FWD.EXT.LGA2,Antena de baja ganancia banda S 2,part,M_Teflon;M_AlBare;M_Cable,0.207x0.216x0.133,212,Antena de parche omnidireccional de banda S para enlace de emergencia.
 3,FWD.EXT.NAV1,Baliza de navegación babor (roja),part,M_AlAnodBlack;M_LEDRed,0.08x0.09x0.08,284,Baliza LED de navegación para identificación visual de orientación.
 3,FWD.EXT.NAV2,Baliza de navegación estribor (verde),part,M_AlAnodBlack;M_LEDGreen,0.08x0.09x0.08,284,Baliza LED de navegación para identificación visual de orientación.
-2,FWD.INT,Interior del nodo,group,,2.232x2.677x2.28,,"Escotillas, estación de trabajo robótica bajo la cúpula y estiba de acceso rápido."
-3,FWD.INT.HA,Escotilla nodo–hábitat,part,M_AlLi;M_Rubber;M_EVAYellow;M_AlAnodBlack;M_Glass;M_AlBare;M_Steel;M_Handrail,0.135x1.166x1.12,3628,"Escotilla de 1,12 m, abierta 100° y retenida contra la pared del nodo durante la operación normal."
-3,FWD.INT.HF,Escotilla de atraque IDSS,part,M_AlLi;M_Rubber;M_EVAYellow;M_AlAnodBlack;M_Glass;M_AlBare;M_Steel;M_Handrail,0.135x0.966x0.92,3628,"Escotilla de 0,92 m con mirilla, válvula de ecualización de presión y mecanismo de cierre de 6 pestillos. Cerrada mientras el puerto está libre."
-3,FWD.INT.LGT,Luminarias del nodo,part,M_LED,1.2x2.097x0.053,24,
-3,FWD.INT.RWS,Estación de trabajo robótica,group,,0.363x1.1x0.776,,"Puesto bajo la cúpula con 2 pantallas, controladores manuales de traslación y rotación y portátil de mando."
-4,FWD.INT.RWS.D1,Pantalla de la estación robótica 1,part,M_Screen_CAMERA,0.0x0.48x0.32,2,"Pantalla de 22"" para vídeo de las cámaras del brazo."
-4,FWD.INT.RWS.D2,Pantalla de la estación robótica 2,part,M_Screen_TRAJ,0.0x0.48x0.32,2,"Pantalla de 22"" para vídeo de las cámaras del brazo."
-4,FWD.INT.RWS.FRM,"Bastidor, reposamanos y controladores manuales",part,M_InteriorDark;M_InteriorGrey;M_Handrail;M_AlAnodBlack;M_AlBare,0.363x1.1x0.776,340,
-3,FWD.INT.STW,Estiba del nodo,group,,2.0x2.677x1.088,,
-4,FWD.INT.STW.BCK,Bastidores de soporte de taquillas,part,M_InteriorDark,2.0x2.677x1.084,48,
-4,FWD.INT.STW.L01,Taquilla del nodo 01,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L02,Taquilla del nodo 02,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L03,Taquilla del nodo 03,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L04,Taquilla del nodo 04,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L05,Taquilla del nodo 05,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L06,Taquilla del nodo 06,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L07,Taquilla del nodo 07,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L08,Taquilla del nodo 08,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.384x0.288,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L09,Taquilla del nodo 09,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L10,Taquilla del nodo 10,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L11,Taquilla del nodo 11,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L12,Taquilla del nodo 12,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L13,Taquilla del nodo 13,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-4,FWD.INT.STW.L14,Taquilla del nodo 14,part,M_InteriorPanel;M_InteriorGrey;M_Steel;M_ShieldWhite;M_Decal,0.388x0.165x0.438,384,"Taquilla de acceso rápido (equipos de emergencia, herramientas, cámaras)."
-2,FWD.MMOD,Protección MMOD y térmica del nodo,group,,2.26x2.872x2.866,,"Mantas MMOD blandas tipo 'stuffed Whipple' (beta cloth + Nextel + Kevlar) sobre MLI. Se eligen mantas flexibles en el nodo por su geometría compleja (cúpula, atraque)."
-3,FWD.MMOD.BLK1,"Manta MMOD del nodo, cuadrante 1",part,M_BetaCloth,2.26x1.416x1.416,272,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
-3,FWD.MMOD.BLK1.Q,"Costuras de acolchado, cuadrante 1",part,M_Fabric,1.545x1.422x1.422,240,Costuras de unión de capas (hilo de PTFE).
-3,FWD.MMOD.BLK2,"Manta MMOD del nodo, cuadrante 2",part,M_BetaCloth,2.26x1.416x1.416,272,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
-3,FWD.MMOD.BLK2.Q,"Costuras de acolchado, cuadrante 2",part,M_Fabric,1.545x1.422x1.422,240,Costuras de unión de capas (hilo de PTFE).
-3,FWD.MMOD.BLK3,"Manta MMOD del nodo, cuadrante 3",part,M_BetaCloth,2.26x1.416x1.416,284,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
-3,FWD.MMOD.BLK3.Q,"Costuras de acolchado, cuadrante 3",part,M_Fabric,1.545x1.017x1.353,174,Costuras de unión de capas (hilo de PTFE).
-3,FWD.MMOD.BLK4,"Manta MMOD del nodo, cuadrante 4",part,M_BetaCloth,2.26x1.416x1.416,284,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
-3,FWD.MMOD.BLK4.Q,"Costuras de acolchado, cuadrante 4",part,M_Fabric,1.545x1.017x1.353,174,Costuras de unión de capas (hilo de PTFE).
+2,FWD.INT,Interior del nodo,group,,2.08x2.61x4.555,,"Nodo de proa: estación de trabajo robótica, acceso a la cúpula de observación, escotilla de atraque y pozo de la esclusa."
+3,FWD.INT.BAG,Estiba de acceso rápido,part,R_Bag,1.604x0.308x0.408,5076,
+3,FWD.INT.BCK,Trasdós del nodo,part,R_Backing;M_AlBare,2.07x2.61x2.61,908,
+3,FWD.INT.BHD,Mamparos del nodo,part,R_Lining,2.06x2.44x2.44,2384,
+3,FWD.INT.FLR,Suelo del nodo,part,R_Floor,2.0x2.061x0.03,220,Pavimento sobre el pozo de la esclusa.
+3,FWD.INT.HF,Escotilla de atraque (IDSS),part,R_Lining;R_Accent;R_Black;R_Steel,0.095x0.88x0.88,3268,"Escotilla de paso de 0,80 m hacia el vehículo atracado; cerrada sin vehículo."
+3,FWD.INT.LGT,Luminarias del nodo,part,R_LED,1.8x1.289x0.048,40,
+3,FWD.INT.LIN,Revestimiento del nodo,part,R_Lining;M_AlBare,2.0x2.484x2.484,2400,Paneles curvos del nodo con huecos de cúpula y esclusa.
+3,FWD.INT.RWS,Estación robótica,part,R_LiningDark;R_Black;R_Frame;R_Rubber;R_Accent,0.76x0.468x1.188,3072,Puesto de control del brazo robótico con dos pantallas y controladores manuales.
+3,FWD.INT.RWS.S1,Pantalla de la estación robótica,part,R_Screen,0.33x0.051x0.204,2,Pantalla.
+3,FWD.INT.RWS.S2,Pantalla de la estación robótica,part,R_Screen,0.33x0.051x0.204,2,Pantalla.
+3,FWD.INT.WEL,Pozos de cúpula y esclusa,part,R_Lining;R_Frame;R_Accent;R_Alu;R_Floor,1.4x1.4x4.555,2600,"Brocales, escalerilla y asideros."
+2,FWD.MMOD,Protección MMOD y térmica del nodo,group,,2.26x2.872x2.86,,"Mantas MMOD blandas tipo 'stuffed Whipple' (beta cloth + Nextel + Kevlar) sobre MLI. Se eligen mantas flexibles en el nodo por su geometría compleja (cúpula, atraque)."
+3,FWD.MMOD.BLK1,"Manta MMOD del nodo, cuadrante 1",part,M_BetaCloth;M_AlBare,2.26x1.416x1.416,276,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
+3,FWD.MMOD.BLK1.Q,"Costuras de acolchado, cuadrante 1",part,M_Fabric;M_AlBare,1.545x1.331x1.413,200,Costuras de unión de capas (hilo de PTFE).
+3,FWD.MMOD.BLK2,"Manta MMOD del nodo, cuadrante 2",part,M_BetaCloth;M_AlBare,2.26x1.416x1.416,276,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
+3,FWD.MMOD.BLK2.Q,"Costuras de acolchado, cuadrante 2",part,M_Fabric;M_AlBare,1.545x1.331x1.413,200,Costuras de unión de capas (hilo de PTFE).
+3,FWD.MMOD.BLK3,"Manta MMOD del nodo, cuadrante 3",part,M_BetaCloth;M_AlBare,2.26x1.416x1.416,284,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
+3,FWD.MMOD.BLK3.Q,"Costuras de acolchado, cuadrante 3",part,M_Fabric;M_AlBare,1.545x1.017x1.353,174,Costuras de unión de capas (hilo de PTFE).
+3,FWD.MMOD.BLK4,"Manta MMOD del nodo, cuadrante 4",part,M_BetaCloth;M_AlBare,2.26x1.416x1.416,284,"Manta de 6 capas: beta cloth exterior, 2× Nextel AF62, 2× Kevlar 710 y MLI de 15 capas."
+3,FWD.MMOD.BLK4.Q,"Costuras de acolchado, cuadrante 4",part,M_Fabric;M_AlBare,1.545x1.017x1.353,174,Costuras de unión de capas (hilo de PTFE).
 2,FWD.STR,Estructura primaria del nodo,group,,2.382x2.7x2.716,,"Barril presurizado de Al-Li 2195 soldado por fricción-agitación, con mamparos mecanizados y marcos anulares."
 3,FWD.STR.BHA,Mamparo de popa del nodo,part,M_AlLi,0.06x2.64x2.64,512,"Mamparo anular con escotilla de 1,04 m hacia el módulo habitable."
 3,FWD.STR.BHF,Mamparo de proa,part,M_AlLi;M_Bolt,0.102x2.7x2.7,3072,"Mamparo mecanizado con abertura de paso IDSS de 0,80 m y círculo de 36 tornillos de la brida de atraque."
-3,FWD.STR.BRL,Barril presurizado del nodo,part,M_AlLi,2.3x2.7x2.7,1056,"Cilindro de Ø2,70 m y 2,30 m de longitud; pared de Al-Li con refuerzo isogrid interno."
+3,FWD.STR.BRL,Barril presurizado del nodo,part,M_AlLi;M_AlBare,2.3x2.7x2.7,1056,"Cilindro de Ø2,70 m y 2,30 m de longitud; pared de Al-Li con refuerzo isogrid interno."
 3,FWD.STR.CPR,Anillo de interfaz de la cúpula,part,M_AlLi;M_Bolt,1.6x1.6x0.346,1920,Anillo forjado que une la cúpula al barril del nodo; 24 tornillos de alta resistencia.
 3,FWD.STR.FRM1,Marco anular del nodo 1,part,M_AlLi,0.05x2.64x2.64,512,Marco de rigidización circunferencial (sección en T).
 3,FWD.STR.FRM2,Marco anular del nodo 2,part,M_AlLi,0.05x2.64x2.64,512,Marco de rigidización circunferencial (sección en T).
 3,FWD.STR.FRM3,Marco anular del nodo 3,part,M_AlLi,0.05x2.64x2.64,512,Marco de rigidización circunferencial (sección en T).
-1,HAB,Módulo Habitable Presurizado,group,,9.93x4.545x5.012,,"Módulo presurizado principal de Ø4,20 m y 8,2 m de barril cilíndrico; volumen presurizado total del vehículo ≈ 150 m³."
+1,HAB,Módulo Habitable Presurizado,group,,10.15x4.545x5.012,,"Módulo presurizado principal de Ø4,20 m y 8,2 m de barril cilíndrico; volumen presurizado total del vehículo ≈ 150 m³."
 2,HAB.EXT,Equipos exteriores del casco,group,,7.968x3.168x4.943,,"Pasamanos EVA, accesorio de agarre robótico, iluminación, ventanas de laboratorio y marcas de identidad."
 3,HAB.EXT.GF1,Accesorio de agarre robótico (PDGF-like),part,M_AlBare;M_AlAnodBlack;M_Decal;M_Bolt;M_EVAYellow,0.36x0.36x0.345,596,Base de agarre con interfaz de potencia y datos que permite reubicar el brazo robótico.
 3,HAB.EXT.HR,Pasamanos EVA del casco,group,,7.892x1.834x4.345,,
@@ -140,416 +128,151 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,HAB.EXT.WIN,Ventanas científicas de nadir,group,,1.516x0.54x0.64,,"Dos ventanas de calidad óptica (Ø0,40 m) para observación terrestre/lunar e instrumentos."
 4,HAB.EXT.WIN.W1,Ventana científica de nadir 1,part,M_AlBare;M_Glass;M_ShieldWhite;M_Steel;M_Bolt,0.566x0.54x0.64,1548,Marco con paneles de presión redundantes y contraventana MMOD (abierta).
 4,HAB.EXT.WIN.W2,Ventana científica de nadir 2,part,M_AlBare;M_Glass;M_ShieldWhite;M_Steel;M_Bolt,0.566x0.54x0.64,1548,Marco con paneles de presión redundantes y contraventana MMOD (abierta).
-2,HAB.INT,Equipamiento interior presurizado,group,,9.701x3.97x4.035,,"Interior organizado en 4 bahías de 2,05 m (cabina de vuelo, laboratorio, refugio/habitáculos, servicios) más el mamparo de popa."
-3,HAB.INT.A,Bahía A — Cabina de vuelo,group,,3.222x3.97x3.97,,"Puesto de pilotaje con 4 asientos, 2 consolas de 3 pantallas y paneles de mando cenitales."
-4,HAB.INT.A.BHD,Estructura interior y revestimiento del mamparo de proa,part,M_AlBare;M_EVAYellow;M_Bolt;M_AlLi;M_BetaCloth;M_Handrail;M_AlAnodBlack;M_GoldPlate;M_LEDGreen,1.037x3.97x3.97,5724,"Nervios radiales mecanizados, brida atornillada de escotilla, mantas acústicas, pasamanos IVA e intercomunicador."
-4,HAB.INT.A.CL1,Panel de mando cenital,group,,0.99x2.21x0.93,,"Paneles de interruptores de los buses de potencia, armado de RCS y pirotecnia."
-5,HAB.INT.A.CL1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.A.CL1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.CL1.SW,Panel de interruptores cenital,part,M_InteriorGrey;M_InteriorDark;M_ShieldWhite;M_AlBare;M_AlAnodBlack;M_Bolt,0.903x1.1x0.085,11020,"24 interruptores protegidos en 4 filas (potencia, iluminación, sistemas, propulsión). Cada palanca es una pieza funcional del simulador."
-5,HAB.INT.A.CL1.TGL,Palancas de interruptor,group,,0.704x0.804x0.055,,
-6,HAB.INT.A.CL1.TGL.AVX,Interruptor: Aviónica,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
-6,HAB.INT.A.CL1.TGL.BAT,Interruptor: Batería maestra,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
-6,HAB.INT.A.CL1.TGL.BUSA,Interruptor: Bus A 120 V,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
-6,HAB.INT.A.CL1.TGL.BUSB,Interruptor: Bus B 120 V,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
-6,HAB.INT.A.CL1.TGL.COMM,Interruptor: Comunicaciones,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
-6,HAB.INT.A.CL1.TGL.DOCK,Interruptor: Sistema de atraque,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
-6,HAB.INT.A.CL1.TGL.ECLSS,Interruptor: Soporte vital,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
-6,HAB.INT.A.CL1.TGL.FANS,Interruptor: Ventilación,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
-6,HAB.INT.A.CL1.TGL.FWD,Interruptor: Alimentación del nodo,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
-6,HAB.INT.A.CL1.TGL.HEAT,Interruptor: Calentadores,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
-6,HAB.INT.A.CL1.TGL.LT_A,Interruptor: Luces bahía A,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
-6,HAB.INT.A.CL1.TGL.LT_B,Interruptor: Luces bahía B,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
-6,HAB.INT.A.CL1.TGL.LT_C,Interruptor: Luces bahía C,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
-6,HAB.INT.A.CL1.TGL.LT_D,Interruptor: Luces bahía D,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
-6,HAB.INT.A.CL1.TGL.LT_EXT,Interruptor: Focos exteriores,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
-6,HAB.INT.A.CL1.TGL.LT_N,Interruptor: Luces del nodo,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo iluminación.
-6,HAB.INT.A.CL1.TGL.MAIN,Interruptor: Armado motores,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
-6,HAB.INT.A.CL1.TGL.NAV,Interruptor: Navegación,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
-6,HAB.INT.A.CL1.TGL.RBT,Interruptor: Brazo robótico,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
-6,HAB.INT.A.CL1.TGL.RCS,Interruptor: Armado RCS,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
-6,HAB.INT.A.CL1.TGL.SCI,Interruptor: Laboratorio,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
-6,HAB.INT.A.CL1.TGL.SEP,Interruptor: Propulsión eléctrica,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo propulsión.
-6,HAB.INT.A.CL1.TGL.SOLAR,Interruptor: Alas solares,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo potencia.
-6,HAB.INT.A.CL1.TGL.THERM,Interruptor: Bombeo térmico,part,M_Steel;M_AlAnodBlack,0.024x0.024x0.055,180,Palanca de dos posiciones del grupo sistemas.
-4,HAB.INT.A.CL2,Bastidor de estiba cenital A,group,,0.99x2.21x0.892,,Estiba de procedimientos y equipos de fotografía.
-5,HAB.INT.A.CL2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.A.CL2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.CL2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.CL2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-4,HAB.INT.A.CNS,Consolas de pilotaje,group,,0.583x2.16x1.253,,"Dos consolas independientes (comandante y piloto) con visera antideslumbramiento, anunciadores y 3 pantallas cada una."
-5,HAB.INT.A.CNS.C1,Consola del comandante,group,,0.583x0.92x1.253,,
-6,HAB.INT.A.CNS.C1.D1,Pantalla de vuelo 1,part,M_Screen_PFD,0.178x0.25x0.29,2,"Pantalla táctil de 13"" de alto brillo con unidad de visualización redundante."
-6,HAB.INT.A.CNS.C1.D2,Pantalla de vuelo 2,part,M_Screen_TRAJ,0.178x0.25x0.29,2,"Pantalla táctil de 13"" de alto brillo con unidad de visualización redundante."
-6,HAB.INT.A.CNS.C1.D3,Pantalla de vuelo 3,part,M_Screen_CAMERA,0.178x0.25x0.29,2,"Pantalla táctil de 13"" de alto brillo con unidad de visualización redundante."
-6,HAB.INT.A.CNS.C1.STR,"Pedestal, visera y panel de teclas",part,M_InteriorDark;M_CFRP;M_AlAnodBlack;M_SeatCushion;M_LEDRed;M_ScreenAmber;M_LEDGreen;M_AlBare;M_InteriorGrey;M_DecalRed;M_Handrail;M_Cable;M_CableOrange,0.583x0.92x1.253,11544,"Pedestal de CFRP con visera antideslumbramiento, anunciadores, teclas de bisel, codificadores y teclado."
-5,HAB.INT.A.CNS.C2,Consola del piloto,group,,0.583x0.92x1.253,,
-6,HAB.INT.A.CNS.C2.D1,Pantalla de vuelo 1,part,M_Screen_CAMERA,0.178x0.25x0.29,2,"Pantalla táctil de 13"" de alto brillo con unidad de visualización redundante."
-6,HAB.INT.A.CNS.C2.D2,Pantalla de vuelo 2,part,M_Screen_PFD,0.178x0.25x0.29,2,"Pantalla táctil de 13"" de alto brillo con unidad de visualización redundante."
-6,HAB.INT.A.CNS.C2.D3,Pantalla de vuelo 3,part,M_Screen_ECLSS,0.178x0.25x0.29,2,"Pantalla táctil de 13"" de alto brillo con unidad de visualización redundante."
-6,HAB.INT.A.CNS.C2.STR,"Pedestal, visera y panel de teclas",part,M_InteriorDark;M_CFRP;M_AlAnodBlack;M_SeatCushion;M_LEDRed;M_ScreenAmber;M_LEDGreen;M_AlBare;M_InteriorGrey;M_DecalRed;M_Handrail;M_Cable;M_CableOrange,0.583x0.92x1.253,11544,"Pedestal de CFRP con visera antideslumbramiento, anunciadores, teclas de bisel, codificadores y teclado."
-4,HAB.INT.A.DK1,Bastidor de estiba de suelo A1,group,,0.99x2.21x0.892,,Estiba de repuestos de aviónica y kits de emergencia.
-5,HAB.INT.A.DK1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.A.DK1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.DK1.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK1.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-4,HAB.INT.A.DK2,Bastidor de estiba de suelo A2,group,,0.99x2.21x0.892,,Estiba de trajes de presión IVA (4 unidades).
-5,HAB.INT.A.DK2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.A.DK2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.DK2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.DK2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-4,HAB.INT.A.P2,Bastidor de estiba A (babor),group,,0.99x0.892x2.21,,Estiba de uso diario.
-5,HAB.INT.A.P2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.A.P2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.P2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.P2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-4,HAB.INT.A.PW,Estación de vuelo lateral (babor),group,,0.99x0.892x2.21,,Bastidor de aviónica de cabina con pantalla multifunción auxiliar.
-5,HAB.INT.A.PW.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.A.PW.FRT,Panel frontal de aviónica,part,M_InteriorGrey;M_InteriorDark;M_InteriorPanel;M_AlAnodBlack,0.94x0.046x2.16,2160,Panel con rejilla de ventilación forzada y teclado de función.
-5,HAB.INT.A.PW.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.PW.SCR,Pantalla multifunción auxiliar,part,M_Screen_ECLSS,0.56x0.0x0.36,2,"Pantalla de 26"" de sistemas."
-4,HAB.INT.A.S2,Bastidor de estiba A (estribor),group,,0.99x0.892x2.21,,Estiba de uso diario.
-5,HAB.INT.A.S2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.A.S2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.S2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.A.S2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.348,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-4,HAB.INT.A.SEAT,Asientos de tripulación,group,,1.737x1.923x1.38,,4 asientos ergonómicos de CFRP con acolchado acolchado multicapa y arnés de 5 puntos.
-5,HAB.INT.A.SEAT.S1,Asiento Comandante,group,,1.157x0.683x1.26,,"Asiento monocasco de CFRP/aluminio con cojines contorneados, amortiguadores y arnés de 5 puntos, con controladores manuales de traslación y rotación."
-6,HAB.INT.A.SEAT.S1.ARM,Apoyabrazos y controladores,part,M_AlAnodBlack;M_CFRP;M_SeatCushion;M_Rubber;M_Steel;M_InteriorDark;M_AlBare;M_DecalRed;M_Accent;M_LEDRed,0.382x0.681x0.429,3672,"Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.)."
-6,HAB.INT.A.SEAT.S1.CSH,"Asiento, respaldo y reposacabezas",part,M_CFRP;M_AlAnodBlack;M_InteriorDark;M_Accent;M_Cable;M_SeatCushion,0.687x0.664x0.912,4600,Carcasa de CFRP con acolchado viscoelástico.
-6,HAB.INT.A.SEAT.S1.FRM,Bastidor tubular y anclajes,part,M_AlBare;M_AlAnodBlack;M_Steel;M_DecalRed;M_Bolt;M_Handrail,0.831x0.538x1.165,2248,Bastidor de aluminio 7075 con anclajes a carril de suelo.
-6,HAB.INT.A.SEAT.S1.FTR,Reposapiés,part,M_AlBare;M_AlAnodBlack;M_Rubber;M_FabricBlue,0.363x0.49x0.26,572,Barra reposapiés con almohadilla antideslizante.
-6,HAB.INT.A.SEAT.S1.HRN,Arnés de 5 puntos,part,M_FabricBlue;M_SeatCushion;M_AlBare;M_Accent;M_AlAnodBlack;M_DecalRed,0.468x0.464x0.545,1532,Cinchas de Nomex con hebilla rotativa de liberación rápida.
-5,HAB.INT.A.SEAT.S2,Asiento Piloto,group,,1.157x0.683x1.26,,"Asiento monocasco de CFRP/aluminio con cojines contorneados, amortiguadores y arnés de 5 puntos, con controladores manuales de traslación y rotación."
-6,HAB.INT.A.SEAT.S2.ARM,Apoyabrazos y controladores,part,M_AlAnodBlack;M_CFRP;M_SeatCushion;M_Rubber;M_Steel;M_InteriorDark;M_AlBare;M_DecalRed;M_Accent;M_LEDRed,0.382x0.681x0.429,3672,"Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.)."
-6,HAB.INT.A.SEAT.S2.CSH,"Asiento, respaldo y reposacabezas",part,M_CFRP;M_AlAnodBlack;M_InteriorDark;M_Accent;M_Cable;M_SeatCushion,0.687x0.664x0.912,4600,Carcasa de CFRP con acolchado viscoelástico.
-6,HAB.INT.A.SEAT.S2.FRM,Bastidor tubular y anclajes,part,M_AlBare;M_AlAnodBlack;M_Steel;M_DecalRed;M_Bolt;M_Handrail,0.831x0.538x1.165,2248,Bastidor de aluminio 7075 con anclajes a carril de suelo.
-6,HAB.INT.A.SEAT.S2.FTR,Reposapiés,part,M_AlBare;M_AlAnodBlack;M_Rubber;M_FabricBlue,0.363x0.49x0.26,572,Barra reposapiés con almohadilla antideslizante.
-6,HAB.INT.A.SEAT.S2.HRN,Arnés de 5 puntos,part,M_FabricBlue;M_SeatCushion;M_AlBare;M_Accent;M_AlAnodBlack;M_DecalRed,0.468x0.464x0.545,1532,Cinchas de Nomex con hebilla rotativa de liberación rápida.
-5,HAB.INT.A.SEAT.S3,Asiento Especialista 1,group,,1.157x0.664x1.26,,"Asiento monocasco de CFRP/aluminio con cojines contorneados, amortiguadores y arnés de 5 puntos."
-6,HAB.INT.A.SEAT.S3.ARM,Apoyabrazos y controladores,part,M_AlAnodBlack;M_CFRP;M_SeatCushion,0.36x0.655x0.237,648,"Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.)."
-6,HAB.INT.A.SEAT.S3.CSH,"Asiento, respaldo y reposacabezas",part,M_CFRP;M_AlAnodBlack;M_InteriorDark;M_Accent;M_Cable;M_SeatCushion,0.687x0.664x0.912,4600,Carcasa de CFRP con acolchado viscoelástico.
-6,HAB.INT.A.SEAT.S3.FRM,Bastidor tubular y anclajes,part,M_AlBare;M_AlAnodBlack;M_Steel;M_DecalRed;M_Bolt;M_Handrail,0.831x0.538x1.165,2248,Bastidor de aluminio 7075 con anclajes a carril de suelo.
-6,HAB.INT.A.SEAT.S3.FTR,Reposapiés,part,M_AlBare;M_AlAnodBlack;M_Rubber;M_FabricBlue,0.363x0.49x0.26,572,Barra reposapiés con almohadilla antideslizante.
-6,HAB.INT.A.SEAT.S3.HRN,Arnés de 5 puntos,part,M_FabricBlue;M_SeatCushion;M_AlBare;M_Accent;M_AlAnodBlack;M_DecalRed,0.468x0.464x0.545,1532,Cinchas de Nomex con hebilla rotativa de liberación rápida.
-5,HAB.INT.A.SEAT.S4,Asiento Especialista 2,group,,1.157x0.664x1.26,,"Asiento monocasco de CFRP/aluminio con cojines contorneados, amortiguadores y arnés de 5 puntos."
-6,HAB.INT.A.SEAT.S4.ARM,Apoyabrazos y controladores,part,M_AlAnodBlack;M_CFRP;M_SeatCushion,0.36x0.655x0.237,648,"Apoyabrazos regulables; en los puestos delanteros, controladores manuales de traslación (izq.) y rotación (dcha.)."
-6,HAB.INT.A.SEAT.S4.CSH,"Asiento, respaldo y reposacabezas",part,M_CFRP;M_AlAnodBlack;M_InteriorDark;M_Accent;M_Cable;M_SeatCushion,0.687x0.664x0.912,4600,Carcasa de CFRP con acolchado viscoelástico.
-6,HAB.INT.A.SEAT.S4.FRM,Bastidor tubular y anclajes,part,M_AlBare;M_AlAnodBlack;M_Steel;M_DecalRed;M_Bolt;M_Handrail,0.831x0.538x1.165,2248,Bastidor de aluminio 7075 con anclajes a carril de suelo.
-6,HAB.INT.A.SEAT.S4.FTR,Reposapiés,part,M_AlBare;M_AlAnodBlack;M_Rubber;M_FabricBlue,0.363x0.49x0.26,572,Barra reposapiés con almohadilla antideslizante.
-6,HAB.INT.A.SEAT.S4.HRN,Arnés de 5 puntos,part,M_FabricBlue;M_SeatCushion;M_AlBare;M_Accent;M_AlAnodBlack;M_DecalRed,0.468x0.464x0.545,1532,Cinchas de Nomex con hebilla rotativa de liberación rápida.
-4,HAB.INT.A.SW,Estación de vuelo lateral (estribor),group,,0.99x0.892x2.21,,Bastidor de aviónica de cabina con pantalla multifunción auxiliar.
-5,HAB.INT.A.SW.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.A.SW.FRT,Panel frontal de aviónica,part,M_InteriorGrey;M_InteriorDark;M_InteriorPanel;M_AlAnodBlack,0.94x0.046x2.16,2160,Panel con rejilla de ventilación forzada y teclado de función.
-5,HAB.INT.A.SW.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.A.SW.SCR,Pantalla multifunción auxiliar,part,M_Screen_TRAJ,0.56x0.0x0.36,2,"Pantalla de 26"" de sistemas."
-3,HAB.INT.AFT,Estiba y depósitos del mamparo de popa,group,,0.811x2.016x1.98,,"Volumen del mamparo elipsoidal: depósitos de O₂/N₂ de alta presión con colectores y manómetros, bolsas blandas CTB en red de carga y extintor."
-4,HAB.INT.AFT.CTB,Bolsas blandas CTB en red de carga del mamparo,part,M_Fabric;M_Accent;M_ShieldWhite;M_FabricBlue;M_BetaCloth;M_Cable;M_Steel;M_AlBare;M_DecalRed,0.436x1.664x1.566,5016,"Bolsas blandas acolchadas de Nomex en distintos tamaños sujetas tras red elástica cruzada, con manómetros y colectores."
-4,HAB.INT.AFT.EXT,Extintor de niebla de agua,part,M_DecalRed;M_AlAnodBlack;M_Rubber,0.14x0.196x0.525,476,Extintor portátil de niebla de agua presurizada con N₂.
-4,HAB.INT.AFT.T1,Depósito de O₂ de alta presión 1,part,M_COPV;M_Steel;M_AlBare,0.811x0.354x0.354,1576,COPV a ~20 MPa para reposición de atmósfera y repress de emergencia.
-4,HAB.INT.AFT.T2,Depósito de N₂ de alta presión 1,part,M_COPV;M_Steel;M_AlBare,0.811x0.354x0.354,1576,COPV a ~20 MPa para reposición de atmósfera y repress de emergencia.
-4,HAB.INT.AFT.T3,Depósito de O₂ de alta presión 2,part,M_COPV;M_Steel;M_AlBare,0.811x0.354x0.354,1576,COPV a ~20 MPa para reposición de atmósfera y repress de emergencia.
-4,HAB.INT.AFT.T4,Depósito de N₂ de alta presión 2,part,M_COPV;M_Steel;M_AlBare,0.811x0.354x0.354,1576,COPV a ~20 MPa para reposición de atmósfera y repress de emergencia.
-3,HAB.INT.B,Bahía B — Laboratorio,group,,2.01x3.94x4.02,,"Guantera científica, congeladores de muestras, bastidores experimentales y estación de observación de nadir."
-4,HAB.INT.B.CL1,Bastidor de estiba cenital B1,group,,0.99x2.21x0.892,,Consumibles científicos.
-5,HAB.INT.B.CL1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.B.CL1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.B.CL1.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL1.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-4,HAB.INT.B.CL2,Bastidor de estiba cenital B2,group,,0.99x2.21x0.892,,Consumibles científicos.
-5,HAB.INT.B.CL2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.B.CL2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.B.CL2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.B.CL2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-4,HAB.INT.B.NAD,Estación de observación de nadir,group,,1.96x2.12x1.188,,"Pozos de ventana con cámaras científicas, cubiertas internas de protección y asideros."
-5,HAB.INT.B.NAD.CAM,Cámara científica de nadir,part,M_AlAnodBlack;M_Rubber;M_AlBare;M_DecalRed;M_Lens,0.364x0.119x0.398,1772,Cámara multiespectral DSLR con teleobjetivo y brazo cardán de bloqueo.
-5,HAB.INT.B.NAD.CLS1,Paneles de cierre de suelo 1,part,M_InteriorPanel;M_InteriorDark;M_Handrail,0.94x2.12x0.076,424,Paneles de suelo alrededor de los pozos con asideros para fijación de los pies.
-5,HAB.INT.B.NAD.CLS2,Paneles de cierre de suelo 2,part,M_InteriorPanel;M_InteriorDark;M_Handrail,0.94x2.12x0.076,424,Paneles de suelo alrededor de los pozos con asideros para fijación de los pies.
-5,HAB.INT.B.NAD.W1,Pozo de ventana de nadir 1,part,M_InteriorPanel;M_InteriorDark;M_GlassInner,0.58x0.58x0.94,892,Túnel de ventana con panel interior antirayado.
-5,HAB.INT.B.NAD.W2,Pozo de ventana de nadir 2,part,M_InteriorPanel;M_InteriorDark;M_GlassInner,0.58x0.58x0.94,892,Túnel de ventana con panel interior antirayado.
-4,HAB.INT.B.PF,Congelador de muestras −80 °C,group,,0.99x0.955x2.21,,4 cajones de congelación criogénica por ciclo Stirling.
-5,HAB.INT.B.PF.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.B.PF.FRZ,Cajones de congelación,part,M_InteriorPanel;M_Rubber;M_ShieldWhite;M_AlBare;M_AlAnodBlack;M_Accent;M_LEDGreen;M_CrewAtlasEmit,0.94x0.135x2.16,3054,
-5,HAB.INT.B.PF.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-4,HAB.INT.B.PG,Guantera científica,group,,0.99x1.301x2.21,,"Volumen de trabajo sellado con presión negativa, filtración HEPA e iluminación propia."
-5,HAB.INT.B.PG.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.B.PG.GBX,"Guantera (ventana, puertos de guantes, filtros)",part,M_InteriorPanel;M_AlBare;M_AlAnodBlack;M_LED;M_Glass;M_Water;M_FabricBlue;M_Accent;M_Lens;M_LEDGreen;M_InteriorDark;M_GlassInner;M_InteriorGrey;M_EVAYellow;M_BetaCloth;M_CrewAtlasEmit;M_ScreenAmber,0.94x0.481x2.16,4478,
-5,HAB.INT.B.PG.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-4,HAB.INT.B.SE1,Bastidor experimental 1,group,,0.99x0.961x2.21,,"Bastidor de cargas útiles intercambiables con interfaces de potencia, datos, vacío y refrigeración."
-5,HAB.INT.B.SE1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.B.SE1.EXP,Cargas útiles experimentales,part,M_InteriorDark;M_AlBare;M_InteriorPanel;M_AlAnodBlack;M_GoldPlate;M_ScreenAmber;M_InteriorGrey;M_LEDGreen;M_CrewAtlasEmit;M_AlChromate;M_CableOrange;M_CableWhite,0.94x0.141x2.16,5670,
-5,HAB.INT.B.SE1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-4,HAB.INT.B.SE2,Bastidor experimental 2,group,,0.99x0.961x2.21,,"Bastidor de cargas útiles intercambiables con interfaces de potencia, datos, vacío y refrigeración."
-5,HAB.INT.B.SE2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.B.SE2.EXP,Cargas útiles experimentales,part,M_InteriorDark;M_AlBare;M_InteriorPanel;M_AlAnodBlack;M_GoldPlate;M_ScreenAmber;M_InteriorGrey;M_LEDGreen;M_CrewAtlasEmit;M_AlChromate;M_CableOrange;M_CableWhite,0.94x0.141x2.16,5670,
-5,HAB.INT.B.SE2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-3,HAB.INT.C,Bahía C — Habitáculos y refugio antiradiación,group,,2.01x3.91x3.94,,Cuatro habitáculos individuales rodeados por el muro de agua (refugio para eventos de partículas solares).
-4,HAB.INT.C.CE1,Depósito del muro de agua (techo 1),group,,0.99x2.21x0.892,,Depósitos de agua flexibles que completan el blindaje del refugio por encima y por debajo.
-5,HAB.INT.C.CE1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.C.CE1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.C.CE1.TNK,Depósitos de agua flexibles,part,M_InteriorPanel;M_Water;M_AlBare;M_ShieldWhite,0.94x2.16x0.555,216,
-4,HAB.INT.C.CE2,Depósito del muro de agua (techo 2),group,,0.99x2.21x0.892,,Depósitos de agua flexibles que completan el blindaje del refugio por encima y por debajo.
-5,HAB.INT.C.CE2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.C.CE2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.C.CE2.TNK,Depósitos de agua flexibles,part,M_InteriorPanel;M_Water;M_AlBare;M_ShieldWhite,0.94x2.16x0.555,216,
-4,HAB.INT.C.CQ1,Habitáculo de tripulante 1,group,,0.982x0.855x2.202,,"Habitáculo individual de ~1,3 m³ con saco acolchado, cortina plisada, puesto informático, lámpara de lectura, fotografía personal y paredes de HDPE."
-5,HAB.INT.C.CQ1.BAG,Saco de dormir acolchado con almohada y sujeciones,part,M_FabricBlue;M_Fabric;M_BetaCloth;M_InteriorDark;M_AlBare;M_AlAnodBlack;M_Cable,0.85x0.271x1.907,3392,
-5,HAB.INT.C.CQ1.ENC,Envolvente acústica y cortina plisada,part,M_InteriorPanel;M_HDPE;M_Fabric;M_InteriorGrey;M_AlBare;M_BetaCloth;M_FabricBlue,0.982x0.765x2.202,2604,Paneles acústicos acolchados con capa de HDPE y cortina plisada de tela sobre carril.
-5,HAB.INT.C.CQ1.EQP,"Portátil, lámpara flexible, fotos y red personal",part,M_AlBare;M_AlAnodBlack;M_InteriorDark;M_InteriorGrey;M_CrewAtlasEmit;M_Cable;M_LED;M_CrewAtlas;M_FabricBlue;M_Fabric;M_Accent,0.873x0.55x1.871,1130,
-5,HAB.INT.C.CQ1.WTR,Bolsas del muro de agua,part,M_Water;M_Fabric,0.91x0.09x2.07,192,Bolsas de agua potable de reserva que añaden ~8 g/cm² de blindaje en la trasera del habitáculo.
-4,HAB.INT.C.CQ2,Habitáculo de tripulante 2,group,,0.982x0.855x2.202,,"Habitáculo individual de ~1,3 m³ con saco acolchado, cortina plisada, puesto informático, lámpara de lectura, fotografía personal y paredes de HDPE."
-5,HAB.INT.C.CQ2.BAG,Saco de dormir acolchado con almohada y sujeciones,part,M_FabricBlue;M_Fabric;M_BetaCloth;M_InteriorDark;M_AlBare;M_AlAnodBlack;M_Cable,0.85x0.271x1.907,3392,
-5,HAB.INT.C.CQ2.ENC,Envolvente acústica y cortina plisada,part,M_InteriorPanel;M_HDPE;M_Fabric;M_InteriorGrey;M_AlBare;M_BetaCloth;M_FabricBlue,0.982x0.765x2.202,2604,Paneles acústicos acolchados con capa de HDPE y cortina plisada de tela sobre carril.
-5,HAB.INT.C.CQ2.EQP,"Portátil, lámpara flexible, fotos y red personal",part,M_AlBare;M_AlAnodBlack;M_InteriorDark;M_InteriorGrey;M_CrewAtlasEmit;M_Cable;M_LED;M_CrewAtlas;M_FabricBlue;M_Fabric;M_Accent,0.873x0.55x1.871,1130,
-5,HAB.INT.C.CQ2.WTR,Bolsas del muro de agua,part,M_Water;M_Fabric,0.91x0.09x2.07,192,Bolsas de agua potable de reserva que añaden ~8 g/cm² de blindaje en la trasera del habitáculo.
-4,HAB.INT.C.CQ3,Habitáculo de tripulante 3,group,,0.982x0.855x2.202,,"Habitáculo individual de ~1,3 m³ con saco acolchado, cortina plisada, puesto informático, lámpara de lectura, fotografía personal y paredes de HDPE."
-5,HAB.INT.C.CQ3.BAG,Saco de dormir acolchado con almohada y sujeciones,part,M_FabricBlue;M_Fabric;M_BetaCloth;M_InteriorDark;M_AlBare;M_AlAnodBlack;M_Cable,0.85x0.271x1.907,3392,
-5,HAB.INT.C.CQ3.ENC,Envolvente acústica y cortina plisada,part,M_InteriorPanel;M_HDPE;M_Fabric;M_InteriorGrey;M_AlBare;M_BetaCloth;M_FabricBlue,0.982x0.765x2.202,2604,Paneles acústicos acolchados con capa de HDPE y cortina plisada de tela sobre carril.
-5,HAB.INT.C.CQ3.EQP,"Portátil, lámpara flexible, fotos y red personal",part,M_AlBare;M_AlAnodBlack;M_InteriorDark;M_InteriorGrey;M_CrewAtlasEmit;M_Cable;M_LED;M_CrewAtlas;M_FabricBlue;M_Fabric;M_Accent,0.873x0.55x1.871,1130,
-5,HAB.INT.C.CQ3.WTR,Bolsas del muro de agua,part,M_Water;M_Fabric,0.91x0.09x2.07,192,Bolsas de agua potable de reserva que añaden ~8 g/cm² de blindaje en la trasera del habitáculo.
-4,HAB.INT.C.CQ4,Habitáculo de tripulante 4,group,,0.982x0.855x2.202,,"Habitáculo individual de ~1,3 m³ con saco acolchado, cortina plisada, puesto informático, lámpara de lectura, fotografía personal y paredes de HDPE."
-5,HAB.INT.C.CQ4.BAG,Saco de dormir acolchado con almohada y sujeciones,part,M_FabricBlue;M_Fabric;M_BetaCloth;M_InteriorDark;M_AlBare;M_AlAnodBlack;M_Cable,0.85x0.271x1.907,3392,
-5,HAB.INT.C.CQ4.ENC,Envolvente acústica y cortina plisada,part,M_InteriorPanel;M_HDPE;M_Fabric;M_InteriorGrey;M_AlBare;M_BetaCloth;M_FabricBlue,0.982x0.765x2.202,2604,Paneles acústicos acolchados con capa de HDPE y cortina plisada de tela sobre carril.
-5,HAB.INT.C.CQ4.EQP,"Portátil, lámpara flexible, fotos y red personal",part,M_AlBare;M_AlAnodBlack;M_InteriorDark;M_InteriorGrey;M_CrewAtlasEmit;M_Cable;M_LED;M_CrewAtlas;M_FabricBlue;M_Fabric;M_Accent,0.873x0.55x1.871,1130,
-5,HAB.INT.C.CQ4.WTR,Bolsas del muro de agua,part,M_Water;M_Fabric,0.91x0.09x2.07,192,Bolsas de agua potable de reserva que añaden ~8 g/cm² de blindaje en la trasera del habitáculo.
-4,HAB.INT.C.DE1,Depósito del muro de agua (suelo 1),group,,0.99x2.21x0.892,,Depósitos de agua flexibles que completan el blindaje del refugio por encima y por debajo.
-5,HAB.INT.C.DE1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.C.DE1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.C.DE1.TNK,Depósitos de agua flexibles,part,M_InteriorPanel;M_Water;M_AlBare;M_ShieldWhite,0.94x2.16x0.555,216,
-4,HAB.INT.C.DE2,Depósito del muro de agua (suelo 2),group,,0.99x2.21x0.892,,Depósitos de agua flexibles que completan el blindaje del refugio por encima y por debajo.
-5,HAB.INT.C.DE2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.C.DE2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.C.DE2.TNK,Depósitos de agua flexibles,part,M_InteriorPanel;M_Water;M_AlBare;M_ShieldWhite,0.94x2.16x0.555,216,
-3,HAB.INT.D,Bahía D — Servicios y soporte vital,group,,2.01x3.94x3.94,,"Cocina, compartimento de higiene, equipos de soporte vital y dispositivo de ejercicio."
-4,HAB.INT.D.CL1,Eliminación de CO₂ (tamices moleculares),group,,0.99x2.21x0.895,,"Dos lechos de tamiz molecular regenerativos alternos, con ventilador de proceso."
-5,HAB.INT.D.CL1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.D.CL1.EQP,Lechos adsorbentes y ventilador,part,M_InteriorPanel;M_AlBare;M_AlChromate;M_AlAnodBlack;M_DuctFlex;M_InteriorGrey;M_LEDGreen;M_GoldPlate;M_InteriorDark,0.94x2.16x0.605,796,
-5,HAB.INT.D.CL1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-4,HAB.INT.D.CL2,Bastidor de control de contaminantes y estiba,group,,0.99x2.21x0.892,,"Filtros de carbón activo, catalizador de trazas y estiba de filtros de repuesto."
-5,HAB.INT.D.CL2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.D.CL2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.D.CL2.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.CL2.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.348x0.038,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-4,HAB.INT.D.DK1,Recuperación de agua (WRS),group,,0.99x2.21x0.895,,Destilación por compresión de vapor de orina y procesado de condensado por filtración multicapa y oxidación catalítica.
-5,HAB.INT.D.DK1.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.D.DK1.EQP,Destilador y lechos de filtración,part,M_InteriorPanel;M_Steel;M_AlChromate;M_InteriorGrey;M_ScreenAmber;M_GoldPlate;M_InteriorDark,0.94x2.16x0.6,800,
-5,HAB.INT.D.DK1.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-4,HAB.INT.D.DK2,Plataforma de ejercicio,group,,0.99x2.21x1.858,,Cicloergómetro aislado de vibraciones y dispositivo resistivo de cilindros de vacío.
-5,HAB.INT.D.DK2.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x2.21x0.82,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.D.DK2.EXD,Cicloergómetro y dispositivo resistivo,part,M_AlAnodBlack;M_Rubber;M_AlBare;M_Accent;M_DecalRed;M_FabricBlue;M_InteriorDark;M_ScreenAmber;M_SeatCushion;M_Steel,0.9x1.11x1.008,3356,
-5,HAB.INT.D.DK2.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.04x0.076,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.D.DK2.PLT,Placa base con aislamiento de vibraciones,part,M_InteriorDark;M_AlBare,0.94x2.16x0.036,132,
-4,HAB.INT.D.PG,Cocina,group,,0.99x1.38x2.21,,"Calentador de alimentos por conducción, dispensador de agua caliente/fría y mesa abatible con sujeciones."
-5,HAB.INT.D.PG.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.D.PG.GAL,"Calentador, dispensador y mesa",part,M_InteriorPanel;M_AlBare;M_InteriorDark;M_ScreenAmber;M_InteriorGrey;M_AlAnodBlack;M_Steel;M_LEDRed;M_LED;M_Water;M_CrewAtlasEmit;M_FabricBlue;M_Teflon;M_Fabric,0.94x0.56x2.16,1170,
-5,HAB.INT.D.PG.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-4,HAB.INT.D.PS,Estiba de alimentos,group,,0.99x0.892x2.21,,"Despensa para 45 días × 4 tripulantes (~1,8 kg/persona/día)."
-5,HAB.INT.D.PS.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.D.PS.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.D.PS.L11,Taquilla 1-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L12,Taquilla 1-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L13,Taquilla 1-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L14,Taquilla 1-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L15,Taquilla 1-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L16,Taquilla 1-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L17,Taquilla 1-7,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L18,Taquilla 1-8,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L21,Taquilla 2-1,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L22,Taquilla 2-2,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L23,Taquilla 2-3,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L24,Taquilla 2-4,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L25,Taquilla 2-5,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L26,Taquilla 2-6,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L27,Taquilla 2-7,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-5,HAB.INT.D.PS.L28,Taquilla 2-8,part,M_InteriorPanel;M_InteriorDark;M_AlBare;M_Steel;M_Label,0.458x0.038x0.258,712,Taquilla de estiba con cierre de leva y etiqueta de inventario RFID.
-4,HAB.INT.D.SH,Compartimento de higiene,group,,0.99x0.892x2.21,,"Inodoro de separación por flujo de aire, puesto de aseo con toallitas y cortina de privacidad."
-5,HAB.INT.D.SH.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.D.SH.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-5,HAB.INT.D.SH.HYG,"Inodoro, aseo y cortina",part,M_InteriorPanel;M_AlBare;M_ShieldWhite;M_SeatCushion;M_DuctFlex;M_InteriorDark;M_Handrail;M_AlAnodBlack;M_LED;M_Fabric;M_FabricBlue,0.96x0.78x2.16,3140,
-4,HAB.INT.D.SO,Generador de oxígeno (OGA),group,,0.99x0.895x2.21,,Electrolizador de membrana de intercambio protónico: divide agua en O₂ para cabina e H₂.
-5,HAB.INT.D.SO.BDY,Estructura del bastidor,part,M_InteriorDark;M_AlBare;M_Steel,0.99x0.82x2.21,614,"Bastidor de compuesto con trasera poligonal adaptada al casco, pivotable para acceso a utilidades."
-5,HAB.INT.D.SO.EQP,Celdas de electrólisis y separadores,part,M_InteriorPanel;M_AlChromate;M_AlBare;M_TankTi;M_Steel;M_InteriorGrey;M_LEDGreen;M_GoldPlate;M_InteriorDark,0.94x0.63x2.16,748,
-5,HAB.INT.D.SO.HR,Pasamanos interior,part,M_Handrail;M_AlBare,0.49x0.076x0.04,260,Pasamanos IVA de aluminio anodizado.
-3,HAB.INT.LGT,Iluminación general de cabina,group,,7.812x2.234x0.132,,"Luminarias LED de espectro ajustable (ritmo circadiano), dos por bahía en las aristas del techo."
-4,HAB.INT.LGT.L1,Luminaria LED 1,part,M_AlAnodBlack;M_AlBare;M_InteriorDark;M_LED,1.662x0.132x0.132,864,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
-4,HAB.INT.LGT.L2,Luminaria LED 2,part,M_AlAnodBlack;M_AlBare;M_InteriorDark;M_LED,1.662x0.132x0.132,864,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
-4,HAB.INT.LGT.L3,Luminaria LED 3,part,M_AlAnodBlack;M_AlBare;M_InteriorDark;M_LED,1.662x0.132x0.132,864,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
-4,HAB.INT.LGT.L4,Luminaria LED 4,part,M_AlAnodBlack;M_AlBare;M_InteriorDark;M_LED,1.662x0.132x0.132,864,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
-4,HAB.INT.LGT.L5,Luminaria LED 5,part,M_AlAnodBlack;M_AlBare;M_InteriorDark;M_LED,1.662x0.132x0.132,864,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
-4,HAB.INT.LGT.L6,Luminaria LED 6,part,M_AlAnodBlack;M_AlBare;M_InteriorDark;M_LED,1.662x0.132x0.132,864,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
-4,HAB.INT.LGT.L7,Luminaria LED 7,part,M_AlAnodBlack;M_AlBare;M_InteriorDark;M_LED,1.662x0.132x0.132,864,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
-4,HAB.INT.LGT.L8,Luminaria LED 8,part,M_AlAnodBlack;M_AlBare;M_InteriorDark;M_LED,1.662x0.132x0.132,864,"Luminaria de 4 canales (blanco cálido/frío, azul, rojo) con difusor de policarbonato."
-2,HAB.INT.DEN,"Señalización, carga y cableado visible",group,,7.918x2.332x2.332,,"Etiquetado legible, señalización de seguridad, bolsas de transferencia de carga sujetas con cintas y mazos de cables en las esquinas del pasillo."
-3,HAB.INT.DEN.CBL,Mazos de cables y tubos visibles,group,,7.918x2.332x2.332,,
-4,HAB.INT.DEN.CBL.R1,Mazo de cables y tubos de la esquina,part,M_Cable;M_CableOrange;M_CableWhite;M_DuctFlex;M_AlBare,7.918x0.1x0.1,5228,"Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m."
-4,HAB.INT.DEN.CBL.R2,Mazo de cables y tubos de la esquina,part,M_Cable;M_CableOrange;M_CableWhite;M_DuctFlex;M_AlBare,7.918x0.1x0.1,5228,"Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m."
-4,HAB.INT.DEN.CBL.R3,Mazo de cables y tubos de la esquina,part,M_Cable;M_CableOrange;M_CableWhite;M_DuctFlex;M_AlBare,7.918x0.1x0.1,5228,"Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m."
-4,HAB.INT.DEN.CBL.R4,Mazo de cables y tubos de la esquina,part,M_Cable;M_CableOrange;M_CableWhite;M_DuctFlex;M_AlBare,7.918x0.1x0.1,5228,"Cables de potencia y datos y tubo flexible de ventilación con abrazaderas cada 0,45 m."
-3,HAB.INT.DEN.CTB,Bolsas de transferencia de carga,group,,7.07x1.897x2.283,,
-4,HAB.INT.DEN.CTB.B01,Bolsa de transferencia de carga,part,M_Fabric;M_FabricBlue;M_InteriorDark;M_AlBare;M_GlassInner,0.566x0.499x0.314,1516,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
-4,HAB.INT.DEN.CTB.B01.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.199x0.024x0.05,12,
-4,HAB.INT.DEN.CTB.B01.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.548x0.076x0.262,44,
-4,HAB.INT.DEN.CTB.B02,Bolsa de transferencia de carga,part,M_BetaCloth;M_InteriorDark;M_AlBare;M_GlassInner,0.27x0.442x0.307,1516,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
-4,HAB.INT.DEN.CTB.B02.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.15x0.001x0.037,12,
-4,HAB.INT.DEN.CTB.B02.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.3x0.013x0.252,44,
-4,HAB.INT.DEN.CTB.B03,Bolsa de transferencia de carga,part,M_Fabric;M_FabricBlue;M_InteriorDark;M_AlBare;M_GlassInner,0.549x0.476x0.315,1516,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
-4,HAB.INT.DEN.CTB.B03.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.2x0.015x0.05,12,
-4,HAB.INT.DEN.CTB.B03.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.55x0.05x0.262,44,
-4,HAB.INT.DEN.CTB.B04,Bolsa de transferencia de carga,part,M_Fabric;M_InteriorDark;M_AlBare;M_GlassInner,0.535x0.46x0.314,1516,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
-4,HAB.INT.DEN.CTB.B04.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.2x0.008x0.05,12,
-4,HAB.INT.DEN.CTB.B04.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.55x0.032x0.262,44,
-4,HAB.INT.DEN.CTB.B05,Bolsa de transferencia de carga,part,M_BetaCloth;M_FabricBlue;M_InteriorDark;M_AlBare;M_GlassInner,0.55x0.478x0.314,1516,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
-4,HAB.INT.DEN.CTB.B05.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.2x0.016x0.05,12,
-4,HAB.INT.DEN.CTB.B05.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.55x0.052x0.262,44,
-4,HAB.INT.DEN.CTB.B06,Bolsa de transferencia de carga,part,M_Fabric;M_InteriorDark;M_AlBare;M_GlassInner,0.27x0.442x0.304,1516,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
-4,HAB.INT.DEN.CTB.B06.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.15x0.001x0.037,12,
-4,HAB.INT.DEN.CTB.B06.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.3x0.013x0.252,44,
-4,HAB.INT.DEN.CTB.B07,Bolsa de transferencia de carga,part,M_Fabric;M_FabricBlue;M_InteriorDark;M_AlBare;M_GlassInner,0.456x0.294x0.305,1516,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
-4,HAB.INT.DEN.CTB.B07.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.2x0.012x0.05,12,
-4,HAB.INT.DEN.CTB.B07.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.47x0.037x0.252,44,
-4,HAB.INT.DEN.CTB.B08,Bolsa de transferencia de carga,part,M_BetaCloth;M_InteriorDark;M_AlBare;M_GlassInner,0.443x0.277x0.303,1516,"Bolsa de Nomex con ribetes, asas de cinta y ventana de etiqueta; sujeta con cintas elásticas."
-4,HAB.INT.DEN.CTB.B08.LBL,Etiqueta de inventario de la bolsa,part,M_Label,0.2x0.004x0.05,12,
-4,HAB.INT.DEN.CTB.B08.STR,Cinta elástica de sujeción,part,M_InteriorDark,0.47x0.018x0.252,44,
-3,HAB.INT.DEN.SGN,Señalización,group,,7.352x2.196x2.196,,
-4,HAB.INT.DEN.SGN.S01,Señal: bay a,part,M_InteriorGrey;M_Label,0.433x0.121x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S02,Señal: bay b,part,M_InteriorGrey;M_Label,0.432x0.117x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S03,Señal: bay c,part,M_InteriorGrey;M_Label,0.432x0.117x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S04,Señal: bay d,part,M_InteriorGrey;M_Label,0.433x0.121x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S05,Señal: extintor,part,M_InteriorGrey;M_Label,0.273x0.004x0.08,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S06,Señal: extintor,part,M_InteriorGrey;M_Label,0.273x0.004x0.079,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S07,Señal: pba,part,M_InteriorGrey;M_Label,0.272x0.004x0.078,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S08,Señal: pba,part,M_InteriorGrey;M_Label,0.272x0.004x0.077,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S09,Señal: auxilios,part,M_InteriorGrey;M_Label,0.273x0.004x0.079,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S10,Señal: salida nodo,part,M_InteriorGrey;M_Label,0.312x0.004x0.087,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S11,Señal: proa,part,M_InteriorGrey;M_Label,0.252x0.004x0.073,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S12,Señal: popa,part,M_InteriorGrey;M_Label,0.252x0.004x0.074,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S13,Señal: agua,part,M_InteriorGrey;M_Label,0.252x0.004x0.074,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S14,Señal: agua gris,part,M_InteriorGrey;M_Label,0.252x0.004x0.073,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S15,Señal: tension,part,M_InteriorGrey;M_Label,0.272x0.004x0.079,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S16,Señal: no pisar,part,M_InteriorGrey;M_Label,0.272x0.078x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S17,Señal: vent,part,M_InteriorGrey;M_Label,0.273x0.08x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
-4,HAB.INT.DEN.SGN.S18,Señal: co2,part,M_InteriorGrey;M_Label,0.233x0.069x0.004,24,Señal de poliéster laminado con adhesivo; texto legible.
-2,HAB.INT.LIV,Vida a bordo: objetos cotidianos,group,,6.664x2.25x2.344,,Objetos personales y de trabajo sujetos con velcro y cintas elásticas: indican que cuatro personas viven y trabajan aquí.
-3,HAB.INT.LIV.A,Objetos de la bahía A,group,,0.303x2.23x2.328,,
-4,HAB.INT.LIV.A.O01,Lista de comprobación de vuelo,part,M_InteriorGrey;M_ShieldWhite;M_Decal;M_AlBare,0.251x0.015x0.333,144,Procedimientos impresos de respaldo.
-4,HAB.INT.LIV.A.O02,Tableta de procedimientos,part,M_AlAnodBlack;M_CrewAtlasEmit;M_FabricBlue,0.303x0.01x0.203,218,Tableta con procedimientos electrónicos.
-4,HAB.INT.LIV.A.O03,Parches de velcro,part,M_InteriorDark,0.232x0.063x0.002,48,Puntos de sujeción para objetos sueltos.
-4,HAB.INT.LIV.A.O04,Auriculares de comunicaciones,part,M_InteriorDark;M_SeatCushion,0.218x0.137x0.196,440,Auriculares con micrófono para el circuito de voz.
-3,HAB.INT.LIV.B,Objetos de la bahía B,group,,1.364x2.229x2.251,,
-4,HAB.INT.LIV.B.O05,Portátil del laboratorio,part,M_AlBare;M_InteriorDark;M_InteriorGrey;M_CrewAtlasEmit,0.355x0.222x0.289,410,Estación de control de experimentos.
-4,HAB.INT.LIV.B.O06,Unidad de cultivo vegetal,part,M_InteriorPanel;M_AlBare;M_LEDGreen;M_AlAnodBlack;M_LEDRed;M_LED;M_GlassInner;M_Water;M_Fabric;M_Leaf,0.474x0.391x0.383,2700,Cámara de crecimiento con LED rojo/azul y 9 almohadillas de cultivo.
-4,HAB.INT.LIV.B.O07,Cámara fotográfica,part,M_AlAnodBlack;M_DecalRed;M_Lens;M_FabricBlue,0.177x0.13x0.238,508,Cámara con objetivo de 100 mm para fotografía científica.
-4,HAB.INT.LIV.B.O08,Bolsa de herramientas,part,M_Fabric;M_FabricBlue;M_Steel;M_EVAYellow,0.409x0.284x0.211,500,Herramientas manuales de mantenimiento.
-3,HAB.INT.LIV.C,Objetos de la bahía C,group,,1.142x2.23x1.668,,
-4,HAB.INT.LIV.C.O09,Fotografías personales,part,M_ShieldWhite;M_CrewAtlas,0.144x0.003x0.144,14,Recuerdos personales del tripulante.
-4,HAB.INT.LIV.C.O10,Fotografías personales,part,M_ShieldWhite;M_CrewAtlas,0.139x0.003x0.139,14,Recuerdos personales del tripulante.
-4,HAB.INT.LIV.C.O11,Fotografías personales,part,M_ShieldWhite;M_CrewAtlas,0.132x0.003x0.132,14,Recuerdos personales del tripulante.
-4,HAB.INT.LIV.C.O12,Parche de misión,part,M_FabricBlue;M_EVAYellow;M_CrewAtlas,0.139x0.007x0.139,510,Emblema de la misión de servicio.
-3,HAB.INT.LIV.D,Objetos de la bahía D,group,,1.588x2.25x2.24,,
-4,HAB.INT.LIV.D.O13,Bolsa de bebida,part,M_Teflon;M_FabricBlue;M_ShieldWhite,0.123x0.053x0.25,344,Bolsa de bebida con pajita y pinza.
-4,HAB.INT.LIV.D.O14,Bolsa de bebida,part,M_Teflon;M_DecalRed;M_FabricBlue;M_ShieldWhite,0.135x0.051x0.255,344,Bolsa de bebida con pajita y pinza.
-4,HAB.INT.LIV.D.O15,Cintas elásticas de estiba,part,M_Cable;M_AlBare,0.861x0.025x0.58,168,Cintas elásticas para sujetar paquetes de comida.
-4,HAB.INT.LIV.D.O16,Toalla,part,M_Fabric;M_FabricBlue,0.317x0.042x0.464,248,Toalla de microfibra del compartimento de higiene.
-4,HAB.INT.LIV.D.O17,Registro de mantenimiento,part,M_InteriorGrey;M_ShieldWhite;M_Decal;M_AlBare,0.258x0.338x0.015,144,Registro de cambios de filtros del soporte vital.
-4,HAB.INT.LIV.D.O18,Bolsa de bebida,part,M_Teflon;M_Accent;M_FabricBlue;M_ShieldWhite,0.143x0.259x0.053,344,Bolsa de bebida con pajita y pinza.
+2,HAB.EXT.CWN,Ventanas panorámicas de cabina,group,,0.91x4.356x2.565,,"Nueve ventanas trapezoidales en el cono adaptador: panel exterior antiescombros, dos paneles de presión de sílice fundida y marco mecanizado."
+3,HAB.EXT.CWN.F1,Marco de ventana de cabina 1,part,M_AlAnodBlack,0.91x0.752x0.775,96,Marco de aluminio 7075 anodizado grafito con junta de silicona y pozo atravesando el escudo MMOD.
+3,HAB.EXT.CWN.F2,Marco de ventana de cabina 2,part,M_AlAnodBlack,0.91x0.916x0.849,96,Marco de aluminio 7075 anodizado grafito con junta de silicona y pozo atravesando el escudo MMOD.
+3,HAB.EXT.CWN.F3,Marco de ventana de cabina 3,part,M_AlAnodBlack,0.91x0.949x0.949,96,Marco de aluminio 7075 anodizado grafito con junta de silicona y pozo atravesando el escudo MMOD.
+3,HAB.EXT.CWN.F4,Marco de ventana de cabina 4,part,M_AlAnodBlack,0.91x0.849x0.916,96,Marco de aluminio 7075 anodizado grafito con junta de silicona y pozo atravesando el escudo MMOD.
+3,HAB.EXT.CWN.F5,Marco de ventana de cabina 5,part,M_AlAnodBlack,0.91x0.775x0.752,96,Marco de aluminio 7075 anodizado grafito con junta de silicona y pozo atravesando el escudo MMOD.
+3,HAB.EXT.CWN.F6,Marco de ventana de cabina 6,part,M_AlAnodBlack,0.91x0.849x0.916,96,Marco de aluminio 7075 anodizado grafito con junta de silicona y pozo atravesando el escudo MMOD.
+3,HAB.EXT.CWN.F7,Marco de ventana de cabina 7,part,M_AlAnodBlack,0.91x0.949x0.949,96,Marco de aluminio 7075 anodizado grafito con junta de silicona y pozo atravesando el escudo MMOD.
+3,HAB.EXT.CWN.F8,Marco de ventana de cabina 8,part,M_AlAnodBlack,0.91x0.916x0.849,96,Marco de aluminio 7075 anodizado grafito con junta de silicona y pozo atravesando el escudo MMOD.
+3,HAB.EXT.CWN.F9,Marco de ventana de cabina 9,part,M_AlAnodBlack,0.91x0.752x0.775,96,Marco de aluminio 7075 anodizado grafito con junta de silicona y pozo atravesando el escudo MMOD.
+3,HAB.EXT.CWN.G1,Vidrio de ventana de cabina 1,part,M_Glass,0.84x0.572x0.588,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
+3,HAB.EXT.CWN.G2,Vidrio de ventana de cabina 2,part,M_Glass,0.84x0.703x0.679,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
+3,HAB.EXT.CWN.G3,Vidrio de ventana de cabina 3,part,M_Glass,0.84x0.748x0.748,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
+3,HAB.EXT.CWN.G4,Vidrio de ventana de cabina 4,part,M_Glass,0.84x0.679x0.703,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
+3,HAB.EXT.CWN.G5,Vidrio de ventana de cabina 5,part,M_Glass,0.84x0.588x0.572,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
+3,HAB.EXT.CWN.G6,Vidrio de ventana de cabina 6,part,M_Glass,0.84x0.679x0.703,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
+3,HAB.EXT.CWN.G7,Vidrio de ventana de cabina 7,part,M_Glass,0.84x0.748x0.748,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
+3,HAB.EXT.CWN.G8,Vidrio de ventana de cabina 8,part,M_Glass,0.84x0.703x0.679,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
+3,HAB.EXT.CWN.G9,Vidrio de ventana de cabina 9,part,M_Glass,0.84x0.572x0.588,192,Conjunto de paneles de sílice fundida con recubrimiento antirreflejo y bajo emisivo.
+2,HAB.INT,Interior habitable,group,,9.53x3.97x4.055,,"Interior Rebirth: volumen continuo de 8,2 m con cabina, laboratorio, habitáculos y servicios."
+3,HAB.INT.A,Cabina de vuelo (bahía A),group,,3.395x3.97x3.98,,"Cabina de dos puestos orientada a proa con banda panorámica de nueve ventanas en el cono, paneles multifunción, consolas laterales de interruptores y controladores manuales."
+4,HAB.INT.A.BHD,Mamparo de proa y brocal de escotilla,part,R_Lining;R_Accent;R_Frame,0.235x2.48x2.48,1704,Mamparo con brocal bermellón y túnel hacia el nodo.
+4,HAB.INT.A.CON,Revestimiento facetado del cono,part,R_Lining,1.12x3.88x3.88,4308,Dieciséis facetas con nueve huecos de ventana.
+4,HAB.INT.A.HC,Controladores manuales,part,R_Frame;R_Rubber;R_Accent,0.084x2.244x0.22,2688,Controladores de traslación y rotación en los reposabrazos.
+4,HAB.INT.A.PAN,Paneles interiores antirayado,part,R_Glass,0.84x3.786x2.17,288,Paneles de policarbonato de protección.
+4,HAB.INT.A.PNL,Panel de instrumentos,part,R_LiningDark;R_Fabric;R_Alu;R_Black;R_Frame,2.13x3.734x1.995,12444,Dos cuerpos con seis pantallas multifunción y visera tapizada.
+4,HAB.INT.A.SCR.AUXP,Pantalla AUXP,part,R_Screen,0.23x0.127x0.348,2,Pantalla multifunción táctil.
+4,HAB.INT.A.SCR.AUXS,Pantalla AUXS,part,R_Screen,0.23x0.127x0.348,2,Pantalla multifunción táctil.
+4,HAB.INT.A.SCR.C1D1,Pantalla C1D1,part,R_Screen,0.146x0.284x0.202,2,Pantalla multifunción táctil.
+4,HAB.INT.A.SCR.C1D2,Pantalla C1D2,part,R_Screen,0.067x0.279x0.202,2,Pantalla multifunción táctil.
+4,HAB.INT.A.SCR.C1D3,Pantalla C1D3,part,R_Screen,0.15x0.284x0.202,2,Pantalla multifunción táctil.
+4,HAB.INT.A.SCR.C2D1,Pantalla C2D1,part,R_Screen,0.146x0.284x0.202,2,Pantalla multifunción táctil.
+4,HAB.INT.A.SCR.C2D2,Pantalla C2D2,part,R_Screen,0.067x0.279x0.202,2,Pantalla multifunción táctil.
+4,HAB.INT.A.SCR.C2D3,Pantalla C2D3,part,R_Screen,0.15x0.284x0.202,2,Pantalla multifunción táctil.
+4,HAB.INT.A.SHL.FRM,"Nervios, cornisas y perfiles",part,R_Frame;R_Lining;R_Accent;R_Black;R_Alu;R_Backing,2.475x3.877x3.241,11660,"Nervios grafito, cornisas de luz indirecta, raíles de anclaje."
+4,HAB.INT.A.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x1.703x0.245,84,"Tiras LED de cornisa, zócalo y canal cenital."
+4,HAB.INT.A.SHL.LOW,"Zócalos, consolas y suelo de cabina",part,R_Floor;R_Backing;R_LiningDark,2.456x3.97x3.97,2032,"Consolas laterales, zócalos y pavimento de caucho."
+4,HAB.INT.A.SHL.WALL,Revestimiento de la cabina,part,R_Lining;R_Fabric;R_LiningDark,2.05x3.883x3.129,4032,Paneles curvos de PPSU con juntas de 4 mm y compartimentos altos.
+4,HAB.INT.A.ST1,Asiento del comandante,part,R_Frame;R_Alu;R_Leather;R_FabricBlue;R_Accent,0.679x0.665x1.405,17512,"Asiento con pedestal sobre raíles, cojines de piel técnica perforada, alas laterales y arnés de cinco puntos."
+4,HAB.INT.A.ST2,Asiento del piloto,part,R_Frame;R_Alu;R_Leather;R_FabricBlue;R_Accent,0.679x0.665x1.405,17512,"Asiento con pedestal sobre raíles, cojines de piel técnica perforada, alas laterales y arnés de cinco puntos."
+4,HAB.INT.A.STP,Escalones de acceso al nodo,part,R_LiningDark;R_Floor;R_Accent,1.22x0.74x0.598,1272,
+4,HAB.INT.A.SWB,Bases de interruptores,part,R_Black;R_Frame,1.11x3.09x0.073,7776,Bases y guardas de los 24 interruptores repartidos en las consolas laterales.
+4,HAB.INT.A.TGL,Palancas de interruptor,group,,1.024x2.998x0.084,,
+5,HAB.INT.A.TGL.AVX,Interruptor: Aviónica,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo potencia.
+5,HAB.INT.A.TGL.BAT,Interruptor: Batería maestra,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo potencia.
+5,HAB.INT.A.TGL.BUSA,Interruptor: Bus A 120 V,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo potencia.
+5,HAB.INT.A.TGL.BUSB,Interruptor: Bus B 120 V,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo potencia.
+5,HAB.INT.A.TGL.COMM,Interruptor: Comunicaciones,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo sistemas.
+5,HAB.INT.A.TGL.DOCK,Interruptor: Sistema de atraque,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo propulsión.
+5,HAB.INT.A.TGL.ECLSS,Interruptor: Soporte vital,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo sistemas.
+5,HAB.INT.A.TGL.FANS,Interruptor: Ventilación,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo sistemas.
+5,HAB.INT.A.TGL.FWD,Interruptor: Alimentación del nodo,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo potencia.
+5,HAB.INT.A.TGL.HEAT,Interruptor: Calentadores,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo sistemas.
+5,HAB.INT.A.TGL.LT_A,Interruptor: Luces bahía A,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo iluminación.
+5,HAB.INT.A.TGL.LT_B,Interruptor: Luces bahía B,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo iluminación.
+5,HAB.INT.A.TGL.LT_C,Interruptor: Luces bahía C,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo iluminación.
+5,HAB.INT.A.TGL.LT_D,Interruptor: Luces bahía D,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo iluminación.
+5,HAB.INT.A.TGL.LT_EXT,Interruptor: Focos exteriores,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo iluminación.
+5,HAB.INT.A.TGL.LT_N,Interruptor: Luces del nodo,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo iluminación.
+5,HAB.INT.A.TGL.MAIN,Interruptor: Armado motores,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo propulsión.
+5,HAB.INT.A.TGL.NAV,Interruptor: Navegación,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo propulsión.
+5,HAB.INT.A.TGL.RBT,Interruptor: Brazo robótico,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo propulsión.
+5,HAB.INT.A.TGL.RCS,Interruptor: Armado RCS,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo propulsión.
+5,HAB.INT.A.TGL.SCI,Interruptor: Laboratorio,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo sistemas.
+5,HAB.INT.A.TGL.SEP,Interruptor: Propulsión eléctrica,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo propulsión.
+5,HAB.INT.A.TGL.SOLAR,Interruptor: Alas solares,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo potencia.
+5,HAB.INT.A.TGL.THERM,Interruptor: Bombeo térmico,part,R_Steel;R_Frame,0.024x0.031x0.057,224,Palanca protegida de dos posiciones del grupo sistemas.
+4,HAB.INT.A.WEL,Pozos de ventana,part,R_Frame,0.9x3.962x2.288,648,Pozos de aluminio anodizado mate que eliminan reflejos parásitos.
+3,HAB.INT.B,Laboratorio (bahía B),group,,2.1x3.97x4.055,,"Laboratorio de ciencias de la vida y observación terrestre: guantera estanca, congelador de muestras a −80 °C, microscopio, cámara de cultivo y dos ventanas de nadir en el suelo."
+4,HAB.INT.B.FLF,Raíles y subsuelo,part,R_Alu;R_Backing;M_AlBare,2.05x3.2x0.064,460,
+4,HAB.INT.B.FLR,Suelo del laboratorio,part,R_Floor;M_AlBare,2.042x2.55x0.03,1616,Pavimento con dos pozos de observación de nadir.
+4,HAB.INT.B.FRZ,Congelador de muestras −80 °C,part,R_Lining;R_Accent;R_Indicator,1.96x0.05x0.613,1200,Cuatro cajones de congelación con registro de muestras.
+4,HAB.INT.B.GBX,Guantera estanca,part,R_Frame;R_Lining;R_LightPanel;R_Black;R_Rubber;R_Indicator,1.1x0.58x0.67,4436,"Volumen de trabajo de 0,26 m³ con dos puertos de guante, iluminación y esclusa de transferencia."
+4,HAB.INT.B.GBXG,Frontal transparente de la guantera,part,R_Glass,1.02x0.008x0.52,12,
+4,HAB.INT.B.MIC,Microscopio óptico,part,R_Lining;R_Black;R_Alu,0.325x0.24x0.51,808,Microscopio invertido con cámara digital y platina motorizada.
+4,HAB.INT.B.MON,Monitor de la guantera,part,R_Black,0.46x0.157x0.273,236,
+4,HAB.INT.B.NAD,Pozos de observación de nadir,part,R_Frame;R_Accent,1.61x0.66x0.922,1344,Pozos de aluminio anodizado mate con brocal de seguridad.
+4,HAB.INT.B.NADG,Vidrios pisables de nadir,part,R_Glass,1.54x0.59x0.02,376,Policarbonato laminado pisable sobre las ventanas ópticas.
+4,HAB.INT.B.RCK,Bastidores de instrumentos,part,R_LiningDark;R_Frame;R_Alu;R_Accent;R_Indicator,2.01x1.05x1.67,4200,Dos bastidores de experimentos con cajones normalizados e indicadores de estado.
+4,HAB.INT.B.SCR1,Pantalla de experimento,part,R_Screen,0.36x0.113x0.189,2,Pantalla.
+4,HAB.INT.B.SCR2,Pantalla de experimento,part,R_Screen,0.36x0.113x0.189,2,Pantalla.
+4,HAB.INT.B.SCR3,Monitor de la guantera,part,R_Screen,0.43x0.127x0.238,2,Pantalla.
+4,HAB.INT.B.SHL.FRM,Nervios y perfiles,part,R_Lining;R_Frame;R_Alu;R_Label;R_Accent;R_Black,2.1x3.877x3.242,12920,"Nervios grafito, cornisas, raíles de anclaje."
+4,HAB.INT.B.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x2.676x3.008,132,
+4,HAB.INT.B.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing,2.05x3.97x3.97,2328,Frentes de armario grafito y pavimento de caucho.
+4,HAB.INT.B.SHL.TOP,Encimeras,part,R_Worktop,2.042x3.87x0.034,512,Encimera de compuesto de lino.
+4,HAB.INT.B.SHL.WALL,Revestimiento,part,R_Lining,2.042x2.791x1.902,2016,Paneles curvos de PPSU con juntas y compartimentos altos.
+4,HAB.INT.B.VEG,Cámara de cultivo,part,R_Lining;R_LightPanel;R_Black;R_Plant;R_Rubber,0.8x0.444x0.52,13968,Cámara de crecimiento con iluminación LED de espectro completo y riego por mecha capilar.
+4,HAB.INT.B.VEGG,Puerta acristalada de la cámara,part,R_Glass,0.75x0.006x0.44,12,
+3,HAB.INT.C,Habitáculos (bahía C),group,,2.1x3.97x3.98,,"Cuatro cabinas privadas (dos por costado) con aislamiento acústico, ventilación individual e iluminación regulable."
+4,HAB.INT.C.Q1,Cabina privada 1 (Comandante),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q1.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.706,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q1.CRT,Cortina,part,R_FabricBlue,0.26x0.05x2.223,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q1.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
+4,HAB.INT.C.Q2,Cabina privada 2 (Piloto),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q2.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.703,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q2.CRT,Cortina,part,R_FabricBlue,0.26x0.044x2.223,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q2.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
+4,HAB.INT.C.Q3,Cabina privada 3 (Especialista 1),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q3.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.144x1.706,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q3.CRT,Cortina,part,R_FabricBlue,0.26x0.048x2.223,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q3.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
+4,HAB.INT.C.Q4,Cabina privada 4 (Especialista 2),part,R_Lining;R_LiningDark;R_Frame;R_Accent;R_Fabric;R_Worktop;R_Screen;R_Label;R_Bag;R_Black,1.005x0.825x2.663,2966,"Cabina individual de 1,9 m³ con pared acústica tapizada, estante, portátil, luz de lectura y cortina."
+4,HAB.INT.C.Q4.BAG,Saco de dormir,part,R_FabricBlue;R_Frame,0.661x0.145x1.707,7748,Saco de dormir sujeto a la pared con cinchas ajustables.
+4,HAB.INT.C.Q4.CRT,Cortina,part,R_FabricBlue,0.26x0.049x2.223,656,Cortina de tejido técnico ignífugo recogida.
+4,HAB.INT.C.Q4.LMP,Luz de lectura,part,R_Frame;R_LED,0.06x0.06x0.029,120,
+4,HAB.INT.C.SHL.FRM,Nervios y perfiles,part,R_Lining;R_Frame;R_Alu;R_Backing,2.1x3.877x3.241,5348,"Nervios grafito, cornisas, raíles de anclaje."
+4,HAB.INT.C.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.03x1.703x0.245,84,
+4,HAB.INT.C.SHL.LOW,Zócalos y suelo,part,R_Floor;R_Backing,2.05x3.97x3.97,1352,Frentes de armario grafito y pavimento de caucho.
+4,HAB.INT.C.SHL.TOP,Encimeras,part,,,0,Encimera de compuesto de lino.
+4,HAB.INT.C.SHL.WALL,Revestimiento,part,R_Lining,2.042x1.699x0.209,1104,Paneles curvos de PPSU con juntas y compartimentos altos.
+4,HAB.INT.C.UPR,Paños superiores,part,R_Lining,2.042x2.323x0.186,360,
+3,HAB.INT.D,Servicios (bahía D),group,,2.085x3.97x3.98,,"Cocina con dispensador de agua y calentador, mesa de comidas, compartimento de higiene y cicloergómetro."
+4,HAB.INT.D.AFT,Mamparo de popa,part,R_Lining,0.03x3.84x3.84,1148,
+4,HAB.INT.D.BAG,Bolsas de estiba,part,R_Bag;R_Label,0.27x2.69x1.558,20448,Bolsas de Nomex con etiquetas de inventario y cintas de sujeción.
+4,HAB.INT.D.CEV,Cicloergómetro,part,R_Frame;R_Lining;R_Black;R_Leather;R_Rubber,0.932x0.46x1.237,3016,"Cicloergómetro con aislamiento de vibraciones, sujeción de pies y monitor de esfuerzo."
+4,HAB.INT.D.CNT,Envases y raciones,part,R_Steel;R_Frame;R_Bag;R_Lining,0.565x0.308x0.152,3628,"Contenedores de raciones, bolsas de bebida y utensilios con sujeción magnética."
+4,HAB.INT.D.H2O,Dispensador de agua,part,R_Lining;R_Black;R_Indicator;R_Accent;R_Steel,0.3x0.352x0.46,680,Dispensador de agua caliente y fría con dosificación en bolsas de bebida.
+4,HAB.INT.D.HYG,Compartimento de higiene,part,R_Lining;R_Frame;R_LiningDark;R_Accent;R_Black,1.0x0.77x3.04,884,"Cabina cerrada con lavado por toallitas, aspiración de residuos y ventilación propia."
+4,HAB.INT.D.OVN,Calentador de alimentos,part,R_Lining;R_Frame;R_Accent;R_Indicator,0.46x0.365x0.34,408,Calentador por conducción para raciones y bolsas termoestabilizadas.
+4,HAB.INT.D.SHL.FRM,Nervios y perfiles,part,R_Frame;R_Lining;R_Alu;R_Accent;R_Black;R_Label;R_Backing,2.08x3.877x3.242,14252,"Nervios grafito, cornisas, raíles de anclaje."
+4,HAB.INT.D.SHL.LED,Iluminación integrada,part,R_LED;R_LightPanel,2.01x2.19x3.008,108,
+4,HAB.INT.D.SHL.LOW,Zócalos y suelo,part,R_LiningDark;R_Backing;R_Floor,2.03x3.97x3.97,2452,Frentes de armario grafito y pavimento de caucho.
+4,HAB.INT.D.SHL.TOP,Encimeras,part,R_Worktop,2.022x0.695x0.034,256,Encimera de compuesto de lino.
+4,HAB.INT.D.SHL.WALL,Revestimiento,part,R_Lining,2.022x3.883x1.902,2928,Paneles curvos de PPSU con juntas y compartimentos altos.
+4,HAB.INT.D.TAB,Tableta del plan del día,part,R_Black,0.269x0.215x0.008,108,
+4,HAB.INT.D.TBL,Mesa de comidas,part,R_Worktop;R_Frame;R_Alu,0.84x0.6x1.07,1164,Mesa de pie con barra de sujeción para los pies y anclajes magnéticos.
 2,HAB.MLI,Aislamiento multicapa (MLI),group,,9.91x4.27x4.27,,Mantas MLI de 20 capas (Mylar aluminizado con separador de red de Dacron) entre casco y escudo MMOD.
-3,HAB.MLI.CON,Manta MLI del cono,part,M_MLI_Gold,1.08x4.27x4.27,512,
+3,HAB.MLI.CON,Manta MLI del cono,part,M_MLI_Gold,1.08x4.27x4.27,1052,
 3,HAB.MLI.DOM,Manta MLI del mamparo de popa,part,M_MLI_Gold,0.63x4.26x4.26,1472,
 3,HAB.MLI.Q1,"Manta MLI del barril, cuadrante 1",part,M_MLI_Gold,8.14x2.127x2.127,148,Manta de 20 capas con cara exterior de Kapton aluminizado y velcro de unión.
 3,HAB.MLI.Q2,"Manta MLI del barril, cuadrante 2",part,M_MLI_Gold,8.14x2.127x2.127,148,Manta de 20 capas con cara exterior de Kapton aluminizado y velcro de unión.
-3,HAB.MLI.Q3,"Manta MLI del barril, cuadrante 3",part,M_MLI_Gold,8.14x2.127x2.127,364,Manta de 20 capas con cara exterior de Kapton aluminizado y velcro de unión.
-3,HAB.MLI.Q4,"Manta MLI del barril, cuadrante 4",part,M_MLI_Gold,8.14x2.127x2.127,364,Manta de 20 capas con cara exterior de Kapton aluminizado y velcro de unión.
+3,HAB.MLI.Q3,"Manta MLI del barril, cuadrante 3",part,M_MLI_Gold;M_AlBare,8.14x2.127x2.127,364,Manta de 20 capas con cara exterior de Kapton aluminizado y velcro de unión.
+3,HAB.MLI.Q4,"Manta MLI del barril, cuadrante 4",part,M_MLI_Gold;M_AlBare,8.14x2.127x2.127,364,Manta de 20 capas con cara exterior de Kapton aluminizado y velcro de unión.
 2,HAB.MMOD,Escudo MMOD poligonal (Whipple relleno),group,,9.24x4.545x4.545,,"64 paneles planos de aluminio 6061-T6 de 1,6 mm (bumper) en 16 facetas, separados ~12 cm del casco. Entre ambos: capas de Nextel/Kevlar integradas en la manta MLI (configuración 'stuffed Whipple')."
 3,HAB.MMOD.CN,Paneles MMOD del cono,group,,1.039x4.53x4.53,,16 paneles trapezoidales que siguen el cono adaptador.
-4,HAB.MMOD.CN.P01,Panel MMOD cónico 01,part,M_ShieldWhite;M_Bolt,1.039x0.745x0.845,396,Panel trapezoidal del cono.
-4,HAB.MMOD.CN.P02,Panel MMOD cónico 02,part,M_ShieldWhite;M_Bolt,1.039x1.011x1.065,396,Panel trapezoidal del cono.
-4,HAB.MMOD.CN.P03,Panel MMOD cónico 03,part,M_ShieldWhite;M_Bolt,1.039x1.124x1.124,396,Panel trapezoidal del cono.
-4,HAB.MMOD.CN.P04,Panel MMOD cónico 04,part,M_ShieldWhite;M_Bolt,1.039x1.065x1.011,396,Panel trapezoidal del cono.
-4,HAB.MMOD.CN.P05,Panel MMOD cónico 05,part,M_ShieldWhite;M_Bolt,1.039x0.845x0.745,396,Panel trapezoidal del cono.
-4,HAB.MMOD.CN.P06,Panel MMOD cónico 06,part,M_ShieldWhite;M_Bolt,1.039x1.065x1.011,396,Panel trapezoidal del cono.
-4,HAB.MMOD.CN.P07,Panel MMOD cónico 07,part,M_ShieldWhite;M_Bolt,1.039x1.124x1.124,396,Panel trapezoidal del cono.
-4,HAB.MMOD.CN.P08,Panel MMOD cónico 08,part,M_ShieldWhite;M_Bolt,1.039x1.011x1.065,396,Panel trapezoidal del cono.
-4,HAB.MMOD.CN.P09,Panel MMOD cónico 09,part,M_ShieldWhite;M_Bolt,1.039x0.745x0.845,396,Panel trapezoidal del cono.
+4,HAB.MMOD.CN.P01,Panel MMOD cónico 01,part,M_ShieldWhite;M_Bolt,1.039x0.745x0.845,248,Panel trapezoidal del cono.
+4,HAB.MMOD.CN.P02,Panel MMOD cónico 02,part,M_ShieldWhite;M_Bolt,1.039x1.011x1.065,248,Panel trapezoidal del cono.
+4,HAB.MMOD.CN.P03,Panel MMOD cónico 03,part,M_ShieldWhite;M_Bolt,1.039x1.124x1.124,248,Panel trapezoidal del cono.
+4,HAB.MMOD.CN.P04,Panel MMOD cónico 04,part,M_ShieldWhite;M_Bolt,1.039x1.065x1.011,248,Panel trapezoidal del cono.
+4,HAB.MMOD.CN.P05,Panel MMOD cónico 05,part,M_ShieldWhite;M_Bolt,1.039x0.845x0.745,248,Panel trapezoidal del cono.
+4,HAB.MMOD.CN.P06,Panel MMOD cónico 06,part,M_ShieldWhite;M_Bolt,1.039x1.065x1.011,248,Panel trapezoidal del cono.
+4,HAB.MMOD.CN.P07,Panel MMOD cónico 07,part,M_ShieldWhite;M_Bolt,1.039x1.124x1.124,248,Panel trapezoidal del cono.
+4,HAB.MMOD.CN.P08,Panel MMOD cónico 08,part,M_ShieldWhite;M_Bolt,1.039x1.011x1.065,248,Panel trapezoidal del cono.
+4,HAB.MMOD.CN.P09,Panel MMOD cónico 09,part,M_ShieldWhite;M_Bolt,1.039x0.745x0.845,248,Panel trapezoidal del cono.
 4,HAB.MMOD.CN.P10,Panel MMOD cónico 10,part,M_ShieldWhite;M_Bolt,1.039x1.011x1.065,396,Panel trapezoidal del cono.
 4,HAB.MMOD.CN.P11,Panel MMOD cónico 11,part,M_ShieldWhite;M_Bolt,1.039x1.124x1.124,396,Panel trapezoidal del cono.
 4,HAB.MMOD.CN.P12,Panel MMOD cónico 12,part,M_ShieldWhite;M_Bolt,1.039x1.065x1.011,396,Panel trapezoidal del cono.
@@ -578,7 +301,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.MMOD.R1.STO,"Soportes del escudo, anillo 1",part,M_Titanium;M_AlBare,1.63x4.467x4.467,1152,48 soportes de titanio con base de aluminio unidos al casco.
 3,HAB.MMOD.R2,Anillo de paneles MMOD 2,group,,2.03x4.545x4.545,,16 paneles del anillo 2 (X=2.65–4.70 m).
 4,HAB.MMOD.R2.P01,Panel MMOD R2-F01,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.028x0.864,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
-5,HAB.EXT.MRK.MKR_BABOR,Fabricante (babor),part,M_Graphite,1.135x0.002x0.058,5160,Serigrafía técnica sobre panel MMOD
+5,HAB.EXT.MRK.MKR_BABOR,Fabricante (babor),part,M_Graphite,1.135x0.002x0.058,5162,Serigrafía técnica sobre panel MMOD
 4,HAB.MMOD.R2.P02,Panel MMOD R2-F02,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.357x0.809,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
 4,HAB.MMOD.R2.P03,Panel MMOD R2-F03,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.631x0.631,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
 4,HAB.MMOD.R2.P04,Panel MMOD R2-F04,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.809x0.357,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
@@ -587,7 +310,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.MMOD.R2.P07,Panel MMOD R2-F07,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.631x0.631,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
 4,HAB.MMOD.R2.P08,Panel MMOD R2-F08,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.357x0.809,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
 4,HAB.MMOD.R2.P09,Panel MMOD R2-F09,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.028x0.864,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
-5,HAB.EXT.MRK.MKR_ESTRIBOR,Fabricante (estribor),part,M_Graphite,1.135x0.002x0.058,5160,Serigrafía técnica sobre panel MMOD
+5,HAB.EXT.MRK.MKR_ESTRIBOR,Fabricante (estribor),part,M_Graphite,1.135x0.002x0.058,5162,Serigrafía técnica sobre panel MMOD
 4,HAB.MMOD.R2.P10,Panel MMOD R2-F10,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.357x0.809,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
 4,HAB.MMOD.R2.P11,Panel MMOD R2-F11,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.631x0.631,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
 4,HAB.MMOD.R2.P12,Panel MMOD R2-F12,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.809x0.357,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
@@ -614,7 +337,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,HAB.MMOD.R3.P10,Panel MMOD R3-F10,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.357x0.809,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
 4,HAB.MMOD.R3.P11,Panel MMOD R3-F11,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.631x0.631,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
 4,HAB.MMOD.R3.P12,Panel MMOD R3-F12,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.809x0.357,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
-4,HAB.MMOD.R3.P13,Panel MMOD R3-F13,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.864x0.028,1432,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
+4,HAB.MMOD.R3.P13,Panel MMOD R3-F13,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.864x0.028,1600,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
 4,HAB.MMOD.R3.P14,Panel MMOD R3-F14,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.809x0.357,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
 4,HAB.MMOD.R3.P15,Panel MMOD R3-F15,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.631x0.631,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
 4,HAB.MMOD.R3.P16,Panel MMOD R3-F16,part,M_ShieldWhite;M_AlBare;M_Bolt;M_Decal,2.03x0.357x0.809,1720,Panel bumper de Al 6061-T6 pintado con recubrimiento térmico blanco; 12+6 fijaciones de titanio.
@@ -657,7 +380,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,HAB.STR.B4,Barril presurizado 4,group,,2.03x4.2x4.2,,Barril de 2.05 m entre X=6.75 y X=8.80 m.
 4,HAB.STR.B4.ISO,Isogrid interno del barril 4,part,M_AlLi,2.002x4.189x4.183,5568,Retícula triangular mecanizada (nervios de 12 mm × 35 mm) que proporciona rigidez frente a pandeo con mínima masa.
 4,HAB.STR.B4.SKN,Piel del barril 4,part,M_AlLi;M_AlBare,2.03x4.2x4.2,612,Piel de 6 mm (zona de membrana) con tres soldaduras longitudinales FSW.
-3,HAB.STR.CON,Cono adaptador HAB–nodo,part,M_AlLi;M_Bolt,1.1x4.2x4.2,3648,"Tronco de cono de Al-Li que transita de Ø4,20 m a Ø2,80 m."
+3,HAB.STR.CON,Cono adaptador HAB–nodo,part,M_AlLi;M_Bolt,1.1x4.2x4.2,3260,"Tronco de cono de Al-Li que transita de Ø4,20 m a Ø2,80 m, con nueve huecos de ventana panorámica para la cabina de vuelo."
 3,HAB.STR.DOM,Mamparo de popa elipsoidal,part,M_AlLi;M_AlBare,0.62x4.2x4.2,4372,Cúpula elipsoidal 2:1 con 6 pasamuros de fluidos y potencia hacia el módulo de servicio.
 3,HAB.STR.FRM1,Marco anular 1 (X=0.60),part,M_AlLi;M_AlBare,0.06x4.216x4.216,2304,Marco anular de unión entre barriles con soldadura circunferencial.
 3,HAB.STR.FRM2,Marco anular 2 (X=2.65),part,M_AlLi;M_AlBare,0.06x4.216x4.216,2304,Marco anular de unión entre barriles con soldadura circunferencial.
@@ -665,24 +388,6 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 3,HAB.STR.FRM4,Marco anular 4 (X=6.75),part,M_AlLi;M_AlBare,0.06x4.216x4.216,2304,Marco anular de unión entre barriles con soldadura circunferencial.
 3,HAB.STR.FRM5,Marco anular 5 (X=8.80),part,M_AlLi;M_AlBare,0.06x4.216x4.216,2304,Marco anular de unión entre barriles con soldadura circunferencial.
 3,HAB.STR.IFR,Anillo de interfaz HAB/servicio,part,M_AlBare;M_Bolt,0.092x4.32x4.32,4672,Anillo en Y forjado con 64 tornillos; transmite el empuje del módulo de servicio al casco.
-2,HAB.UTL,Utilidades distribuidas,group,,8.065x3.17x3.132,,"Ventilación, distribución eléctrica, datos y lazo de agua de refrigeración enrutados por las cuatro esquinas del pasillo, tras los bastidores."
-3,HAB.UTL.C1,Esquina de utilidades superior babor,group,,8.065x0.43x0.347,,
-4,HAB.UTL.C1.DCT,Conducto de impulsión de aire,part,M_DuctFlex;M_AlBare,8.057x0.192x0.192,4972,Conducto de aluminio corrugado Ø170 mm con difusores en cada bahía.
-4,HAB.UTL.C1.H2O,Líneas del lazo de agua de refrigeración,part,M_Water;M_DecalRed;M_AlBare,8.065x0.05x0.08,276,"Suministro (azul) y retorno (rojo) del lazo interno de agua, con soportes cada 0,5 m."
-4,HAB.UTL.C1.TRY,Bandeja y mazos de cables,part,M_AlBare;M_Cable;M_CableOrange;M_CableWhite;M_InteriorDark,8.06x0.17x0.061,400,"Bandeja con mazos de potencia de 120 V CC (naranja), datos (blanco) y señal (negro), con abrazaderas cada 0,4 m."
-3,HAB.UTL.C2,Esquina de utilidades superior estribor,group,,8.065x0.43x0.347,,
-4,HAB.UTL.C2.DCT,Conducto de impulsión de aire,part,M_DuctFlex;M_AlBare,8.057x0.192x0.192,4972,Conducto de aluminio corrugado Ø170 mm con difusores en cada bahía.
-4,HAB.UTL.C2.H2O,Líneas del lazo de agua de refrigeración,part,M_Water;M_DecalRed;M_AlBare,8.065x0.05x0.08,276,"Suministro (azul) y retorno (rojo) del lazo interno de agua, con soportes cada 0,5 m."
-4,HAB.UTL.C2.TRY,Bandeja y mazos de cables,part,M_AlBare;M_Cable;M_CableOrange;M_CableWhite;M_InteriorDark,8.06x0.17x0.061,400,"Bandeja con mazos de potencia de 120 V CC (naranja), datos (blanco) y señal (negro), con abrazaderas cada 0,4 m."
-3,HAB.UTL.C3,Esquina de utilidades inferior babor,group,,8.065x0.43x0.385,,
-4,HAB.UTL.C3.DCT,Conducto de retorno de aire,part,M_DuctFlex;M_AlBare,8.057x0.192x0.192,4972,Conducto de aluminio corrugado Ø170 mm con difusores en cada bahía.
-4,HAB.UTL.C3.H2O,Líneas del lazo de agua de refrigeración,part,M_Water;M_DecalRed;M_AlBare,8.065x0.05x0.08,276,"Suministro (azul) y retorno (rojo) del lazo interno de agua, con soportes cada 0,5 m."
-4,HAB.UTL.C3.TRY,Bandeja y mazos de cables,part,M_AlBare;M_Cable;M_CableOrange;M_CableWhite;M_InteriorDark,8.06x0.17x0.058,400,"Bandeja con mazos de potencia de 120 V CC (naranja), datos (blanco) y señal (negro), con abrazaderas cada 0,4 m."
-3,HAB.UTL.C4,Esquina de utilidades inferior estribor,group,,8.065x0.43x0.385,,
-4,HAB.UTL.C4.DCT,Conducto de retorno de aire,part,M_DuctFlex;M_AlBare,8.057x0.192x0.192,4972,Conducto de aluminio corrugado Ø170 mm con difusores en cada bahía.
-4,HAB.UTL.C4.H2O,Líneas del lazo de agua de refrigeración,part,M_Water;M_DecalRed;M_AlBare,8.065x0.05x0.08,276,"Suministro (azul) y retorno (rojo) del lazo interno de agua, con soportes cada 0,5 m."
-4,HAB.UTL.C4.TRY,Bandeja y mazos de cables,part,M_AlBare;M_Cable;M_CableOrange;M_CableWhite;M_InteriorDark,8.06x0.17x0.058,400,"Bandeja con mazos de potencia de 120 V CC (naranja), datos (blanco) y señal (negro), con abrazaderas cada 0,4 m."
-3,HAB.UTL.STK,Carriles de fijación (seat track),part,M_AlBare;M_InteriorDark,8.057x2.265x2.268,8896,"Carriles continuos con orificios cada 25,4 mm para fijar equipos, pies y cámaras en cualquier punto del pasillo."
 1,PRP,Bahía de Propulsión,group,,2.18x5.73x4.324,,"Placa de empuje, faldón de popa, 4 motores bipropelentes y 2 conjuntos orientables de propulsores Hall."
 2,PRP.ENG,Motores bipropelentes principales,group,,2.18x2.857x2.857,,
 3,PRP.ENG.E1,Motor bipropelente principal 1,group,,2.18x1.041x1.041,,Motor de empuje de clase 400–500 N (MMH/MON-3) refrigerado por radiación. Cuatro unidades permiten tolerar el fallo de una.
@@ -722,7 +427,7 @@ nivel,codigo,denominacion,tipo,materiales,dimensiones_m,triangulos,descripcion
 4,PRP.SEP.A2.T2,Propulsor Hall 4,part,M_HallBody;M_BoronNitride;M_Copper;M_Titanium;M_AlBare,0.205x0.49x0.42,1652,"Propulsor de efecto Hall con apantallamiento magnético, canal de nitruro de boro y cátodo hueco de LaB6."
 2,PRP.STR,Estructura de empuje,group,,0.86x4.324x4.324,,
 3,PRP.STR.PLT,Placa de empuje,part,M_AlBare,0.05x4.283x4.283,1014,Placa mecanizada de Al 7075 con aligeramientos y alojamientos de motor.
-3,PRP.STR.PSH,Escudo térmico de popa,part,M_BetaCloth;M_Titanium;M_Bolt;M_AlAnodBlack,0.21x3.643x3.643,7464,Cierre cerámico-metálico segmentado con listones de titanio y collarines de tobera para radiación de alta temperatura.
+3,PRP.STR.PSH,Escudo térmico de popa,part,M_BetaCloth;M_Titanium;M_Bolt;M_AlAnodBlack;M_AlBare,0.21x3.643x3.643,7464,Cierre cerámico-metálico segmentado con listones de titanio y collarines de tobera para radiación de alta temperatura.
 3,PRP.STR.SKT,Faldón de popa con MLI de alta temperatura,part,M_MLI_Black,0.75x4.324x4.324,96,Faldón troncopiramidal cubierto con MLI de Kapton negro y capas de níquel para la radiación de las toberas.
 1,PWR,Sistema de Potencia Solar,group,,4.7x39.42x0.52,,"Dos alas solares enrollables (tipo ROSA) de 4,4 × 16 m con células de triple unión, montadas en mecanismos de orientación SADA."
 2,PWR.W1,Ala solar de babor,group,,4.7x17.53x0.52,,
