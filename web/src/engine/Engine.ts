@@ -291,6 +291,7 @@ export class Engine {
       await pInt;
       this.cockpit.setup(this.interior, this.model.root);
       this.player.grid = this.interior.voxels;
+      this.evaBody.buildColliders();
       this.model.root.updateMatrixWorld(true);
       this.interior.captureProbes(this.renderer, this.near, this.model.root);
       this.interiorReady = true;
@@ -958,6 +959,24 @@ export class Engine {
       if (this.airlockT > 6) {
         if (this.airlock === 'depress') { this.airlock = 'vac'; this.model.setMech('hatch:alk_out', -1.75); this.audio.hatch(true); this.toast('Esclusa en vacío: escotilla exterior abierta'); }
         else { this.airlock = 'pres'; this.model.setMech('hatch:alk_out', 0); this.audio.beep('ok'); this.toast('Esclusa presurizada'); }
+      }
+    }
+    // transiciones EVA a través de la esclusa (fondo del pozo ↔ exterior bajo la escotilla)
+    if (this.mode === 'INTERIOR' && this.airlock === 'vac') {
+      const [px, py, pz] = t2b(this.player.pos);
+      if (pz - this.player.eyeH < -2.95 + 0.2 && Math.hypot(px - 11.05, py) < 0.6) {
+        this.player.eva = true;
+        this.evaBody.pos.copy(b2t(11.05, 0, -4.0)); this.evaBody.vel.set(0, 0, 0); this.evaBody.jetFuel = 1;
+        this.evaBody.yaw = this.player.yaw; this.evaBody.pitch = -0.6;
+        this.mode = 'EVA'; this.camera.fov = 70; this.camera.updateProjectionMatrix();
+        this.audio.comms('Alción, EVA iniciada. Línea de seguridad conectada.'); this.emitSnap();
+      }
+    } else if (this.mode === 'EVA') {
+      const [px, py, pz] = t2b(this.evaBody.pos);
+      if (pz > -3.75 && pz < -3.2 && Math.hypot(px - 11.05, py) < 0.55 && this.airlock === 'vac') {
+        this.player.eva = false; this.mode = 'INTERIOR'; this.camera.fov = this.fovPref; this.camera.updateProjectionMatrix();
+        this.player.pos.copy(b2t(11.05, 0, -3.16 + 1.66)); this.player.vel.set(0, 0, 0); this.player.settle();
+        this.audio.comms('Bienvenido a bordo. Represuriza la esclusa desde su panel.'); this.emitSnap();
       }
     }
     if (!this.flight.docked && this.systems.on('DOCK')) {

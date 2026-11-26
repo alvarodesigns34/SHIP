@@ -69,7 +69,7 @@ changed = True
 while changed:
     changed = False
     for ob in list(bpy.data.objects):
-        if ob.type == 'EMPTY' and len(ob.children) == 0 and ob.name != "ALCION":
+        if ob.type == "EMPTY" and len(ob.children) == 0 and ob.name != "ALCION" and not ob.name.startswith("LMARK_"):
             bpy.data.objects.remove(ob)
             changed = True
 
